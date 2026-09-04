@@ -1,0 +1,158 @@
+//@version=5
+indicator("Minervini SEPA Multi-Stock Screener", shorttitle="Minervini Screener", overlay=false, max_bars_back=500)
+
+// ==============================================================================
+// 1. INPUTS & WATCHLIST
+// ==============================================================================
+grp_bench = "Benchmark Setting"
+benchmark_sym = input.symbol("IDX:COMPOSITE", "Benchmark Index Symbol", group=grp_bench)
+
+grp_stocks = "Watchlist Saham (Maks 15 Ticker)"
+sym01 = input.symbol("BBCA",  "Stock 1",  group=grp_stocks)
+sym02 = input.symbol("BBRI",  "Stock 2",  group=grp_stocks)
+sym03 = input.symbol("BMRI",  "Stock 3",  group=grp_stocks)
+sym04 = input.symbol("BBNI",  "Stock 4",  group=grp_stocks)
+sym05 = input.symbol("ASII",  "Stock 5",  group=grp_stocks)
+sym06 = input.symbol("TLKM",  "Stock 6",  group=grp_stocks)
+sym07 = input.symbol("UNTR",  "Stock 7",  group=grp_stocks)
+sym08 = input.symbol("ICBP",  "Stock 8",  group=grp_stocks)
+sym09 = input.symbol("INDF",  "Stock 9",  group=grp_stocks)
+sym10 = input.symbol("AMMN",  "Stock 10", group=grp_stocks)
+sym11 = input.symbol("BRPT",  "Stock 11", group=grp_stocks)
+sym12 = input.symbol("TPIA",  "Stock 12", group=grp_stocks)
+sym13 = input.symbol("MDKA",  "Stock 13", group=grp_stocks)
+sym14 = input.symbol("PGAS",  "Stock 14", group=grp_stocks)
+sym15 = input.symbol("KLBF",  "Stock 15", group=grp_stocks)
+
+grp_params = "Filter Parameters"
+len_52w          = input.int(252, "52-Week Lookback", group=grp_params)
+pct_above_low    = input.float(25.0, "Min % Above 52W Low", group=grp_params)
+pct_within_high  = input.float(25.0, "Max % Dist from 52W High", group=grp_params)
+len_slope_min    = input.int(22, "MA 200 Min Slope Days (≈1 Bulan)", group=grp_params)
+len_slope_ideal  = input.int(88, "MA 200 Ideal Slope Days (≈4-5 Bulan)", group=grp_params)
+rs_threshold     = input.float(70.0, "RS Rating Threshold (0-100)", group=grp_params)
+
+// ==============================================================================
+// 2. CALCULATION ENGINE (COMPUTED DIRECTLY ON NATIVE RESOLUTION)
+// ==============================================================================
+f_calc() =>
+    has_data = not na(close[len_52w]) and bar_index >= len_52w
+    
+    m50  = ta.sma(close, 50)
+    m150 = ta.sma(close, 150)
+    m200 = ta.sma(close, 200)
+    
+    m200_min   = m200 > m200[len_slope_min]
+    m200_ideal = m200 > m200[len_slope_ideal]
+    m200_up    = m200_ideal or m200_min
+    
+    h52 = ta.highest(high, len_52w)
+    l52 = ta.lowest(low, len_52w)
+    
+    dist_low  = l52 != 0 ? ((close - l52) / l52) * 100.0 : 0.0
+    dist_high = h52 != 0 ? ((h52 - close) / h52) * 100.0 : 0.0
+    
+    c1 = has_data and (close > m150) and (close > m200)
+    c2 = has_data and (m150 > m200)
+    c3 = has_data and m200_up
+    c4 = has_data and (m50 > m150) and (m50 > m200)
+    c5 = has_data and (close > m50)
+    c6 = has_data and (dist_low >= pct_above_low)
+    c7 = has_data and (dist_high <= pct_within_high)
+    
+    r_3m  = not na(close[63])  and close[63]  != 0 ? (close - close[63])  / close[63]  : 0.0
+    r_6m  = not na(close[126]) and close[126] != 0 ? (close - close[126]) / close[126] : 0.0
+    r_9m  = not na(close[189]) and close[189] != 0 ? (close - close[189]) / close[189] : 0.0
+    r_12m = not na(close[252]) and close[252] != 0 ? (close - close[252]) / close[252] : 0.0
+    s_perf = 0.40 * r_3m + 0.20 * r_6m + 0.20 * r_9m + 0.20 * r_12m
+    
+    base_score = (c1 ? 1 : 0) + (c2 ? 1 : 0) + (c3 ? 1 : 0) + (c4 ? 1 : 0) + (c5 ? 1 : 0) + (c6 ? 1 : 0) + (c7 ? 1 : 0)
+    
+    [close, dist_low, dist_high, base_score, s_perf, has_data ? 1.0 : 0.0]
+
+// Benchmark Data
+[b_close, b_dlow, b_dhigh, b_base, b_perf, b_has] = request.security(benchmark_sym != "" ? benchmark_sym : "IDX:COMPOSITE", "D", f_calc(), barmerge.gaps_off, barmerge.lookahead_off)
+
+// Security Fetcher per Symbol
+get_stock(sym) =>
+    s = sym != "" ? sym : syminfo.tickerid
+    [c, dl, dh, sc, perf, has_flt] = request.security(s, "D", f_calc(), barmerge.gaps_off, barmerge.lookahead_off)
+    has_dt = has_flt > 0.5
+    rs_diff = (perf - b_perf) * 100.0
+    rs_sc = math.max(1.0, math.min(99.0, 50.0 + (rs_diff * 1.5)))
+    c8 = has_dt and (rs_sc >= rs_threshold or perf > b_perf)
+    tot_sc = sc + (c8 ? 1 : 0)
+    is_st2 = has_dt and (tot_sc == 8)
+    [c, dl, dh, rs_sc, tot_sc, is_st2, has_dt]
+
+// Global evaluations
+[c01, dl01, dh01, rs01, sc01, st01, has01] = get_stock(sym01)
+[c02, dl02, dh02, rs02, sc02, st02, has02] = get_stock(sym02)
+[c03, dl03, dh03, rs03, sc03, st03, has03] = get_stock(sym03)
+[c04, dl04, dh04, rs04, sc04, st04, has04] = get_stock(sym04)
+[c05, dl05, dh05, rs05, sc05, st05, has05] = get_stock(sym05)
+[c06, dl06, dh06, rs06, sc06, st06, has06] = get_stock(sym06)
+[c07, dl07, dh07, rs07, sc07, st07, has07] = get_stock(sym07)
+[c08, dl08, dh08, rs08, sc08, st08, has08] = get_stock(sym08)
+[c09, dl09, dh09, rs09, sc09, st09, has09] = get_stock(sym09)
+[c10, dl10, dh10, rs10, sc10, st10, has10] = get_stock(sym10)
+[c11, dl11, dh11, rs11, sc11, st11, has11] = get_stock(sym11)
+[c12, dl12, dh12, rs12, sc12, st12, has12] = get_stock(sym12)
+[c13, dl13, dh13, rs13, sc13, st13, has13] = get_stock(sym13)
+[c14, dl14, dh14, rs14, sc14, st14, has14] = get_stock(sym14)
+[c15, dl15, dh15, rs15, sc15, st15, has15] = get_stock(sym15)
+
+// ==============================================================================
+// 3. SCREENER TABLE DISPLAY
+// ==============================================================================
+var table scr_table = table.new(position.top_right, 7, 17, bgcolor=color.new(#111827, 5), border_color=color.new(#374151, 0), border_width=1)
+
+render_header() =>
+    table.cell(scr_table, 0, 0, "MINERVINI SEPA SCREENER (STAGE 2 WATCHLIST)", bgcolor=color.new(#111827, 0), text_color=color.white, text_size=size.small)
+    table.merge_cells(scr_table, 0, 0, 6, 0)
+    
+    table.cell(scr_table, 0, 1, "Ticker", bgcolor=color.new(#1F2937, 0), text_color=#9CA3AF, text_size=size.small)
+    table.cell(scr_table, 1, 1, "Price", bgcolor=color.new(#1F2937, 0), text_color=#9CA3AF, text_size=size.small)
+    table.cell(scr_table, 2, 1, "SEPA Score", bgcolor=color.new(#1F2937, 0), text_color=#9CA3AF, text_size=size.small)
+    table.cell(scr_table, 3, 1, "Stage 2 Status", bgcolor=color.new(#1F2937, 0), text_color=#9CA3AF, text_size=size.small)
+    table.cell(scr_table, 4, 1, "52W Low", bgcolor=color.new(#1F2937, 0), text_color=#9CA3AF, text_size=size.small)
+    table.cell(scr_table, 5, 1, "52W High", bgcolor=color.new(#1F2937, 0), text_color=#9CA3AF, text_size=size.small)
+    table.cell(scr_table, 6, 1, "RS Score", bgcolor=color.new(#1F2937, 0), text_color=#9CA3AF, text_size=size.small)
+
+render_row(r, sym, c, d_low, d_high, rs_score, tot_score, is_stage2, has_data) =>
+    if sym != ""
+        clean_sym = str.replace_all(sym, ".*:", "")
+        if not has_data
+            table.cell(scr_table, 0, r, clean_sym, bgcolor=color.new(#1F2937, 20), text_color=color.white, text_size=size.small)
+            table.cell(scr_table, 1, r, "Data < 252D", bgcolor=color.new(#DC2626, 20), text_color=#FCA5A5, text_size=size.small)
+            table.merge_cells(scr_table, 1, r, 6, r)
+        else
+            color bg = is_stage2 ? color.new(#059669, 30) : (tot_score >= 6 ? color.new(#D97706, 30) : color.new(#1F2937, 20))
+            color status_color = is_stage2 ? #34D399 : (tot_score >= 6 ? #FBBF24 : #F87171)
+            string status_text = is_stage2 ? "CONFIRMED" : (tot_score >= 6 ? "WATCHLIST" : "UNQUALIFIED")
+            
+            table.cell(scr_table, 0, r, clean_sym, bgcolor=bg, text_color=color.white, text_size=size.small)
+            table.cell(scr_table, 1, r, str.tostring(c, "#.##"), bgcolor=bg, text_color=color.white, text_size=size.small)
+            table.cell(scr_table, 2, r, str.tostring(tot_score) + " / 8", bgcolor=bg, text_color=status_color, text_size=size.small)
+            table.cell(scr_table, 3, r, status_text, bgcolor=bg, text_color=status_color, text_size=size.small)
+            table.cell(scr_table, 4, r, "+" + str.tostring(d_low, "#.#") + "%", bgcolor=bg, text_color=d_low >= pct_above_low ? #34D399 : #F87171, text_size=size.small)
+            table.cell(scr_table, 5, r, "-" + str.tostring(d_high, "#.#") + "%", bgcolor=bg, text_color=d_high <= pct_within_high ? #34D399 : #F87171, text_size=size.small)
+            table.cell(scr_table, 6, r, str.tostring(rs_score, "0") + "/100", bgcolor=bg, text_color=rs_score >= rs_threshold ? #34D399 : #9CA3AF, text_size=size.small)
+
+if barstate.islast
+    render_header()
+    render_row(2,  sym01, c01, dl01, dh01, rs01, sc01, st01, has01)
+    render_row(3,  sym02, c02, dl02, dh02, rs02, sc02, st02, has02)
+    render_row(4,  sym03, c03, dl03, dh03, rs03, sc03, st03, has03)
+    render_row(5,  sym04, c04, dl04, dh04, rs04, sc04, st04, has04)
+    render_row(6,  sym05, c05, dl05, dh05, rs05, sc05, st05, has05)
+    render_row(7,  sym06, c06, dl06, dh06, rs06, sc06, st06, has06)
+    render_row(8,  sym07, c07, dl07, dh07, rs07, sc07, st07, has07)
+    render_row(9,  sym08, c08, dl08, dh08, rs08, sc08, st08, has08)
+    render_row(10, sym09, c09, dl09, dh09, rs09, sc09, st09, has09)
+    render_row(11, sym10, c10, dl10, dh10, rs10, sc10, st10, has10)
+    render_row(12, sym11, c11, dl11, dh11, rs11, sc11, st11, has11)
+    render_row(13, sym12, c12, dl12, dh12, rs12, sc12, st12, has12)
+    render_row(14, sym13, c13, dl13, dh13, rs13, sc13, st13, has13)
+    render_row(15, sym14, c14, dl14, dh14, rs14, sc14, st14, has14)
+    render_row(16, sym15, c15, dl15, dh15, rs15, sc15, st15, has15)

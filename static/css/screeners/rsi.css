@@ -1,0 +1,237 @@
+/* ==========================================================================
+   RSI DIVERGENCE SCREENER STYLES
+   ========================================================================== */
+
+/* Badges for Divergence Type */
+.badge-div-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.badge-div-type.reg-bull {
+  background: var(--status-div-reg-bg);
+  color: var(--status-div-reg-text);
+  border: 1px solid var(--status-div-reg-border);
+}
+
+.badge-div-type.hid-bull {
+  background: var(--status-div-hid-bg);
+  color: var(--status-div-hid-text);
+  border: 1px solid var(--status-div-hid-border);
+}
+
+/* RSI Value Pill */
+.rsi-pill {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  font-feature-settings: "tnum" 1;
+}
+
+.rsi-pill.oversold {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.rsi-pill.neutral {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.rsi-pill.overbought {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+/* Pivot Structure Info in Table Row */
+.pivot-struct-box {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+}
+
+.pivot-struct-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pivot-struct-row .tag {
+  color: var(--text-muted);
+}
+
+.pivot-struct-row .accent {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* RSI Comparative Swing Diagram inside Modal */
+.rsi-diag-card,
+.rsi-diagram-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.rsi-diag-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.rsi-diag-grid,
+.rsi-pivot-diagram {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+}
+
+.rsi-pivot-box,
+.pivot-point-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.rsi-pivot-box.curr,
+.pivot-point-card.current {
+  border-color: var(--brand-lime-border);
+  box-shadow: 0 2px 8px rgba(77, 124, 15, 0.08);
+}
+
+.pivot-tag,
+.pivot-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 4px;
+}
+
+.pivot-values {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pivot-val-row,
+.pivot-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.pivot-val-row .lbl,
+.pivot-metric-row .label {
+  color: var(--text-muted);
+}
+
+.pivot-val-row .val,
+.pivot-metric-row .val {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-primary);
+  font-feature-settings: "tnum" 1;
+}
+
+.rsi-diag-arrow,
+.pivot-arrow-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.arrow-symbol {
+  font-size: 18px;
+  color: var(--brand-lime);
+  font-weight: bold;
+}
+
+.arrow-diff-price,
+.arrow-diff-rsi,
+.pivot-connector-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.arrow-diff-price {
+  color: var(--status-fail-text);
+}
+
+.arrow-diff-rsi {
+  color: var(--status-confirmed-text);
+}
+
+.rsi-tech-interpretation,
+.rsi-tech-explanation {
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.tech-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.tech-desc strong,
+.rsi-tech-explanation h4 {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.tech-desc p,
+.rsi-tech-explanation p {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}

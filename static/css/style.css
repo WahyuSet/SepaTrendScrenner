@@ -1,0 +1,26 @@
+/* ==========================================================================
+   IDX SCREENER PRO - MASTER STYLESHEET (MODULAR ENTRY POINT)
+   ========================================================================== */
+
+/* 1. Core Base & Design Tokens */
+@import url('/static/css/base.css');
+
+/* 2. Layout, Sidebar & Summary Cards */
+@import url('/static/css/layout.css');
+
+/* 3. Table Cards, Toolbar & Cells */
+@import url('/static/css/table.css');
+
+/* 4. Modal Dialog System */
+@import url('/static/css/modals.css');
+
+/* 5. Command Palette (Ctrl + K) */
+@import url('/static/css/command-palette.css');
+
+/* 6. Screener Specific Styles */
+@import url('/static/css/screeners/sepa.css');
+@import url('/static/css/screeners/rsi.css');
+@import url('/static/css/screeners/prebreakout.css');
+
+/* 7. Enterprise Stock Detail Modal (IDX Edge PRO) */
+@import url('/static/css/components/stock_modal.css');

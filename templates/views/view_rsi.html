@@ -1,0 +1,119 @@
+<!-- ======================================================== -->
+<!-- 2. RSI DIVERGENCE SCREENER VIEW -->
+<!-- ======================================================== -->
+<div id="view-rsi-div" class="screener-view hidden">
+  <div class="view-header">
+    <div class="view-header-left">
+      <h1>RSI Divergence Screener</h1>
+      <p>Deteksi sinyal Bullish Reversal (Regular) & Bullish Continuation (Hidden) dengan konfirmasi pivot swing</p>
+    </div>
+  </div>
+
+  <!-- STATS SUMMARY CARDS -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Total Sinyal Bullish</span>
+        <span class="stat-icon">📈</span>
+      </div>
+      <div id="rsi-stat-total" class="stat-value">0</div>
+      <div class="stat-meta">≤ 5 Hari Bursa Terakhir</div>
+    </div>
+
+    <div class="stat-card confirmed">
+      <div class="stat-card-header">
+        <span class="stat-label">Regular Bullish</span>
+        <span class="stat-icon">🔄</span>
+      </div>
+      <div id="rsi-stat-reg-bull" class="stat-value lime">0</div>
+      <div class="stat-meta">Sinyal Reversal (Price LL, RSI HL)</div>
+    </div>
+
+    <div class="stat-card watchlist">
+      <div class="stat-card-header">
+        <span class="stat-label">Hidden Bullish</span>
+        <span class="stat-icon">🚀</span>
+      </div>
+      <div id="rsi-stat-hid-bull" class="stat-value amber">0</div>
+      <div class="stat-meta">Sinyal Continuation (Price HL, RSI LL)</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Setting Indikator</span>
+        <span class="stat-icon">⚙️</span>
+      </div>
+      <div class="stat-value text-sm">RSI 14 (P: 5/5)</div>
+      <div id="rsi-stat-last-time" class="stat-meta">Belum pernah scan</div>
+    </div>
+  </section>
+
+  <!-- DATA TABLE CONTAINER -->
+  <section class="table-card">
+    <div class="table-header-bar">
+      <div class="table-title-area">
+        <h2>Daftar Saham RSI Divergence</h2>
+        <span id="rsi-table-count-badge" class="count-pill">0 Sinyal</span>
+      </div>
+
+      <div class="table-header-right">
+        <!-- Quick Tab Filters -->
+        <div class="tab-filters">
+          <button id="rsi-tab-all" class="tab-btn active" onclick="setRsiTabFilter('ALL')">
+            Semua Sinyal
+          </button>
+          <button id="rsi-tab-reg" class="tab-btn" onclick="setRsiTabFilter('REGULAR_BULL')">
+            Regular Bullish Saja
+          </button>
+          <button id="rsi-tab-hid" class="tab-btn" onclick="setRsiTabFilter('HIDDEN_BULL')">
+            Hidden Bullish Saja
+          </button>
+        </div>
+
+        <!-- Table Utility Actions -->
+        <div class="table-actions">
+          <button class="btn-table-util" onclick="copyTradingViewWatchlist('rsi')" title="Salin daftar ticker untuk TradingView">
+            <span>📋</span> Copy Watchlist
+          </button>
+          <button class="btn-table-util" onclick="exportTableToCsv('rsi')" title="Download file CSV">
+            <span>📥</span> Export CSV
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Responsive Wrapper -->
+    <div class="table-container">
+      <table class="data-table" id="rsi-table">
+        <thead>
+          <tr>
+            <th onclick="sortRsiTable('ticker')">Ticker <span class="sort-icon" id="rsi-sort-ticker">↕</span></th>
+            <th onclick="sortRsiTable('name')">Nama Emiten <span class="sort-icon" id="rsi-sort-name">↕</span></th>
+            <th onclick="sortRsiTable('sector')">Sektor <span class="sort-icon" id="rsi-sort-sector">↕</span></th>
+            <th class="text-right" onclick="sortRsiTable('price')">Harga Terakhir <span class="sort-icon" id="rsi-sort-price">↕</span></th>
+            <th class="text-center" onclick="sortRsiTable('divergence_type')">Tipe Divergence <span class="sort-icon" id="rsi-sort-divergence_type">↕</span></th>
+            <th class="text-center" onclick="sortRsiTable('rsi')">Nilai RSI 14 <span class="sort-icon" id="rsi-sort-rsi">↕</span></th>
+            <th class="text-center">Pivot Compare (Price / RSI)</th>
+            <th class="text-center" onclick="sortRsiTable('bars_ago')">Waktu Sinyal <span class="sort-icon" id="rsi-sort-bars_ago">↕</span></th>
+            <th class="text-right" onclick="sortRsiTable('volume')">Volume Harian <span class="sort-icon" id="rsi-sort-volume">↕</span></th>
+            <th class="text-center">Aksi / Chart</th>
+          </tr>
+        </thead>
+        <tbody id="rsi-table-body">
+          <!-- Rendered via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty State Message -->
+    <div id="rsi-empty-state" class="empty-state hidden">
+      <div class="empty-icon">📉</div>
+      <h3>Tidak Ada Saham yang Terdeteksi RSI Divergence</h3>
+      <p>Belum ada emiten dengan divergensi bullish dalam 5 bar terakhir. Klik tombol "Scan IDX Sekarang" untuk memperbarui data.</p>
+      <div class="empty-actions">
+        <button class="btn-secondary" onclick="resetRsiFilters()">🔄 Reset Filter</button>
+        <button class="btn-scan-small" onclick="triggerScan()">⚡ Scan IDX Sekarang</button>
+      </div>
+    </div>
+  </section>
+</div>

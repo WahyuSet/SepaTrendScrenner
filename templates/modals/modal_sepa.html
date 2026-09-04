@@ -1,0 +1,48 @@
+<!-- CRITERIA INSPECTION MODAL (SEPA) -->
+<div id="criteria-modal" class="modal hidden" onclick="closeModalOnBackdrop(event)">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <h3 id="modal-ticker">BBCA</h3>
+        <p id="modal-name">PT Bank Central Asia Tbk.</p>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-stat-bar">
+        <div class="modal-stat-item">
+          <span class="m-stat-label">Harga</span>
+          <span id="modal-price" class="m-stat-val">Rp 9.850</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="m-stat-label">SEPA Score</span>
+          <span id="modal-score" class="m-stat-val lime">8 / 8</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="m-stat-label">Status</span>
+          <span id="modal-status" class="m-stat-val">CONFIRMED</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="m-stat-label">RS Rating</span>
+          <span id="modal-rs" class="m-stat-val">RS 92</span>
+        </div>
+      </div>
+
+      <div class="criteria-list-header">
+        <span>8 Kriteria Minervini SEPA (Trend Template)</span>
+      </div>
+
+      <div id="modal-criteria-container" class="criteria-list">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <a id="modal-tv-link" href="#" target="_blank" class="btn-tv-large">
+        <span>Buka Chart Lengkap di TradingView</span> ↗
+      </a>
+      <button class="btn-secondary" onclick="closeModal()">Tutup</button>
+    </div>
+  </div>
+</div>

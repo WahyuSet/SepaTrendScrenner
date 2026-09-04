@@ -1,0 +1,48 @@
+<!-- PRE-BREAKOUT DETAIL MODAL -->
+<div id="prebreakout-modal" class="modal hidden" onclick="closePreBreakoutModalOnBackdrop(event)">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <h3 id="pb-modal-title">GEMS — Golden Energy Mines</h3>
+        <p id="pb-modal-subtitle">Setup Pre-Breakout (Ready to Breakout)</p>
+      </div>
+      <button class="modal-close" onclick="closePreBreakoutModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-stat-bar">
+        <div class="modal-stat-item">
+          <span class="m-stat-label">Harga Terakhir</span>
+          <span id="pb-modal-price" class="m-stat-val">Rp 0</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="m-stat-label">Skor Setup</span>
+          <span id="pb-modal-score" class="m-stat-val lime">0 / 7</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="m-stat-label">Status</span>
+          <span id="pb-modal-status" class="m-stat-val">READY</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="m-stat-label">Jarak ke 50D High</span>
+          <span id="pb-modal-dist" class="m-stat-val">-0.0%</span>
+        </div>
+      </div>
+
+      <div class="criteria-list-header">
+        <span>7 Kriteria Evaluasi Setup Pre-Breakout</span>
+      </div>
+
+      <div id="pb-modal-criteria-container" class="criteria-list">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <a id="pb-modal-tv-link" href="#" target="_blank" class="btn-tv-large">
+        <span>Buka Chart Lengkap di TradingView</span> ↗
+      </a>
+      <button class="btn-secondary" onclick="closePreBreakoutModal()">Tutup</button>
+    </div>
+  </div>
+</div>

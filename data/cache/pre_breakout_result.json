@@ -1,0 +1,6313 @@
+{
+  "timestamp": "05 Sep 2026, 01:08 WIB",
+  "iso_timestamp": "2026-09-05T01:08:41.892175",
+  "stats": {
+    "total_universe": 205,
+    "total_scanned": 200,
+    "total_setups": 100,
+    "ready_count": 18,
+    "forming_count": 82
+  },
+  "results": [
+    {
+      "ticker": "MPMX",
+      "name": "Mitra Pinasthika Mustika Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 1030.0,
+      "pct_change_1d": 0.49,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 1011.6,
+      "ema50": 988.0,
+      "rsi": 68.0,
+      "macd": 9.67,
+      "signal": 9.25,
+      "histogram": 0.42,
+      "rvol": 1.28,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1035.0,
+      "dist_res_pct": 0.5,
+      "volume": 4406000,
+      "avg_volume_20": 3442840,
+      "avg_turnover_20d": 3482827900,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1030 vs EMA20 1012"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1012 vs EMA50 988"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 68.0"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 9.67 > Sig 9.25"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.28x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1000 > Low20D 995"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-0.5% (High: 1035)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:MPMX"
+    },
+    {
+      "ticker": "BMRI",
+      "name": "Bank Mandiri (Persero) Tbk.",
+      "sector": "Financials",
+      "price": 4460.0,
+      "pct_change_1d": 2.29,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 4242.3,
+      "ema50": 4207.9,
+      "rsi": 68.6,
+      "macd": 43.41,
+      "signal": 16.34,
+      "histogram": 27.08,
+      "rvol": 1.91,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 4520.0,
+      "dist_res_pct": 1.3,
+      "volume": 234996500,
+      "avg_volume_20": 123341430,
+      "avg_turnover_20d": 521533024050,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 4460 vs EMA20 4242"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 4242 vs EMA50 4208"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 68.6"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 43.41 > Sig 16.34"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.91x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 4130 > Low20D 4080"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.3% (High: 4520)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BMRI"
+    },
+    {
+      "ticker": "CTRA",
+      "name": "Ciputra Development Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 645.0,
+      "pct_change_1d": 3.2,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 618.0,
+      "ema50": 600.9,
+      "rsi": 62.1,
+      "macd": 14.27,
+      "signal": 13.84,
+      "histogram": 0.44,
+      "rvol": 1.91,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 655.0,
+      "dist_res_pct": 1.5,
+      "volume": 22153200,
+      "avg_volume_20": 11615340,
+      "avg_turnover_20d": 7217585125,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 645 vs EMA20 618"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 618 vs EMA50 601"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 62.1"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 14.27 > Sig 13.84"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.91x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 605 > Low20D 590"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.5% (High: 655)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:CTRA"
+    },
+    {
+      "ticker": "MIKA",
+      "name": "Mitra Keluarga Karyasehat Tbk.",
+      "sector": "Healthcare",
+      "price": 1925.0,
+      "pct_change_1d": 0.0,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 1838.0,
+      "ema50": 1792.7,
+      "rsi": 66.3,
+      "macd": 37.93,
+      "signal": 30.7,
+      "histogram": 7.24,
+      "rvol": 0.74,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 1960.0,
+      "dist_res_pct": 1.8,
+      "volume": 3476500,
+      "avg_volume_20": 4709310,
+      "avg_turnover_20d": 8649214675,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1925 vs EMA20 1838"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1838 vs EMA50 1793"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 66.3"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 37.93 > Sig 30.70"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.74x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1740 > Low20D 1730"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.8% (High: 1960)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:MIKA"
+    },
+    {
+      "ticker": "KKGI",
+      "name": "Resource Alam Indonesia Tbk.",
+      "sector": "Energy",
+      "price": 300.0,
+      "pct_change_1d": 2.04,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 283.1,
+      "ema50": 278.2,
+      "rsi": 69.5,
+      "macd": 5.0,
+      "signal": 3.56,
+      "histogram": 1.44,
+      "rvol": 1.51,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 306.0,
+      "dist_res_pct": 2.0,
+      "volume": 3539300,
+      "avg_volume_20": 2350140,
+      "avg_turnover_20d": 668192510,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 300 vs EMA20 283"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 283 vs EMA50 278"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 69.5"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 5.00 > Sig 3.56"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.51x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 272 > Low20D 266"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.0% (High: 306)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:KKGI"
+    },
+    {
+      "ticker": "MEDC",
+      "name": "Medco Energi Internasional Tbk.",
+      "sector": "Energy",
+      "price": 1485.0,
+      "pct_change_1d": 2.77,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 1377.5,
+      "ema50": 1331.3,
+      "rsi": 65.0,
+      "macd": 43.23,
+      "signal": 35.9,
+      "histogram": 7.33,
+      "rvol": 1.44,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1515.0,
+      "dist_res_pct": 2.0,
+      "volume": 67579100,
+      "avg_volume_20": 47030020,
+      "avg_turnover_20d": 64976261550,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1485 vs EMA20 1378"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1378 vs EMA50 1331"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 65.0"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 43.23 > Sig 35.90"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.44x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1320 > Low20D 1265"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.0% (High: 1515)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:MEDC"
+    },
+    {
+      "ticker": "TMAS",
+      "name": "Temas Tbk.",
+      "sector": "Transportation & Logistics",
+      "price": 143.0,
+      "pct_change_1d": 2.88,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 134.5,
+      "ema50": 127.6,
+      "rsi": 68.8,
+      "macd": 5.13,
+      "signal": 4.82,
+      "histogram": 0.3,
+      "rvol": 2.13,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 146.0,
+      "dist_res_pct": 2.1,
+      "volume": 16409500,
+      "avg_volume_20": 7710460,
+      "avg_turnover_20d": 1041572770,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 143 vs EMA20 135"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 135 vs EMA50 128"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 68.8"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 5.13 > Sig 4.82"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.13x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 130 > Low20D 120"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.1% (High: 146)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:TMAS"
+    },
+    {
+      "ticker": "INDY",
+      "name": "Indika Energy Tbk.",
+      "sector": "Energy",
+      "price": 2790.0,
+      "pct_change_1d": 2.57,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 2663.3,
+      "ema50": 2563.4,
+      "rsi": 59.2,
+      "macd": 89.29,
+      "signal": 87.91,
+      "histogram": 1.38,
+      "rvol": 0.6,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 2870.0,
+      "dist_res_pct": 2.8,
+      "volume": 16391300,
+      "avg_volume_20": 27258885,
+      "avg_turnover_20d": 72329166200,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 2790 vs EMA20 2663"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 2663 vs EMA50 2563"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 59.2"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 89.29 > Sig 87.91"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.60x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 2610 > Low20D 2430"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.8% (High: 2870)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:INDY"
+    },
+    {
+      "ticker": "SIMP",
+      "name": "Salim Ivomas Pratama Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 645.0,
+      "pct_change_1d": -1.53,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 610.6,
+      "ema50": 589.9,
+      "rsi": 65.5,
+      "macd": 16.71,
+      "signal": 13.63,
+      "histogram": 3.08,
+      "rvol": 1.56,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 665.0,
+      "dist_res_pct": 3.0,
+      "volume": 18024800,
+      "avg_volume_20": 11577955,
+      "avg_turnover_20d": 7180463950,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 645 vs EMA20 611"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 611 vs EMA50 590"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 65.5"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 16.71 > Sig 13.63"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.56x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 590 > Low20D 575"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.0% (High: 665)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:SIMP"
+    },
+    {
+      "ticker": "DOID",
+      "name": "Delta Dunia Makmur Tbk.",
+      "sector": "Energy",
+      "price": 240.0,
+      "pct_change_1d": 0.0,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 226.5,
+      "ema50": 220.6,
+      "rsi": 62.4,
+      "macd": 7.26,
+      "signal": 5.11,
+      "histogram": 2.15,
+      "rvol": 0.73,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 248.0,
+      "dist_res_pct": 3.2,
+      "volume": 2602600,
+      "avg_volume_20": 3572250,
+      "avg_turnover_20d": 817187840,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 240 vs EMA20 227"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 227 vs EMA50 221"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 62.4"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 7.26 > Sig 5.11"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.73x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 212 > Low20D 200"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.2% (High: 248)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:DOID"
+    },
+    {
+      "ticker": "BEST",
+      "name": "Bekasi Fajar Industrial Estate Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 139.0,
+      "pct_change_1d": 4.51,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 122.5,
+      "ema50": 113.2,
+      "rsi": 68.1,
+      "macd": 7.96,
+      "signal": 6.35,
+      "histogram": 1.61,
+      "rvol": 1.59,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 144.0,
+      "dist_res_pct": 3.5,
+      "volume": 103904900,
+      "avg_volume_20": 65310675,
+      "avg_turnover_20d": 8549553260,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 139 vs EMA20 123"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 123 vs EMA50 113"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 68.1"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 7.96 > Sig 6.35"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.59x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 116 > Low20D 107"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.5% (High: 144)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BEST"
+    },
+    {
+      "ticker": "WINS",
+      "name": "Wintermar Offshore Marine Tbk.",
+      "sector": "Transportation & Logistics",
+      "price": 555.0,
+      "pct_change_1d": 0.91,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 529.0,
+      "ema50": 522.0,
+      "rsi": 65.9,
+      "macd": 8.83,
+      "signal": 4.01,
+      "histogram": 4.82,
+      "rvol": 0.41,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 575.0,
+      "dist_res_pct": 3.5,
+      "volume": 1929700,
+      "avg_volume_20": 4759210,
+      "avg_turnover_20d": 2464099325,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 555 vs EMA20 529"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 529 vs EMA50 522"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 65.9"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 8.83 > Sig 4.01"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.41x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 505 > Low20D 498"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.5% (High: 575)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:WINS"
+    },
+    {
+      "ticker": "TBIG",
+      "name": "Sarana Menara Nusantara Tbk.",
+      "sector": "Infrastructures",
+      "price": 1510.0,
+      "pct_change_1d": 3.78,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 1447.2,
+      "ema50": 1439.1,
+      "rsi": 60.9,
+      "macd": 19.61,
+      "signal": 12.09,
+      "histogram": 7.52,
+      "rvol": 3.07,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1570.0,
+      "dist_res_pct": 3.8,
+      "volume": 2451600,
+      "avg_volume_20": 799240,
+      "avg_turnover_20d": 1148051800,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1510 vs EMA20 1447"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1447 vs EMA50 1439"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 60.9"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 19.61 > Sig 12.09"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "3.07x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1400 > Low20D 1340"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.8% (High: 1570)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:TBIG"
+    },
+    {
+      "ticker": "ADRO",
+      "name": "Adaro Energy Indonesia Tbk.",
+      "sector": "Energy",
+      "price": 2740.0,
+      "pct_change_1d": 3.4,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 2623.0,
+      "ema50": 2522.8,
+      "rsi": 60.3,
+      "macd": 70.21,
+      "signal": 58.07,
+      "histogram": 12.13,
+      "rvol": 1.87,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 2860.0,
+      "dist_res_pct": 4.2,
+      "volume": 77055000,
+      "avg_volume_20": 41168915,
+      "avg_turnover_20d": 109394492000,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 2740 vs EMA20 2623"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 2623 vs EMA50 2523"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 60.3"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 70.21 > Sig 58.07"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.87x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 2540 > Low20D 2460"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.2% (High: 2860)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ADRO"
+    },
+    {
+      "ticker": "BDMN",
+      "name": "Bank Danamon Indonesia Tbk.",
+      "sector": "Financials",
+      "price": 4470.0,
+      "pct_change_1d": 3.23,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 4289.7,
+      "ema50": 4187.5,
+      "rsi": 62.4,
+      "macd": 50.68,
+      "signal": 41.39,
+      "histogram": 9.29,
+      "rvol": 2.33,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 4680.0,
+      "dist_res_pct": 4.5,
+      "volume": 6119800,
+      "avg_volume_20": 2628870,
+      "avg_turnover_20d": 11411941450,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 4470 vs EMA20 4290"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 4290 vs EMA50 4188"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 62.4"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 50.68 > Sig 41.39"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.33x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 4190 > Low20D 4150"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.5% (High: 4680)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BDMN"
+    },
+    {
+      "ticker": "BUMI",
+      "name": "Bumi Resources Tbk.",
+      "sector": "Energy",
+      "price": 206.0,
+      "pct_change_1d": 0.0,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 189.6,
+      "ema50": 180.2,
+      "rsi": 66.4,
+      "macd": 9.01,
+      "signal": 7.95,
+      "histogram": 1.06,
+      "rvol": 1.41,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 216.0,
+      "dist_res_pct": 4.6,
+      "volume": 4469727300,
+      "avg_volume_20": 3175676335,
+      "avg_turnover_20d": 606682689550,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 206 vs EMA20 190"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 190 vs EMA50 180"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 66.4"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 9.01 > Sig 7.95"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.41x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 181 > Low20D 174"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.6% (High: 216)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BUMI"
+    },
+    {
+      "ticker": "CUAN",
+      "name": "Petrindo Jaya Kreasi Tbk.",
+      "sector": "Energy",
+      "price": 910.0,
+      "pct_change_1d": 0.55,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 811.9,
+      "ema50": 778.0,
+      "rsi": 67.3,
+      "macd": 47.52,
+      "signal": 40.03,
+      "histogram": 7.49,
+      "rvol": 1.6,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 955.0,
+      "dist_res_pct": 4.7,
+      "volume": 953565500,
+      "avg_volume_20": 595594425,
+      "avg_turnover_20d": 496336552300,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 910 vs EMA20 812"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 812 vs EMA50 778"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 67.3"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 47.52 > Sig 40.03"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.60x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 755 > Low20D 665"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.7% (High: 955)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:CUAN"
+    },
+    {
+      "ticker": "TOBA",
+      "name": "TBS Energi Utama Tbk.",
+      "sector": "Energy",
+      "price": 605.0,
+      "pct_change_1d": 1.68,
+      "total_score": 7,
+      "status": "READY",
+      "status_label": "READY TO BREAKOUT",
+      "is_ready": true,
+      "ema20": 553.3,
+      "ema50": 510.3,
+      "rsi": 64.9,
+      "macd": 36.77,
+      "signal": 32.25,
+      "histogram": 4.52,
+      "rvol": 0.69,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 635.0,
+      "dist_res_pct": 4.7,
+      "volume": 17292000,
+      "avg_volume_20": 25070110,
+      "avg_turnover_20d": 14010151600,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 605 vs EMA20 553"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 553 vs EMA50 510"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 64.9"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 36.77 > Sig 32.25"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.69x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 505 > Low20D 482"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.7% (High: 635)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:TOBA"
+    },
+    {
+      "ticker": "TAPG",
+      "name": "Triputra Agro Persada Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 2350.0,
+      "pct_change_1d": 0.0,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1991.4,
+      "ema50": 1794.4,
+      "rsi": 86.2,
+      "macd": 163.23,
+      "signal": 119.89,
+      "histogram": 43.34,
+      "rvol": 2.16,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 2350.0,
+      "dist_res_pct": 0.0,
+      "volume": 52292700,
+      "avg_volume_20": 24161155,
+      "avg_turnover_20d": 49414944422,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 2350 vs EMA20 1991"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1991 vs EMA50 1794"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 86.2"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 163.23 > Sig 119.89"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.16x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1845 > Low20D 1706"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-0.0% (High: 2350)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:TAPG"
+    },
+    {
+      "ticker": "CMRY",
+      "name": "Cisarua Mountain Dairy Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 4730.0,
+      "pct_change_1d": 2.77,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 4601.3,
+      "ema50": 4541.9,
+      "rsi": 58.7,
+      "macd": 43.82,
+      "signal": 32.64,
+      "histogram": 11.18,
+      "rvol": 1.08,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 4740.0,
+      "dist_res_pct": 0.2,
+      "volume": 3321000,
+      "avg_volume_20": 3071200,
+      "avg_turnover_20d": 14171984018,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 4730 vs EMA20 4601"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 4601 vs EMA50 4542"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 58.7"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 43.82 > Sig 32.64"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.08x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 4505 > Low20D 4426"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-0.2% (High: 4740)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:CMRY"
+    },
+    {
+      "ticker": "GEMS",
+      "name": "Golden Energy Mines Tbk.",
+      "sector": "Energy",
+      "price": 7425.0,
+      "pct_change_1d": 4.21,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 6832.0,
+      "ema50": 6745.1,
+      "rsi": 80.6,
+      "macd": 172.97,
+      "signal": 103.68,
+      "histogram": 69.29,
+      "rvol": 4.06,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 7450.0,
+      "dist_res_pct": 0.3,
+      "volume": 420600,
+      "avg_volume_20": 103600,
+      "avg_turnover_20d": 717363250,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 7425 vs EMA20 6832"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 6832 vs EMA50 6745"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 80.6"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 172.97 > Sig 103.68"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "4.06x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 6575 > Low20D 6450"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-0.3% (High: 7450)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:GEMS"
+    },
+    {
+      "ticker": "BBRI",
+      "name": "Bank Rakyat Indonesia (Persero) Tbk.",
+      "sector": "Financials",
+      "price": 3410.0,
+      "pct_change_1d": 0.59,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 3191.1,
+      "ema50": 3087.8,
+      "rsi": 73.5,
+      "macd": 92.96,
+      "signal": 70.55,
+      "histogram": 22.41,
+      "rvol": 1.26,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 3430.0,
+      "dist_res_pct": 0.6,
+      "volume": 244699100,
+      "avg_volume_20": 194428920,
+      "avg_turnover_20d": 622258671000,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 3410 vs EMA20 3191"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 3191 vs EMA50 3088"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 73.5"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 92.96 > Sig 70.55"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.26x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 3100 > Low20D 3030"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-0.6% (High: 3430)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BBRI"
+    },
+    {
+      "ticker": "BNGA",
+      "name": "Bank CIMB Niaga Tbk.",
+      "sector": "Financials",
+      "price": 1705.0,
+      "pct_change_1d": 0.0,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1672.9,
+      "ema50": 1647.4,
+      "rsi": 66.5,
+      "macd": 18.02,
+      "signal": 16.28,
+      "histogram": 1.73,
+      "rvol": 0.94,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 1720.0,
+      "dist_res_pct": 0.9,
+      "volume": 1856000,
+      "avg_volume_20": 1969985,
+      "avg_turnover_20d": 3296824950,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1705 vs EMA20 1673"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1673 vs EMA50 1647"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 66.5"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 18.02 > Sig 16.28"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.94x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1660 > Low20D 1635"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-0.9% (High: 1720)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BNGA"
+    },
+    {
+      "ticker": "BJTM",
+      "name": "Bank Pembangunan Daerah Jawa Timur Tbk.",
+      "sector": "Financials",
+      "price": 530.0,
+      "pct_change_1d": 0.95,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 521.0,
+      "ema50": 518.4,
+      "rsi": 64.0,
+      "macd": 2.78,
+      "signal": 1.56,
+      "histogram": 1.22,
+      "rvol": 0.81,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 535.0,
+      "dist_res_pct": 0.9,
+      "volume": 4266500,
+      "avg_volume_20": 5288625,
+      "avg_turnover_20d": 2743677250,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 530 vs EMA20 521"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 521 vs EMA50 518"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 64.0"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 2.78 > Sig 1.56"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.81x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 515 > Low20D 510"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-0.9% (High: 535)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BJTM"
+    },
+    {
+      "ticker": "BBNI",
+      "name": "Bank Negara Indonesia (Persero) Tbk.",
+      "sector": "Financials",
+      "price": 3960.0,
+      "pct_change_1d": 1.54,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 3723.6,
+      "ema50": 3639.6,
+      "rsi": 73.6,
+      "macd": 90.45,
+      "signal": 62.13,
+      "histogram": 28.32,
+      "rvol": 1.21,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 4000.0,
+      "dist_res_pct": 1.0,
+      "volume": 44387300,
+      "avg_volume_20": 36741725,
+      "avg_turnover_20d": 136906412250,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 3960 vs EMA20 3724"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 3724 vs EMA50 3640"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 73.6"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 90.45 > Sig 62.13"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.21x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 3590 > Low20D 3550"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.0% (High: 4000)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BBNI"
+    },
+    {
+      "ticker": "ELSA",
+      "name": "Elnusa Tbk.",
+      "sector": "Energy",
+      "price": 745.0,
+      "pct_change_1d": 4.2,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 704.3,
+      "ema50": 675.4,
+      "rsi": 62.0,
+      "macd": 15.47,
+      "signal": 15.03,
+      "histogram": 0.44,
+      "rvol": 2.26,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 755.0,
+      "dist_res_pct": 1.3,
+      "volume": 44196800,
+      "avg_volume_20": 19597220,
+      "avg_turnover_20d": 13920592425,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 745 vs EMA20 704"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 704 vs EMA50 675"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 62.0"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 15.47 > Sig 15.03"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.26x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 660 > Low20D 660"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.3% (High: 755)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ELSA"
+    },
+    {
+      "ticker": "INTP",
+      "name": "Indocement Tunggal Prakarsa Tbk.",
+      "sector": "Basic Materials",
+      "price": 5600.0,
+      "pct_change_1d": 2.28,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 5395.9,
+      "ema50": 5071.3,
+      "rsi": 64.6,
+      "macd": 185.6,
+      "signal": 215.67,
+      "histogram": -30.07,
+      "rvol": 0.55,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 5675.0,
+      "dist_res_pct": 1.3,
+      "volume": 956100,
+      "avg_volume_20": 1744185,
+      "avg_turnover_20d": 9509311000,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 5600 vs EMA20 5396"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 5396 vs EMA50 5071"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 64.6"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 185.60 > Sig 215.67"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.55x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 5400 > Low20D 5200"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.3% (High: 5675)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:INTP"
+    },
+    {
+      "ticker": "PTBA",
+      "name": "Bukit Asam Tbk.",
+      "sector": "Energy",
+      "price": 2890.0,
+      "pct_change_1d": 6.25,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 2517.6,
+      "ema50": 2468.7,
+      "rsi": 84.6,
+      "macd": 87.8,
+      "signal": 40.3,
+      "histogram": 47.5,
+      "rvol": 3.88,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 2930.0,
+      "dist_res_pct": 1.4,
+      "volume": 109722100,
+      "avg_volume_20": 28274290,
+      "avg_turnover_20d": 74207082200,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 2890 vs EMA20 2518"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 2518 vs EMA50 2469"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 84.6"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 87.80 > Sig 40.30"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "3.88x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 2380 > Low20D 2320"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.4% (High: 2930)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:PTBA"
+    },
+    {
+      "ticker": "PWON",
+      "name": "Pakuwon Jati Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 280.0,
+      "pct_change_1d": 2.94,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 268.3,
+      "ema50": 266.4,
+      "rsi": 61.8,
+      "macd": 4.06,
+      "signal": 2.61,
+      "histogram": 1.45,
+      "rvol": 1.04,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 284.0,
+      "dist_res_pct": 1.4,
+      "volume": 61730600,
+      "avg_volume_20": 59247495,
+      "avg_turnover_20d": 15814977060,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 280 vs EMA20 268"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 268 vs EMA50 266"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 61.8"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 4.06 > Sig 2.61"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.04x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 260 > Low20D 252"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.4% (High: 284)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:PWON"
+    },
+    {
+      "ticker": "AVIA",
+      "name": "Avia Avian Tbk.",
+      "sector": "Basic Materials",
+      "price": 370.0,
+      "pct_change_1d": 1.09,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 350.4,
+      "ema50": 340.8,
+      "rsi": 66.9,
+      "macd": 10.67,
+      "signal": 8.46,
+      "histogram": 2.2,
+      "rvol": 0.78,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 376.0,
+      "dist_res_pct": 1.6,
+      "volume": 10625800,
+      "avg_volume_20": 13665615,
+      "avg_turnover_20d": 4808144780,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 370 vs EMA20 350"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 350 vs EMA50 341"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 66.9"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 10.67 > Sig 8.46"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.78x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 344 > Low20D 322"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.6% (High: 376)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:AVIA"
+    },
+    {
+      "ticker": "SMDR",
+      "name": "Samudera Indonesia Tbk.",
+      "sector": "Transportation & Logistics",
+      "price": 348.0,
+      "pct_change_1d": 9.43,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 312.9,
+      "ema50": 302.6,
+      "rsi": 77.4,
+      "macd": 9.24,
+      "signal": 7.07,
+      "histogram": 2.17,
+      "rvol": 5.09,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 354.0,
+      "dist_res_pct": 1.7,
+      "volume": 63737000,
+      "avg_volume_20": 12529685,
+      "avg_turnover_20d": 4010161097,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 348 vs EMA20 313"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 313 vs EMA50 303"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 77.4"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 9.24 > Sig 7.07"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "5.09x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 304 > Low20D 298"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.7% (High: 354)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:SMDR"
+    },
+    {
+      "ticker": "WAPO",
+      "name": "Wahana Pronatural Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 174.0,
+      "pct_change_1d": 1.16,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 149.8,
+      "ema50": 135.8,
+      "rsi": 86.4,
+      "macd": 12.86,
+      "signal": 9.78,
+      "histogram": 3.08,
+      "rvol": 0.25,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 177.0,
+      "dist_res_pct": 1.7,
+      "volume": 1509300,
+      "avg_volume_20": 6009105,
+      "avg_turnover_20d": 880256915,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 174 vs EMA20 150"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 150 vs EMA50 136"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 86.4"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 12.86 > Sig 9.78"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.25x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 135 > Low20D 119"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.7% (High: 177)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:WAPO"
+    },
+    {
+      "ticker": "HRUM",
+      "name": "Harum Energy Tbk.",
+      "sector": "Energy",
+      "price": 955.0,
+      "pct_change_1d": 1.6,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 894.4,
+      "ema50": 859.9,
+      "rsi": 66.2,
+      "macd": 31.57,
+      "signal": 27.28,
+      "histogram": 4.29,
+      "rvol": 1.13,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 975.0,
+      "dist_res_pct": 2.1,
+      "volume": 30458100,
+      "avg_volume_20": 26843860,
+      "avg_turnover_20d": 23513238775,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 955 vs EMA20 894"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 894 vs EMA50 860"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 66.2"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 31.57 > Sig 27.28"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.13x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 870 > Low20D 805"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.1% (High: 975)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:HRUM"
+    },
+    {
+      "ticker": "HEXA",
+      "name": "Hexindo Adiperkasa Tbk.",
+      "sector": "Industrials",
+      "price": 4490.0,
+      "pct_change_1d": 0.0,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 4428.0,
+      "ema50": 4425.7,
+      "rsi": 61.0,
+      "macd": 7.62,
+      "signal": -7.45,
+      "histogram": 15.07,
+      "rvol": 1.72,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 4590.0,
+      "dist_res_pct": 2.2,
+      "volume": 708200,
+      "avg_volume_20": 411800,
+      "avg_turnover_20d": 1814693950,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 4490 vs EMA20 4428"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 4428 vs EMA50 4426"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 61.0"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 7.62 > Sig -7.45"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.72x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 4280 > Low20D 4340"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.2% (High: 4590)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:HEXA"
+    },
+    {
+      "ticker": "BBTN",
+      "name": "Bank Tabungan Negara (Persero) Tbk.",
+      "sector": "Financials",
+      "price": 1255.0,
+      "pct_change_1d": 2.45,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1224.3,
+      "ema50": 1222.5,
+      "rsi": 59.8,
+      "macd": 6.6,
+      "signal": 3.51,
+      "histogram": 3.09,
+      "rvol": 1.6,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1285.0,
+      "dist_res_pct": 2.3,
+      "volume": 23885800,
+      "avg_volume_20": 14968915,
+      "avg_turnover_20d": 18341012525,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1255 vs EMA20 1224"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1224 vs EMA50 1223"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 59.8"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 6.60 > Sig 3.51"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.60x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1190 > Low20D 1200"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.3% (High: 1285)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BBTN"
+    },
+    {
+      "ticker": "ITMG",
+      "name": "Indo Tambangraya Megah Tbk.",
+      "sector": "Energy",
+      "price": 26150.0,
+      "pct_change_1d": 0.19,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 25342.7,
+      "ema50": 24636.3,
+      "rsi": 69.0,
+      "macd": 480.51,
+      "signal": 424.36,
+      "histogram": 56.14,
+      "rvol": 0.96,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 26775.0,
+      "dist_res_pct": 2.3,
+      "volume": 1458100,
+      "avg_volume_20": 1516575,
+      "avg_turnover_20d": 38411382250,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 26150 vs EMA20 25343"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 25343 vs EMA50 24636"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 69.0"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 480.51 > Sig 424.36"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.96x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 25000 > Low20D 24200"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.3% (High: 26775)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ITMG"
+    },
+    {
+      "ticker": "BJBR",
+      "name": "Bank Pembangunan Daerah Jawa Barat dan Banten Tbk.",
+      "sector": "Financials",
+      "price": 800.0,
+      "pct_change_1d": 0.63,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 790.0,
+      "ema50": 782.8,
+      "rsi": 61.0,
+      "macd": 3.78,
+      "signal": 3.47,
+      "histogram": 0.31,
+      "rvol": 1.95,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 820.0,
+      "dist_res_pct": 2.4,
+      "volume": 3873100,
+      "avg_volume_20": 1987720,
+      "avg_turnover_20d": 1572761525,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 800 vs EMA20 790"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 790 vs EMA50 783"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 61.0"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 3.78 > Sig 3.47"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.95x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 780 > Low20D 780"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.4% (High: 820)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BJBR"
+    },
+    {
+      "ticker": "CLEO",
+      "name": "Sariguna Primatirta Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 406.0,
+      "pct_change_1d": 0.5,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 395.8,
+      "ema50": 389.0,
+      "rsi": 61.9,
+      "macd": 6.86,
+      "signal": 5.49,
+      "histogram": 1.37,
+      "rvol": 1.07,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 416.0,
+      "dist_res_pct": 2.4,
+      "volume": 11173400,
+      "avg_volume_20": 10430875,
+      "avg_turnover_20d": 4131805820,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 406 vs EMA20 396"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 396 vs EMA50 389"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 61.9"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 6.86 > Sig 5.49"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.07x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 380 > Low20D 370"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.4% (High: 416)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:CLEO"
+    },
+    {
+      "ticker": "ERAA",
+      "name": "Erajaya Swasembada Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 595.0,
+      "pct_change_1d": 14.42,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 479.9,
+      "ema50": 432.9,
+      "rsi": 87.9,
+      "macd": 33.53,
+      "signal": 26.92,
+      "histogram": 6.61,
+      "rvol": 5.19,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 610.0,
+      "dist_res_pct": 2.5,
+      "volume": 667540600,
+      "avg_volume_20": 128676265,
+      "avg_turnover_20d": 65253798630,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 595 vs EMA20 480"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 480 vs EMA50 433"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 87.9"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 33.53 > Sig 26.92"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "5.19x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 462 > Low20D 446"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.5% (High: 610)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ERAA"
+    },
+    {
+      "ticker": "PGAS",
+      "name": "Perusahaan Gas Negara Tbk.",
+      "sector": "Energy",
+      "price": 1540.0,
+      "pct_change_1d": 0.33,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1522.3,
+      "ema50": 1528.6,
+      "rsi": 55.1,
+      "macd": 9.27,
+      "signal": 6.65,
+      "histogram": 2.62,
+      "rvol": 2.21,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1580.0,
+      "dist_res_pct": 2.5,
+      "volume": 67582000,
+      "avg_volume_20": 30525430,
+      "avg_turnover_20d": 46392455275,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1540 vs EMA20 1522"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1522 vs EMA50 1529"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 55.1"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 9.27 > Sig 6.65"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.21x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1495 > Low20D 1470"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.5% (High: 1580)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:PGAS"
+    },
+    {
+      "ticker": "BFIN",
+      "name": "BFI Finance Indonesia Tbk.",
+      "sector": "Financials",
+      "price": 965.0,
+      "pct_change_1d": 1.58,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 906.3,
+      "ema50": 852.3,
+      "rsi": 64.5,
+      "macd": 28.59,
+      "signal": 25.29,
+      "histogram": 3.3,
+      "rvol": 0.36,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 990.0,
+      "dist_res_pct": 2.5,
+      "volume": 8211400,
+      "avg_volume_20": 23084695,
+      "avg_turnover_20d": 21048246075,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 965 vs EMA20 906"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 906 vs EMA50 852"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 64.5"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 28.59 > Sig 25.29"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.36x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 835 > Low20D 870"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.5% (High: 990)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BFIN"
+    },
+    {
+      "ticker": "MARK",
+      "name": "Mark Dynamics Indonesia Tbk.",
+      "sector": "Industrials",
+      "price": 1085.0,
+      "pct_change_1d": 0.93,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1069.1,
+      "ema50": 1017.3,
+      "rsi": 57.5,
+      "macd": 16.13,
+      "signal": 21.55,
+      "histogram": -5.41,
+      "rvol": 1.3,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1119.0,
+      "dist_res_pct": 3.1,
+      "volume": 17507400,
+      "avg_volume_20": 13477150,
+      "avg_turnover_20d": 14612564537,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1085 vs EMA20 1069"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1069 vs EMA50 1017"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 57.5"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 16.13 > Sig 21.55"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.30x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1050 > Low20D 1041"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.1% (High: 1119)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:MARK"
+    },
+    {
+      "ticker": "AMMN",
+      "name": "Amman Mineral Internasional Tbk.",
+      "sector": "Basic Materials",
+      "price": 4430.0,
+      "pct_change_1d": 3.75,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 4310.8,
+      "ema50": 4167.6,
+      "rsi": 56.9,
+      "macd": 92.32,
+      "signal": 114.83,
+      "histogram": -22.51,
+      "rvol": 0.67,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 4600.0,
+      "dist_res_pct": 3.7,
+      "volume": 42034800,
+      "avg_volume_20": 62327345,
+      "avg_turnover_20d": 272314750800,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 4430 vs EMA20 4311"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 4311 vs EMA50 4168"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 56.9"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 92.32 > Sig 114.83"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.67x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 4240 > Low20D 4140"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.7% (High: 4600)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:AMMN"
+    },
+    {
+      "ticker": "AUTO",
+      "name": "Astra Otoparts Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 3390.0,
+      "pct_change_1d": 0.0,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 3115.4,
+      "ema50": 2868.7,
+      "rsi": 87.7,
+      "macd": 190.28,
+      "signal": 160.43,
+      "histogram": 29.85,
+      "rvol": 0.54,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 3520.0,
+      "dist_res_pct": 3.7,
+      "volume": 2676300,
+      "avg_volume_20": 4927770,
+      "avg_turnover_20d": 15691164800,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 3390 vs EMA20 3115"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 3115 vs EMA50 2869"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 87.7"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 190.28 > Sig 160.43"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.54x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 2930 > Low20D 2770"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.7% (High: 3520)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:AUTO"
+    },
+    {
+      "ticker": "DRMA",
+      "name": "Dharma Polimetal Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 1000.0,
+      "pct_change_1d": 0.0,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 992.1,
+      "ema50": 966.8,
+      "rsi": 58.3,
+      "macd": 18.14,
+      "signal": 20.02,
+      "histogram": -1.88,
+      "rvol": 1.24,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1040.0,
+      "dist_res_pct": 3.8,
+      "volume": 1033400,
+      "avg_volume_20": 833565,
+      "avg_turnover_20d": 830371675,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1000 vs EMA20 992"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 992 vs EMA50 967"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 58.3"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 18.14 > Sig 20.02"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.24x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 975 > Low20D 945"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.8% (High: 1040)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:DRMA"
+    },
+    {
+      "ticker": "MAPA",
+      "name": "MAP Aktif Adiperkasa Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 700.0,
+      "pct_change_1d": 0.72,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 677.1,
+      "ema50": 650.3,
+      "rsi": 58.5,
+      "macd": 20.07,
+      "signal": 17.83,
+      "histogram": 2.24,
+      "rvol": 1.19,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 730.0,
+      "dist_res_pct": 4.1,
+      "volume": 26151000,
+      "avg_volume_20": 22047305,
+      "avg_turnover_20d": 14967389075,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 700 vs EMA20 677"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 677 vs EMA50 650"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 58.5"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 20.07 > Sig 17.83"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.19x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 640 > Low20D 620"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.1% (High: 730)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:MAPA"
+    },
+    {
+      "ticker": "ANTM",
+      "name": "Aneka Tambang Tbk.",
+      "sector": "Basic Materials",
+      "price": 3150.0,
+      "pct_change_1d": 3.96,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 3094.1,
+      "ema50": 3045.1,
+      "rsi": 55.7,
+      "macd": 34.58,
+      "signal": 45.13,
+      "histogram": -10.56,
+      "rvol": 1.4,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 3290.0,
+      "dist_res_pct": 4.3,
+      "volume": 136685600,
+      "avg_volume_20": 97449350,
+      "avg_turnover_20d": 303454233350,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 3150 vs EMA20 3094"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 3094 vs EMA50 3045"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 55.7"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 34.58 > Sig 45.13"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.40x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 3020 > Low20D 2970"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.3% (High: 3290)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ANTM"
+    },
+    {
+      "ticker": "PRDA",
+      "name": "Prodia Widyahusada Tbk.",
+      "sector": "Healthcare",
+      "price": 2720.0,
+      "pct_change_1d": 1.87,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 2531.5,
+      "ema50": 2478.4,
+      "rsi": 75.2,
+      "macd": 69.28,
+      "signal": 39.99,
+      "histogram": 29.29,
+      "rvol": 0.62,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 2850.0,
+      "dist_res_pct": 4.6,
+      "volume": 497400,
+      "avg_volume_20": 801305,
+      "avg_turnover_20d": 2013049000,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 2720 vs EMA20 2532"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 2532 vs EMA50 2478"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 75.2"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 69.28 > Sig 39.99"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.62x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 2440 > Low20D 2300"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.6% (High: 2850)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:PRDA"
+    },
+    {
+      "ticker": "ASII",
+      "name": "Astra International Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 5050.0,
+      "pct_change_1d": 4.34,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 4870.4,
+      "ema50": 4939.9,
+      "rsi": 60.9,
+      "macd": -12.45,
+      "signal": -33.95,
+      "histogram": 21.51,
+      "rvol": 1.69,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 5300.0,
+      "dist_res_pct": 4.7,
+      "volume": 84978900,
+      "avg_volume_20": 50151615,
+      "avg_turnover_20d": 244329512850,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 5050 vs EMA20 4870"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 4870 vs EMA50 4940"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 60.9"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD -12.45 > Sig -33.95"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.69x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 4730 > Low20D 4720"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.7% (High: 5300)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ASII"
+    },
+    {
+      "ticker": "SSIA",
+      "name": "Surya Semesta Internusa Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 1885.0,
+      "pct_change_1d": 0.27,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1803.4,
+      "ema50": 1714.6,
+      "rsi": 61.7,
+      "macd": 67.38,
+      "signal": 59.38,
+      "histogram": 8.0,
+      "rvol": 0.85,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 1980.0,
+      "dist_res_pct": 4.8,
+      "volume": 21315200,
+      "avg_volume_20": 25049365,
+      "avg_turnover_20d": 45626346025,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1885 vs EMA20 1803"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1803 vs EMA50 1715"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 61.7"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 67.38 > Sig 59.38"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.85x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1755 > Low20D 1630"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.8% (High: 1980)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:SSIA"
+    },
+    {
+      "ticker": "DSNG",
+      "name": "Dharma Satya Nusantara Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 1635.0,
+      "pct_change_1d": -3.82,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1483.3,
+      "ema50": 1377.6,
+      "rsi": 68.7,
+      "macd": 98.16,
+      "signal": 73.32,
+      "histogram": 24.85,
+      "rvol": 2.23,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1730.0,
+      "dist_res_pct": 5.5,
+      "volume": 13580900,
+      "avg_volume_20": 6093750,
+      "avg_turnover_20d": 9072599950,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1635 vs EMA20 1483"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1483 vs EMA50 1378"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 68.7"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 98.16 > Sig 73.32"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.23x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1360 > Low20D 1255"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-5.5% (High: 1730)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:DSNG"
+    },
+    {
+      "ticker": "BRMS",
+      "name": "Bumi Resources Minerals Tbk.",
+      "sector": "Basic Materials",
+      "price": 730.0,
+      "pct_change_1d": 1.39,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 682.4,
+      "ema50": 642.9,
+      "rsi": 63.9,
+      "macd": 41.69,
+      "signal": 38.02,
+      "histogram": 3.67,
+      "rvol": 0.66,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 785.0,
+      "dist_res_pct": 7.0,
+      "volume": 279993900,
+      "avg_volume_20": 421406640,
+      "avg_turnover_20d": 284425082300,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 730 vs EMA20 682"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 682 vs EMA50 643"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 63.9"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 41.69 > Sig 38.02"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.66x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 650 > Low20D 585"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-7.0% (High: 785)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BRMS"
+    },
+    {
+      "ticker": "WIFI",
+      "name": "Solusi Sinergi Digital Tbk.",
+      "sector": "Technology",
+      "price": 2090.0,
+      "pct_change_1d": -0.48,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 2034.8,
+      "ema50": 1978.9,
+      "rsi": 55.8,
+      "macd": 46.19,
+      "signal": 44.53,
+      "histogram": 1.65,
+      "rvol": 0.47,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 2250.0,
+      "dist_res_pct": 7.1,
+      "volume": 16788400,
+      "avg_volume_20": 35776855,
+      "avg_turnover_20d": 73706206100,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 2090 vs EMA20 2035"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 2035 vs EMA50 1979"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 55.8"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 46.19 > Sig 44.53"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.47x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1945 > Low20D 1885"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-7.1% (High: 2250)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:WIFI"
+    },
+    {
+      "ticker": "ASRI",
+      "name": "Alam Sutera Realty Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 129.0,
+      "pct_change_1d": 2.38,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 124.6,
+      "ema50": 122.0,
+      "rsi": 60.0,
+      "macd": 1.96,
+      "signal": 1.88,
+      "histogram": 0.08,
+      "rvol": 0.6,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 141.0,
+      "dist_res_pct": 8.5,
+      "volume": 12168200,
+      "avg_volume_20": 20210855,
+      "avg_turnover_20d": 2569666965,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 129 vs EMA20 125"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 125 vs EMA50 122"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 60.0"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 1.96 > Sig 1.88"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.60x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 120 > Low20D 119"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-8.5% (High: 141)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ASRI"
+    },
+    {
+      "ticker": "TOWR",
+      "name": "Sarana Menara Nusantara Tbk.",
+      "sector": "Infrastructures",
+      "price": 446.0,
+      "pct_change_1d": -0.45,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 433.2,
+      "ema50": 416.5,
+      "rsi": 60.9,
+      "macd": 15.54,
+      "signal": 14.32,
+      "histogram": 1.22,
+      "rvol": 0.42,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 498.0,
+      "dist_res_pct": 10.4,
+      "volume": 32899600,
+      "avg_volume_20": 77635430,
+      "avg_turnover_20d": 33896798750,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 446 vs EMA20 433"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 433 vs EMA50 416"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 60.9"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 15.54 > Sig 14.32"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.42x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 422 > Low20D 384"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-10.4% (High: 498)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:TOWR"
+    },
+    {
+      "ticker": "KIJA",
+      "name": "Kawasan Industri Jababeka Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 200.0,
+      "pct_change_1d": -3.85,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 181.8,
+      "ema50": 159.2,
+      "rsi": 61.7,
+      "macd": 20.88,
+      "signal": 18.95,
+      "histogram": 1.93,
+      "rvol": 0.47,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 228.0,
+      "dist_res_pct": 12.3,
+      "volume": 384425300,
+      "avg_volume_20": 818760385,
+      "avg_turnover_20d": 158659423240,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 200 vs EMA20 182"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 182 vs EMA50 159"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 61.7"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 20.88 > Sig 18.95"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.47x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 181 > Low20D 119"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-12.3% (High: 228)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:KIJA"
+    },
+    {
+      "ticker": "TEBE",
+      "name": "Dana Brata Luhur Tbk.",
+      "sector": "Energy",
+      "price": 1710.0,
+      "pct_change_1d": -1.72,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1531.1,
+      "ema50": 1325.2,
+      "rsi": 65.6,
+      "macd": 166.84,
+      "signal": 161.69,
+      "histogram": 5.15,
+      "rvol": 0.31,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 1980.0,
+      "dist_res_pct": 13.6,
+      "volume": 5345200,
+      "avg_volume_20": 17335300,
+      "avg_turnover_20d": 29004087675,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1710 vs EMA20 1531"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1531 vs EMA50 1325"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 65.6"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 166.84 > Sig 161.69"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.31x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1560 > Low20D 1070"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-13.6% (High: 1980)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:TEBE"
+    },
+    {
+      "ticker": "SDMU",
+      "name": "Sidomulyo Selaras Tbk.",
+      "sector": "Transportation & Logistics",
+      "price": 92.0,
+      "pct_change_1d": 1.1,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 86.5,
+      "ema50": 83.9,
+      "rsi": 57.7,
+      "macd": 2.97,
+      "signal": 2.19,
+      "histogram": 0.78,
+      "rvol": 0.38,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 108.0,
+      "dist_res_pct": 14.8,
+      "volume": 23967100,
+      "avg_volume_20": 62776725,
+      "avg_turnover_20d": 5682260615,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 92 vs EMA20 87"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 87 vs EMA50 84"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 57.7"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 2.97 > Sig 2.19"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.38x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 80 > Low20D 77"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-14.8% (High: 108)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:SDMU"
+    },
+    {
+      "ticker": "PEHA",
+      "name": "Phapros Tbk.",
+      "sector": "Healthcare",
+      "price": 312.0,
+      "pct_change_1d": 0.0,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 284.8,
+      "ema50": 273.5,
+      "rsi": 67.6,
+      "macd": 11.55,
+      "signal": 8.26,
+      "histogram": 3.3,
+      "rvol": 0.3,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 378.0,
+      "dist_res_pct": 17.5,
+      "volume": 615800,
+      "avg_volume_20": 2035350,
+      "avg_turnover_20d": 602806820,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 312 vs EMA20 285"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 285 vs EMA50 273"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 67.6"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 11.55 > Sig 8.26"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.30x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 272 > Low20D 258"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-17.5% (High: 378)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:PEHA"
+    },
+    {
+      "ticker": "CENT",
+      "name": "Centratama Telekomunikasi Indonesia Tbk.",
+      "sector": "Infrastructures",
+      "price": 101.0,
+      "pct_change_1d": 0.0,
+      "total_score": 6,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 95.2,
+      "ema50": 88.6,
+      "rsi": 60.7,
+      "macd": 6.23,
+      "signal": 5.63,
+      "histogram": 0.59,
+      "rvol": 0.21,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 129.0,
+      "dist_res_pct": 21.7,
+      "volume": 9179100,
+      "avg_volume_20": 43072815,
+      "avg_turnover_20d": 4445806525,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 101 vs EMA20 95"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 95 vs EMA50 89"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 60.7"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 6.23 > Sig 5.63"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.21x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 85 > Low20D 79"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-21.7% (High: 129)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:CENT"
+    },
+    {
+      "ticker": "RALS",
+      "name": "Ramayana Lestari Sentosa Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 386.0,
+      "pct_change_1d": 0.52,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 381.8,
+      "ema50": 381.7,
+      "rsi": 61.6,
+      "macd": 1.04,
+      "signal": 0.57,
+      "histogram": 0.47,
+      "rvol": 1.11,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 386.0,
+      "dist_res_pct": 0.0,
+      "volume": 2793700,
+      "avg_volume_20": 2523025,
+      "avg_turnover_20d": 964901550,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 386 vs EMA20 382"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 382 vs EMA50 382"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 61.6"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 1.04 > Sig 0.57"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.11x (Normal Volume)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 378 > Low20D 378"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-0.0% (High: 386)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:RALS"
+    },
+    {
+      "ticker": "BBCA",
+      "name": "Bank Central Asia Tbk.",
+      "sector": "Financials",
+      "price": 6775.0,
+      "pct_change_1d": 1.5,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 6439.8,
+      "ema50": 6312.3,
+      "rsi": 70.3,
+      "macd": 99.45,
+      "signal": 64.67,
+      "histogram": 34.78,
+      "rvol": 1.11,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 6800.0,
+      "dist_res_pct": 0.4,
+      "volume": 112324100,
+      "avg_volume_20": 101042880,
+      "avg_turnover_20d": 648900169129,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 6775 vs EMA20 6440"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 6440 vs EMA50 6312"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 70.3"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 99.45 > Sig 64.67"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.11x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 6276 > Low20D 6176"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-0.4% (High: 6800)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BBCA"
+    },
+    {
+      "ticker": "PNBN",
+      "name": "Bank Pan Indonesia Tbk.",
+      "sector": "Financials",
+      "price": 915.0,
+      "pct_change_1d": 2.23,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 899.4,
+      "ema50": 899.2,
+      "rsi": 59.7,
+      "macd": 1.04,
+      "signal": 1.11,
+      "histogram": -0.07,
+      "rvol": 1.48,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 925.0,
+      "dist_res_pct": 1.1,
+      "volume": 2638200,
+      "avg_volume_20": 1786215,
+      "avg_turnover_20d": 1608958450,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 915 vs EMA20 899"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 899 vs EMA50 899"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 59.7"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 1.04 > Sig 1.11"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.48x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 885 > Low20D 885"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.1% (High: 925)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:PNBN"
+    },
+    {
+      "ticker": "INKP",
+      "name": "Indah Kiat Pulp & Paper Tbk.",
+      "sector": "Basic Materials",
+      "price": 8900.0,
+      "pct_change_1d": 0.85,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 8634.2,
+      "ema50": 8321.9,
+      "rsi": 65.5,
+      "macd": 228.54,
+      "signal": 237.36,
+      "histogram": -8.82,
+      "rvol": 1.09,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 9000.0,
+      "dist_res_pct": 1.1,
+      "volume": 4411600,
+      "avg_volume_20": 4038740,
+      "avg_turnover_20d": 34842401125,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 8900 vs EMA20 8634"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 8634 vs EMA50 8322"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 65.5"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 228.54 > Sig 237.36"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.09x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 8500 > Low20D 8150"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.1% (High: 9000)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:INKP"
+    },
+    {
+      "ticker": "TKIM",
+      "name": "Pabrik Kertas Tjiwi Kimia Tbk.",
+      "sector": "Basic Materials",
+      "price": 8350.0,
+      "pct_change_1d": -0.3,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 7760.8,
+      "ema50": 7159.6,
+      "rsi": 72.3,
+      "macd": 449.17,
+      "signal": 449.16,
+      "histogram": 0.02,
+      "rvol": 0.99,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 8450.0,
+      "dist_res_pct": 1.2,
+      "volume": 2723800,
+      "avg_volume_20": 2759340,
+      "avg_turnover_20d": 21541687000,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 8350 vs EMA20 7761"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 7761 vs EMA50 7160"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 72.3"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 449.17 > Sig 449.16"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.99x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 7625 > Low20D 7075"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.2% (High: 8450)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:TKIM"
+    },
+    {
+      "ticker": "MTDL",
+      "name": "Metrodata Electronics Tbk.",
+      "sector": "Technology",
+      "price": 515.0,
+      "pct_change_1d": 0.98,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 509.3,
+      "ema50": 510.6,
+      "rsi": 55.3,
+      "macd": 0.16,
+      "signal": -0.32,
+      "histogram": 0.48,
+      "rvol": 1.49,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 525.0,
+      "dist_res_pct": 1.9,
+      "volume": 3142000,
+      "avg_volume_20": 2111775,
+      "avg_turnover_20d": 1076976450,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 515 vs EMA20 509"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 509 vs EMA50 511"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 55.3"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 0.16 > Sig -0.32"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.49x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 500 > Low20D 500"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.9% (High: 525)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:MTDL"
+    },
+    {
+      "ticker": "AGRO",
+      "name": "Bank Raya Indonesia Tbk.",
+      "sector": "Financials",
+      "price": 155.0,
+      "pct_change_1d": 1.31,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 149.3,
+      "ema50": 150.4,
+      "rsi": 60.7,
+      "macd": 0.96,
+      "signal": 0.49,
+      "histogram": 0.47,
+      "rvol": 1.32,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 158.0,
+      "dist_res_pct": 1.9,
+      "volume": 10200300,
+      "avg_volume_20": 7710890,
+      "avg_turnover_20d": 1151311570,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 155 vs EMA20 149"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 149 vs EMA50 150"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 60.7"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 0.96 > Sig 0.49"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.32x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 143 > Low20D 146"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-1.9% (High: 158)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:AGRO"
+    },
+    {
+      "ticker": "ULTJ",
+      "name": "Ultra Jaya Milk Industry & Trading Company Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 1500.0,
+      "pct_change_1d": 1.01,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1485.6,
+      "ema50": 1464.6,
+      "rsi": 56.7,
+      "macd": 13.44,
+      "signal": 17.68,
+      "histogram": -4.24,
+      "rvol": 2.44,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1530.0,
+      "dist_res_pct": 2.0,
+      "volume": 6302300,
+      "avg_volume_20": 2586000,
+      "avg_turnover_20d": 3872015200,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1500 vs EMA20 1486"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1486 vs EMA50 1465"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 56.7"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 13.44 > Sig 17.68"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.44x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1460 > Low20D 1470"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.0% (High: 1530)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ULTJ"
+    },
+    {
+      "ticker": "BIRD",
+      "name": "Blue Bird Tbk.",
+      "sector": "Transportation & Logistics",
+      "price": 1630.0,
+      "pct_change_1d": 0.62,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1625.0,
+      "ema50": 1589.1,
+      "rsi": 55.0,
+      "macd": 10.14,
+      "signal": 14.8,
+      "histogram": -4.66,
+      "rvol": 0.95,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 1670.0,
+      "dist_res_pct": 2.4,
+      "volume": 772700,
+      "avg_volume_20": 816470,
+      "avg_turnover_20d": 1330391950,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1630 vs EMA20 1625"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1625 vs EMA50 1589"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 55.0"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 10.14 > Sig 14.80"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.95x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1610 > Low20D 1600"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.4% (High: 1670)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BIRD"
+    },
+    {
+      "ticker": "LPPF",
+      "name": "Matahari Department Store Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 1610.0,
+      "pct_change_1d": 0.62,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1598.2,
+      "ema50": 1582.4,
+      "rsi": 56.6,
+      "macd": 10.58,
+      "signal": 13.16,
+      "histogram": -2.58,
+      "rvol": 0.8,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 1650.0,
+      "dist_res_pct": 2.4,
+      "volume": 943200,
+      "avg_volume_20": 1185620,
+      "avg_turnover_20d": 1900817775,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1610 vs EMA20 1598"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1598 vs EMA50 1582"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 56.6"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 10.58 > Sig 13.16"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.80x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1580 > Low20D 1565"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.4% (High: 1650)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:LPPF"
+    },
+    {
+      "ticker": "SMSM",
+      "name": "Selamat Sempurna Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 1740.0,
+      "pct_change_1d": 1.16,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1721.5,
+      "ema50": 1705.4,
+      "rsi": 59.7,
+      "macd": 5.87,
+      "signal": 8.27,
+      "histogram": -2.4,
+      "rvol": 1.77,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1789.0,
+      "dist_res_pct": 2.7,
+      "volume": 6049300,
+      "avg_volume_20": 3423295,
+      "avg_turnover_20d": 5893350600,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1740 vs EMA20 1721"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1721 vs EMA50 1705"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 59.7"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 5.87 > Sig 8.27"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.77x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1700 > Low20D 1700"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-2.7% (High: 1789)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:SMSM"
+    },
+    {
+      "ticker": "ISSP",
+      "name": "Steel Pipe Industry of Indonesia Tbk.",
+      "sector": "Basic Materials",
+      "price": 454.0,
+      "pct_change_1d": 6.57,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 427.5,
+      "ema50": 419.2,
+      "rsi": 67.1,
+      "macd": 4.14,
+      "signal": 4.17,
+      "histogram": -0.02,
+      "rvol": 4.4,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 468.0,
+      "dist_res_pct": 3.0,
+      "volume": 6361500,
+      "avg_volume_20": 1445335,
+      "avg_turnover_20d": 627855690,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 454 vs EMA20 428"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 428 vs EMA50 419"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 67.1"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 4.14 > Sig 4.17"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "4.40x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 408 > Low20D 426"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.0% (High: 468)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ISSP"
+    },
+    {
+      "ticker": "SMGR",
+      "name": "Semen Indonesia (Persero) Tbk.",
+      "sector": "Basic Materials",
+      "price": 1785.0,
+      "pct_change_1d": 6.25,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1575.6,
+      "ema50": 1583.1,
+      "rsi": 67.7,
+      "macd": 37.71,
+      "signal": 14.64,
+      "histogram": 23.07,
+      "rvol": 1.98,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1840.0,
+      "dist_res_pct": 3.0,
+      "volume": 61532100,
+      "avg_volume_20": 31080770,
+      "avg_turnover_20d": 49833677400,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1785 vs EMA20 1576"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1576 vs EMA50 1583"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 67.7"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 37.71 > Sig 14.64"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.98x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1465 > Low20D 1480"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.0% (High: 1840)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:SMGR"
+    },
+    {
+      "ticker": "BMTR",
+      "name": "Global Mediacom Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 120.0,
+      "pct_change_1d": 4.35,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 115.4,
+      "ema50": 117.6,
+      "rsi": 59.5,
+      "macd": -0.1,
+      "signal": -0.46,
+      "histogram": 0.36,
+      "rvol": 1.81,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 124.0,
+      "dist_res_pct": 3.2,
+      "volume": 111809900,
+      "avg_volume_20": 61615715,
+      "avg_turnover_20d": 7116074860,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 120 vs EMA20 115"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 115 vs EMA50 118"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 59.5"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD -0.10 > Sig -0.46"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.81x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 111 > Low20D 112"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.2% (High: 124)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BMTR"
+    },
+    {
+      "ticker": "ACES",
+      "name": "Aspirasi Hidup Indonesia Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 356.0,
+      "pct_change_1d": 1.71,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 355.7,
+      "ema50": 350.6,
+      "rsi": 51.3,
+      "macd": 1.23,
+      "signal": 2.43,
+      "histogram": -1.2,
+      "rvol": 1.33,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 368.0,
+      "dist_res_pct": 3.3,
+      "volume": 32366800,
+      "avg_volume_20": 24316510,
+      "avg_turnover_20d": 8679943760,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 356 vs EMA20 356"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 356 vs EMA50 351"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 51.3"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 1.23 > Sig 2.43"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.33x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 348 > Low20D 350"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.3% (High: 368)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ACES"
+    },
+    {
+      "ticker": "GJTL",
+      "name": "Gajah Tunggal Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 1405.0,
+      "pct_change_1d": 1.81,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1352.7,
+      "ema50": 1269.8,
+      "rsi": 65.4,
+      "macd": 48.18,
+      "signal": 50.92,
+      "histogram": -2.75,
+      "rvol": 0.83,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 1455.0,
+      "dist_res_pct": 3.4,
+      "volume": 5445900,
+      "avg_volume_20": 6553260,
+      "avg_turnover_20d": 8979875400,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1405 vs EMA20 1353"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1353 vs EMA50 1270"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 65.4"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 48.18 > Sig 50.92"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.83x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1350 > Low20D 1280"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.4% (High: 1455)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:GJTL"
+    },
+    {
+      "ticker": "CPIN",
+      "name": "Charoen Pokphand Indonesia Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 3280.0,
+      "pct_change_1d": 8.25,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 3081.0,
+      "ema50": 3184.6,
+      "rsi": 61.0,
+      "macd": -19.44,
+      "signal": -41.55,
+      "histogram": 22.11,
+      "rvol": 2.51,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 3400.0,
+      "dist_res_pct": 3.5,
+      "volume": 123271700,
+      "avg_volume_20": 49206775,
+      "avg_turnover_20d": 149898081650,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 3280 vs EMA20 3081"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 3081 vs EMA50 3185"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 61.0"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD -19.44 > Sig -41.55"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.51x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 2900 > Low20D 2960"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-3.5% (High: 3400)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:CPIN"
+    },
+    {
+      "ticker": "JSMR",
+      "name": "Jasa Marga (Persero) Tbk.",
+      "sector": "Infrastructures",
+      "price": 3040.0,
+      "pct_change_1d": 2.36,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 2840.2,
+      "ema50": 2805.4,
+      "rsi": 74.4,
+      "macd": 57.65,
+      "signal": 29.1,
+      "histogram": 28.55,
+      "rvol": 1.19,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 3170.0,
+      "dist_res_pct": 4.1,
+      "volume": 3400200,
+      "avg_volume_20": 2850060,
+      "avg_turnover_20d": 8107348150,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 3040 vs EMA20 2840"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 2840 vs EMA50 2805"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 74.4"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 57.65 > Sig 29.10"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.19x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 2730 > Low20D 2710"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.1% (High: 3170)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:JSMR"
+    },
+    {
+      "ticker": "SGER",
+      "name": "Sumber Global Energy Tbk.",
+      "sector": "Energy",
+      "price": 645.0,
+      "pct_change_1d": -2.27,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 549.3,
+      "ema50": 485.7,
+      "rsi": 80.8,
+      "macd": 50.59,
+      "signal": 36.9,
+      "histogram": 13.69,
+      "rvol": 0.96,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 675.0,
+      "dist_res_pct": 4.4,
+      "volume": 45591800,
+      "avg_volume_20": 47687840,
+      "avg_turnover_20d": 27432636165,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 645 vs EMA20 549"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 549 vs EMA50 486"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 80.8"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 50.59 > Sig 36.90"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.96x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 468 > Low20D 450"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.4% (High: 675)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:SGER"
+    },
+    {
+      "ticker": "SMRA",
+      "name": "Summarecon Agung Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 332.0,
+      "pct_change_1d": 3.11,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 321.4,
+      "ema50": 315.3,
+      "rsi": 60.2,
+      "macd": 1.93,
+      "signal": 2.65,
+      "histogram": -0.72,
+      "rvol": 1.84,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 348.0,
+      "dist_res_pct": 4.6,
+      "volume": 30581300,
+      "avg_volume_20": 16617955,
+      "avg_turnover_20d": 5420180010,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 332 vs EMA20 321"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 321 vs EMA50 315"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 60.2"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 1.93 > Sig 2.65"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.84x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 306 > Low20D 318"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.6% (High: 348)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:SMRA"
+    },
+    {
+      "ticker": "BTPS",
+      "name": "Bank BTPN Syariah Tbk.",
+      "sector": "Financials",
+      "price": 1010.0,
+      "pct_change_1d": 2.02,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 989.0,
+      "ema50": 990.8,
+      "rsi": 61.9,
+      "macd": -0.03,
+      "signal": -2.09,
+      "histogram": 2.06,
+      "rvol": 2.33,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1060.0,
+      "dist_res_pct": 4.7,
+      "volume": 4614900,
+      "avg_volume_20": 1983820,
+      "avg_turnover_20d": 1959973000,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1010 vs EMA20 989"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 989 vs EMA50 991"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 61.9"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD -0.03 > Sig -2.09"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.33x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 965 > Low20D 975"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.7% (High: 1060)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BTPS"
+    },
+    {
+      "ticker": "MAIN",
+      "name": "Malindo Feedmill Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 700.0,
+      "pct_change_1d": 4.48,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 674.4,
+      "ema50": 687.5,
+      "rsi": 60.5,
+      "macd": -2.36,
+      "signal": -5.25,
+      "histogram": 2.88,
+      "rvol": 5.07,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 735.0,
+      "dist_res_pct": 4.8,
+      "volume": 7527800,
+      "avg_volume_20": 1484400,
+      "avg_turnover_20d": 1003951250,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 700 vs EMA20 674"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 674 vs EMA50 687"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 60.5"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD -2.36 > Sig -5.25"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "5.07x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 650 > Low20D 650"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.8% (High: 735)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:MAIN"
+    },
+    {
+      "ticker": "AKRA",
+      "name": "AKR Corporindo Tbk.",
+      "sector": "Energy",
+      "price": 1400.0,
+      "pct_change_1d": 0.36,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1394.1,
+      "ema50": 1362.8,
+      "rsi": 52.3,
+      "macd": 9.6,
+      "signal": 13.13,
+      "histogram": -3.53,
+      "rvol": 1.85,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1470.0,
+      "dist_res_pct": 4.8,
+      "volume": 23419200,
+      "avg_volume_20": 12660800,
+      "avg_turnover_20d": 17809795425,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1400 vs EMA20 1394"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1394 vs EMA50 1363"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 52.3"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 9.60 > Sig 13.13"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.85x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1350 > Low20D 1385"
+        },
+        "k7": {
+          "pass": true,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-4.8% (High: 1470)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:AKRA"
+    },
+    {
+      "ticker": "BSDE",
+      "name": "Bumi Serpong Damai Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 665.0,
+      "pct_change_1d": 1.53,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 626.8,
+      "ema50": 615.7,
+      "rsi": 67.4,
+      "macd": 19.15,
+      "signal": 15.6,
+      "histogram": 3.56,
+      "rvol": 1.05,
+      "vol_type": "NORMAL",
+      "vol_label": "Normal",
+      "high_50d": 705.0,
+      "dist_res_pct": 5.7,
+      "volume": 26649000,
+      "avg_volume_20": 25486200,
+      "avg_turnover_20d": 16148490975,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 665 vs EMA20 627"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 627 vs EMA50 616"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 67.4"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 19.15 > Sig 15.60"
+        },
+        "k5": {
+          "pass": false,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.05x (Normal Volume)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 620 > Low20D 575"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-5.7% (High: 705)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BSDE"
+    },
+    {
+      "ticker": "MTEL",
+      "name": "Dayamitra Telekomunikasi Tbk.",
+      "sector": "Infrastructures",
+      "price": 482.0,
+      "pct_change_1d": 0.42,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 458.1,
+      "ema50": 459.6,
+      "rsi": 68.8,
+      "macd": 6.37,
+      "signal": 0.69,
+      "histogram": 5.67,
+      "rvol": 0.58,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 512.0,
+      "dist_res_pct": 5.9,
+      "volume": 28586800,
+      "avg_volume_20": 49185905,
+      "avg_turnover_20d": 22288396280,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 482 vs EMA20 458"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 458 vs EMA50 460"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 68.8"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 6.37 > Sig 0.69"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.58x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 434 > Low20D 418"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-5.9% (High: 512)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:MTEL"
+    },
+    {
+      "ticker": "SSMS",
+      "name": "Sawit Sumbermas Sarana Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 1180.0,
+      "pct_change_1d": 4.89,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 958.4,
+      "ema50": 935.6,
+      "rsi": 78.8,
+      "macd": 36.46,
+      "signal": 12.94,
+      "histogram": 23.52,
+      "rvol": 2.09,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1255.0,
+      "dist_res_pct": 6.0,
+      "volume": 26562300,
+      "avg_volume_20": 12702925,
+      "avg_turnover_20d": 12344397375,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1180 vs EMA20 958"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 958 vs EMA50 936"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 78.8"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 36.46 > Sig 12.94"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.09x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 870 > Low20D 850"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-6.0% (High: 1255)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:SSMS"
+    },
+    {
+      "ticker": "EXCL",
+      "name": "XL Axiata Tbk.",
+      "sector": "Infrastructures",
+      "price": 2740.0,
+      "pct_change_1d": 1.11,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 2702.8,
+      "ema50": 2657.1,
+      "rsi": 54.3,
+      "macd": 56.7,
+      "signal": 60.83,
+      "histogram": -4.13,
+      "rvol": 0.53,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 2930.0,
+      "dist_res_pct": 6.5,
+      "volume": 4344000,
+      "avg_volume_20": 8221285,
+      "avg_turnover_20d": 22137169150,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 2740 vs EMA20 2703"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 2703 vs EMA50 2657"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 54.3"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 56.70 > Sig 60.83"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.53x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 2660 > Low20D 2410"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-6.5% (High: 2930)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:EXCL"
+    },
+    {
+      "ticker": "IMJS",
+      "name": "Indomobil Multi Jasa Tbk.",
+      "sector": "Financials",
+      "price": 198.0,
+      "pct_change_1d": 17.16,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 168.1,
+      "ema50": 161.0,
+      "rsi": 74.9,
+      "macd": 6.63,
+      "signal": 5.21,
+      "histogram": 1.42,
+      "rvol": 12.15,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 212.0,
+      "dist_res_pct": 6.6,
+      "volume": 108370200,
+      "avg_volume_20": 8916335,
+      "avg_turnover_20d": 1657963995,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 198 vs EMA20 168"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 168 vs EMA50 161"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 74.9"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 6.63 > Sig 5.21"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "12.15x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 164 > Low20D 156"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-6.6% (High: 212)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:IMJS"
+    },
+    {
+      "ticker": "VICI",
+      "name": "Victoria Care Indonesia Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 890.0,
+      "pct_change_1d": -1.11,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 729.0,
+      "ema50": 659.2,
+      "rsi": 82.4,
+      "macd": 71.4,
+      "signal": 45.07,
+      "histogram": 26.33,
+      "rvol": 2.03,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 955.0,
+      "dist_res_pct": 6.8,
+      "volume": 10640300,
+      "avg_volume_20": 5241085,
+      "avg_turnover_20d": 4072796500,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 890 vs EMA20 729"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 729 vs EMA50 659"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 82.4"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 71.40 > Sig 45.07"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.03x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 600 > Low20D 575"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-6.8% (High: 955)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:VICI"
+    },
+    {
+      "ticker": "ADMR",
+      "name": "Adaro Minerals Indonesia Tbk.",
+      "sector": "Energy",
+      "price": 1660.0,
+      "pct_change_1d": 4.08,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1643.5,
+      "ema50": 1599.0,
+      "rsi": 53.3,
+      "macd": 35.97,
+      "signal": 42.59,
+      "histogram": -6.63,
+      "rvol": 1.42,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1785.0,
+      "dist_res_pct": 7.0,
+      "volume": 56468500,
+      "avg_volume_20": 39655810,
+      "avg_turnover_20d": 65590112875,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1660 vs EMA20 1643"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1643 vs EMA50 1599"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 53.3"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 35.97 > Sig 42.59"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.42x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1575 > Low20D 1545"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-7.0% (High: 1785)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ADMR"
+    },
+    {
+      "ticker": "BRIS",
+      "name": "Bank Syariah Indonesia Tbk.",
+      "sector": "Financials",
+      "price": 1800.0,
+      "pct_change_1d": 0.0,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1791.4,
+      "ema50": 1803.6,
+      "rsi": 51.6,
+      "macd": -1.9,
+      "signal": -3.56,
+      "histogram": 1.66,
+      "rvol": 2.19,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1945.0,
+      "dist_res_pct": 7.5,
+      "volume": 35027700,
+      "avg_volume_20": 16009965,
+      "avg_turnover_20d": 28689072275,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1800 vs EMA20 1791"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1791 vs EMA50 1804"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 51.6"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD -1.90 > Sig -3.56"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "2.19x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1770 > Low20D 1755"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-7.5% (High: 1945)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:BRIS"
+    },
+    {
+      "ticker": "DSSA",
+      "name": "Dian Swastatika Sentosa Tbk.",
+      "sector": "Energy",
+      "price": 1185.0,
+      "pct_change_1d": 1.72,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1051.3,
+      "ema50": 1021.2,
+      "rsi": 72.6,
+      "macd": 73.06,
+      "signal": 61.73,
+      "histogram": 11.33,
+      "rvol": 0.75,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 1290.0,
+      "dist_res_pct": 8.1,
+      "volume": 510167300,
+      "avg_volume_20": 680308855,
+      "avg_turnover_20d": 706209809175,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1185 vs EMA20 1051"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1051 vs EMA50 1021"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 72.6"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 73.06 > Sig 61.73"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.75x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1005 > Low20D 845"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-8.1% (High: 1290)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:DSSA"
+    },
+    {
+      "ticker": "MDKA",
+      "name": "Merdeka Copper Gold Tbk.",
+      "sector": "Basic Materials",
+      "price": 2920.0,
+      "pct_change_1d": 1.39,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 2903.5,
+      "ema50": 2837.0,
+      "rsi": 53.1,
+      "macd": 46.88,
+      "signal": 58.75,
+      "histogram": -11.87,
+      "rvol": 0.44,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 3180.0,
+      "dist_res_pct": 8.2,
+      "volume": 17122000,
+      "avg_volume_20": 38820230,
+      "avg_turnover_20d": 114112235100,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 2920 vs EMA20 2904"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 2904 vs EMA50 2837"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 53.1"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 46.88 > Sig 58.75"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.44x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 2850 > Low20D 2740"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-8.2% (High: 3180)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:MDKA"
+    },
+    {
+      "ticker": "IMAS",
+      "name": "Indomobil Sukses Internasional Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 980.0,
+      "pct_change_1d": 11.36,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 882.5,
+      "ema50": 875.3,
+      "rsi": 77.2,
+      "macd": 15.23,
+      "signal": 9.63,
+      "histogram": 5.59,
+      "rvol": 11.08,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 1100.0,
+      "dist_res_pct": 10.9,
+      "volume": 6069300,
+      "avg_volume_20": 547995,
+      "avg_turnover_20d": 512463425,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 980 vs EMA20 883"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 883 vs EMA50 875"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 77.2"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 15.23 > Sig 9.63"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "11.08x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 850 > Low20D 840"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-10.9% (High: 1100)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:IMAS"
+    },
+    {
+      "ticker": "PTPP",
+      "name": "PP (Persero) Tbk.",
+      "sector": "Infrastructures",
+      "price": 212.0,
+      "pct_change_1d": 2.91,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 204.7,
+      "ema50": 206.0,
+      "rsi": 57.0,
+      "macd": 1.27,
+      "signal": 0.99,
+      "histogram": 0.28,
+      "rvol": 3.47,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 240.0,
+      "dist_res_pct": 11.7,
+      "volume": 39156300,
+      "avg_volume_20": 11277895,
+      "avg_turnover_20d": 2321309700,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 212 vs EMA20 205"
+        },
+        "k2": {
+          "pass": false,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 205 vs EMA50 206"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 57.0"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 1.27 > Sig 0.99"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "3.47x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 197 > Low20D 195"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-11.7% (High: 240)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:PTPP"
+    },
+    {
+      "ticker": "YPAS",
+      "name": "Yanaprima Hastapersada Tbk.",
+      "sector": "Basic Materials",
+      "price": 1540.0,
+      "pct_change_1d": -3.45,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 1273.7,
+      "ema50": 1015.1,
+      "rsi": 76.2,
+      "macd": 214.16,
+      "signal": 206.04,
+      "histogram": 8.12,
+      "rvol": 0.51,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 1765.0,
+      "dist_res_pct": 12.7,
+      "volume": 332700,
+      "avg_volume_20": 653085,
+      "avg_turnover_20d": 829834825,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 1540 vs EMA20 1274"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 1274 vs EMA50 1015"
+        },
+        "k3": {
+          "pass": false,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 76.2"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 214.16 > Sig 206.04"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.51x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 1315 > Low20D 600"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-12.7% (High: 1765)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:YPAS"
+    },
+    {
+      "ticker": "SMBR",
+      "name": "Semen Baturaja Tbk.",
+      "sector": "Basic Materials",
+      "price": 181.0,
+      "pct_change_1d": -3.21,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 170.2,
+      "ema50": 167.6,
+      "rsi": 61.1,
+      "macd": 4.54,
+      "signal": 2.81,
+      "histogram": 1.73,
+      "rvol": 4.19,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 208.0,
+      "dist_res_pct": 13.0,
+      "volume": 63707900,
+      "avg_volume_20": 15216255,
+      "avg_turnover_20d": 2794262960,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 181 vs EMA20 170"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 170 vs EMA50 168"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 61.1"
+        },
+        "k4": {
+          "pass": true,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 4.54 > Sig 2.81"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "4.19x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": false,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 157 > Low20D 163"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-13.0% (High: 208)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:SMBR"
+    },
+    {
+      "ticker": "WTON",
+      "name": "Wijaya Karya Beton Tbk.",
+      "sector": "Basic Materials",
+      "price": 81.0,
+      "pct_change_1d": 0.0,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 79.6,
+      "ema50": 78.2,
+      "rsi": 56.0,
+      "macd": 1.43,
+      "signal": 1.48,
+      "histogram": -0.06,
+      "rvol": 1.29,
+      "vol_type": "SURGE",
+      "vol_label": "Demand Surge",
+      "high_50d": 95.0,
+      "dist_res_pct": 14.7,
+      "volume": 15912100,
+      "avg_volume_20": 12296370,
+      "avg_turnover_20d": 1010953730,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 81 vs EMA20 80"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 80 vs EMA50 78"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 56.0"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 1.43 > Sig 1.48"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "1.29x (Surge Demand ⚡)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 79 > Low20D 73"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-14.7% (High: 95)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:WTON"
+    },
+    {
+      "ticker": "ISAT",
+      "name": "Indosat Tbk.",
+      "sector": "Infrastructures",
+      "price": 2420.0,
+      "pct_change_1d": 2.54,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 2409.9,
+      "ema50": 2224.2,
+      "rsi": 53.8,
+      "macd": 104.02,
+      "signal": 144.6,
+      "histogram": -40.57,
+      "rvol": 0.74,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 2850.0,
+      "dist_res_pct": 15.1,
+      "volume": 60795100,
+      "avg_volume_20": 82140705,
+      "avg_turnover_20d": 203226102150,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 2420 vs EMA20 2410"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 2410 vs EMA50 2224"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 53.8"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 104.02 > Sig 144.60"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.74x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 2320 > Low20D 1865"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-15.1% (High: 2850)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:ISAT"
+    },
+    {
+      "ticker": "APLN",
+      "name": "Agung Podomoro Land Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 138.0,
+      "pct_change_1d": 1.47,
+      "total_score": 5,
+      "status": "FORMING",
+      "status_label": "FORMING BASE",
+      "is_ready": false,
+      "ema20": 134.4,
+      "ema50": 133.2,
+      "rsi": 55.1,
+      "macd": 2.34,
+      "signal": 2.37,
+      "histogram": -0.03,
+      "rvol": 0.22,
+      "vol_type": "DRY_UP",
+      "vol_label": "Supply Dry-Up",
+      "high_50d": 163.0,
+      "dist_res_pct": 15.3,
+      "volume": 20564100,
+      "avg_volume_20": 93413315,
+      "avg_turnover_20d": 13079458050,
+      "criteria": {
+        "k1": {
+          "pass": true,
+          "title": "Close > EMA 20",
+          "val": "Price 138 vs EMA20 134"
+        },
+        "k2": {
+          "pass": true,
+          "title": "EMA 20 > EMA 50",
+          "val": "EMA20 134 vs EMA50 133"
+        },
+        "k3": {
+          "pass": true,
+          "title": "RSI 50-70 (Momentum)",
+          "val": "RSI 55.1"
+        },
+        "k4": {
+          "pass": false,
+          "title": "MACD Bullish (Line > Signal)",
+          "val": "MACD 2.34 > Sig 2.37"
+        },
+        "k5": {
+          "pass": true,
+          "title": "RVOL (Surge >=1.2x atau Dry-Up <=0.75x)",
+          "val": "0.22x (VCP Dry-Up 💧)"
+        },
+        "k6": {
+          "pass": true,
+          "title": "Higher Low Base Structure",
+          "val": "Low10D 129 > Low20D 123"
+        },
+        "k7": {
+          "pass": false,
+          "title": "Jarak ke Resistance 50D < 5%",
+          "val": "-15.3% (High: 163)"
+        }
+      },
+      "tradingview_url": "https://www.tradingview.com/chart/?symbol=IDX:APLN"
+    }
+  ]
+}

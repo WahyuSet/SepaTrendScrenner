@@ -1,0 +1,27 @@
+Faktor	Kriteria	Makna
+Trend	Close > EMA20	Harga sudah di atas trend pendek
+	EMA20 > EMA50	Trend mulai bullish
+	EMA50 > EMA200	Struktur bullish lebih kuat
+Momentum	RSI 50–70	Momentum positif tapi belum terlalu overbought
+	MACD > Signal	Momentum bullish
+Volume	Volume > SMA Volume 20	Ada peningkatan aktivitas
+	Volume ratio > 1.2–1.5x	Mulai ada demand
+Price Structure	Higher Low	Buyer mulai mempertahankan harga
+	Higher High	Struktur bullish terkonfirmasi
+Breakout	Close mendekati resistance	Sedang berada di area trigger
+	Distance ke resistance < 5%	Risk/reward menarik
+Volatility	ATR mulai meningkat	Potensi expansion
+Liquidity	Value transaksi tinggi	Menghindari saham terlalu sepi
+🎯 Kalau targetnya "BELUM NAIK, tapi mau naik"
+
+Ini justru lebih menarik daripada mencari saham yang sudah breakout jauh.
+
+
+Close > EMA20
+EMA20 > EMA50
+RSI 50–65
+MACD bullish
+RVOL > 1.2
+Volume meningkat
+Higher Low
+Harga < 5% dari resistance

@@ -1,0 +1,137 @@
+<!-- ======================================================== -->
+<!-- 1. SEPA TREND SCREENER VIEW -->
+<!-- ======================================================== -->
+<div id="view-sepa" class="screener-view active">
+  <div class="view-header">
+    <div class="view-header-left">
+      <h1>SEPA Trend Screener — Mark Minervini Stage 2</h1>
+      <p>Kandidat saham berdasarkan 8 kriteria Specific Entry Point Analysis & Relative Strength benchmark IHSG</p>
+    </div>
+  </div>
+
+  <!-- STATS SUMMARY CARDS -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Total Saham Di-Scan</span>
+        <span class="stat-icon">📊</span>
+      </div>
+      <div id="stat-scanned" class="stat-value">0</div>
+      <div class="stat-meta">Universe Saham IDX</div>
+    </div>
+
+    <div class="stat-card confirmed">
+      <div class="stat-card-header">
+        <span class="stat-label">Stage 2 Confirmed</span>
+        <span class="stat-icon">⚡</span>
+      </div>
+      <div id="stat-confirmed" class="stat-value lime">0</div>
+      <div class="stat-meta">Score Penuh 8 / 8 Kriteria</div>
+    </div>
+
+    <div class="stat-card watchlist">
+      <div class="stat-card-header">
+        <span class="stat-label">Watchlist Saham</span>
+        <span class="stat-icon">⭐</span>
+      </div>
+      <div id="stat-watchlist" class="stat-value amber">0</div>
+      <div class="stat-meta">Score 6 – 7 / 8 Kriteria</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">IHSG Benchmark</span>
+        <span class="stat-icon">📈</span>
+      </div>
+      <div id="stat-benchmark" class="stat-value text-sm">Aktif (^JKSE)</div>
+      <div id="stat-last-time" class="stat-meta">Belum pernah scan</div>
+    </div>
+  </section>
+
+  <!-- DATA TABLE CONTAINER -->
+  <section class="table-card">
+    <div class="table-header-bar">
+      <div class="table-title-area">
+        <h2>Daftar Saham Terkualifikasi</h2>
+        <span id="table-count-badge" class="count-pill">0 Saham</span>
+      </div>
+
+      <div class="table-header-right">
+        <!-- Quick Tab Filters -->
+        <div class="tab-filters">
+          <button id="tab-all" class="tab-btn active" onclick="setTabFilter('ALL')">
+            Semua Terkualifikasi (≥6)
+          </button>
+          <button id="tab-confirmed" class="tab-btn" onclick="setTabFilter('CONFIRMED')">
+            Stage 2 Saja (8/8)
+          </button>
+          <button id="tab-watchlist" class="tab-btn" onclick="setTabFilter('WATCHLIST')">
+            Watchlist Saja (6-7)
+          </button>
+        </div>
+
+        <!-- Inline Score Slider Filter -->
+        <div class="toolbar-filter-slider">
+          <label for="score-slider">Skor Min:</label>
+          <input 
+            type="range" 
+            id="score-slider" 
+            class="score-slider-mini" 
+            min="1" 
+            max="8" 
+            value="6" 
+            step="1"
+            oninput="handleScoreFilter(this.value)"
+          >
+          <span id="score-slider-val" class="slider-badge">≥ 6</span>
+        </div>
+
+        <!-- Table Utility Actions -->
+        <div class="table-actions">
+          <button class="btn-table-util" onclick="copyTradingViewWatchlist('sepa')" title="Salin daftar ticker untuk TradingView">
+            <span>📋</span> Copy Watchlist
+          </button>
+          <button class="btn-table-util" onclick="exportTableToCsv('sepa')" title="Download file CSV">
+            <span>📥</span> Export CSV
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Responsive Wrapper -->
+    <div class="table-container">
+      <table class="data-table" id="screener-table">
+        <thead>
+          <tr>
+            <th onclick="sortTable('ticker')">Ticker <span class="sort-icon" id="sort-ticker">↕</span></th>
+            <th onclick="sortTable('name')">Nama Emiten <span class="sort-icon" id="sort-name">↕</span></th>
+            <th onclick="sortTable('sector')">Sektor <span class="sort-icon" id="sort-sector">↕</span></th>
+            <th class="text-right" onclick="sortTable('price')">Harga Terakhir <span class="sort-icon" id="sort-price">↕</span></th>
+            <th class="text-center" onclick="sortTable('total_score')">SEPA Score <span class="sort-icon" id="sort-total_score">↕</span></th>
+            <th class="text-center" onclick="sortTable('status')">Status Stage 2 <span class="sort-icon" id="sort-status">↕</span></th>
+            <th class="text-center">Kriteria (C1-C8)</th>
+            <th class="text-center" onclick="sortTable('rs_score')">RS Rating <span class="sort-icon" id="sort-rs_score">↕</span></th>
+            <th class="text-right" onclick="sortTable('dist_low_pct')">% Dari 52W Low <span class="sort-icon" id="sort-dist_low_pct">↕</span></th>
+            <th class="text-right" onclick="sortTable('dist_high_pct')">% Dari 52W High <span class="sort-icon" id="sort-dist_high_pct">↕</span></th>
+            <th class="text-center">Bandar Flow</th>
+            <th class="text-center">Aksi / Detail</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- Rendered via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty State Message -->
+    <div id="empty-state" class="empty-state hidden">
+      <div class="empty-icon">🔍</div>
+      <h3>Tidak Ada Saham yang Memenuhi Filter</h3>
+      <p>Coba turunkan slider batas score minimal atau klik tombol "Scan IDX Sekarang".</p>
+      <div class="empty-actions">
+        <button class="btn-secondary" onclick="resetSepaFilters()">🔄 Reset Filter</button>
+        <button class="btn-scan-small" onclick="triggerScan()">⚡ Scan IDX Sekarang</button>
+      </div>
+    </div>
+  </section>
+</div>

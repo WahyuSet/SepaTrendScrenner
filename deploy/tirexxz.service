@@ -1,0 +1,37 @@
+[Unit]
+Description=Tirexxz Screnner - Production Gunicorn Service
+After=network.target
+
+[Service]
+# User dan Group yang menjalankan service (default: www-data atau ubuntu)
+User=www-data
+Group=www-data
+
+# Direktori root aplikasi di VPS
+WorkingDirectory=/var/www/tirexxz-screener
+
+# Path virtualenv python
+Environment="PATH=/var/www/tirexxz-screener/venv/bin"
+
+# Perintah menjalankan Gunicorn
+# - 3 worker processes + 2 threads per worker untuk menangani request simultan
+# - timeout 120s untuk memberi toleransi request API yang memuat data
+# - binding ke localhost port 5000 (dibalik Nginx)
+ExecStart=/var/www/tirexxz-screener/venv/bin/gunicorn \
+    --workers 3 \
+    --threads 2 \
+    --bind 127.0.0.1:5000 \
+    --timeout 120 \
+    --access-logfile /var/log/tirexxz_access.log \
+    --error-logfile /var/log/tirexxz_error.log \
+    app:app
+
+# Auto restart otomatis jika terjadi crash
+Restart=always
+RestartSec=5s
+
+# Limit resource file descriptors
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

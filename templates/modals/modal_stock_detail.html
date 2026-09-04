@@ -1,0 +1,269 @@
+<!-- ==========================================================================
+     ENTERPRISE TABBED STOCK DETAIL MODAL (IDX EDGE PRO INTEGRATION)
+     ========================================================================== -->
+<div id="stock-detail-modal" class="stock-modal-backdrop hidden" onclick="handleStockModalBackdrop(event)">
+  <div class="stock-modal-card" role="dialog" aria-modal="true" aria-labelledby="stock-modal-ticker">
+    
+    <!-- MODAL HEADER -->
+    <div class="stock-modal-header">
+      <div class="stock-modal-title-wrap">
+        <div class="stock-badge-row">
+          <span id="stock-modal-ticker" class="stock-modal-ticker">BBCA</span>
+          <span id="stock-modal-sector" class="stock-modal-sector">Financials</span>
+          <span id="stock-modal-flow-badge" class="stock-status-pill neutral">Checking Flow...</span>
+          <span id="stock-modal-sepa-badge" class="stock-status-pill sepa hidden">👑 SEPA High Growth</span>
+        </div>
+        <div class="stock-name-row">
+          <h2 id="stock-modal-name" class="stock-modal-name">Bank Central Asia Tbk.</h2>
+          <div class="stock-modal-price-wrap">
+            <span id="stock-modal-price" class="stock-modal-price">Rp 0</span>
+            <span id="stock-modal-change" class="stock-modal-change neutral">—</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="stock-modal-header-actions">
+        <button class="btn-stock-refresh" onclick="refreshCurrentStockTab()" title="Paksa segarkan data dari API (Bypass Cache)">
+          <span class="refresh-icon">🔄</span>
+          <span class="refresh-text">Refresh</span>
+        </button>
+        <button class="btn-stock-close" onclick="closeStockDetailModal()" title="Tutup Modal (Esc)">✕</button>
+      </div>
+    </div>
+
+    <!-- MODAL TABS NAVIGATION -->
+    <div class="stock-modal-tabs">
+      <button class="stock-tab-btn active" id="tab-btn-bandar" onclick="switchStockModalTab('bandar')">
+        <span class="tab-icon">🏦</span>
+        <span class="tab-label">Bandarmologi & Flow</span>
+      </button>
+      <button class="stock-tab-btn" id="tab-btn-financials" onclick="switchStockModalTab('financials')">
+        <span class="tab-icon">📑</span>
+        <span class="tab-label">Laporan Keuangan</span>
+      </button>
+      <button class="stock-tab-btn" id="tab-btn-analysis" onclick="switchStockModalTab('analysis')">
+        <span class="tab-icon">🤖</span>
+        <span class="tab-label">Analisis Komprehensif</span>
+      </button>
+      <div class="tab-active-indicator" id="tab-indicator"></div>
+    </div>
+
+    <!-- MODAL BODY -->
+    <div class="stock-modal-body" id="stock-modal-body">
+      
+      <!-- LOADING SHIMMER STATE -->
+      <div id="stock-tab-loading" class="stock-tab-loading hidden">
+        <div class="shimmer-card"></div>
+        <div class="shimmer-grid">
+          <div class="shimmer-box"></div>
+          <div class="shimmer-box"></div>
+        </div>
+        <div class="shimmer-table"></div>
+      </div>
+
+      <!-- TAB 1: BANDARMOLOGI & FLOW -->
+      <div class="stock-tab-pane active" id="pane-bandar">
+        <!-- Bento Summary Cards -->
+        <div class="bandar-bento-grid">
+          <div class="bandar-card highlight">
+            <div class="bento-label">Status Akumulasi</div>
+            <div id="bandar-status-title" class="bento-value neutral">—</div>
+            <div id="bandar-status-desc" class="bento-sub">Menunggu data...</div>
+          </div>
+          
+          <div class="bandar-card">
+            <div class="bento-label">Top 3 Buyer Concentration</div>
+            <div id="bandar-top3-ratio" class="bento-value mono">0.0%</div>
+            <div class="bento-sub">dari total turnover transaksi</div>
+          </div>
+
+          <div class="bandar-card">
+            <div class="bento-label">Total Turnover Hari Ini</div>
+            <div id="bandar-turnover" class="bento-value mono">Rp 0</div>
+            <div id="bandar-date-label" class="bento-sub">EOD Data</div>
+          </div>
+        </div>
+
+        <!-- Broker Buy vs Sell Tables -->
+        <div class="broker-tables-split">
+          <!-- Top Buyers -->
+          <div class="broker-table-panel buyers">
+            <div class="broker-table-header">
+              <span class="table-tag buy">TOP 5 NET BUYERS</span>
+              <span id="bandar-total-buy-val" class="header-val mono">Rp 0</span>
+            </div>
+            <table class="broker-list-table">
+              <thead>
+                <tr>
+                  <th>Broker</th>
+                  <th class="text-right">Net Value</th>
+                  <th class="text-right">Net Lot</th>
+                </tr>
+              </thead>
+              <tbody id="bandar-buyers-list">
+                <tr><td colspan="3" class="text-center text-muted">Belum ada data</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Top Sellers -->
+          <div class="broker-table-panel sellers">
+            <div class="broker-table-header">
+              <span class="table-tag sell">TOP 5 NET SELLERS</span>
+              <span id="bandar-total-sell-val" class="header-val mono">Rp 0</span>
+            </div>
+            <table class="broker-list-table">
+              <thead>
+                <tr>
+                  <th>Broker</th>
+                  <th class="text-right">Net Value</th>
+                  <th class="text-right">Net Lot</th>
+                </tr>
+              </thead>
+              <tbody id="bandar-sellers-list">
+                <tr><td colspan="3" class="text-center text-muted">Belum ada data</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Historical Accumulation Trend -->
+        <div class="bandar-accum-trend-card" id="bandar-accum-card">
+          <div class="trend-card-header">
+            <div class="trend-header-left">
+              <span class="trend-icon">📈</span>
+              <span class="trend-title">Tren Akumulasi Bandar (Top 3 Series)</span>
+            </div>
+            <span id="bandar-trend-badge" class="trend-badge neutral">—</span>
+          </div>
+          <div class="accum-series-summary" id="accum-series-container">
+            <span class="text-muted">Memuat data time-series...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: LAPORAN KEUANGAN & EPS GROWTH -->
+      <div class="stock-tab-pane" id="pane-financials">
+        <div class="fin-bento-grid">
+          <div class="bandar-card highlight" id="fin-sepa-card">
+            <div class="bento-label">Pilar Fundamental SEPA</div>
+            <div id="fin-sepa-verdict" class="bento-value neutral">—</div>
+            <div id="fin-sepa-desc" class="bento-sub">Berdasarkan kriteria EPS Minervini</div>
+          </div>
+
+          <div class="bandar-card">
+            <div class="bento-label">YoY EPS Growth (Laba/Saham)</div>
+            <div id="fin-eps-growth" class="bento-value mono">—%</div>
+            <div class="bento-sub">Kuartal terakhir vs kuartal tahun lalu</div>
+          </div>
+
+          <div class="bandar-card">
+            <div class="bento-label">Laba Bersih Kuartal Terakhir</div>
+            <div id="fin-latest-profit" class="bento-value mono">Rp 0</div>
+            <div id="fin-latest-label" class="bento-sub">Kuartal Terakhir</div>
+          </div>
+        </div>
+
+        <!-- Quarterly Statements Table -->
+        <div class="financials-table-wrap">
+          <div class="fin-table-title">Riwayat Kinerja Kuartalan (Quarterly Income Statement)</div>
+          <table class="financials-data-table">
+            <thead>
+              <tr>
+                <th>Periode Kuartal</th>
+                <th class="text-right">Laba Bersih (Net Profit)</th>
+                <th class="text-right">EPS (Laba / Saham)</th>
+                <th class="text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody id="financials-table-body">
+              <tr><td colspan="4" class="text-center text-muted">Belum ada data keuangan</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: ANALISIS KOMPREHENSIF (AI VERDICT) -->
+      <div class="stock-tab-pane" id="pane-analysis">
+        <!-- Daily Pivot Support & Resistance Bento -->
+        <div class="pivot-cards-grid">
+          <div class="pivot-card s2">
+            <span class="pivot-label">Support 2 (S2)</span>
+            <span id="pivot-s2" class="pivot-val mono">—</span>
+          </div>
+          <div class="pivot-card s1">
+            <span class="pivot-label">Support 1 (S1)</span>
+            <span id="pivot-s1" class="pivot-val mono">—</span>
+          </div>
+          <div class="pivot-card pivot-main">
+            <span class="pivot-label">Daily Pivot (P)</span>
+            <span id="pivot-p" class="pivot-val mono">—</span>
+          </div>
+          <div class="pivot-card r1">
+            <span class="pivot-label">Resistance 1 (R1)</span>
+            <span id="pivot-r1" class="pivot-val mono">—</span>
+          </div>
+          <div class="pivot-card r2">
+            <span class="pivot-label">Resistance 2 (R2)</span>
+            <span id="pivot-r2" class="pivot-val mono">—</span>
+          </div>
+        </div>
+
+        <!-- Trading Plan Card -->
+        <div class="trading-plan-card">
+          <div class="trading-plan-header">
+            <div class="trend-header-left">
+              <span class="plan-icon">🎯</span>
+              <span class="plan-title">Trading Plan & Rekomendasi AI</span>
+            </div>
+            <div class="plan-header-right">
+              <span id="plan-score-badge" class="plan-score-badge">Score: —</span>
+              <span id="plan-action-badge" class="plan-action-badge neutral">—</span>
+            </div>
+          </div>
+          <div class="trading-plan-grid">
+            <div class="plan-item">
+              <span class="plan-label">Panduan Beli (Entry / Belum Punya):</span>
+              <span id="plan-entry" class="plan-val text-sm font-semibold">—</span>
+            </div>
+            <div class="plan-item">
+              <span class="plan-label">Panduan Hold (Jika Sudah Punya):</span>
+              <span id="plan-hold" class="plan-val text-sm font-semibold">—</span>
+            </div>
+            <div class="plan-item">
+              <span class="plan-label">Target Resistance (R1 / R2):</span>
+              <span id="plan-target" class="plan-val mono success font-bold">—</span>
+            </div>
+            <div class="plan-item">
+              <span class="plan-label">Stop Loss Disiplin:</span>
+              <span id="plan-stoploss" class="plan-val mono danger font-bold">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full Analytical Narrative Output -->
+        <div class="analysis-narrative-wrap">
+          <div class="narrative-header">Ringkasan Analisis Naratif Lengkap</div>
+          <div id="analysis-raw-text" class="narrative-content">
+            <!-- Rendered analysis output -->
+            Memuat analisis komprehensif...
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MODAL FOOTER -->
+    <div class="stock-modal-footer">
+      <div class="modal-footer-left">
+        <span class="api-source-tag">Source: IDX Edge PRO API</span>
+        <span id="stock-modal-cache-info" class="cache-info-tag">Cached locally</span>
+      </div>
+      <div class="modal-footer-right">
+        <button class="btn-stock-util" onclick="openTradingViewChart(currentStockTicker)">Buka di TradingView ↗</button>
+        <button class="btn-stock-secondary" onclick="closeStockDetailModal()">Tutup</button>
+      </div>
+    </div>
+
+  </div>
+</div>

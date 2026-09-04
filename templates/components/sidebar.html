@@ -1,0 +1,122 @@
+<!-- ==========================================================================
+     ERGONOMIC ENTERPRISE SIDEBAR COMPONENT (250px)
+     ========================================================================== -->
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <!-- 1. BRAND HEADER -->
+    <div class="sidebar-header">
+      <div class="brand">
+        <span class="brand-dot pulse"></span>
+        <div class="brand-title">
+          <h2>Tirexxz <span>Screnner</span></h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. TOP OMNIBAR SEARCH TRIGGER (LINEAR / RAYCAST STYLE) -->
+    <div class="sidebar-search-area">
+      <button class="sidebar-search-trigger" onclick="openCommandPalette()" title="Cari emiten atau perintah (Ctrl + K)">
+        <div class="search-trigger-left">
+          <span class="search-icon">🔍</span>
+          <span class="search-placeholder">Cari emiten, aksi...</span>
+        </div>
+        <kbd class="search-kbd">Ctrl K</kbd>
+      </button>
+    </div>
+
+    <!-- 3. ZONE 1: SCREENER NAVIGATION -->
+    <div class="sidebar-section">
+      <div class="nav-section-label">Screeners</div>
+      <button class="nav-item active" id="nav-sepa" onclick="switchScreener('sepa')">
+        <div class="nav-item-left">
+          <span class="nav-item-icon">📈</span>
+          <span class="nav-item-text">SEPA Trend</span>
+        </div>
+        <span class="nav-item-badge" id="badge-sepa">—</span>
+      </button>
+
+      <button class="nav-item" id="nav-rsi-div" onclick="switchScreener('rsi-div')">
+        <div class="nav-item-left">
+          <span class="nav-item-icon">📉</span>
+          <span class="nav-item-text">RSI Divergence</span>
+        </div>
+        <span class="nav-item-badge" id="badge-rsi-div">—</span>
+      </button>
+
+      <button class="nav-item" id="nav-prebreakout" onclick="switchScreener('prebreakout')">
+        <div class="nav-item-left">
+          <span class="nav-item-icon">🎯</span>
+          <span class="nav-item-text">Pre-Breakout</span>
+        </div>
+        <span class="nav-item-badge" id="badge-prebreakout">—</span>
+      </button>
+    </div>
+
+    <!-- 4. ZONE 2: SCANNER ENGINE -->
+    <div class="sidebar-section">
+      <div class="nav-section-label">Engine & Scanning</div>
+      <button id="btn-scan" class="btn-sidebar-scan" onclick="triggerScan()" title="Scan seluruh universe saham IDX">
+        <span class="btn-scan-icon">⚡</span>
+        <span id="btn-scan-text">Scan IDX Sekarang</span>
+      </button>
+
+      <!-- REAL-TIME SCAN PROGRESS CARD -->
+      <div id="scan-progress-box" class="sidebar-scan-progress hidden">
+        <div class="scan-progress-meta">
+          <span id="scan-current-ticker" class="scan-current-ticker">Memulai scan...</span>
+          <span id="scan-progress-count" class="scan-count-mini">0/0</span>
+        </div>
+        <div class="scan-progress-bar-wrap">
+          <div id="scan-progress-fill" class="scan-progress-fill-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ZONE 3: SYSTEM STATUS & FOOTER -->
+  <div class="sidebar-bottom">
+    <div class="system-status-card">
+      <div class="system-status-header">
+        <div class="system-status-pill">
+          <span class="status-live-dot"></span>
+          <span class="status-text">IDX Ready</span>
+        </div>
+        <button class="btn-sidebar-refresh" onclick="refreshActiveScreener()" title="Muat ulang cache hasil scan">
+          <span>🔄</span>
+        </button>
+      </div>
+      <div class="system-status-time">
+        <span class="time-label">Update:</span>
+        <span id="sidebar-last-scan" class="time-val">Belum pernah scan</span>
+      </div>
+      <!-- LIVE API QUOTA TRACKER -->
+      <div class="system-status-quota" id="sidebar-quota-box" title="Kuota Request Harian IDX Edge API">
+        <div class="quota-meta">
+          <span class="quota-label">API Quota</span>
+          <span id="sidebar-quota-text" class="quota-text">... / 1000</span>
+        </div>
+        <div class="quota-progress-track">
+          <div id="sidebar-quota-bar" class="quota-progress-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+      <!-- ADMIN SESSION & LOGOUT BAR -->
+      <div class="sidebar-user-card">
+        <div class="user-meta">
+          <div class="user-avatar-badge">A</div>
+          <div class="user-info">
+            <span class="user-name">Administrator</span>
+            <span class="user-status-label"><span class="user-live-dot"></span>Online</span>
+          </div>
+        </div>
+        <a href="/logout" class="btn-sidebar-logout" title="Keluar dari sesi Admin" onclick="return confirm('Apakah Anda yakin ingin keluar dari sesi Admin?')">
+          <span>🚪</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <span>Tirexxz Screnner</span>
+      <span>v2.0</span>
+    </div>
+  </div>
+</aside>

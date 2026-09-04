@@ -1,0 +1,374 @@
+/* ==============================================================================
+   TIREXXZ SCRENNER - ENTERPRISE CLEAR & GREEN LOGIN STYLESHEET
+   Design Philosophy: Enterprise Clear White & Emerald/Lime Green Accent
+   Clean, Crisp, Professional, High-Contrast (No sci-fi neon mesh)
+   ============================================================================== */
+
+:root {
+  --login-canvas-bg: #f8fafc;
+  --login-card-bg: #ffffff;
+  --login-card-border: #e2e8f0;
+  --login-card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.03);
+  
+  --login-text-headline: #0f172a;
+  --login-text-body: #334155;
+  --login-text-muted: #64748b;
+  
+  --login-input-bg: #ffffff;
+  --login-input-border: #cbd5e1;
+  --login-input-focus-border: #4d7c0f;
+  --login-input-focus-ring: rgba(77, 124, 15, 0.15);
+
+  --login-btn-bg: #4d7c0f;
+  --login-btn-hover: #3f6212;
+  --login-btn-active: #365314;
+  --login-btn-shadow: 0 2px 5px rgba(77, 124, 15, 0.25);
+}
+
+.login-body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--login-canvas-bg);
+  color: var(--login-text-body);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==============================================================================
+   1. MAIN CARD CONTAINER
+   ============================================================================== */
+
+.login-wrapper {
+  width: 100%;
+  max-width: 400px;
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
+.login-card-container {
+  background: var(--login-card-bg);
+  border: 1px solid var(--login-card-border);
+  border-radius: 12px;
+  padding: 32px 28px 24px;
+  box-shadow: var(--login-card-shadow);
+}
+
+/* ==============================================================================
+   2. BRAND & HEADER
+   ============================================================================== */
+
+.login-brand-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.brand-badge-clean {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+
+.brand-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #65a30d;
+}
+
+.brand-dot.pulse {
+  box-shadow: 0 0 0 0 rgba(101, 163, 13, 0.5);
+  animation: pulseGlow 2.5s infinite;
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(101, 163, 13, 0.6); }
+  70% { box-shadow: 0 0 0 6px rgba(101, 163, 13, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(101, 163, 13, 0); }
+}
+
+.brand-name-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+
+.brand-name-title span {
+  color: #4d7c0f;
+}
+
+.login-headline {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--login-text-headline);
+  margin: 0 0 6px 0;
+}
+
+.login-subtext {
+  font-size: 13px;
+  color: var(--login-text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ==============================================================================
+   3. ALERT BOX (CLEAN RED)
+   ============================================================================== */
+
+.login-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+
+.login-alert.hidden {
+  display: none;
+}
+
+.login-alert.shake {
+  animation: shake 0.35s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+/* ==============================================================================
+   4. FORM FIELDS (CRISP & TACTILE)
+   ============================================================================== */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #475569;
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 11px;
+  font-size: 13px;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.form-input {
+  width: 100%;
+  background: var(--login-input-bg);
+  border: 1px solid var(--login-input-border);
+  border-radius: 6px;
+  padding: 10px 36px 10px 34px;
+  font-size: 13.5px;
+  color: var(--login-text-headline);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-input:focus {
+  border-color: var(--login-input-focus-border);
+  box-shadow: 0 0 0 3px var(--login-input-focus-ring);
+}
+
+.form-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Toggle Password Visibility */
+.btn-toggle-password {
+  position: absolute;
+  right: 8px;
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 13px;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+}
+
+.btn-toggle-password:hover {
+  opacity: 1;
+}
+
+/* Options & Checkbox */
+.form-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -2px;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  font-size: 12px;
+  color: #475569;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  height: 15px;
+  width: 15px;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  margin-right: 8px;
+  display: inline-block;
+  position: relative;
+  transition: all 0.15s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  border-color: var(--login-input-focus-border);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #4d7c0f;
+  border-color: #4d7c0f;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 4.5px;
+  top: 1.5px;
+  width: 3.5px;
+  height: 7px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* ==============================================================================
+   5. SUBMIT BUTTON (SOLID RICH GREEN)
+   ============================================================================== */
+
+.btn-login-submit {
+  width: 100%;
+  background: var(--login-btn-bg);
+  color: #ffffff;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: var(--login-btn-shadow);
+  transition: all 0.15s ease;
+  margin-top: 4px;
+}
+
+.btn-login-submit:hover:not(:disabled) {
+  background: var(--login-btn-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(77, 124, 15, 0.35);
+}
+
+.btn-login-submit:active:not(:disabled) {
+  background: var(--login-btn-active);
+  transform: scale(0.98);
+}
+
+.btn-login-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner Loader */
+.btn-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+.btn-spinner.hidden {
+  display: none;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==============================================================================
+   6. SECURITY FOOTER
+   ============================================================================== */
+
+.login-card-footer {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 11px;
+  color: #94a3b8;
+  text-align: center;
+}

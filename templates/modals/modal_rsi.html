@@ -1,0 +1,88 @@
+<!-- RSI DIVERGENCE DETAIL MODAL -->
+<div id="rsi-modal" class="modal hidden" onclick="closeRsiModalOnBackdrop(event)">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <h3 id="rsi-modal-title">BBCA — Bank Central Asia</h3>
+        <p id="rsi-modal-subtitle">Inspeksi Sinyal RSI Divergence</p>
+      </div>
+      <button class="modal-close" onclick="closeRsiModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-stat-bar">
+        <div class="modal-stat-item">
+          <span class="m-stat-label">Harga Saat Ini</span>
+          <span id="rsi-modal-price" class="m-stat-val">Rp 0</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="m-stat-label">Tipe Divergence</span>
+          <span id="rsi-modal-type" class="m-stat-val lime">—</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="m-stat-label">RSI 14 Saat Ini</span>
+          <span id="rsi-modal-rsi" class="m-stat-val">0.0</span>
+        </div>
+        <div class="modal-stat-item">
+          <span class="m-stat-label">Waktu Deteksi</span>
+          <span id="rsi-modal-recency" class="m-stat-val">—</span>
+        </div>
+      </div>
+
+      <!-- Comparative Swing Diagram -->
+      <div class="rsi-diag-card">
+        <div class="rsi-diag-title">Perbandingan Pivot Swing Low (Harga vs RSI)</div>
+        <div class="rsi-diag-grid">
+          <div class="rsi-pivot-box prev">
+            <span class="pivot-tag">Swing Low Sebelumnya (<span id="rsi-diag-prev-bars">15 bar lalu</span>)</span>
+            <div class="pivot-values">
+              <div class="pivot-val-row">
+                <span class="lbl">Price:</span>
+                <span class="val" id="rsi-diag-prev-price">Rp 0</span>
+              </div>
+              <div class="pivot-val-row">
+                <span class="lbl">RSI:</span>
+                <span class="val" id="rsi-diag-prev-rsi">0.0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="rsi-diag-arrow">
+            <span class="arrow-symbol">→</span>
+            <span class="arrow-diff-price" id="rsi-diag-compare-price">Lower Low</span>
+            <span class="arrow-diff-rsi" id="rsi-diag-compare-rsi">Higher Low</span>
+          </div>
+
+          <div class="rsi-pivot-box curr">
+            <span class="pivot-tag">Swing Low Terkini (Pivot Low)</span>
+            <div class="pivot-values">
+              <div class="pivot-val-row">
+                <span class="lbl">Price:</span>
+                <span class="val" id="rsi-diag-curr-price">Rp 0</span>
+              </div>
+              <div class="pivot-val-row">
+                <span class="lbl">RSI:</span>
+                <span class="val" id="rsi-diag-curr-rsi">0.0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rsi-tech-interpretation">
+          <span class="tech-icon">💡</span>
+          <div class="tech-desc">
+            <strong>Interpretasi Teknikal:</strong>
+            <p id="rsi-tech-text">Penjelasan sinyal divergensi...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <a id="rsi-modal-tv-link" href="#" target="_blank" class="btn-tv-large">
+        <span>Buka Chart Lengkap di TradingView</span> ↗
+      </a>
+      <button class="btn-secondary" onclick="closeRsiModal()">Tutup</button>
+    </div>
+  </div>
+</div>

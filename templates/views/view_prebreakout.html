@@ -1,0 +1,138 @@
+<!-- ======================================================== -->
+<!-- 3. PRE-BREAKOUT SCREENER VIEW -->
+<!-- ======================================================== -->
+<div id="view-prebreakout" class="screener-view hidden">
+  <div class="view-header">
+    <div class="view-header-left">
+      <h1>Pre-Breakout Setup Screener</h1>
+      <p>Deteksi saham fase konsolidasi ketat di dekat resistance 50D dengan akumulasi volume (Ready to Breakout)</p>
+    </div>
+  </div>
+
+  <!-- STATS SUMMARY CARDS -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Total Setup Terdeteksi</span>
+        <span class="stat-icon">🎯</span>
+      </div>
+      <div id="pb-stat-total" class="stat-value">0</div>
+      <div class="stat-meta">Turnover ≥ Rp 500 Juta/Hari</div>
+    </div>
+
+    <div class="stat-card confirmed">
+      <div class="stat-card-header">
+        <span class="stat-label">Ready to Breakout</span>
+        <span class="stat-icon">⚡</span>
+      </div>
+      <div id="pb-stat-ready" class="stat-value lime">0</div>
+      <div class="stat-meta">Skor Sempurna 7 / 7 Kriteria</div>
+    </div>
+
+    <div class="stat-card watchlist">
+      <div class="stat-card-header">
+        <span class="stat-label">Forming Base</span>
+        <span class="stat-icon">⭐</span>
+      </div>
+      <div id="pb-stat-forming" class="stat-value amber">0</div>
+      <div class="stat-meta">Skor 5 – 6 / 7 Kriteria</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Acuan Resistance</span>
+        <span class="stat-icon">📐</span>
+      </div>
+      <div class="stat-value text-sm">50-Day High (&lt; 5%)</div>
+      <div id="pb-stat-last-time" class="stat-meta">Belum pernah scan</div>
+    </div>
+  </section>
+
+  <!-- DATA TABLE CONTAINER -->
+  <section class="table-card">
+    <div class="table-header-bar">
+      <div class="table-title-area">
+        <h2>Daftar Saham Pre-Breakout</h2>
+        <span id="pb-table-count-badge" class="count-pill">0 Setup</span>
+      </div>
+
+      <div class="table-header-right">
+        <!-- Quick Tab Filters -->
+        <div class="tab-filters">
+          <button id="pb-tab-all" class="tab-btn active" onclick="setPbTabFilter('ALL')">
+            Semua Setup (≥5)
+          </button>
+          <button id="pb-tab-ready" class="tab-btn" onclick="setPbTabFilter('READY')">
+            Ready to Breakout (7/7)
+          </button>
+          <button id="pb-tab-forming" class="tab-btn" onclick="setPbTabFilter('FORMING')">
+            Forming Base Saja (5-6)
+          </button>
+        </div>
+
+        <!-- Inline Score Slider Filter -->
+        <div class="toolbar-filter-slider">
+          <label for="pb-score-slider">Skor Min:</label>
+          <input 
+            type="range" 
+            id="pb-score-slider" 
+            class="score-slider-mini" 
+            min="5" 
+            max="7" 
+            value="5" 
+            step="1"
+            oninput="handlePbScoreSlider(this.value)"
+          >
+          <span id="pb-score-slider-val" class="slider-badge">≥ 5</span>
+        </div>
+
+        <!-- Table Utility Actions -->
+        <div class="table-actions">
+          <button class="btn-table-util" onclick="copyTradingViewWatchlist('prebreakout')" title="Salin daftar ticker untuk TradingView">
+            <span>📋</span> Copy Watchlist
+          </button>
+          <button class="btn-table-util" onclick="exportTableToCsv('prebreakout')" title="Download file CSV">
+            <span>📥</span> Export CSV
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table Responsive Wrapper -->
+    <div class="table-container">
+      <table class="data-table" id="pb-table">
+        <thead>
+          <tr>
+            <th onclick="sortPbTable('ticker')">Ticker <span class="sort-icon" id="pb-sort-ticker">↕</span></th>
+            <th onclick="sortPbTable('name')">Nama Emiten <span class="sort-icon" id="pb-sort-name">↕</span></th>
+            <th onclick="sortPbTable('sector')">Sektor <span class="sort-icon" id="pb-sort-sector">↕</span></th>
+            <th class="text-right" onclick="sortPbTable('price')">Harga Terakhir <span class="sort-icon" id="pb-sort-price">↕</span></th>
+            <th class="text-center" onclick="sortPbTable('total_score')">Skor Setup <span class="sort-icon" id="pb-sort-total_score">↕</span></th>
+            <th class="text-center" onclick="sortPbTable('status')">Status <span class="sort-icon" id="pb-sort-status">↕</span></th>
+            <th class="text-center">Kriteria (K1-K7)</th>
+            <th class="text-right" onclick="sortPbTable('dist_res_pct')">Jarak ke 50D High <span class="sort-icon" id="pb-sort-dist_res_pct">↕</span></th>
+            <th class="text-center" onclick="sortPbTable('rvol')">RVOL (Surge / Dry-Up) <span class="sort-icon" id="pb-sort-rvol">↕</span></th>
+            <th class="text-center" onclick="sortPbTable('rsi')">RSI 14 <span class="sort-icon" id="pb-sort-rsi">↕</span></th>
+            <th class="text-right" onclick="sortPbTable('volume')">Volume Harian <span class="sort-icon" id="pb-sort-volume">↕</span></th>
+            <th class="text-center">Bandar Flow</th>
+            <th class="text-center">Aksi / Detail</th>
+          </tr>
+        </thead>
+        <tbody id="pb-table-body">
+          <!-- Rendered via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty State Message -->
+    <div id="pb-empty-state" class="empty-state hidden">
+      <div class="empty-icon">🎯</div>
+      <h3>Tidak Ada Saham Pre-Breakout yang Memenuhi Kriteria</h3>
+      <p>Coba turunkan slider batas skor minimal atau klik tombol "Scan IDX Sekarang" untuk memperbarui data.</p>
+      <div class="empty-actions">
+        <button class="btn-secondary" onclick="resetPreBreakoutFilters()">🔄 Reset Filter</button>
+        <button class="btn-scan-small" onclick="triggerScan()">⚡ Scan IDX Sekarang</button>
+      </div>
+    </div>
+  </section>
+</div>

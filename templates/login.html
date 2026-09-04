@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Administrator — Tirexxz Screnner</title>
+  <meta name="description" content="Portal Autentikasi Administrator Tirexxz Screnner - Private Equity Screener System.">
+  
+  <!-- Font Stack & Stylesheet -->
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/login.css">
+</head>
+<body class="login-body">
+
+  <main class="login-wrapper">
+    <div class="login-card-container">
+      
+      <!-- Brand & Security Header -->
+      <div class="login-brand-header">
+        <h1 class="login-headline">Admin Access Portal</h1>
+        <p class="login-subtext">Masukkan kredensial administrator untuk membuka workstation.</p>
+      </div>
+
+      <!-- Feedback Alert Box (Hidden by default) -->
+      <div id="login-alert" class="login-alert hidden" role="alert">
+        <span class="alert-icon" id="alert-icon">⚠️</span>
+        <span class="alert-message" id="alert-message">Kredensial tidak valid</span>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="login-form" autocomplete="off" novalidate onsubmit="handleLoginSubmit(event)">
+        
+        <!-- Username Field -->
+        <div class="form-group">
+          <label for="username" class="form-label">Username</label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              class="form-input" 
+              placeholder="Masukkan username admin" 
+              required 
+              autofocus
+            >
+          </div>
+        </div>
+
+        <!-- Password Field with Show/Hide Toggle -->
+        <div class="form-group">
+          <div class="label-row">
+            <label for="password" class="form-label">Password</label>
+          </div>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="form-input" 
+              placeholder="Masukkan password" 
+              required
+            >
+            <button 
+              type="button" 
+              class="btn-toggle-password" 
+              id="btn-toggle-password" 
+              onclick="togglePasswordVisibility()" 
+              title="Lihat / Sembunyikan Password"
+            >
+              👁️
+            </button>
+          </div>
+        </div>
+
+        <!-- Remember Me Checkbox -->
+        <div class="form-options">
+          <label class="checkbox-container">
+            <input type="checkbox" id="remember" name="remember" value="true" checked>
+            <span class="checkmark"></span>
+            <span class="checkbox-label">Ingat sesi ini selama 30 hari</span>
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" id="btn-login-submit" class="btn-login-submit">
+          <span class="btn-text">Masuk ke Workstation</span>
+          <span class="btn-spinner hidden"></span>
+        </button>
+      </form>
+
+      <!-- Security Meta Footer -->
+      <div class="login-card-footer">
+        <span class="security-lock-icon">🛡️</span>
+        <span>Enkripsi Sesi HMAC SHA-256 • Akses Terbatas Admin</span>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="/static/js/login.js"></script>
+</body>
+</html>

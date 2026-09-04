@@ -1,0 +1,158 @@
+//@version=5
+indicator("Minervini SEPA Trend Template [8 Criteria]", shorttitle="Minervini Trend Template", overlay=true, precision=2)
+
+// ==============================================================================
+// 1. INPUT SETTINGS
+// ==============================================================================
+grp_ma          = "1. Moving Average Settings"
+len_ma50        = input.int(50, "MA 50 Length", minval=1, group=grp_ma)
+len_ma150       = input.int(150, "MA 150 Length", minval=1, group=grp_ma)
+len_ma200       = input.int(200, "MA 200 Length", minval=1, group=grp_ma)
+ma_type         = input.string("SMA", "MA Type", options=["SMA", "EMA"], group=grp_ma)
+len_slope_min   = input.int(22, "MA 200 Min Slope Lookback (≈1 Bulan)", minval=5, group=grp_ma)
+len_slope_ideal = input.int(88, "MA 200 Ideal Slope Lookback (≈4-5 Bulan)", minval=20, group=grp_ma)
+
+grp_52w         = "2. 52-Week High / Low Settings"
+len_52w         = input.int(252, "52-Week Lookback (Trading Days)", minval=50, tooltip="Jumlah bar harian dalam 1 tahun bursa (biasanya 250-252 hari)", group=grp_52w)
+pct_above_low   = input.float(25.0, "Min % Above 52W Low (Kriteria 6)", minval=0.0, step=1.0, tooltip="Harga minimal 25% - 30% di atas titik terendah 52 minggu", group=grp_52w)
+pct_within_high = input.float(25.0, "Max % Distance from 52W High (Kriteria 7)", minval=0.0, step=1.0, tooltip="Harga maksimal 25% di bawah titik tertinggi 52 minggu", group=grp_52w)
+
+grp_rs          = "3. Relative Strength (RS Proxy) Settings"
+benchmark_sym   = input.symbol("IDX:COMPOSITE", "Benchmark Index Symbol", tooltip="Indeks acuan (Contoh: IDX:COMPOSITE untuk IHSG, AMEX:SPY untuk S&P 500, NASDAQ:QQQ)", group=grp_rs)
+rs_threshold    = input.float(70.0, "RS Rating Minimum Threshold", minval=0.0, maxval=100.0, tooltip="Minervini mencari saham dengan RS minimal 70 (ideal 90+)", group=grp_rs)
+
+grp_vis         = "4. Visual & Dashboard Settings"
+show_table      = input.bool(true, "Tampilkan Dashboard SEPA", group=grp_vis)
+table_pos       = input.string("Top Right", "Posisi Dashboard", options=["Top Right", "Bottom Right", "Top Left", "Bottom Left"], group=grp_vis)
+color_bars      = input.bool(true, "Warnai Bar Saat Stage 2 Confirmed", group=grp_vis)
+highlight_bg    = input.bool(true, "Highlight Background Hijau Saat Stage 2", group=grp_vis)
+show_stage2_lbl = input.bool(true, "Tampilkan Label 'STAGE 2 CONFIRMED' Pertama Kali", group=grp_vis)
+show_52w_lines  = input.bool(true, "Plot Garis 52-Week High & Low", group=grp_vis)
+
+// ==============================================================================
+// 2. MOVING AVERAGE CALCULATIONS
+// ==============================================================================
+calc_ma(src, len, type) =>
+    type == "SMA" ? ta.sma(src, len) : ta.ema(src, len)
+
+ma50  = calc_ma(close, len_ma50, ma_type)
+ma150 = calc_ma(close, len_ma150, ma_type)
+ma200 = calc_ma(close, len_ma200, ma_type)
+
+// Cek kecukupan data historis (minimal 252 bar / ~1.5 tahun)
+has_enough_data = not na(close[len_52w]) and bar_index >= len_52w
+
+// Kemiringan MA 200: Level Minimum (1 bulan / 22 hari) & Level Ideal (4-5 bulan / 88 hari)
+ma200_slope_min_ok   = has_enough_data and (ma200 > ma200[len_slope_min])
+ma200_slope_ideal_ok = has_enough_data and (ma200 > ma200[len_slope_ideal])
+ma200_slope_pass     = ma200_slope_ideal_ok or ma200_slope_min_ok
+
+// ==============================================================================
+// 3. 52-WEEK HIGH / LOW CALCULATIONS
+// ==============================================================================
+high_52w = ta.highest(high, len_52w)
+low_52w  = ta.lowest(low, len_52w)
+
+dist_from_low_pct  = low_52w  != 0 ? ((close - low_52w) / low_52w) * 100.0 : 0.0
+dist_from_high_pct = high_52w != 0 ? ((high_52w - close) / high_52w) * 100.0 : 0.0
+
+// ==============================================================================
+// 4. RELATIVE STRENGTH (RS PROXY: IBD WEIGHTED + PERCENTILE RANK 0-100)
+// ==============================================================================
+// Formula pembobotan IBD: 40% Q1 (63 bar), 20% Q2 (126 bar), 20% Q3 (189 bar), 20% Q4 (252 bar)
+calc_ibd_perf(src) =>
+    r_3m  = not na(src[63])  and src[63]  != 0 ? (src - src[63])  / src[63]  : 0.0
+    r_6m  = not na(src[126]) and src[126] != 0 ? (src - src[126]) / src[126] : 0.0
+    r_9m  = not na(src[189]) and src[189] != 0 ? (src - src[189]) / src[189] : 0.0
+    r_12m = not na(src[252]) and src[252] != 0 ? (src - src[252]) / src[252] : 0.0
+    0.40 * r_3m + 0.20 * r_6m + 0.20 * r_9m + 0.20 * r_12m
+
+bench_close = request.security(benchmark_sym, timeframe.period, close, barmerge.gaps_off, barmerge.lookahead_off)
+
+stock_perf = calc_ibd_perf(close)
+bench_perf = calc_ibd_perf(bench_close)
+
+// Performa relatif saham terhadap benchmark
+rs_relative = (1.0 + stock_perf) / math.max(0.001, (1.0 + bench_perf))
+
+// Percentile Rank RS terhadap histori saham selama 252 bar (skala 0 - 100)
+rs_percentile = has_enough_data ? ta.percentrank(rs_relative, len_52w) : 0.0
+rs_score      = math.round(rs_percentile)
+
+// ==============================================================================
+// 5. 8 KRITERIA SEPA TREND TEMPLATE (MARK MINERVINI)
+// ==============================================================================
+// 1. Harga saat ini > MA 150 dan MA 200
+crit1 = has_enough_data and (close > ma150) and (close > ma200)
+
+// 2. MA 150 > MA 200
+crit2 = has_enough_data and (ma150 > ma200)
+
+// 3. MA 200 Trending Up (Kemiringan naik)
+crit3 = ma200_slope_pass
+
+// 4. MA 50 > MA 150 dan MA 200
+crit4 = has_enough_data and (ma50 > ma150) and (ma50 > ma200)
+
+// 5. Harga saat ini > MA 50
+crit5 = has_enough_data and (close > ma50)
+
+// 6. Harga minimal 25%–30% di atas 52-Week Low
+crit6 = has_enough_data and (dist_from_low_pct >= pct_above_low)
+
+// 7. Harga dalam rentang maksimal 25% dari 52-Week High
+crit7 = has_enough_data and (dist_from_high_pct <= pct_within_high)
+
+// 8. RS Rating Proxy >= 70 (ideal >= 90)
+crit8 = has_enough_data and (rs_score >= rs_threshold)
+
+// Total Skor Kriteria Terpenuhi (0 - 8)
+total_met = (crit1 ? 1 : 0) + (crit2 ? 1 : 0) + (crit3 ? 1 : 0) + (crit4 ? 1 : 0) + (crit5 ? 1 : 0) + (crit6 ? 1 : 0) + (crit7 ? 1 : 0) + (crit8 ? 1 : 0)
+
+all_criteria_met = has_enough_data and (total_met == 8)
+is_stage2_confirmed_new = all_criteria_met and not all_criteria_met[1]
+
+// ==============================================================================
+// 6. PLOTTING & VISUAL SIGNALS
+// ==============================================================================
+plot(ma50,  title="50 MA (Short Term)",   color=color.new(#2962FF, 0), linewidth=2)
+plot(ma150, title="150 MA (Medium Term)", color=color.new(#FF6D00, 0), linewidth=2)
+plot(ma200, title="200 MA (Long Term)",   color=ma200_slope_pass ? (ma200_slope_ideal_ok ? color.new(#00E676, 0) : color.new(#69F0AE, 0)) : color.new(#FF5252, 0), linewidth=3)
+
+p_high52 = plot(show_52w_lines ? high_52w : na, title="52-Week High", color=color.new(#00BCD4, 40), style=plot.style_linebr)
+p_low52  = plot(show_52w_lines ? low_52w  : na, title="52-Week Low",  color=color.new(#E91E63, 40), style=plot.style_linebr)
+
+// Visual Background: Hijau menyala sepanjang saham memenuhi 8 kriteria Stage 2
+bgcolor(highlight_bg and all_criteria_met ? color.new(#059669, 85) : na, title="Stage 2 Background")
+
+// Visual Bar Color: Hijau saat lolos Stage 2
+barcolor(color_bars and all_criteria_met ? #00E676 : na, title="Stage 2 Bar Color")
+
+// Visual Label: Muncul saat pertama kali Stage 2 Terkonfirmasi
+plotshape(show_stage2_lbl and is_stage2_confirmed_new, title="Stage 2 Confirmed Label", style=shape.labelup, location=location.belowbar, color=#059669, text="STAGE 2\nCONFIRMED", textcolor=color.white, size=size.normal)
+
+// ==============================================================================
+// 7. DASHBOARD STATUS TABLE
+// ==============================================================================
+var string t_pos = table_pos == "Top Right" ? position.top_right : table_pos == "Bottom Right" ? position.bottom_right : table_pos == "Top Left" ? position.top_left : position.bottom_left
+
+var table info_table = table.new(t_pos, 3, 11, bgcolor=color.new(#111827, 5), border_color=color.new(#374151, 0), border_width=1)
+
+f_row(tbl, r, num_str, title_str, is_pass, detail_str) =>
+    color status_bg = is_pass ? color.new(#059669, 20) : color.new(#DC2626, 20)
+    color status_fg = is_pass ? #34D399 : #F87171
+    string icon     = is_pass ? "✓ PASS" : "✗ FAIL"
+    
+    table.cell(tbl, 0, r, num_str, text_color=color.white, text_size=size.small, bgcolor=color.new(#1F2937, 20))
+    table.cell(tbl, 1, r, title_str, text_color=color.white, text_size=size.small, text_halign=text.align_left, bgcolor=color.new(#1F2937, 20))
+    table.cell(tbl, 2, r, icon + " (" + detail_str + ")", text_color=status_fg, text_size=size.small, bgcolor=status_bg)
+
+if barstate.islast and show_table
+    // Status Kemiringan MA200 Detail
+    string slope_status_str = ma200_slope_ideal_ok ? "✓ Ideal (>4-5m)" : (ma200_slope_min_ok ? "✓ Min (>1m)" : "✗ Flat/Down")
+
+    // Header Table
+    color hdr_bg = all_criteria_met ? color.new(#059669, 0) : (total_met >= 6 ? color.new(#D97706, 0) : color.new(#1E222D, 0))
+    string hdr_text = "SEPA TREND TEMPLATE (" + str.tostring(total_met) + "/8)"
+    table.cell(info_table, 0, 0, hdr_text, bgcolor=hdr_bg, text_color=color.white, text_size=size.small, text_halign=text.align_center)
+    table.merge_cells(info_table, 0, 0, 2, 0)

@@ -1,0 +1,125 @@
+/* ==========================================================================
+   SEPA TREND SCREENER STYLES
+   ========================================================================== */
+
+/* SEPA Score Mini Progress Bar */
+.score-cell-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.score-bar-track {
+  width: 44px;
+  height: 5px;
+  background: #e2e8f0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.score-bar-fill.score-8 {
+  background: var(--brand-lime-bright);
+}
+
+.score-bar-fill.score-6-7 {
+  background: var(--status-watchlist-text);
+}
+
+.score-bar-fill.score-low {
+  background: var(--status-fail-text);
+}
+
+.score-text {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
+  font-feature-settings: "tnum" 1;
+}
+
+.score-text.score-8 { color: var(--status-confirmed-text); }
+.score-text.score-6-7 { color: var(--status-watchlist-text); }
+.score-text.score-low { color: var(--status-fail-text); }
+
+/* Status Badges */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badge-status.confirmed {
+  color: var(--status-confirmed-text);
+  background: var(--status-confirmed-bg);
+  border: 1px solid var(--status-confirmed-border);
+}
+
+.badge-status.watchlist {
+  color: var(--status-watchlist-text);
+  background: var(--status-watchlist-bg);
+  border: 1px solid var(--status-watchlist-border);
+}
+
+/* Mini Criteria Pills [1] [2] ... [8] */
+.crit-pills-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.crit-pill {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: help;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.crit-pill:hover {
+  transform: translateY(-1px) scale(1.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  z-index: 5;
+}
+
+.crit-pill.pass {
+  background: var(--status-confirmed-bg);
+  color: var(--status-confirmed-text);
+  border: 1px solid var(--status-confirmed-border);
+}
+
+.crit-pill.fail {
+  background: var(--status-fail-bg);
+  color: var(--status-fail-text);
+  border: 1px solid var(--status-fail-border);
+  opacity: 1;
+}
+
+/* RS Rating Color Code */
+.rs-badge {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
+  font-feature-settings: "tnum" 1;
+}
+.rs-badge.rs-high { color: var(--status-confirmed-text); }
+.rs-badge.rs-mid { color: var(--status-watchlist-text); }
+.rs-badge.rs-low { color: var(--text-muted); }

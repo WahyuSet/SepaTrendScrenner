@@ -1,0 +1,16 @@
+# ==============================================================================
+# TIREXXZ SCRENNER - CRONTAB CONFIGURATION (AUTO-SCAN IDX)
+# ==============================================================================
+# Untuk memasang jadwal ini di VPS, jalankan:
+# crontab -e
+# Lalu salin baris di bawah ini ke bagian paling bawah file crontab.
+# ==============================================================================
+
+# OPSI A: Jika VPS menggunakan Timezone lokal Indonesia (WIB / Asia/Jakarta)
+# Jalankan setiap Senin - Jumat jam 18:00 WIB (setelah bursa tutup dan settle)
+CRON_TZ=Asia/Jakarta
+0 18 * * 1-5 /var/www/tirexxz-screener/venv/bin/python /var/www/tirexxz-screener/deploy/run_scan.py >> /var/log/tirexxz_cron.log 2>&1
+
+# OPSI B: Jika VPS menggunakan Timezone default UTC
+# Jam 18:00 WIB = Jam 11:00 UTC
+# 0 11 * * 1-5 /var/www/tirexxz-screener/venv/bin/python /var/www/tirexxz-screener/deploy/run_scan.py >> /var/log/tirexxz_cron.log 2>&1

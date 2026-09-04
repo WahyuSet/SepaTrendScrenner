@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tirexxz Screnner — SEPA Trend, RSI Divergence & Pre-Breakout</title>
+  
+  <!-- Custom Stylesheet (Apple San Francisco Font Stack & Modular Architecture) -->
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/components/stock_modal.css">
+</head>
+<body>
+
+  <div class="app-layout">
+    <!-- Sleek Minimalist Sidebar -->
+    {% include 'components/sidebar.html' %}
+
+    <!-- Main Workspace Container -->
+    <main class="main-content">
+      <!-- 1. SEPA Trend Screener View -->
+      {% include 'views/view_sepa.html' %}
+
+      <!-- 2. RSI Divergence Screener View -->
+      {% include 'views/view_rsi.html' %}
+
+      <!-- 3. Pre-Breakout Screener View -->
+      {% include 'views/view_prebreakout.html' %}
+    </main>
+  </div>
+
+  <!-- Modals & Dialogs -->
+  {% include 'modals/modal_sepa.html' %}
+  {% include 'modals/modal_rsi.html' %}
+  {% include 'modals/modal_prebreakout.html' %}
+  {% include 'modals/modal_stock_detail.html' %}
+  {% include 'modals/command_palette.html' %}
+
+  <!-- Toast Notifications Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Application Logic Modules -->
+  <script src="/static/js/core/utils.js"></script>
+  <script src="/static/js/core/export.js"></script>
+  <script src="/static/js/core/scanner.js"></script>
+  <script src="/static/js/core/stock_detail_modal.js"></script>
+  <script src="/static/js/screeners/sepa.js"></script>
+  <script src="/static/js/screeners/rsi.js"></script>
+  <script src="/static/js/screeners/prebreakout.js"></script>
+  <script src="/static/js/components/command-palette.js"></script>
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
