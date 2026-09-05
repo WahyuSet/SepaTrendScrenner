@@ -6,8 +6,9 @@ const state = {
   allResults: [],
   filteredResults: [],
   minScore: 6,
+  sectorFilter: 'ALL',
   searchQuery: '',
-  tabFilter: 'ALL', // 'ALL' | 'CONFIRMED' | 'WATCHLIST'
+  tabFilter: 'ALL', // 'ALL' | 'CONFIRMED' | 'WATCHLIST' | 'VCP_READY'
   sortCol: 'total_score',
   sortAsc: false
 };
@@ -22,6 +23,8 @@ async function loadCachedResults() {
       const { timestamp, stats, results } = json.data;
       state.allResults = results || [];
       renderStatsCards(stats, timestamp);
+      populateSectorDropdown(state.allResults);
+      updateTabCounters(state.allResults);
       applyFilters();
     } else {
       renderStatsCards(null, null);
@@ -35,16 +38,82 @@ async function loadCachedResults() {
   }
 }
 
-function handleScoreFilter(val) {
+function populateSectorDropdown(data) {
+  const select = document.getElementById('sepa-sector-filter');
+  if (!select) return;
+
+  const currentVal = select.value;
+  const sectors = [...new Set(data.map(d => d.sector).filter(Boolean))].sort();
+
+  let opts = '<option value="ALL">Semua Sektor (All)</option>';
+  sectors.forEach(sec => {
+    opts += `<option value="${sec}">${sec}</option>`;
+  });
+  select.innerHTML = opts;
+  if (sectors.includes(currentVal)) {
+    select.value = currentVal;
+  }
+}
+
+function updateTabCounters(data) {
+  const cntAll = document.getElementById('cnt-sepa-all');
+  const cntConf = document.getElementById('cnt-sepa-confirmed');
+  const cntWatch = document.getElementById('cnt-sepa-watchlist');
+  const cntVcp = document.getElementById('cnt-sepa-vcp');
+
+  if (cntAll) cntAll.textContent = data.length;
+  if (cntConf) cntConf.textContent = data.filter(d => d.status === 'CONFIRMED').length;
+  if (cntWatch) cntWatch.textContent = data.filter(d => d.status === 'WATCHLIST').length;
+  if (cntVcp) cntVcp.textContent = data.filter(d => d.is_sepa_vcp_ready).length;
+}
+
+function handleScorePill(val) {
   state.minScore = parseInt(val, 10);
-  const badge = document.getElementById('score-slider-val');
-  if (badge) badge.textContent = `≥ ${state.minScore}`;
+  
+  const pills = document.querySelectorAll('#sepa-score-pills .score-pill-btn');
+  pills.forEach(p => {
+    const scoreVal = parseInt(p.getAttribute('data-score'), 10);
+    if (scoreVal === state.minScore) {
+      p.classList.add('active');
+    } else {
+      p.classList.remove('active');
+    }
+  });
+
+  applyFilters();
+}
+
+function handleSectorFilter(val) {
+  state.sectorFilter = val;
+  applyFilters();
+}
+
+function resetSepaFilters() {
+  state.minScore = 6;
+  state.sectorFilter = 'ALL';
+  state.tabFilter = 'ALL';
+
+  // Reset UI elements
+  const select = document.getElementById('sepa-sector-filter');
+  if (select) select.value = 'ALL';
+
+  const pills = document.querySelectorAll('#sepa-score-pills .score-pill-btn');
+  pills.forEach(p => {
+    const scoreVal = parseInt(p.getAttribute('data-score'), 10);
+    p.classList.toggle('active', scoreVal === 6);
+  });
+
+  ['tab-all', 'tab-confirmed', 'tab-watchlist', 'tab-vcp'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', id === 'tab-all');
+  });
+
   applyFilters();
 }
 
 function setTabFilter(tab) {
   state.tabFilter = tab;
-  ['tab-all', 'tab-confirmed', 'tab-watchlist'].forEach(id => {
+  ['tab-all', 'tab-confirmed', 'tab-watchlist', 'tab-vcp'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('active');
   });
@@ -52,6 +121,7 @@ function setTabFilter(tab) {
   if (tab === 'ALL') document.getElementById('tab-all')?.classList.add('active');
   if (tab === 'CONFIRMED') document.getElementById('tab-confirmed')?.classList.add('active');
   if (tab === 'WATCHLIST') document.getElementById('tab-watchlist')?.classList.add('active');
+  if (tab === 'VCP_READY') document.getElementById('tab-vcp')?.classList.add('active');
 
   applyFilters();
 }
@@ -78,7 +148,7 @@ function sortTable(column) {
 function applyFilters() {
   let list = [...state.allResults];
 
-  // 1. Min Score Slider Filter
+  // 1. Min Score Filter
   list = list.filter(item => item.total_score >= state.minScore);
 
   // 2. Tab Filter
@@ -86,6 +156,26 @@ function applyFilters() {
     list = list.filter(item => item.status === 'CONFIRMED');
   } else if (state.tabFilter === 'WATCHLIST') {
     list = list.filter(item => item.status === 'WATCHLIST');
+  } else if (state.tabFilter === 'VCP_READY') {
+    list = list.filter(item => item.is_sepa_vcp_ready);
+  }
+
+  // 3. Sector Filter
+  if (state.sectorFilter !== 'ALL') {
+    list = list.filter(item => item.sector === state.sectorFilter);
+  }
+
+  // Update Reset button visibility
+  const resetBtn = document.getElementById('sepa-reset-btn');
+  const isCustomFiltered = (state.minScore !== 6 || state.sectorFilter !== 'ALL' || state.tabFilter !== 'ALL');
+  if (resetBtn) {
+    resetBtn.classList.toggle('hidden', !isCustomFiltered);
+  }
+
+  // Update Table Count Badge
+  const countBadge = document.getElementById('table-count-badge');
+  if (countBadge) {
+    countBadge.textContent = `${list.length} Saham Terkualifikasi`;
   }
 
   // 3. Search Query Filter
@@ -139,6 +229,9 @@ function renderStatsCards(stats, timestamp) {
 
   const timeText = timestamp || 'Belum pernah scan';
   if (statLastTime) statLastTime.textContent = timeText;
+  if (typeof updateSidebarLastScan === 'function') {
+    updateSidebarLastScan(timeText);
+  }
 }
 
 function renderSkeleton(rowCount = 8) {
@@ -154,7 +247,7 @@ function renderSkeleton(rowCount = 8) {
         <td><div class="skeleton-shimmer sk-cell" style="width: 50px;"></div></td>
         <td><div class="skeleton-shimmer sk-cell" style="width: 140px;"></div></td>
         <td><div class="skeleton-shimmer sk-cell" style="width: 90px;"></div></td>
-        <td class="text-right"><div class="skeleton-shimmer sk-cell" style="width: 70px;"></div></td>
+        <td><div class="skeleton-shimmer sk-cell" style="width: 70px;"></div></td>
         <td class="text-center"><div class="skeleton-shimmer sk-cell" style="width: 65px;"></div></td>
         <td class="text-center"><div class="skeleton-shimmer sk-cell" style="width: 95px;"></div></td>
         <td class="text-center"><div class="skeleton-shimmer sk-cell" style="width: 150px;"></div></td>
@@ -226,10 +319,15 @@ function renderTable(data) {
 
     rowsHtml += `
       <tr style="animation-delay: ${delay}ms" onclick="openCriteriaModal('${stock.ticker}')">
-        <td><span class="ticker-cell">${stock.ticker}</span></td>
+        <td>
+          <div class="ticker-cell-box">
+            <span class="ticker-cell">${stock.ticker}</span>
+            ${stock.is_sepa_vcp_ready ? `<span class="badge-sepa-vcp" title="Setup Emas: SEPA Confirmed & VCP Ready to Breakout!">⭐ VCP READY</span>` : ''}
+          </div>
+        </td>
         <td><div class="name-cell" title="${stock.name}">${stock.name}</div></td>
         <td><span class="sector-cell">${stock.sector}</span></td>
-        <td class="text-right">
+        <td>
           <span class="price-cell">${priceFormatted}</span>
           ${changeHtml}
         </td>

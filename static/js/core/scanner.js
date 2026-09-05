@@ -62,6 +62,10 @@ function startStatusPolling() {
         if (btnScan) btnScan.disabled = false;
         if (btnText) btnText.textContent = 'Scan IDX Sekarang';
 
+        if (data.last_scan_time && typeof updateSidebarLastScan === 'function') {
+          updateSidebarLastScan(data.last_scan_time);
+        }
+
         // Load new results for all three screeners
         const loaders = [];
         if (typeof loadCachedResults === 'function') loaders.push(loadCachedResults());
@@ -81,6 +85,12 @@ async function checkScanStatus() {
   try {
     const res = await fetch('/api/status');
     const data = await res.json();
+    if (data.last_scan_time && typeof updateSidebarLastScan === 'function') {
+      updateSidebarLastScan(data.last_scan_time);
+    }
+    if (data.market_status && typeof updateIDXMarketStatusUI === 'function') {
+      updateIDXMarketStatusUI(data.market_status);
+    }
     if (data.is_scanning) {
       startStatusPolling();
     }

@@ -39,6 +39,22 @@ function formatLotNumber(vol) {
 function openStockDetailModal(ticker, meta = {}) {
   if (!ticker) return;
   ticker = ticker.replace(".JK", "").trim().toUpperCase();
+
+  // Validate against 941 IDX master emiten if available
+  if (window.idxMasterTickersMap && Object.keys(window.idxMasterTickersMap).length > 0) {
+    if (!window.idxMasterTickersMap[ticker]) {
+      if (typeof showToast === 'function') {
+        showToast(`Ticker '${ticker}' tidak terdaftar di Bursa Efek Indonesia (IDX)`, 'warning');
+      } else {
+        alert(`Ticker '${ticker}' tidak terdaftar di Bursa Efek Indonesia (IDX)`);
+      }
+      return;
+    }
+    if (!meta.name && window.idxMasterTickersMap[ticker]) {
+      meta = window.idxMasterTickersMap[ticker];
+    }
+  }
+
   currentStockTicker = ticker;
   currentStockMeta = meta;
 

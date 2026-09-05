@@ -1,0 +1,524 @@
+/* ==========================================================================
+   MARKET REGIME BANNER & ADVANCED SCREENER BADGES (CLEAN WHITE THEME)
+   ========================================================================== */
+
+/* 1. Market Regime Banner Container */
+.market-regime-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.market-regime-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: var(--border-strong, #cbd5e1);
+  transition: background 0.3s ease;
+}
+
+/* Regime Variants - High Contrast Light Theme */
+.market-regime-card.regime-green {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+  border-color: #bbf7d0;
+  box-shadow: 0 2px 10px rgba(22, 163, 74, 0.08);
+}
+.market-regime-card.regime-green::before {
+  background: #16a34a;
+}
+
+.market-regime-card.regime-yellow {
+  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+  border-color: #fde68a;
+  box-shadow: 0 2px 10px rgba(217, 119, 6, 0.08);
+}
+.market-regime-card.regime-yellow::before {
+  background: #d97706;
+}
+
+.market-regime-card.regime-red {
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+  border-color: #fecaca;
+  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.08);
+}
+.market-regime-card.regime-red::before {
+  background: #dc2626;
+}
+
+/* Regime Left Section */
+.regime-left {
+  flex: 0 0 auto;
+}
+
+.regime-status-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.regime-icon {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.regime-green .regime-icon {
+  background: #dcfce7;
+  border-color: #bbf7d0;
+}
+.regime-yellow .regime-icon {
+  background: #fef3c7;
+  border-color: #fde68a;
+}
+.regime-red .regime-icon {
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+
+.regime-header-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.regime-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.regime-pill {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+}
+
+.badge-regime-green {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.badge-regime-yellow {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fcd34d;
+}
+
+.badge-regime-red {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+}
+
+.regime-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+}
+
+.regime-val {
+  font-weight: 800;
+  font-size: 15px;
+  color: #0f172a;
+}
+
+.regime-chg.pos {
+  color: #15803d;
+  font-weight: 700;
+}
+
+.regime-chg.neg {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.regime-divider {
+  color: #cbd5e1;
+}
+
+.regime-ma {
+  color: #475569;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Regime Center Section */
+.regime-center {
+  flex: 1 1 auto;
+  border-left: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  padding: 0 20px;
+}
+
+.regime-exposure-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.exposure-tag {
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.exposure-value {
+  font-size: 12px;
+  font-weight: 800;
+  padding: 2px 10px;
+  border-radius: 6px;
+}
+
+.exposure-green {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.exposure-yellow {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+
+.exposure-red {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.regime-desc {
+  font-size: 12px;
+  color: #334155;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+/* Regime Right Section */
+.regime-right {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.regime-time {
+  font-size: 11px;
+  color: #64748b;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+}
+
+/* 2. SEPA + VCP Ready Golden Badge */
+.ticker-cell-box {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.badge-sepa-vcp {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fcd34d;
+  letter-spacing: 0.03em;
+  width: fit-content;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.15);
+}
+
+/* 3. VCP Contraction & Volume Dry-Up Badges */
+.vcp-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.badge-vcp-perfect {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  box-shadow: 0 1px 3px rgba(4, 120, 87, 0.1);
+}
+
+.badge-vcp-tight {
+  background: #f0fdfa;
+  color: #0e7490;
+  border: 1px solid #99f6e4;
+}
+
+.badge-vcp-vdu {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.badge-vcp-base {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+}
+
+.vcp-subtext {
+  font-size: 10px;
+  color: #64748b;
+  font-family: var(--font-mono, monospace);
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+/* 4. Automated Trading Plan Table Pill (Pivot / SL / R:R) */
+.trading-plan-pill {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 5px 9px;
+  text-align: left;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  min-width: 155px;
+}
+
+.plan-line {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1.35;
+}
+
+.plan-line .lbl {
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 700;
+  width: 32px;
+}
+
+.plan-line.buy strong {
+  color: #0284c7;
+  font-weight: 800;
+}
+
+.plan-line.sl span {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.plan-line.sl .danger {
+  color: #991b1b;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.plan-line.tp span {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.plan-line.tp .success {
+  color: #15803d;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* 5. RSI Divergence Quality Grades */
+.grade-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.badge-grade-a {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #6ee7b7;
+  box-shadow: 0 1px 3px rgba(4, 120, 87, 0.12);
+}
+
+.badge-grade-b {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.badge-grade-c {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.trend-context-pill {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.trend-context-pill.trend-above span {
+  color: #16a34a;
+}
+
+.trend-context-pill.trend-below span {
+  color: #dc2626;
+}
+
+/* Risk Toggle Button */
+.btn-risk-toggle {
+  background: #fff1f2 !important;
+  color: #be123c !important;
+  border: 1px solid #fecdd3 !important;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.btn-risk-toggle:hover {
+  background: #ffe4e6 !important;
+}
+
+.btn-risk-toggle.active-filter {
+  background: #e11d48 !important;
+  color: #ffffff !important;
+  border-color: #e11d48 !important;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(225, 29, 72, 0.25);
+}
+
+/* 6. Modal Trading Plan Card */
+.modal-plan-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 16px 0;
+}
+
+.m-plan-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.m-plan-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.m-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.m-plan-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.m-plan-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.m-plan-val {
+  font-size: 17px;
+  font-weight: 800;
+  font-family: var(--font-mono, monospace);
+  color: #0f172a;
+}
+
+.m-plan-col.buy .m-plan-val {
+  color: #0284c7;
+}
+
+.m-plan-col.sl .m-plan-val.danger {
+  color: #dc2626;
+}
+
+.m-plan-col.tp .m-plan-val.success {
+  color: #16a34a;
+}
+
+.m-plan-sub {
+  font-size: 11px;
+  font-family: var(--font-mono, monospace);
+  color: #64748b;
+}
+
+.m-plan-sub.danger {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.m-plan-sub.success {
+  color: #15803d;
+  font-weight: 700;
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+  .market-regime-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .regime-center {
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 12px 0;
+    width: 100%;
+  }
+  .m-plan-grid {
+    grid-template-columns: 1fr;
+  }
+}

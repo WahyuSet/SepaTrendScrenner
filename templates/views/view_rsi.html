@@ -44,29 +44,59 @@
         <span class="stat-icon">⚙️</span>
       </div>
       <div class="stat-value text-sm">RSI 14 (P: 5/5)</div>
-      <div id="rsi-stat-last-time" class="stat-meta">Belum pernah scan</div>
+      <div id="rsi-stat-last-time" class="stat-meta">{{ last_scan_time or 'Belum pernah scan' }}</div>
     </div>
   </section>
 
   <!-- DATA TABLE CONTAINER -->
   <section class="table-card">
-    <div class="table-header-bar">
-      <div class="table-title-area">
-        <h2>Daftar Saham RSI Divergence</h2>
-        <span id="rsi-table-count-badge" class="count-pill">0 Sinyal</span>
+    <div class="table-toolbar-2tier">
+      <!-- ROW 1: Title, Count, & Segmented Status Tabs -->
+      <div class="table-toolbar-row-top">
+        <div class="table-title-area">
+          <h2>Daftar Saham RSI Divergence</h2>
+          <span id="rsi-table-count-badge" class="count-pill">0 Sinyal</span>
+        </div>
+
+        <!-- Segmented Quick Status Tabs with Live Counters -->
+        <div class="segmented-tabs">
+          <button id="rsi-tab-all" class="segmented-tab-btn active" onclick="setRsiTabFilter('ALL')">
+            Semua <span id="cnt-rsi-all" class="tab-counter">0</span>
+          </button>
+          <button id="rsi-tab-gradea" class="segmented-tab-btn" onclick="setRsiTabFilter('GRADE_A')">
+            🌟 Grade A <span id="cnt-rsi-gradea" class="tab-counter">0</span>
+          </button>
+          <button id="rsi-tab-reg" class="segmented-tab-btn" onclick="setRsiTabFilter('REGULAR_BULL')">
+            Regular <span id="cnt-rsi-reg" class="tab-counter">0</span>
+          </button>
+          <button id="rsi-tab-hid" class="segmented-tab-btn" onclick="setRsiTabFilter('HIDDEN_BULL')">
+            Hidden <span id="cnt-rsi-hid" class="tab-counter">0</span>
+          </button>
+        </div>
       </div>
 
-      <div class="table-header-right">
-        <!-- Quick Tab Filters -->
-        <div class="tab-filters">
-          <button id="rsi-tab-all" class="tab-btn active" onclick="setRsiTabFilter('ALL')">
-            Semua Sinyal
+      <!-- ROW 2: Actionable Filters & Utilities -->
+      <div class="table-toolbar-row-bottom">
+        <div class="filter-controls-group">
+          <!-- Sector Dropdown Filter -->
+          <div class="filter-item">
+            <span class="filter-label">Sektor:</span>
+            <div class="filter-select-wrapper">
+              <select id="rsi-sector-filter" class="filter-select" onchange="handleRsiSectorFilter(this.value)">
+                <option value="ALL">Semua Sektor (All)</option>
+              </select>
+              <span class="filter-select-arrow">▼</span>
+            </div>
+          </div>
+
+          <!-- Grade C Risk Filter Toggle -->
+          <button id="rsi-toggle-highrisk" class="tab-btn btn-risk-toggle" onclick="toggleRsiHighRisk()">
+            ⚠️ Sembunyikan Grade C
           </button>
-          <button id="rsi-tab-reg" class="tab-btn" onclick="setRsiTabFilter('REGULAR_BULL')">
-            Regular Bullish Saja
-          </button>
-          <button id="rsi-tab-hid" class="tab-btn" onclick="setRsiTabFilter('HIDDEN_BULL')">
-            Hidden Bullish Saja
+
+          <!-- Quick Reset Button -->
+          <button id="rsi-reset-btn" class="btn-reset-filters hidden" onclick="resetRsiFilters()" title="Reset semua filter ke default">
+            ↺ Reset
           </button>
         </div>
 
@@ -90,12 +120,13 @@
             <th onclick="sortRsiTable('ticker')">Ticker <span class="sort-icon" id="rsi-sort-ticker">↕</span></th>
             <th onclick="sortRsiTable('name')">Nama Emiten <span class="sort-icon" id="rsi-sort-name">↕</span></th>
             <th onclick="sortRsiTable('sector')">Sektor <span class="sort-icon" id="rsi-sort-sector">↕</span></th>
-            <th class="text-right" onclick="sortRsiTable('price')">Harga Terakhir <span class="sort-icon" id="rsi-sort-price">↕</span></th>
+            <th onclick="sortRsiTable('price')">Harga Terakhir <span class="sort-icon" id="rsi-sort-price">↕</span></th>
+            <th class="text-center" onclick="sortRsiTable('grade')">Grade Kualitas <span class="sort-icon" id="rsi-sort-grade">↕</span></th>
             <th class="text-center" onclick="sortRsiTable('divergence_type')">Tipe Divergence <span class="sort-icon" id="rsi-sort-divergence_type">↕</span></th>
-            <th class="text-center" onclick="sortRsiTable('rsi')">Nilai RSI 14 <span class="sort-icon" id="rsi-sort-rsi">↕</span></th>
-            <th class="text-center">Pivot Compare (Price / RSI)</th>
+            <th class="text-center" onclick="sortRsiTable('rsi')">RSI 14 <span class="sort-icon" id="rsi-sort-rsi">↕</span></th>
+            <th class="text-center">Trend Context (MA50/MA200)</th>
+            <th class="text-center">Pivot Compare</th>
             <th class="text-center" onclick="sortRsiTable('bars_ago')">Waktu Sinyal <span class="sort-icon" id="rsi-sort-bars_ago">↕</span></th>
-            <th class="text-right" onclick="sortRsiTable('volume')">Volume Harian <span class="sort-icon" id="rsi-sort-volume">↕</span></th>
             <th class="text-center">Aksi / Chart</th>
           </tr>
         </thead>

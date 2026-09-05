@@ -44,46 +44,78 @@
         <span class="stat-icon">📐</span>
       </div>
       <div class="stat-value text-sm">50-Day High (&lt; 5%)</div>
-      <div id="pb-stat-last-time" class="stat-meta">Belum pernah scan</div>
+      <div id="pb-stat-last-time" class="stat-meta">{{ last_scan_time or 'Belum pernah scan' }}</div>
     </div>
   </section>
 
   <!-- DATA TABLE CONTAINER -->
   <section class="table-card">
-    <div class="table-header-bar">
-      <div class="table-title-area">
-        <h2>Daftar Saham Pre-Breakout</h2>
-        <span id="pb-table-count-badge" class="count-pill">0 Setup</span>
-      </div>
-
-      <div class="table-header-right">
-        <!-- Quick Tab Filters -->
-        <div class="tab-filters">
-          <button id="pb-tab-all" class="tab-btn active" onclick="setPbTabFilter('ALL')">
-            Semua Setup (≥5)
-          </button>
-          <button id="pb-tab-ready" class="tab-btn" onclick="setPbTabFilter('READY')">
-            Ready to Breakout (7/7)
-          </button>
-          <button id="pb-tab-forming" class="tab-btn" onclick="setPbTabFilter('FORMING')">
-            Forming Base Saja (5-6)
-          </button>
+    <div class="table-toolbar-2tier">
+      <!-- ROW 1: Title, Count, & Segmented Status Tabs -->
+      <div class="table-toolbar-row-top">
+        <div class="table-title-area">
+          <h2>Daftar Saham Pre-Breakout</h2>
+          <span id="pb-table-count-badge" class="count-pill">0 Setup</span>
         </div>
 
-        <!-- Inline Score Slider Filter -->
-        <div class="toolbar-filter-slider">
-          <label for="pb-score-slider">Skor Min:</label>
-          <input 
-            type="range" 
-            id="pb-score-slider" 
-            class="score-slider-mini" 
-            min="5" 
-            max="7" 
-            value="5" 
-            step="1"
-            oninput="handlePbScoreSlider(this.value)"
-          >
-          <span id="pb-score-slider-val" class="slider-badge">≥ 5</span>
+        <!-- Segmented Quick Status Tabs with Live Counters -->
+        <div class="segmented-tabs">
+          <button id="pb-tab-all" class="segmented-tab-btn active" onclick="setPbTabFilter('ALL')">
+            Semua <span id="cnt-pb-all" class="tab-counter">0</span>
+          </button>
+          <button id="pb-tab-ready" class="segmented-tab-btn" onclick="setPbTabFilter('READY')">
+            🚀 Ready <span id="cnt-pb-ready" class="tab-counter">0</span>
+          </button>
+          <button id="pb-tab-forming" class="segmented-tab-btn" onclick="setPbTabFilter('FORMING')">
+            ⏳ Forming <span id="cnt-pb-forming" class="tab-counter">0</span>
+          </button>
+          <button id="pb-tab-vdu" class="segmented-tab-btn" onclick="setPbTabFilter('VDU')">
+            💧 VDU Saja <span id="cnt-pb-vdu" class="tab-counter">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ROW 2: Actionable Filters & Utilities -->
+      <div class="table-toolbar-row-bottom">
+        <div class="filter-controls-group">
+          <!-- Sector Dropdown Filter -->
+          <div class="filter-item">
+            <span class="filter-label">Sektor:</span>
+            <div class="filter-select-wrapper">
+              <select id="pb-sector-filter" class="filter-select" onchange="handlePbSectorFilter(this.value)">
+                <option value="ALL">Semua Sektor (All)</option>
+              </select>
+              <span class="filter-select-arrow">▼</span>
+            </div>
+          </div>
+
+          <!-- Pola VCP Filter Dropdown -->
+          <div class="filter-item">
+            <span class="filter-label">Pola VCP:</span>
+            <div class="filter-select-wrapper">
+              <select id="pb-vcp-filter" class="filter-select" onchange="handlePbVcpFilter(this.value)">
+                <option value="ALL">Semua Pola</option>
+                <option value="TIGHT">VCP Tight Saja 🎯</option>
+                <option value="VDU">Volume Dry-Up 💧</option>
+              </select>
+              <span class="filter-select-arrow">▼</span>
+            </div>
+          </div>
+
+          <!-- Score Selector Pills -->
+          <div class="filter-item">
+            <span class="filter-label">Skor Min:</span>
+            <div class="score-pills-group" id="pb-score-pills">
+              <button type="button" class="score-pill-btn active" data-score="5" onclick="handlePbScorePill(5)">Semua (≥5)</button>
+              <button type="button" class="score-pill-btn" data-score="6" onclick="handlePbScorePill(6)">≥ 6</button>
+              <button type="button" class="score-pill-btn" data-score="7" onclick="handlePbScorePill(7)">7/7 🚀</button>
+            </div>
+          </div>
+
+          <!-- Quick Reset Button -->
+          <button id="pb-reset-btn" class="btn-reset-filters hidden" onclick="resetPbFilters()" title="Reset semua filter ke default">
+            ↺ Reset
+          </button>
         </div>
 
         <!-- Table Utility Actions -->
@@ -106,14 +138,15 @@
             <th onclick="sortPbTable('ticker')">Ticker <span class="sort-icon" id="pb-sort-ticker">↕</span></th>
             <th onclick="sortPbTable('name')">Nama Emiten <span class="sort-icon" id="pb-sort-name">↕</span></th>
             <th onclick="sortPbTable('sector')">Sektor <span class="sort-icon" id="pb-sort-sector">↕</span></th>
-            <th class="text-right" onclick="sortPbTable('price')">Harga Terakhir <span class="sort-icon" id="pb-sort-price">↕</span></th>
+            <th onclick="sortPbTable('price')">Harga Terakhir <span class="sort-icon" id="pb-sort-price">↕</span></th>
             <th class="text-center" onclick="sortPbTable('total_score')">Skor Setup <span class="sort-icon" id="pb-sort-total_score">↕</span></th>
             <th class="text-center" onclick="sortPbTable('status')">Status <span class="sort-icon" id="pb-sort-status">↕</span></th>
+            <th class="text-center">Pola VCP / VDU</th>
+            <th class="text-center">Rencana Trading (Pivot • SL • TP1)</th>
             <th class="text-center">Kriteria (K1-K7)</th>
-            <th class="text-right" onclick="sortPbTable('dist_res_pct')">Jarak ke 50D High <span class="sort-icon" id="pb-sort-dist_res_pct">↕</span></th>
-            <th class="text-center" onclick="sortPbTable('rvol')">RVOL (Surge / Dry-Up) <span class="sort-icon" id="pb-sort-rvol">↕</span></th>
+            <th class="text-right" onclick="sortPbTable('dist_res_pct')">Jarak 50D High <span class="sort-icon" id="pb-sort-dist_res_pct">↕</span></th>
+            <th class="text-center" onclick="sortPbTable('rvol')">RVOL <span class="sort-icon" id="pb-sort-rvol">↕</span></th>
             <th class="text-center" onclick="sortPbTable('rsi')">RSI 14 <span class="sort-icon" id="pb-sort-rsi">↕</span></th>
-            <th class="text-right" onclick="sortPbTable('volume')">Volume Harian <span class="sort-icon" id="pb-sort-volume">↕</span></th>
             <th class="text-center">Bandar Flow</th>
             <th class="text-center">Aksi / Detail</th>
           </tr>

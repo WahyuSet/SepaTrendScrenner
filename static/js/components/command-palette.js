@@ -4,6 +4,35 @@
 
 let cmdSelectedIndex = 0;
 let cmdFilteredItems = [];
+let idxMasterTickers = [];
+let idxMasterTickersMap = {};
+
+// Preload 941 IDX Master Tickers on script load
+async function loadIdxMasterTickers() {
+  try {
+    const res = await fetch('/api/idx/tickers');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.status === 'success' && Array.isArray(data.data)) {
+        idxMasterTickers = data.data;
+        idxMasterTickersMap = {};
+        data.data.forEach(item => {
+          idxMasterTickersMap[item.ticker] = item;
+        });
+        window.idxMasterTickers = idxMasterTickers;
+        window.idxMasterTickersMap = idxMasterTickersMap;
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load IDX master tickers:', err);
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadIdxMasterTickers);
+} else {
+  loadIdxMasterTickers();
+}
 
 document.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
@@ -99,8 +128,8 @@ function getBaseCommands() {
       id: 'act-copy-sepa',
       group: 'Aksi Cepat',
       icon: '📋',
-      title: 'Salin Watchlist SEPA ke TradingView',
-      desc: 'Copy semua ticker terfilter format IDX:TICKER',
+      title: 'Salin Watchlist SEPA Trend ke TradingView',
+      desc: 'Copy semua ticker SEPA Stage 2 & Watchlist format IDX:TICKER',
       badge: 'Tool',
       action: () => copyTradingViewWatchlist('sepa')
     },
@@ -108,8 +137,8 @@ function getBaseCommands() {
       id: 'act-copy-rsi',
       group: 'Aksi Cepat',
       icon: '📋',
-      title: 'Salin Watchlist RSI ke TradingView',
-      desc: 'Copy semua ticker RSI divergence format IDX:TICKER',
+      title: 'Salin Watchlist RSI Divergence ke TradingView',
+      desc: 'Copy semua ticker RSI Divergence format IDX:TICKER',
       badge: 'Tool',
       action: () => copyTradingViewWatchlist('rsi')
     },
@@ -154,6 +183,7 @@ function getBaseCommands() {
 
 function handleCmdSearch(query) {
   const q = (query || '').trim().toLowerCase();
+  const cleanQ = q.toUpperCase();
   const baseCommands = getBaseCommands();
 
   let items = [];
@@ -169,28 +199,49 @@ function handleCmdSearch(query) {
     items = [...baseCommands];
   }
 
-  // Direct API Lookup for searched ticker (IDX Edge PRO)
-  if (q && q.length >= 2) {
-    const cleanQ = q.toUpperCase();
-    items.unshift({
-      id: `api-lookup-${cleanQ}`,
-      group: 'Riset Saham Komprehensif (IDX Edge PRO)',
-      icon: '🔍',
-      title: `Buka Analisa Komprehensif: ${cleanQ}`,
-      desc: `Bandarmologi, Top Brokers, Laporan Keuangan & Trading Plan untuk ${cleanQ}`,
-      badge: 'API Lookup',
-      action: () => {
-        closeCommandPalette();
-        openStockDetailModal(cleanQ);
-      }
-    });
+  // Exact 4-letter ticker lookup (strict validation against 941 IDX master emiten)
+  const isFourLetter = cleanQ.length === 4 && /^[A-Z]{4}$/.test(cleanQ);
+
+  if (isFourLetter) {
+    const meta = idxMasterTickersMap[cleanQ];
+    if (meta) {
+      // Valid IDX ticker
+      items.unshift({
+        id: `api-lookup-${cleanQ}`,
+        group: 'Riset Saham Komprehensif (IDX Edge PRO)',
+        icon: '🔍',
+        title: `Buka Analisa Komprehensif: ${cleanQ} — ${meta.name}`,
+        desc: `${meta.sector} · Bandarmologi, Top Brokers & Trading Plan`,
+        badge: 'IDX PRO',
+        action: () => {
+          closeCommandPalette();
+          openStockDetailModal(cleanQ, meta);
+        }
+      });
+    } else {
+      // 4 letters but NOT registered in IDX (e.g. WWWW, XYZW) -> Block & warn!
+      items.unshift({
+        id: `api-lookup-invalid-${cleanQ}`,
+        group: 'Validasi Emiten IDX',
+        icon: '⚠️',
+        title: `Emiten '${cleanQ}' Tidak Terdaftar di BEI`,
+        desc: `Kode emiten ini tidak ditemukan dalam daftar 941 perusahaan resmi IDX.`,
+        badge: 'Tidak Valid',
+        isInvalid: true,
+        action: () => {
+          if (typeof showToast === 'function') {
+            showToast(`Kode emiten '${cleanQ}' tidak terdaftar di Bursa Efek Indonesia (IDX)`, 'warning');
+          }
+        }
+      });
+    }
   }
 
-  // Add matching stocks from loaded data
+  // Add matching stocks from loaded screener data
   const stockMatches = [];
   const seenTickers = new Set();
 
-  // Match from SEPA
+  // 1. Match from SEPA
   if (typeof state !== 'undefined' && state.allResults && state.allResults.length > 0) {
     state.allResults.forEach(s => {
       if (seenTickers.has(s.ticker)) return;
@@ -217,7 +268,7 @@ function handleCmdSearch(query) {
     });
   }
 
-  // Match from RSI Divergence
+  // 2. Match from RSI Divergence
   if (typeof rsiState !== 'undefined' && rsiState.allResults && rsiState.allResults.length > 0) {
     rsiState.allResults.forEach(s => {
       if (seenTickers.has(s.ticker)) return;
@@ -244,7 +295,7 @@ function handleCmdSearch(query) {
     });
   }
 
-  // Match from Pre-Breakout
+  // 3. Match from Pre-Breakout
   if (typeof prebreakoutState !== 'undefined' && prebreakoutState.allResults && prebreakoutState.allResults.length > 0) {
     prebreakoutState.allResults.forEach(s => {
       if (seenTickers.has(s.ticker)) return;
@@ -268,6 +319,33 @@ function handleCmdSearch(query) {
           }
         });
       }
+    });
+  }
+
+  // 4. Autocomplete from Master Tickers (941 IDX stocks)
+  if (q && q.length >= 2 && idxMasterTickers.length > 0) {
+    const masterMatches = idxMasterTickers
+      .filter(m => {
+        if (seenTickers.has(m.ticker)) return false;
+        if (isFourLetter && m.ticker === cleanQ) return false; // Already handled above
+        return m.ticker.startsWith(cleanQ) || (q.length >= 3 && m.name.toLowerCase().includes(q));
+      })
+      .slice(0, 8);
+
+    masterMatches.forEach(m => {
+      seenTickers.add(m.ticker);
+      stockMatches.push({
+        id: `master-${m.ticker}`,
+        group: 'Daftar Seluruh Saham BEI (IDX Master)',
+        icon: '🏢',
+        title: `${m.ticker} — ${m.name}`,
+        desc: `${m.sector} · Klik untuk Riset Bandarmologi & Financials`,
+        badge: 'IDX Edge',
+        action: () => {
+          closeCommandPalette();
+          openStockDetailModal(m.ticker, m);
+        }
+      });
     });
   }
 
@@ -300,18 +378,19 @@ function renderCmdList() {
     }
 
     const isSelected = index === cmdSelectedIndex;
+    const isInvalid = item.isInvalid || item.badge === 'Tidak Valid';
     html += `
-      <div class="cmd-item ${isSelected ? 'selected' : ''}" 
+      <div class="cmd-item ${isSelected ? 'selected' : ''} ${isInvalid ? 'disabled-item' : ''}" 
            id="cmd-item-${index}"
            onclick="executeCmdItem(${index})">
         <div class="cmd-item-left">
           <span class="cmd-item-icon">${item.icon}</span>
           <div class="cmd-item-info">
-            <span class="cmd-item-title">${item.title}</span>
+            <span class="cmd-item-title ${isInvalid ? 'text-amber' : ''}">${item.title}</span>
             <span class="cmd-item-desc">${item.desc}</span>
           </div>
         </div>
-        <span class="cmd-item-badge">${item.badge}</span>
+        <span class="cmd-item-badge ${isInvalid ? 'badge-invalid' : ''}">${item.badge}</span>
       </div>
     `;
   });
@@ -341,9 +420,17 @@ function handleCmdKeydown(e) {
 
 function executeCmdItem(index) {
   const item = cmdFilteredItems[index];
-  if (item && typeof item.action === 'function') {
-    closeCommandPalette();
-    item.action();
+  if (item) {
+    if (item.isInvalid || item.badge === 'Tidak Valid') {
+      if (typeof item.action === 'function') {
+        item.action();
+      }
+      return;
+    }
+    if (typeof item.action === 'function') {
+      closeCommandPalette();
+      item.action();
+    }
   }
 }
 

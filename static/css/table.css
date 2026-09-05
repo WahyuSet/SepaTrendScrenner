@@ -11,14 +11,25 @@
   flex-direction: column;
 }
 
-.table-header-bar {
-  padding: 14px 20px;
+/* ==========================================================================
+   2-TIER MODERN PRO TERMINAL TOOLBAR
+   ========================================================================== */
+.table-toolbar-2tier {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
   border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Row 1: Title, Live Count, and Segmented Status Tabs */
+.table-toolbar-row-top {
+  padding: 12px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
+  border-bottom: 1px solid var(--border-subtle);
   background: #ffffff;
 }
 
@@ -33,6 +44,7 @@
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.01em;
+  margin: 0;
 }
 
 .count-pill {
@@ -41,115 +53,203 @@
   font-weight: 700;
   color: var(--text-secondary);
   background: var(--bg-tertiary);
-  padding: 3px 8px;
+  padding: 3px 9px;
   border-radius: 12px;
   border: 1px solid var(--border-subtle);
   font-feature-settings: "tnum" 1;
 }
 
-.table-header-right {
+/* Row 2: Precision Filter Controls & Utility Actions */
+.table-toolbar-row-bottom {
+  padding: 9px 20px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 12px;
   flex-wrap: wrap;
+  gap: 12px;
+  background: #fcfdfe;
 }
 
-/* Quick Tab Filters */
-.tab-filters {
+.filter-controls-group {
   display: flex;
   align-items: center;
-  gap: 4px;
-  background: var(--bg-tertiary);
-  padding: 3px;
-  border-radius: 7px;
-  border: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.tab-btn {
-  padding: 5px 12px;
-  border: none;
-  background: transparent;
-  border-radius: 5px;
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Custom Styled Select Dropdown */
+.filter-select-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.filter-select {
+  height: 32px;
+  padding: 0 28px 0 10px;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.filter-select:hover {
+  border-color: var(--border-strong);
+  background: #fafafa;
+}
+
+.filter-select:focus {
+  border-color: var(--brand-lime);
+  box-shadow: 0 0 0 2px var(--brand-lime-dim);
+}
+
+.filter-select-arrow {
+  position: absolute;
+  right: 9px;
+  pointer-events: none;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Segmented Quick Status Tabs */
+.segmented-tabs {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.segmented-tab-btn {
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
   cursor: pointer;
   transition: all 0.15s ease;
   user-select: none;
-}
-
-.tab-btn:hover {
-  color: var(--text-primary);
-}
-
-.tab-btn.active {
-  background: #ffffff;
-  color: var(--text-primary);
-  font-weight: 700;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-}
-
-/* Inline Score Slider Filter in Table Toolbar */
-.toolbar-filter-slider {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 10px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-subtle);
-  border-radius: 7px;
-  font-size: 12px;
+  gap: 6px;
 }
 
-.toolbar-filter-slider label {
-  font-weight: 600;
-  color: var(--text-secondary);
-  white-space: nowrap;
+.segmented-tab-btn:hover {
+  color: #1e293b;
 }
 
-.score-slider-mini {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 75px;
-  height: 4px;
-  border-radius: 2px;
-  background: #cbd5e1;
-  outline: none;
-  cursor: pointer;
-}
-
-.score-slider-mini::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  background: var(--brand-lime);
-  cursor: pointer;
-  border: 2px solid #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-  transition: transform 0.1s ease;
-}
-
-.score-slider-mini::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-}
-
-.slider-badge {
-  font-family: var(--font-mono);
-  font-size: 11px;
+.segmented-tab-btn.active {
+  background: #ffffff;
+  color: #0f172a;
   font-weight: 700;
-  color: var(--brand-lime);
-  background: var(--brand-lime-dim);
-  border: 1px solid var(--brand-lime-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.tab-counter {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
   padding: 1px 6px;
-  border-radius: 4px;
-  white-space: nowrap;
+  border-radius: 10px;
+  background: rgba(100, 116, 139, 0.12);
+  color: inherit;
   font-feature-settings: "tnum" 1;
 }
 
-/* Table Actions (Copy & Export) */
+.segmented-tab-btn.active .tab-counter {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* Segmented Score Pills (Replaces awkward range slider) */
+.score-pills-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: #f1f5f9;
+  padding: 2px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.score-pill-btn {
+  padding: 4px 10px;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  font-feature-settings: "tnum" 1;
+}
+
+.score-pill-btn:hover {
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.score-pill-btn.active {
+  background: #ffffff;
+  color: #047857;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  border: 1px solid #cbd5e1;
+}
+
+/* Reset Filter Button */
+.btn-reset-filters {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-reset-filters:hover {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+/* Table Utilities (Copy & Export) */
 .table-actions {
   display: flex;
   align-items: center;
@@ -159,9 +259,10 @@
 .btn-table-util {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: var(--bg-secondary);
+  gap: 5px;
+  height: 32px;
+  padding: 0 12px;
+  background: #ffffff;
   border: 1px solid var(--border-subtle);
   border-radius: 6px;
   color: var(--text-secondary);
@@ -169,8 +270,8 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow-card);
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .btn-table-util:hover {

@@ -200,3 +200,26 @@ dialog.cmd-dialog::backdrop {
   font-weight: 600;
   color: var(--text-muted);
 }
+
+/* Invalid / Disabled Items */
+.cmd-item.disabled-item {
+  opacity: 0.85;
+  cursor: not-allowed;
+  background: rgba(239, 68, 68, 0.04);
+}
+
+.cmd-item.disabled-item:hover,
+.cmd-item.disabled-item.selected {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.cmd-item-badge.badge-invalid {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+  font-weight: 700;
+}
+
+.cmd-item-title.text-amber {
+  color: #dc2626;
+}

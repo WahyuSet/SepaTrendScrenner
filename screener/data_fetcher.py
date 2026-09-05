@@ -43,7 +43,7 @@ class DataFetcher:
         yf_symbol = f"{ticker}.JK" if not ticker.endswith(".JK") else ticker
         try:
             stock = yf.Ticker(yf_symbol)
-            df = stock.history(period=period)
+            df = stock.history(period=period, auto_adjust=False)
             if df.empty:
                 return ticker, None, "Insufficient data"
             df = df.dropna(subset=['Close'])

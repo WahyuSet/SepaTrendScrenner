@@ -30,8 +30,9 @@ class RSIDivergenceCalculator:
 
     def detect_divergence(self, ticker, df, max_bars_ago=5):
         """
-        Detect Regular Bullish and Hidden Bullish Divergence on RSI(14) vs Price.
-        df must contain 'Close', 'Low', 'High', 'Volume'.
+        Detect Regular Bullish and Hidden Bullish Divergence on RSI(14) vs Price,
+        with Trend-Filter Grading (Grade A: Stage 2 Pullback, Grade B: Moderate,
+        Grade C: High Risk Downtrend / Falling Knife).
         """
         if df is None or df.empty:
             return None
@@ -41,7 +42,7 @@ class RSIDivergenceCalculator:
             return None
 
         close = df['Close']
-        low = df['Low']
+        low = df['Low'] if 'Low' in df else close
         high = df['High'] if 'High' in df else close
         volume = df['Volume'] if 'Volume' in df else pd.Series([0]*len(df), index=df.index)
 
@@ -132,6 +133,40 @@ class RSIDivergenceCalculator:
 
         recency_text = "Hari Ini" if latest_sig['bars_ago'] == 0 else f"{latest_sig['bars_ago']} Hari Lalu"
 
+        # -------------------------------------------------------------
+        # Trend Filter & Quality Grading (Anti-Falling Knife Protection)
+        # -------------------------------------------------------------
+        ma50_s = close.rolling(50).mean()
+        ma200_s = close.rolling(200).mean()
+        m50 = float(ma50_s.iloc[-1]) if len(close) >= 50 and not np.isnan(ma50_s.iloc[-1]) else curr_price
+        m200 = float(ma200_s.iloc[-1]) if len(close) >= 200 and not np.isnan(ma200_s.iloc[-1]) else curr_price
+
+        is_above_m200 = bool(curr_price > m200)
+        is_above_m50 = bool(curr_price > m50)
+
+        # Grade classification:
+        if is_above_m200 and is_above_m50:
+            # Strong Stage 2 Uptrend Rebound / Continuation
+            grade = "GRADE_A"
+            grade_badge = "Grade A 🌟"
+            grade_label = "Stage 2 Rebound / High Probability"
+            grade_class = "badge-grade-a"
+            is_high_risk = False
+        elif is_above_m200:
+            # Rebound above MA200 (Healthy Pullback)
+            grade = "GRADE_B"
+            grade_badge = "Grade B 🟡"
+            grade_label = "Moderate (Above MA200)"
+            grade_class = "badge-grade-b"
+            is_high_risk = False
+        else:
+            # Falling Knife Warning: Stock in Stage 4 Downtrend below MA200
+            grade = "GRADE_C"
+            grade_badge = "Grade C ⚠️"
+            grade_label = "High Risk (Downtrend / Below MA200)"
+            grade_class = "badge-grade-c"
+            is_high_risk = True
+
         return {
             'ticker': clean_ticker,
             'name': meta['name'],
@@ -139,6 +174,13 @@ class RSIDivergenceCalculator:
             'price': curr_price,
             'pct_change_1d': round(pct_change_1d, 2),
             'rsi': current_rsi,
+            'ma50': round(m50, 0),
+            'ma200': round(m200, 0),
+            'grade': grade,
+            'grade_badge': grade_badge,
+            'grade_label': grade_label,
+            'grade_class': grade_class,
+            'is_high_risk': is_high_risk,
             'divergence_type': latest_sig['type'],
             'divergence_label': latest_sig['label'],
             'bars_ago': latest_sig['bars_ago'],

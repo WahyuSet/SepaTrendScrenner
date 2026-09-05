@@ -2,11 +2,12 @@ import os
 import json
 import time
 import threading
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 from screener.calculator import SEPACalculator
 from screener.rsi_divergence import RSIDivergenceCalculator
 from screener.pre_breakout import PreBreakoutCalculator
+from screener.market_regime import MarketRegimeEvaluator
 from screener.idx_api_client import IDXApiClient
 from screener.auth import (
     get_secret_key,
@@ -30,7 +31,64 @@ CACHE_DIR = os.path.join(os.path.dirname(__file__), "data", "cache")
 CACHE_FILE = os.path.join(CACHE_DIR, "scan_result.json")
 RSI_CACHE_FILE = os.path.join(CACHE_DIR, "rsi_div_result.json")
 PREBREAKOUT_CACHE_FILE = os.path.join(CACHE_DIR, "pre_breakout_result.json")
+MARKET_REGIME_CACHE_FILE = os.path.join(CACHE_DIR, "market_regime.json")
 TICKERS_FILE = os.path.join(os.path.dirname(__file__), "data", "idx_tickers.csv")
+MASTER_TICKERS_FILE = os.path.join(os.path.dirname(__file__), "data", "idx_master_tickers.json")
+
+def load_master_tickers():
+    """Load master list of 941 IDX listed companies."""
+    if os.path.exists(MASTER_TICKERS_FILE):
+        try:
+            with open(MASTER_TICKERS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error loading master tickers: {e}")
+    return []
+
+MASTER_TICKERS_LIST = load_master_tickers()
+VALID_IDX_TICKERS = {item["ticker"] for item in MASTER_TICKERS_LIST} if MASTER_TICKERS_LIST else set()
+IDX_TICKER_META = {item["ticker"]: item for item in MASTER_TICKERS_LIST} if MASTER_TICKERS_LIST else {}
+
+def is_valid_idx_ticker(ticker):
+    """Check if ticker is a valid IDX common stock symbol."""
+    if not ticker or not isinstance(ticker, str):
+        return False
+    clean = ticker.replace(".JK", "").strip().upper()
+    return clean in VALID_IDX_TICKERS
+
+def get_idx_market_status():
+    """Get current IDX market trading status based on Jakarta time (WIB / UTC+7)."""
+    jakarta_tz = timezone(timedelta(hours=7))
+    now = datetime.now(jakarta_tz)
+    weekday = now.weekday()  # 0 = Monday, 6 = Sunday
+    t_min = now.hour * 60 + now.minute
+
+    if weekday in (5, 6):
+        return {
+            "status": "closed",
+            "label": "IDX Closed",
+            "detail": "Pasar Libur (Akhir Pekan)",
+            "is_open": False
+        }
+
+    is_friday = (weekday == 4)
+    s1_end = 11 * 60 + 30 if is_friday else 12 * 60
+    s2_start = 14 * 60 if is_friday else 13 * 60 + 30
+
+    if t_min < 8 * 60 + 45:
+        return {"status": "closed", "label": "IDX Closed", "detail": "Buka Sesi 1 jam 09:00 WIB", "is_open": False}
+    elif t_min < 9 * 60:
+        return {"status": "break", "label": "IDX Pre-Open", "detail": "Pra-Pembukaan (08:45 - 08:59 WIB)", "is_open": False}
+    elif t_min < s1_end:
+        return {"status": "open", "label": "IDX Open (Sesi 1)", "detail": "Perdagangan Sesi 1 Aktif", "is_open": True}
+    elif t_min < s2_start:
+        return {"status": "break", "label": "IDX Break", "detail": "Istirahat Siang Pasar", "is_open": False}
+    elif t_min < 15 * 60 + 50:
+        return {"status": "open", "label": "IDX Open (Sesi 2)", "detail": "Perdagangan Sesi 2 Aktif", "is_open": True}
+    elif t_min <= 16 * 60 + 15:
+        return {"status": "break", "label": "IDX Pre-Close", "detail": "Pra-Penutupan (15:50 - 16:15 WIB)", "is_open": False}
+    else:
+        return {"status": "closed", "label": "IDX Closed", "detail": "Pasar Tutup", "is_open": False}
 
 # Global scan status state
 scan_state = {
@@ -100,6 +158,17 @@ def save_prebreakout_cached_results(data):
             json.dump(data, f, indent=2)
     except Exception as e:
         print(f"Error saving Pre-Breakout cache: {e}")
+
+def load_market_regime_cached_results():
+    """Load Market Regime from cache JSON file."""
+    if os.path.exists(MARKET_REGIME_CACHE_FILE):
+        try:
+            with open(MARKET_REGIME_CACHE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error loading Market Regime cache: {e}")
+    regime_eval = MarketRegimeEvaluator(cache_dir=CACHE_DIR)
+    return regime_eval.get_cached_or_default()
 
 def background_scan_worker():
     """Background worker that performs the screening on all IDX tickers (SEPA + RSI + Pre-Breakout)."""
@@ -215,8 +284,8 @@ def background_scan_worker():
             if pb_res is not None:
                 pb_results.append(pb_res)
 
-        # Sort: total_score DESC, dist_res_pct ASC (closest to breakout first), rvol DESC
-        pb_results.sort(key=lambda x: (x['total_score'], -x['dist_res_pct'], x['rvol']), reverse=True)
+        # Sort: total_score DESC, is_vcp_tight DESC, is_vdu DESC, dist_res_pct ASC (closest first), rvol DESC
+        pb_results.sort(key=lambda x: (x['total_score'], x['is_vcp_tight'], x['is_vdu'], -x['dist_res_pct'], x['rvol']), reverse=True)
 
         ready_count = sum(1 for r in pb_results if r['status'] == 'READY')
         forming_count = sum(1 for r in pb_results if r['status'] == 'FORMING')
@@ -234,6 +303,24 @@ def background_scan_worker():
             "results": pb_results
         }
         save_prebreakout_cached_results(pb_payload)
+
+        # Step 6: Evaluate Market Regime & Cross-Reference SEPA + VCP
+        scan_state["current_ticker"] = "Evaluasi Market Regime IHSG..."
+        regime_eval = MarketRegimeEvaluator(cache_dir=CACHE_DIR)
+        regime_eval.evaluate(df=calc.rs_calc.bench_data)
+
+        # Cross-reference SEPA Confirmed with Pre-Breakout Ready
+        ready_pb_tickers = set(r['ticker'] for r in pb_results if r['status'] == 'READY')
+        for r in results:
+            if r['status'] == 'CONFIRMED' and r['ticker'] in ready_pb_tickers:
+                r['is_sepa_vcp_ready'] = True
+                r['sepa_vcp_badge'] = '⭐ SEPA + VCP READY'
+            else:
+                r['is_sepa_vcp_ready'] = False
+                r['sepa_vcp_badge'] = None
+
+        # Re-save SEPA results with cross-referenced badge
+        save_cached_results(payload)
 
     except Exception as e:
         scan_state["error"] = str(e)
@@ -321,8 +408,11 @@ def auth_status():
 @app.route("/")
 @admin_required
 def index():
-    """Render main application page."""
-    return render_template("index.html")
+    """Render main application page with initial scan and market status."""
+    cached = load_cached_results()
+    last_scan_time = cached.get("timestamp") if cached else None
+    market_status = get_idx_market_status()
+    return render_template("index.html", last_scan_time=last_scan_time, market_status=market_status)
 
 @app.route("/api/results", methods=["GET"])
 @admin_required
@@ -384,6 +474,13 @@ def get_prebreakout_results():
         }
     })
 
+@app.route("/api/market-regime", methods=["GET"])
+@admin_required
+def get_market_regime():
+    """Get current IHSG Market Regime status and exposure recommendation."""
+    data = load_market_regime_cached_results()
+    return jsonify({"status": "success", "data": data})
+
 @app.route("/api/scan", methods=["POST"])
 @admin_required
 def trigger_scan():
@@ -412,12 +509,23 @@ def get_status():
         "started_at": scan_state["started_at"],
         "error": scan_state["error"],
         "last_scan_time": last_scan_time,
+        "market_status": get_idx_market_status(),
         "stats": stats
     })
 
 # =========================================================================
 # IDX EDGE PRO API ENDPOINTS (ON-DEMAND & CACHED)
 # =========================================================================
+
+@app.route("/api/idx/tickers", methods=["GET"])
+@admin_required
+def get_idx_master_tickers():
+    """Get master list of 941 IDX listed companies for autocomplete and client validation."""
+    return jsonify({
+        "status": "success",
+        "count": len(MASTER_TICKERS_LIST),
+        "data": MASTER_TICKERS_LIST
+    })
 
 @app.route("/api/idx/quota", methods=["GET"])
 @admin_required
@@ -433,13 +541,20 @@ def get_idx_quota():
 @admin_required
 def get_idx_broker_summary(ticker):
     """Get broker summary and Bandarmologi metrics for a ticker."""
+    clean_ticker = ticker.replace(".JK", "").strip().upper()
+    if not is_valid_idx_ticker(clean_ticker):
+        return jsonify({
+            "status": "error",
+            "message": f"Ticker '{clean_ticker}' tidak terdaftar di Bursa Efek Indonesia (IDX)"
+        }), 404
+
     flow = request.args.get("flow", "all")
     force = request.args.get("force", "false").lower() == "true"
     try:
-        data = idx_client.get_broker_summary(ticker, flow=flow, force_refresh=force)
+        data = idx_client.get_broker_summary(clean_ticker, flow=flow, force_refresh=force)
         quota = idx_client.get_quota_status()
         if not data:
-            return jsonify({"status": "error", "message": f"Broker summary not found for {ticker}"}), 404
+            return jsonify({"status": "error", "message": f"Broker summary not found for {clean_ticker}"}), 404
         return jsonify({"status": "success", "data": data, "quota": quota})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
@@ -448,13 +563,20 @@ def get_idx_broker_summary(ticker):
 @admin_required
 def get_idx_broker_accum(ticker):
     """Get historical broker accumulation time series for a ticker."""
+    clean_ticker = ticker.replace(".JK", "").strip().upper()
+    if not is_valid_idx_ticker(clean_ticker):
+        return jsonify({
+            "status": "error",
+            "message": f"Ticker '{clean_ticker}' tidak terdaftar di Bursa Efek Indonesia (IDX)"
+        }), 404
+
     top = int(request.args.get("top", 3))
     force = request.args.get("force", "false").lower() == "true"
     try:
-        data = idx_client.get_broker_accumulation(ticker, top=top, force_refresh=force)
+        data = idx_client.get_broker_accumulation(clean_ticker, top=top, force_refresh=force)
         quota = idx_client.get_quota_status()
         if not data:
-            return jsonify({"status": "error", "message": f"Accumulation data not found for {ticker}"}), 404
+            return jsonify({"status": "error", "message": f"Accumulation data not found for {clean_ticker}"}), 404
         return jsonify({"status": "success", "data": data, "quota": quota})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
@@ -463,12 +585,19 @@ def get_idx_broker_accum(ticker):
 @admin_required
 def get_idx_financials(ticker):
     """Get financial statements and YoY EPS growth for a ticker."""
+    clean_ticker = ticker.replace(".JK", "").strip().upper()
+    if not is_valid_idx_ticker(clean_ticker):
+        return jsonify({
+            "status": "error",
+            "message": f"Ticker '{clean_ticker}' tidak terdaftar di Bursa Efek Indonesia (IDX)"
+        }), 404
+
     force = request.args.get("force", "false").lower() == "true"
     try:
-        data = idx_client.get_financial_statements(ticker, force_refresh=force)
+        data = idx_client.get_financial_statements(clean_ticker, force_refresh=force)
         quota = idx_client.get_quota_status()
         if not data:
-            return jsonify({"status": "error", "message": f"Financials not found for {ticker}"}), 404
+            return jsonify({"status": "error", "message": f"Financials not found for {clean_ticker}"}), 404
         return jsonify({"status": "success", "data": data, "quota": quota})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
@@ -477,12 +606,19 @@ def get_idx_financials(ticker):
 @admin_required
 def get_idx_analysis(ticker):
     """Get comprehensive automated analysis and trading plan for a ticker."""
+    clean_ticker = ticker.replace(".JK", "").strip().upper()
+    if not is_valid_idx_ticker(clean_ticker):
+        return jsonify({
+            "status": "error",
+            "message": f"Ticker '{clean_ticker}' tidak terdaftar di Bursa Efek Indonesia (IDX)"
+        }), 404
+
     force = request.args.get("force", "false").lower() == "true"
     try:
-        data = idx_client.get_comprehensive_analysis(ticker, force_refresh=force)
+        data = idx_client.get_comprehensive_analysis(clean_ticker, force_refresh=force)
         quota = idx_client.get_quota_status()
         if not data:
-            return jsonify({"status": "error", "message": f"Analysis not found for {ticker}"}), 404
+            return jsonify({"status": "error", "message": f"Analysis not found for {clean_ticker}"}), 404
         return jsonify({"status": "success", "data": data, "quota": quota})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500

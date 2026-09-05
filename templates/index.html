@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tirexxz Screnner — SEPA Trend, RSI Divergence & Pre-Breakout</title>
   
+  <!-- Favicon Tab Browser (Green Tirexxz Dino) -->
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+  <link rel="alternate icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦖</text></svg>">
+  
   <!-- Custom Stylesheet (Apple San Francisco Font Stack & Modular Architecture) -->
   <link rel="stylesheet" href="/static/css/style.css">
   <link rel="stylesheet" href="/static/css/components/stock_modal.css">
@@ -17,6 +21,9 @@
 
     <!-- Main Workspace Container -->
     <main class="main-content">
+      <!-- 0. Market Regime Health & Exposure Banner -->
+      {% include 'components/market_regime_banner.html' %}
+
       <!-- 1. SEPA Trend Screener View -->
       {% include 'views/view_sepa.html' %}
 
@@ -25,6 +32,9 @@
 
       <!-- 3. Pre-Breakout Screener View -->
       {% include 'views/view_prebreakout.html' %}
+
+      <!-- App Footer -->
+      {% include 'components/footer.html' %}
     </main>
   </div>
 

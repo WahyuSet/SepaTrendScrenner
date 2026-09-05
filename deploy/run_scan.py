@@ -20,6 +20,7 @@ if BASE_DIR not in sys.path:
 from screener.calculator import SEPACalculator
 from screener.rsi_divergence import RSIDivergenceCalculator
 from screener.pre_breakout import PreBreakoutCalculator
+from screener.market_regime import MarketRegimeEvaluator
 
 CACHE_DIR = os.path.join(BASE_DIR, "data", "cache")
 TICKERS_FILE = os.path.join(BASE_DIR, "data", "idx_tickers.csv")
@@ -50,9 +51,12 @@ def main():
 
     calc = SEPACalculator(tickers_csv_path=TICKERS_FILE)
 
-    # 1. Fetch Benchmark IHSG
-    log_msg("1/5 Mengunduh data benchmark IHSG (^JKSE)...")
+    # 1. Fetch Benchmark IHSG & Evaluate Market Regime
+    log_msg("1/5 Mengunduh data benchmark IHSG (^JKSE) & Evaluasi Market Regime...")
     calc.rs_calc.fetch_benchmark()
+    regime_eval = MarketRegimeEvaluator(cache_dir=CACHE_DIR)
+    reg_data = regime_eval.evaluate(df=calc.rs_calc.bench_data)
+    log_msg(f"   -> Status Pasar: {reg_data['regime_label']} | {reg_data['exposure_label']}")
 
     # 2. Ambil daftar ticker
     tickers = calc.fetcher.tickers_df['ticker'].tolist() if calc.fetcher.tickers_df is not None else []
@@ -109,7 +113,7 @@ def main():
     log_msg(f"SEPA Selesai: {confirmed_count} Confirmed, {watchlist_count} Watchlist.")
 
     # 4. Evaluasi RSI Divergence
-    log_msg("4/5 Mengevaluasi RSI Divergences...")
+    log_msg("4/5 Mengevaluasi RSI Divergences (dengan Grade Kualitas)...")
     rsi_calc = RSIDivergenceCalculator(tickers_csv_path=TICKERS_FILE)
     rsi_results = []
     for ticker, df in all_data.items():
@@ -120,6 +124,7 @@ def main():
     rsi_results.sort(key=lambda x: (x['bars_ago'], x['rsi']))
     reg_bull_count = sum(1 for r in rsi_results if r['divergence_type'] == 'REGULAR_BULL')
     hid_bull_count = sum(1 for r in rsi_results if r['divergence_type'] == 'HIDDEN_BULL')
+    grade_a_count = sum(1 for r in rsi_results if r.get('grade') == 'GRADE_A')
 
     rsi_payload = {
         "timestamp": time_str,
@@ -129,15 +134,16 @@ def main():
             "total_scanned": len(all_data),
             "total_divergences": len(rsi_results),
             "regular_bull_count": reg_bull_count,
-            "hidden_bull_count": hid_bull_count
+            "hidden_bull_count": hid_bull_count,
+            "grade_a_count": grade_a_count
         },
         "results": rsi_results
     }
     save_json(os.path.join(CACHE_DIR, "rsi_div_result.json"), rsi_payload)
-    log_msg(f"RSI Selesai: {len(rsi_results)} divergensi ditemukan ({reg_bull_count} Regular, {hid_bull_count} Hidden).")
+    log_msg(f"RSI Selesai: {len(rsi_results)} divergensi ditemukan ({reg_bull_count} Regular, {hid_bull_count} Hidden, {grade_a_count} Grade A).")
 
-    # 5. Evaluasi Pre-Breakout Setups
-    log_msg("5/5 Mengevaluasi Pre-Breakout Setups...")
+    # 5. Evaluasi Pre-Breakout Setups (VCP + VDU + Pivot/SL/RR)
+    log_msg("5/5 Mengevaluasi Pre-Breakout Setups (VCP + VDU + Trading Plan)...")
     pb_calc = PreBreakoutCalculator(tickers_csv_path=TICKERS_FILE, min_turnover_20d=500_000_000)
     pb_results = []
     for ticker, df in all_data.items():
@@ -145,7 +151,7 @@ def main():
         if pb_res is not None:
             pb_results.append(pb_res)
 
-    pb_results.sort(key=lambda x: (x['total_score'], -x['dist_res_pct'], x['rvol']), reverse=True)
+    pb_results.sort(key=lambda x: (x['total_score'], x['is_vcp_tight'], x['is_vdu'], -x['dist_res_pct'], x['rvol']), reverse=True)
     ready_count = sum(1 for r in pb_results if r['status'] == 'READY')
     forming_count = sum(1 for r in pb_results if r['status'] == 'FORMING')
 
@@ -163,6 +169,21 @@ def main():
     }
     save_json(os.path.join(CACHE_DIR, "pre_breakout_result.json"), pb_payload)
     log_msg(f"Pre-Breakout Selesai: {ready_count} READY to Breakout, {forming_count} FORMING.")
+
+    # Cross-reference SEPA Confirmed with Pre-Breakout Ready
+    ready_pb_tickers = set(r['ticker'] for r in pb_results if r['status'] == 'READY')
+    sepa_vcp_count = 0
+    for r in sepa_results:
+        if r['status'] == 'CONFIRMED' and r['ticker'] in ready_pb_tickers:
+            r['is_sepa_vcp_ready'] = True
+            r['sepa_vcp_badge'] = '⭐ SEPA + VCP READY'
+            sepa_vcp_count += 1
+        else:
+            r['is_sepa_vcp_ready'] = False
+            r['sepa_vcp_badge'] = None
+
+    save_json(os.path.join(CACHE_DIR, "scan_result.json"), sepa_payload)
+    log_msg(f"Sinergi SEPA+VCP: {sepa_vcp_count} saham terverifikasi SEPA Confirmed + VCP Ready!")
 
     duration = round(time.time() - start_time, 2)
     log_msg(f"=== CRON SCAN SELESAI SUKSES DALAM {duration} DETIK ===\n")

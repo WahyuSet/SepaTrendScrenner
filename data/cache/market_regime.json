@@ -1,0 +1,23 @@
+{
+  "symbol": "^JKSE",
+  "name": "Indeks Harga Saham Gabungan (IHSG)",
+  "updated_at": "2026-09-05 15:23:36",
+  "current_close": 6636.48,
+  "prev_close": 6667.89,
+  "chg_pts": -31.42,
+  "chg_pct": -0.47,
+  "ma20": 6465.41,
+  "ma50": 6223.04,
+  "ma200": 7367.25,
+  "dist_ma20_pct": 2.65,
+  "dist_ma50_pct": 6.64,
+  "dist_ma200_pct": -9.92,
+  "m50_slope_up": true,
+  "regime": "MARKET_CORRECTION",
+  "regime_label": "MARKET IN CORRECTION",
+  "color": "red",
+  "badge_class": "badge-regime-red",
+  "exposure_pct": 0,
+  "exposure_label": "Cash is King / 0-25% Defensive",
+  "action_desc": "IHSG berada di bawah MA200 (fase bearish / koreksi tajam). Risiko false breakout sangat tinggi, utamakan memegang uang tunai (cash)."
+}

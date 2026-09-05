@@ -44,46 +44,66 @@
         <span class="stat-icon">📈</span>
       </div>
       <div id="stat-benchmark" class="stat-value text-sm">Aktif (^JKSE)</div>
-      <div id="stat-last-time" class="stat-meta">Belum pernah scan</div>
+      <div id="stat-last-time" class="stat-meta">{{ last_scan_time or 'Belum pernah scan' }}</div>
     </div>
   </section>
 
   <!-- DATA TABLE CONTAINER -->
   <section class="table-card">
-    <div class="table-header-bar">
-      <div class="table-title-area">
-        <h2>Daftar Saham Terkualifikasi</h2>
-        <span id="table-count-badge" class="count-pill">0 Saham</span>
-      </div>
-
-      <div class="table-header-right">
-        <!-- Quick Tab Filters -->
-        <div class="tab-filters">
-          <button id="tab-all" class="tab-btn active" onclick="setTabFilter('ALL')">
-            Semua Terkualifikasi (≥6)
-          </button>
-          <button id="tab-confirmed" class="tab-btn" onclick="setTabFilter('CONFIRMED')">
-            Stage 2 Saja (8/8)
-          </button>
-          <button id="tab-watchlist" class="tab-btn" onclick="setTabFilter('WATCHLIST')">
-            Watchlist Saja (6-7)
-          </button>
+    <div class="table-toolbar-2tier">
+      <!-- ROW 1: Title, Count, & Segmented Status Tabs -->
+      <div class="table-toolbar-row-top">
+        <div class="table-title-area">
+          <h2>Daftar Saham Terkualifikasi</h2>
+          <span id="table-count-badge" class="count-pill">0 Saham</span>
         </div>
 
-        <!-- Inline Score Slider Filter -->
-        <div class="toolbar-filter-slider">
-          <label for="score-slider">Skor Min:</label>
-          <input 
-            type="range" 
-            id="score-slider" 
-            class="score-slider-mini" 
-            min="1" 
-            max="8" 
-            value="6" 
-            step="1"
-            oninput="handleScoreFilter(this.value)"
-          >
-          <span id="score-slider-val" class="slider-badge">≥ 6</span>
+        <!-- Segmented Status Tabs with Live Counters -->
+        <div class="segmented-tabs">
+          <button id="tab-all" class="segmented-tab-btn active" onclick="setTabFilter('ALL')">
+            Semua <span id="cnt-sepa-all" class="tab-counter">0</span>
+          </button>
+          <button id="tab-confirmed" class="segmented-tab-btn" onclick="setTabFilter('CONFIRMED')">
+            ⚡ Stage 2 <span id="cnt-sepa-confirmed" class="tab-counter">0</span>
+          </button>
+          <button id="tab-watchlist" class="segmented-tab-btn" onclick="setTabFilter('WATCHLIST')">
+            ⭐ Watchlist <span id="cnt-sepa-watchlist" class="tab-counter">0</span>
+          </button>
+          <button id="tab-vcp" class="segmented-tab-btn" onclick="setTabFilter('VCP_READY')">
+            🎯 VCP Ready <span id="cnt-sepa-vcp" class="tab-counter">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ROW 2: Actionable Filters & Utilities -->
+      <div class="table-toolbar-row-bottom">
+        <div class="filter-controls-group">
+          <!-- Sector Dropdown Filter -->
+          <div class="filter-item">
+            <span class="filter-label">Sektor:</span>
+            <div class="filter-select-wrapper">
+              <select id="sepa-sector-filter" class="filter-select" onchange="handleSectorFilter(this.value)">
+                <option value="ALL">Semua Sektor (All)</option>
+              </select>
+              <span class="filter-select-arrow">▼</span>
+            </div>
+          </div>
+
+          <!-- Score Selector Pills -->
+          <div class="filter-item">
+            <span class="filter-label">Skor Min:</span>
+            <div class="score-pills-group" id="sepa-score-pills">
+              <button type="button" class="score-pill-btn" data-score="1" onclick="handleScorePill(1)">Semua</button>
+              <button type="button" class="score-pill-btn active" data-score="6" onclick="handleScorePill(6)">≥ 6</button>
+              <button type="button" class="score-pill-btn" data-score="7" onclick="handleScorePill(7)">≥ 7</button>
+              <button type="button" class="score-pill-btn" data-score="8" onclick="handleScorePill(8)">8/8 ⭐</button>
+            </div>
+          </div>
+
+          <!-- Quick Reset Button -->
+          <button id="sepa-reset-btn" class="btn-reset-filters hidden" onclick="resetSepaFilters()" title="Reset semua filter ke default">
+            ↺ Reset
+          </button>
         </div>
 
         <!-- Table Utility Actions -->
@@ -106,7 +126,7 @@
             <th onclick="sortTable('ticker')">Ticker <span class="sort-icon" id="sort-ticker">↕</span></th>
             <th onclick="sortTable('name')">Nama Emiten <span class="sort-icon" id="sort-name">↕</span></th>
             <th onclick="sortTable('sector')">Sektor <span class="sort-icon" id="sort-sector">↕</span></th>
-            <th class="text-right" onclick="sortTable('price')">Harga Terakhir <span class="sort-icon" id="sort-price">↕</span></th>
+            <th onclick="sortTable('price')">Harga Terakhir <span class="sort-icon" id="sort-price">↕</span></th>
             <th class="text-center" onclick="sortTable('total_score')">SEPA Score <span class="sort-icon" id="sort-total_score">↕</span></th>
             <th class="text-center" onclick="sortTable('status')">Status Stage 2 <span class="sort-icon" id="sort-status">↕</span></th>
             <th class="text-center">Kriteria (C1-C8)</th>

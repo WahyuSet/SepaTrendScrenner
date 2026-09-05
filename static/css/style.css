@@ -24,3 +24,7 @@
 
 /* 7. Enterprise Stock Detail Modal (IDX Edge PRO) */
 @import url('/static/css/components/stock_modal.css');
+
+/* 8. Market Regime Banner & Advanced Screener Badges */
+@import url('/static/css/components/market_regime.css');
+

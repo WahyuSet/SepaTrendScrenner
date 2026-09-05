@@ -111,7 +111,13 @@ class IDXApiClient:
 
     def _clean_ticker(self, ticker):
         """Clean ticker string (e.g. 'BBCA.JK' -> 'BBCA')."""
-        return ticker.replace(".JK", "").strip().upper()
+        if not ticker or not isinstance(ticker, str):
+            return ""
+        clean = ticker.replace(".JK", "").strip().upper()
+        if not re.match(r'^[A-Z]{4}$', clean):
+            logger.warning(f"Invalid IDX ticker format rejected: '{clean}'")
+            return ""
+        return clean
 
     def _make_request(self, endpoint, params=None):
         """Make HTTP GET request to API with quota check and header authentication."""
@@ -143,6 +149,8 @@ class IDXApiClient:
     def get_broker_summary(self, ticker, flow="all", force_refresh=False):
         """Fetch and analyze Broker Summary with caching and concentration scoring."""
         ticker = self._clean_ticker(ticker)
+        if not ticker:
+            return None
         today = datetime.now().strftime("%Y-%m-%d")
 
         # Check Cache
@@ -270,6 +278,8 @@ class IDXApiClient:
     def get_broker_accumulation(self, ticker, top=3, force_refresh=False):
         """Fetch historical accumulation time series with caching."""
         ticker = self._clean_ticker(ticker)
+        if not ticker:
+            return None
         today = datetime.now().strftime("%Y-%m-%d")
 
         if not force_refresh:
@@ -351,6 +361,8 @@ class IDXApiClient:
     def get_financial_statements(self, ticker, period="quarterly", limit=8, force_refresh=False):
         """Fetch financial statements with 14-day caching and calculate YoY EPS growth."""
         ticker = self._clean_ticker(ticker)
+        if not ticker:
+            return None
 
         # Check Cache
         if not force_refresh:
@@ -466,6 +478,8 @@ class IDXApiClient:
     def get_comprehensive_analysis(self, ticker, force_refresh=False):
         """Fetch and parse comprehensive analysis markdown text."""
         ticker = self._clean_ticker(ticker)
+        if not ticker:
+            return None
         today = datetime.now().strftime("%Y-%m-%d")
 
         if not force_refresh:

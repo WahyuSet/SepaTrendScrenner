@@ -17,7 +17,7 @@ class RSCalculator:
         try:
             logger.info(f"Fetching benchmark data for {self.benchmark_symbol}...")
             bench = yf.Ticker(self.benchmark_symbol)
-            df = bench.history(period=period)
+            df = bench.history(period=period, auto_adjust=False)
             if df.empty or len(df) < 252:
                 logger.warning(f"Benchmark data length {len(df)} is less than 252 days.")
             

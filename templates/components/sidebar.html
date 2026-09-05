@@ -6,7 +6,9 @@
     <!-- 1. BRAND HEADER -->
     <div class="sidebar-header">
       <div class="brand">
-        <span class="brand-dot pulse"></span>
+        <div class="brand-dino-badge" title="Tirexxz Screnner">
+          <span class="dino-emoji">🦖</span>
+        </div>
         <div class="brand-title">
           <h2>Tirexxz <span>Screnner</span></h2>
         </div>
@@ -77,9 +79,9 @@
   <div class="sidebar-bottom">
     <div class="system-status-card">
       <div class="system-status-header">
-        <div class="system-status-pill">
-          <span class="status-live-dot"></span>
-          <span class="status-text">IDX Ready</span>
+        <div class="system-status-pill {{ market_status.status if market_status else 'closed' }}" id="sidebar-market-pill" title="{{ market_status.detail if market_status else 'Status Pasar Bursa Efek Indonesia' }}">
+          <span class="status-live-dot" id="sidebar-market-dot"></span>
+          <span class="status-text" id="sidebar-market-text">{{ market_status.label if market_status else 'IDX Closed' }}</span>
         </div>
         <button class="btn-sidebar-refresh" onclick="refreshActiveScreener()" title="Muat ulang cache hasil scan">
           <span>🔄</span>
@@ -87,7 +89,7 @@
       </div>
       <div class="system-status-time">
         <span class="time-label">Update:</span>
-        <span id="sidebar-last-scan" class="time-val">Belum pernah scan</span>
+        <span id="sidebar-last-scan" class="time-val">{{ last_scan_time or 'Belum pernah scan' }}</span>
       </div>
       <!-- LIVE API QUOTA TRACKER -->
       <div class="system-status-quota" id="sidebar-quota-box" title="Kuota Request Harian IDX Edge API">

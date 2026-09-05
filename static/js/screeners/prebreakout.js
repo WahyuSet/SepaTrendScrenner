@@ -6,7 +6,9 @@ const prebreakoutState = {
   allResults: [],
   filteredResults: [],
   minScore: 5,
-  tabFilter: 'ALL', // 'ALL' | 'READY' | 'FORMING'
+  sectorFilter: 'ALL',
+  vcpFilter: 'ALL',
+  tabFilter: 'ALL', // 'ALL' | 'READY' | 'FORMING' | 'VDU'
   searchQuery: '',
   sortCol: 'total_score',
   sortAsc: false
@@ -22,6 +24,8 @@ async function loadPreBreakoutResults() {
       const { timestamp, stats, results } = json.data;
       prebreakoutState.allResults = results || [];
       renderPreBreakoutStatsCards(stats, timestamp);
+      populatePbSectorDropdown(prebreakoutState.allResults);
+      updatePbTabCounters(prebreakoutState.allResults);
       applyPreBreakoutFilters();
     } else {
       renderPreBreakoutStatsCards(null, null);
@@ -51,6 +55,9 @@ function renderPreBreakoutStatsCards(stats, timestamp) {
   const timeText = timestamp || 'Belum pernah scan';
   if (statTime) statTime.textContent = timeText;
   if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '—');
+  if (typeof updateSidebarLastScan === 'function') {
+    updateSidebarLastScan(timeText);
+  }
 }
 
 function renderPreBreakoutSkeleton(count = 6) {
@@ -64,7 +71,7 @@ function renderPreBreakoutSkeleton(count = 6) {
         <td><div class="skeleton-shimmer sk-cell" style="width: 50px;"></div></td>
         <td><div class="skeleton-shimmer sk-cell" style="width: 130px;"></div></td>
         <td><div class="skeleton-shimmer sk-cell" style="width: 90px;"></div></td>
-        <td class="text-right"><div class="skeleton-shimmer sk-cell" style="width: 70px;"></div></td>
+        <td><div class="skeleton-shimmer sk-cell" style="width: 70px;"></div></td>
         <td class="text-center"><div class="skeleton-shimmer sk-cell" style="width: 50px;"></div></td>
         <td class="text-center"><div class="skeleton-shimmer sk-cell" style="width: 80px;"></div></td>
         <td class="text-center"><div class="skeleton-shimmer sk-cell" style="width: 120px;"></div></td>
@@ -80,17 +87,87 @@ function renderPreBreakoutSkeleton(count = 6) {
   tbody.innerHTML = skeletonHtml;
 }
 
-function handlePbScoreSlider(val) {
+function populatePbSectorDropdown(data) {
+  const select = document.getElementById('pb-sector-filter');
+  if (!select) return;
+
+  const currentVal = select.value;
+  const sectors = [...new Set(data.map(d => d.sector).filter(Boolean))].sort();
+
+  let opts = '<option value="ALL">Semua Sektor (All)</option>';
+  sectors.forEach(sec => {
+    opts += `<option value="${sec}">${sec}</option>`;
+  });
+  select.innerHTML = opts;
+  if (sectors.includes(currentVal)) {
+    select.value = currentVal;
+  }
+}
+
+function updatePbTabCounters(data) {
+  const cntAll = document.getElementById('cnt-pb-all');
+  const cntReady = document.getElementById('cnt-pb-ready');
+  const cntForming = document.getElementById('cnt-pb-forming');
+  const cntVdu = document.getElementById('cnt-pb-vdu');
+
+  if (cntAll) cntAll.textContent = data.length;
+  if (cntReady) cntReady.textContent = data.filter(d => d.status === 'READY').length;
+  if (cntForming) cntForming.textContent = data.filter(d => d.status === 'FORMING').length;
+  if (cntVdu) cntVdu.textContent = data.filter(d => d.is_vdu).length;
+}
+
+function handlePbScorePill(val) {
   prebreakoutState.minScore = parseInt(val, 10);
-  const badge = document.getElementById('pb-score-slider-val');
-  if (badge) badge.textContent = `≥ ${prebreakoutState.minScore}`;
+  
+  const pills = document.querySelectorAll('#pb-score-pills .score-pill-btn');
+  pills.forEach(p => {
+    const scoreVal = parseInt(p.getAttribute('data-score'), 10);
+    p.classList.toggle('active', scoreVal === prebreakoutState.minScore);
+  });
+
+  applyPreBreakoutFilters();
+}
+
+function handlePbSectorFilter(val) {
+  prebreakoutState.sectorFilter = val;
+  applyPreBreakoutFilters();
+}
+
+function handlePbVcpFilter(val) {
+  prebreakoutState.vcpFilter = val;
+  applyPreBreakoutFilters();
+}
+
+function resetPbFilters() {
+  prebreakoutState.minScore = 5;
+  prebreakoutState.sectorFilter = 'ALL';
+  prebreakoutState.vcpFilter = 'ALL';
+  prebreakoutState.tabFilter = 'ALL';
+
+  const secSelect = document.getElementById('pb-sector-filter');
+  if (secSelect) secSelect.value = 'ALL';
+
+  const vcpSelect = document.getElementById('pb-vcp-filter');
+  if (vcpSelect) vcpSelect.value = 'ALL';
+
+  const pills = document.querySelectorAll('#pb-score-pills .score-pill-btn');
+  pills.forEach(p => {
+    const scoreVal = parseInt(p.getAttribute('data-score'), 10);
+    p.classList.toggle('active', scoreVal === 5);
+  });
+
+  ['pb-tab-all', 'pb-tab-ready', 'pb-tab-forming', 'pb-tab-vdu'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', id === 'pb-tab-all');
+  });
+
   applyPreBreakoutFilters();
 }
 
 function setPbTabFilter(tab) {
   prebreakoutState.tabFilter = tab;
 
-  ['pb-tab-all', 'pb-tab-ready', 'pb-tab-forming'].forEach(id => {
+  ['pb-tab-all', 'pb-tab-ready', 'pb-tab-forming', 'pb-tab-vdu'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('active');
   });
@@ -98,6 +175,7 @@ function setPbTabFilter(tab) {
   if (tab === 'ALL') document.getElementById('pb-tab-all')?.classList.add('active');
   if (tab === 'READY') document.getElementById('pb-tab-ready')?.classList.add('active');
   if (tab === 'FORMING') document.getElementById('pb-tab-forming')?.classList.add('active');
+  if (tab === 'VDU') document.getElementById('pb-tab-vdu')?.classList.add('active');
 
   applyPreBreakoutFilters();
 }
@@ -131,9 +209,36 @@ function applyPreBreakoutFilters() {
     list = list.filter(item => item.status === 'READY');
   } else if (prebreakoutState.tabFilter === 'FORMING') {
     list = list.filter(item => item.status === 'FORMING');
+  } else if (prebreakoutState.tabFilter === 'VDU') {
+    list = list.filter(item => item.is_vdu);
   }
 
-  // 3. Search Query Filter
+  // 3. Sector Filter
+  if (prebreakoutState.sectorFilter !== 'ALL') {
+    list = list.filter(item => item.sector === prebreakoutState.sectorFilter);
+  }
+
+  // 4. VCP Pattern Filter
+  if (prebreakoutState.vcpFilter === 'TIGHT') {
+    list = list.filter(item => item.is_vcp_tight);
+  } else if (prebreakoutState.vcpFilter === 'VDU') {
+    list = list.filter(item => item.is_vdu);
+  }
+
+  // Update Reset button visibility
+  const resetBtn = document.getElementById('pb-reset-btn');
+  const isCustomFiltered = (prebreakoutState.minScore !== 5 || prebreakoutState.sectorFilter !== 'ALL' || prebreakoutState.vcpFilter !== 'ALL' || prebreakoutState.tabFilter !== 'ALL');
+  if (resetBtn) {
+    resetBtn.classList.toggle('hidden', !isCustomFiltered);
+  }
+
+  // Update Table Count Badge
+  const countBadge = document.getElementById('pb-table-count-badge');
+  if (countBadge) {
+    countBadge.textContent = `${list.length} Setup Terkualifikasi`;
+  }
+
+  // 5. Search Query Filter
   if (prebreakoutState.searchQuery) {
     list = list.filter(item =>
       item.ticker.toLowerCase().includes(prebreakoutState.searchQuery) ||
@@ -231,7 +336,7 @@ function renderPreBreakoutTable(data) {
         <td><span class="ticker-cell">${stock.ticker}</span></td>
         <td><div class="name-cell" title="${stock.name}">${stock.name}</div></td>
         <td><span class="sector-cell">${stock.sector}</span></td>
-        <td class="text-right">
+        <td>
           <span class="price-cell">${priceFormatted}</span>
           ${changeHtml}
         </td>
@@ -246,6 +351,21 @@ function renderPreBreakoutTable(data) {
         <td class="text-center">
           <span class="badge-status ${statusClass}">${statusIcon} ${stock.status_label}</span>
         </td>
+        <td class="text-center">
+          <span class="vcp-badge ${stock.vcp_class || 'badge-vcp-base'}" title="${stock.vcp_label || ''}">
+            ${stock.vcp_badge || 'BASE FORMING'}
+          </span>
+          <div class="vcp-subtext" title="Rasio Volatilitas ATR(5)/ATR(20)">
+            ATR Squeeze: ${stock.atr_ratio ? stock.atr_ratio.toFixed(2) : '1.0'}x
+          </div>
+        </td>
+        <td class="text-center">
+          <div class="trading-plan-pill">
+            <div class="plan-line buy"><span class="lbl">Pivot:</span> <strong>${stock.pivot_buy ? stock.pivot_buy.toLocaleString('id-ID') : '--'}</strong></div>
+            <div class="plan-line sl"><span class="lbl">SL:</span> <span>${stock.stop_loss ? stock.stop_loss.toLocaleString('id-ID') : '--'}</span> <small class="danger">(-${stock.risk_pct || 0}%)</small></div>
+            <div class="plan-line tp"><span class="lbl">TP1:</span> <span>${stock.target_1 ? stock.target_1.toLocaleString('id-ID') : '--'}</span> <small class="success">(1:2)</small></div>
+          </div>
+        </td>
         <td class="text-center" onclick="event.stopPropagation()">
           ${critPillsHtml}
         </td>
@@ -258,9 +378,6 @@ function renderPreBreakoutTable(data) {
         </td>
         <td class="text-center">
           <span class="rsi-pill neutral">${stock.rsi.toFixed(1)}</span>
-        </td>
-        <td class="text-right" style="font-family: var(--font-mono); font-size: 12px;">
-          ${volumeFormatted}
         </td>
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-cek-bandar" onclick="checkBandarInline('${stock.ticker}', this, event)" title="Ambil status akumulasi broker dari IDX Edge PRO API">
@@ -303,6 +420,24 @@ function openPreBreakoutModal(ticker) {
   const h50Str = (stock.high_50d || 0).toLocaleString('id-ID');
   if (dist) dist.textContent = `-${stock.dist_res_pct}% (50D High: Rp ${h50Str})`;
   if (tvLink) tvLink.href = stock.tradingview_url;
+
+  // Populate Trading Plan Card
+  const modalVcp = document.getElementById('pb-modal-vcp-badge');
+  const modalPivot = document.getElementById('pb-modal-pivot-buy');
+  const modalSl = document.getElementById('pb-modal-stop-loss');
+  const modalRisk = document.getElementById('pb-modal-risk-pct');
+  const modalTp1 = document.getElementById('pb-modal-target-1');
+  const modalTpPct = document.getElementById('pb-modal-tp-pct');
+
+  if (modalVcp) {
+    modalVcp.textContent = stock.vcp_badge || 'BASE FORMING';
+    modalVcp.className = `vcp-badge ${stock.vcp_class || 'badge-vcp-base'}`;
+  }
+  if (modalPivot) modalPivot.textContent = stock.pivot_buy ? `Rp ${stock.pivot_buy.toLocaleString('id-ID')}` : 'Rp 0';
+  if (modalSl) modalSl.textContent = stock.stop_loss ? `Rp ${stock.stop_loss.toLocaleString('id-ID')}` : 'Rp 0';
+  if (modalRisk) modalRisk.textContent = `Risiko: -${stock.risk_pct || 0}%`;
+  if (modalTp1) modalTp1.textContent = stock.target_1 ? `Rp ${stock.target_1.toLocaleString('id-ID')}` : 'Rp 0';
+  if (modalTpPct) modalTpPct.textContent = `Potensi: +${stock.target_1_pct || 0}%`;
 
   if (container && stock.criteria) {
     let listHtml = '';
