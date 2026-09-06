@@ -32,6 +32,7 @@ from screener.journal_db import (
     restore_from_json
 )
 from screener.idx_api_client import IDXApiClient
+from screener.backtest_engine import SignalBacktestEngine
 from screener.auth import (
     get_secret_key,
     get_session_durations,
@@ -50,6 +51,7 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 
 idx_client = IDXApiClient()
+backtest_engine = SignalBacktestEngine()
 
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "data", "cache")
 CACHE_FILE = os.path.join(CACHE_DIR, "scan_result.json")
@@ -921,6 +923,62 @@ def api_money_management_settings():
         return jsonify({"status": "success", "data": saved, "message": "Pengaturan berhasil disimpan"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 400
+
+# =========================================================================
+# SIGNAL BACKTEST & ACCURACY LAB API ENDPOINTS
+# =========================================================================
+@app.route("/api/backtest/summary", methods=["GET"])
+def api_backtest_summary():
+    """Return pre-computed or on-demand benchmark backtest statistics."""
+    try:
+        years = int(request.args.get("years", 2))
+        summary = backtest_engine.get_cached_benchmark_summary(years=years)
+        return jsonify(summary)
+    except Exception as e:
+        logger.error(f"Backtest summary error: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/api/backtest/ticker", methods=["GET"])
+def api_backtest_ticker():
+    """Run on-demand backtest for a specific ticker over requested period."""
+    ticker = request.args.get("symbol", "").strip().upper()
+    if not ticker:
+        return jsonify({"status": "error", "message": "Parameter symbol wajib diisi"}), 400
+    try:
+        years = int(request.args.get("years", 2))
+        res = backtest_engine.run_ticker_backtest(ticker, years=years)
+        return jsonify(res)
+    except Exception as e:
+        logger.error(f"Backtest ticker error for {ticker}: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/api/backtest/trades", methods=["GET"])
+def api_backtest_trades():
+    """Get list of historical backtested trades with optional filters."""
+    try:
+        run_id = request.args.get("run_id", "benchmark_2y")
+        setup = request.args.get("setup", "ALL")
+        status = request.args.get("status", "ALL")
+        limit = int(request.args.get("limit", 100))
+        trades = backtest_engine.get_trades_list(run_id=run_id, setup_type=setup, status=status, limit=limit)
+        return jsonify({"status": "success", "count": len(trades), "trades": trades})
+    except Exception as e:
+        logger.error(f"Backtest trades error: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/api/backtest/recompute", methods=["POST"])
+@admin_required
+def api_backtest_recompute():
+    """Trigger re-computation of benchmark sample."""
+    try:
+        data = request.get_json(silent=True) or {}
+        years = int(data.get("years", 2))
+        max_tickers = int(data.get("max_tickers", 35))
+        res = backtest_engine.compute_universe_benchmark(years=years, max_tickers=max_tickers)
+        return jsonify({"status": "success", "data": res, "message": "Benchmark berhasil dihitung ulang"})
+    except Exception as e:
+        logger.error(f"Recompute error: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)

@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="/static/css/style.css">
   <link rel="stylesheet" href="/static/css/components/stock_modal.css">
   <link rel="stylesheet" href="/static/css/screeners/watchlist.css?v=2.2">
+  <link rel="stylesheet" href="/static/css/screeners/backtest.css?v=1.0">
 </head>
 <body>
 
@@ -39,6 +40,9 @@
 
       <!-- 5. Personal Watchlist & Trade Journal View -->
       {% include 'views/view_watchlist.html' %}
+
+      <!-- 6. Signal Backtest & Accuracy Lab View -->
+      {% include 'views/view_backtest.html' %}
 
       <!-- App Footer -->
       {% include 'components/footer.html' %}
@@ -69,6 +73,7 @@
   <script src="/static/js/screeners/prebreakout.js"></script>
   <script src="/static/js/screeners/quality_setup.js"></script>
   <script src="/static/js/screeners/watchlist.js"></script>
+  <script src="/static/js/screeners/backtest.js"></script>
   <script src="/static/js/components/command-palette.js"></script>
   <script src="/static/js/main.js"></script>
 </body>

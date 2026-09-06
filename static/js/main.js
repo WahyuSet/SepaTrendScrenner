@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadPreBreakoutResults();
   loadQualityResults();
   loadWatchlistAndJournal();
+  if (typeof loadBacktestData === 'function') loadBacktestData();
 });
 
 async function loadMarketRegime() {
@@ -162,7 +163,7 @@ function updateSliderBackground(val) {
 
 function switchScreener(screenerId) {
   // Hide all views
-  ['view-sepa', 'view-rsi-div', 'view-prebreakout', 'view-quality', 'view-watchlist'].forEach(id => {
+  ['view-sepa', 'view-rsi-div', 'view-prebreakout', 'view-quality', 'view-watchlist', 'view-backtest'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.classList.remove('active');
@@ -171,7 +172,7 @@ function switchScreener(screenerId) {
   });
 
   // Remove active from all nav items / tabs
-  ['nav-sepa', 'nav-rsi-div', 'nav-prebreakout', 'nav-quality', 'nav-watchlist'].forEach(id => {
+  ['nav-sepa', 'nav-rsi-div', 'nav-prebreakout', 'nav-quality', 'nav-watchlist', 'nav-backtest'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('active');
   });
@@ -197,6 +198,13 @@ function switchScreener(screenerId) {
     document.getElementById('view-watchlist')?.classList.add('active');
     document.getElementById('nav-watchlist')?.classList.add('active');
     loadWatchlistAndJournal();
+  } else if (screenerId === 'backtest' || screenerId === 'lab') {
+    document.getElementById('view-backtest')?.classList.remove('hidden');
+    document.getElementById('view-backtest')?.classList.add('active');
+    document.getElementById('nav-backtest')?.classList.add('active');
+    if (typeof loadBacktestData === 'function') {
+      loadBacktestData();
+    }
   }
 }
 

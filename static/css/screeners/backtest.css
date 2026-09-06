@@ -1,0 +1,479 @@
+/* ==========================================================================
+   SIGNAL BACKTEST & ACCURACY LAB STYLESHEET (backtest.css)
+   ========================================================================== */
+
+/* 1. Header Toolbar & Controls */
+.backtest-toolbar-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle, #e2e8f0);
+}
+
+.bt-toolbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.select-wrapper-mini select {
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid var(--border-strong, #cbd5e1);
+  color: var(--text-primary, #0f172a);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.select-wrapper-mini select:focus {
+  border-color: #0284c7;
+}
+
+/* 2. On-Demand Ticker Inspector Strip */
+.backtest-ticker-inspector-strip {
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.inspector-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid var(--border-strong, #cbd5e1);
+  border-radius: 8px;
+  padding: 4px 8px 4px 12px;
+  flex: 1;
+  min-width: 280px;
+  max-width: 520px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.inspector-input-wrapper:focus-within {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+}
+
+.inspector-icon {
+  font-size: 14px;
+  color: var(--text-muted, #94a3b8);
+}
+
+.inspector-input-wrapper input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #0f172a);
+  background: transparent;
+}
+
+.btn-inspector-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: var(--brand-lime, #4d7c0f);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.btn-inspector-run:hover {
+  background: var(--brand-lime-hover, #3f6212);
+  transform: translateY(-1px);
+}
+
+.inspector-quick-chips {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chips-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted, #64748b);
+  letter-spacing: 0.04em;
+  margin-right: 2px;
+}
+
+.chip-item {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid var(--border-strong, #cbd5e1);
+  color: var(--text-primary, #0f172a);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chip-item:hover {
+  background: #f1f5f9;
+  border-color: #0284c7;
+  color: #0284c7;
+  transform: translateY(-1px);
+}
+
+.chip-item.reset {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1e40af;
+  font-family: var(--font-sans);
+}
+
+.chip-item.reset:hover {
+  background: #dbeafe;
+}
+
+/* 3. Top Bento KPI Cards */
+.backtest-kpi-bento {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.bt-kpi-card {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.15s ease;
+}
+
+.bt-kpi-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.bt-kpi-card.highlight-kpi {
+  background: linear-gradient(145deg, #ffffff 0%, #f0fdf4 100%);
+  border-color: #bbf7d0;
+}
+
+.kpi-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.kpi-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted, #64748b);
+  letter-spacing: 0.04em;
+}
+
+.kpi-badge {
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-family: var(--font-mono);
+}
+
+.kpi-badge.win {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.kpi-badge.neutral {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.kpi-badge.risk {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.kpi-body {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin: 4px 0 2px 0;
+}
+
+.kpi-number {
+  font-size: 26px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--text-primary, #0f172a);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.kpi-unit {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted, #64748b);
+}
+
+.kpi-foot {
+  font-size: 11px;
+  color: var(--text-secondary, #475569);
+  line-height: 1.3;
+}
+
+.text-danger {
+  color: #dc2626 !important;
+}
+
+.text-gain {
+  color: #16a34a !important;
+}
+
+/* 4. Strategy Head-to-Head Comparison Bento */
+.strategy-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.strategy-bento-card {
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: 10px;
+  padding: 14px 16px;
+  transition: all 0.15s ease;
+}
+
+.strategy-bento-card:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.strat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle, #e2e8f0);
+}
+
+.strat-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.strat-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.strat-title-row h4 {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-primary, #0f172a);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.strat-horizon-pill {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--text-muted, #64748b);
+  font-family: var(--font-mono);
+  margin-top: 2px;
+}
+
+.strat-score-badge {
+  font-size: 12px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.strat-card-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.strat-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.strat-col .sub-txt {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-muted, #64748b);
+  text-transform: uppercase;
+}
+
+.strat-col strong {
+  font-size: 14px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+}
+
+/* 5. Trade Status Badges */
+.badge-bt-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.badge-bt-status.tp2 {
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.badge-bt-status.tp1 {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.badge-bt-status.sl {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.badge-bt-status.expired {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+/* 6. Setup Type Badges */
+.badge-setup-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.badge-setup-type.breakout {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.badge-setup-type.pullback {
+  background: #ecfeff;
+  color: #0e7490;
+  border: 1px solid #a5f3fc;
+}
+
+.badge-setup-type.base {
+  background: #fdf4ff;
+  color: #a21caf;
+  border: 1px solid #f0abfc;
+}
+
+.mfe-mae-pill {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-secondary, #475569);
+}
+
+.mfe-mae-pill .mfe {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.mfe-mae-pill .mae {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+/* 7. Responsive Layout */
+@media (max-width: 1200px) {
+  .backtest-kpi-bento {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .strategy-comparison-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .backtest-kpi-bento {
+    grid-template-columns: 1fr 1fr;
+  }
+  .backtest-toolbar-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .bt-toolbar-controls {
+    justify-content: space-between;
+  }
+  .backtest-ticker-inspector-strip {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .inspector-input-wrapper {
+    max-width: 100%;
+  }
+}
