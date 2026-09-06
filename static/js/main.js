@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadRsiResults();
   loadPreBreakoutResults();
   loadQualityResults();
+  loadWatchlistAndJournal();
 });
 
 async function loadMarketRegime() {
@@ -161,7 +162,7 @@ function updateSliderBackground(val) {
 
 function switchScreener(screenerId) {
   // Hide all views
-  ['view-sepa', 'view-rsi-div', 'view-prebreakout', 'view-quality'].forEach(id => {
+  ['view-sepa', 'view-rsi-div', 'view-prebreakout', 'view-quality', 'view-watchlist'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.classList.remove('active');
@@ -170,7 +171,7 @@ function switchScreener(screenerId) {
   });
 
   // Remove active from all nav items / tabs
-  ['nav-sepa', 'nav-rsi-div', 'nav-prebreakout', 'nav-quality'].forEach(id => {
+  ['nav-sepa', 'nav-rsi-div', 'nav-prebreakout', 'nav-quality', 'nav-watchlist'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('active');
   });
@@ -191,6 +192,11 @@ function switchScreener(screenerId) {
     document.getElementById('view-quality')?.classList.remove('hidden');
     document.getElementById('view-quality')?.classList.add('active');
     document.getElementById('nav-quality')?.classList.add('active');
+  } else if (screenerId === 'watchlist' || screenerId === 'journal') {
+    document.getElementById('view-watchlist')?.classList.remove('hidden');
+    document.getElementById('view-watchlist')?.classList.add('active');
+    document.getElementById('nav-watchlist')?.classList.add('active');
+    loadWatchlistAndJournal();
   }
 }
 
@@ -202,6 +208,7 @@ function refreshActiveScreener() {
     loadRsiResults(),
     loadPreBreakoutResults(),
     loadQualityResults(),
+    loadWatchlistAndJournal(),
     checkScanStatus()
   ]).then(() => {
     showToast('✓ Data berhasil dimuat ulang dari server!');

@@ -23,6 +23,12 @@
       </div>
       
       <div class="stock-modal-header-actions">
+        <button class="btn-stock-util" onclick="openSizingFromDetailModal()" title="Hitung Sizing & Risiko">
+          <span>🧮</span> Sizing
+        </button>
+        <button id="detail-modal-pin-btn" class="btn-stock-util" onclick="togglePinFromDetailModal()" title="Pin ke Watchlist">
+          <span>⭐</span> Pin
+        </button>
         <button class="btn-stock-refresh" onclick="refreshCurrentStockTab()" title="Paksa segarkan data dari API (Bypass Cache)">
           <span class="refresh-icon">🔄</span>
           <span class="refresh-text">Refresh</span>

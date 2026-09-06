@@ -1,0 +1,209 @@
+<!-- ======================================================== -->
+<!-- POSITION SIZING & MONEY MANAGEMENT CALCULATOR MODAL -->
+<!-- ======================================================== -->
+<div id="modal-position-sizing" class="modal hidden" onclick="closePositionCalcOnBackdrop(event)">
+  <div class="modal-dialog position-calc-dialog" onclick="event.stopPropagation()">
+    <!-- MODAL HEADER -->
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <div class="calc-title-row">
+          <span class="calc-icon-badge">🧮</span>
+          <h2>Position Sizing & Money Management</h2>
+          <span class="calc-idx-pill">Standar IDX (1 Lot = 100 Lembar)</span>
+        </div>
+        <div class="calc-subtitle-row">
+          <span class="text-secondary">Hitung ukuran lot optimal berbasis disiplin risiko Mark Minervini & proteksi over-alokasi modal</span>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closePositionCalculator()" title="Tutup Kalkulator (Esc)">✕</button>
+    </div>
+
+    <!-- MODAL BODY: 2-COLUMN SPLIT -->
+    <div class="modal-body position-calc-body">
+      <!-- LEFT COLUMN: INPUT PARAMETERS -->
+      <div class="calc-inputs-panel">
+        <div class="calc-panel-title">
+          <span>⚙️</span>
+          <h3>Parameter Portofolio & Transaksi</h3>
+        </div>
+
+        <!-- Ticker & Target Info (Optional) -->
+        <div class="calc-field-group">
+          <label for="calc-ticker">Emiten / Saham (Opsional)</label>
+          <div class="calc-ticker-input-wrap">
+            <input type="text" id="calc-ticker" placeholder="e.g. BBCA, MPMX" maxlength="6" oninput="onCalcTickerChange(this.value)">
+            <span id="calc-ticker-meta" class="calc-ticker-meta">IDX Stock</span>
+          </div>
+        </div>
+
+        <!-- Modal Portofolio -->
+        <div class="calc-field-group">
+          <div class="field-label-row">
+            <label for="calc-capital">Total Modal Portofolio (IDR)</label>
+            <span id="calc-capital-display" class="calc-val-preview mono">Rp 100.000.000</span>
+          </div>
+          <input type="number" id="calc-capital" value="100000000" min="1000000" step="1000000" oninput="recomputePositionSizing()">
+        </div>
+
+        <!-- Toleransi Risiko per Transaksi -->
+        <div class="calc-field-group">
+          <div class="field-label-row">
+            <label>Toleransi Risiko per Transaksi (% Modal)</label>
+            <span id="calc-max-risk-display" class="calc-val-preview mono risk-val">Maks Loss: Rp 1.000.000 (1.0%)</span>
+          </div>
+          <div class="risk-presets-row">
+            <button type="button" class="btn-risk-pill" onclick="setRiskPreset(0.5)">0.5%</button>
+            <button type="button" class="btn-risk-pill active" onclick="setRiskPreset(1.0)">1.0%</button>
+            <button type="button" class="btn-risk-pill" onclick="setRiskPreset(1.5)">1.5%</button>
+            <button type="button" class="btn-risk-pill" onclick="setRiskPreset(2.0)">2.0%</button>
+            <input type="number" id="calc-risk-pct" value="1.0" min="0.1" max="10" step="0.1" class="calc-custom-risk-input" oninput="recomputePositionSizing()" title="Kustom % Risiko">
+            <span class="custom-pct-sym">%</span>
+          </div>
+        </div>
+
+        <!-- Harga Beli (Entry) & Stop Loss -->
+        <div class="calc-two-col-fields">
+          <div class="calc-field-group">
+            <label for="calc-entry">Harga Entry Beli (Rp)</label>
+            <input type="number" id="calc-entry" placeholder="e.g. 1000" min="1" step="1" oninput="recomputePositionSizing()">
+          </div>
+          <div class="calc-field-group">
+            <label for="calc-sl">Stop Loss / Cut Loss (Rp)</label>
+            <input type="number" id="calc-sl" placeholder="e.g. 950" min="1" step="1" oninput="recomputePositionSizing()">
+          </div>
+        </div>
+
+        <!-- Target 1 & Target 2 -->
+        <div class="calc-two-col-fields">
+          <div class="calc-field-group">
+            <label for="calc-t1">Target 1 TP (Rp)</label>
+            <input type="number" id="calc-t1" placeholder="e.g. 1100" min="1" step="1" oninput="recomputePositionSizing()">
+          </div>
+          <div class="calc-field-group">
+            <label for="calc-t2">Target 2 TP (Rp)</label>
+            <input type="number" id="calc-t2" placeholder="e.g. 1200" min="1" step="1" oninput="recomputePositionSizing()">
+          </div>
+        </div>
+
+        <!-- Cap Alokasi & Broker Fee Accordion -->
+        <div class="calc-advanced-box">
+          <div class="calc-advanced-header" onclick="toggleAdvancedCalcSettings()">
+            <span>🛠️ Pengaturan Batas Alokasi & Fee Broker</span>
+            <span id="adv-calc-chevron">▼</span>
+          </div>
+          <div id="adv-calc-body" class="calc-advanced-content hidden">
+            <div class="calc-field-group">
+              <label for="calc-max-cap">Batas Alokasi Maksimal per Saham (% Portofolio)</label>
+              <input type="number" id="calc-max-cap" value="20" min="5" max="100" step="5" oninput="recomputePositionSizing()">
+              <span class="field-hint">Mencegah over-alokasi jika stop loss terlalu rapat (Minervini merekomendasikan max 20-25%).</span>
+            </div>
+            <div class="calc-fee-row">
+              <label class="switch-label">
+                <input type="checkbox" id="calc-fee-enabled" checked onchange="recomputePositionSizing()">
+                <span class="switch-text">Hitung Simulasi Fee Broker IDX</span>
+              </label>
+              <div class="fee-subinputs">
+                <span>Beli: <input type="number" id="calc-fee-buy" value="0.15" step="0.01" min="0" oninput="recomputePositionSizing()">%</span>
+                <span>Jual: <input type="number" id="calc-fee-sell" value="0.25" step="0.01" min="0" oninput="recomputePositionSizing()">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: RESULTS BENTO DISPLAY -->
+      <div class="calc-results-panel">
+        <div class="calc-panel-title">
+          <span>📊</span>
+          <h3>Hasil Kalkulasi Position Sizing</h3>
+        </div>
+
+        <!-- HERO BENTO: RECOMMENDED LOTS -->
+        <div class="calc-hero-card">
+          <div class="hero-card-header">
+            <span class="hero-label">Rekomendasi Ukuran Pembelian</span>
+            <span id="calc-status-badge" class="hero-badge safe">✅ AMAN TERKONTROL</span>
+          </div>
+          <div class="hero-lot-display">
+            <span id="calc-result-lots" class="lot-number mono">0</span>
+            <span class="lot-unit">LOT</span>
+            <span id="calc-result-shares" class="shares-sub mono">(0 lembar)</span>
+          </div>
+
+          <!-- Total Capital & Allocation Bar -->
+          <div class="capital-allocation-box">
+            <div class="cap-meta-row">
+              <span class="cap-label">Total Nilai Pembelian:</span>
+              <span id="calc-result-capital" class="cap-val mono">Rp 0</span>
+            </div>
+            <div class="cap-meta-row">
+              <span class="cap-label">Porsi Portofolio:</span>
+              <span id="calc-result-alloc-pct" class="cap-pct mono">0.0%</span>
+            </div>
+            <div class="allocation-track">
+              <div id="calc-result-alloc-bar" class="allocation-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Capped Warning Banner (Dynamic) -->
+          <div id="calc-cap-warning" class="cap-warning-alert hidden">
+            <span>⚠️</span>
+            <span id="calc-cap-warning-text">Ukuran lot dibatasi oleh Cap Portofolio (Maks 20%) untuk menjaga diversifikasi.</span>
+          </div>
+        </div>
+
+        <!-- RISK & REWARD BENTO CARDS -->
+        <div class="calc-bento-grid">
+          <!-- CARD 1: RISK DOWNSIDE -->
+          <div class="bento-stat-card risk-card">
+            <div class="bento-stat-head">
+              <span class="bento-sub-icon">🛑</span>
+              <span class="bento-sub-title">Risiko Maksimal (Stop Loss)</span>
+            </div>
+            <div id="calc-result-risk-loss" class="bento-stat-val loss mono">-Rp 0</div>
+            <div class="bento-stat-foot">
+              <span id="calc-result-risk-pct" class="foot-pct mono">Jarak: -0.0%</span>
+              <span id="calc-result-fee-sub" class="foot-fee mono">Fee: Rp 0</span>
+            </div>
+          </div>
+
+          <!-- CARD 2: TARGET 1 REWARD -->
+          <div class="bento-stat-card target-card">
+            <div class="bento-stat-head">
+              <span class="bento-sub-icon">🎯</span>
+              <span class="bento-sub-title">Potensi Gain Target 1</span>
+            </div>
+            <div id="calc-result-t1-gain" class="bento-stat-val gain mono">+Rp 0</div>
+            <div class="bento-stat-foot">
+              <span id="calc-result-t1-rr" class="foot-rr mono">R:R 1 : 0.0</span>
+              <span id="calc-result-t1-pct" class="foot-pct mono">+0.0%</span>
+            </div>
+          </div>
+
+          <!-- CARD 3: TARGET 2 REWARD -->
+          <div class="bento-stat-card target-card">
+            <div class="bento-stat-head">
+              <span class="bento-sub-icon">🚀</span>
+              <span class="bento-sub-title">Potensi Gain Target 2</span>
+            </div>
+            <div id="calc-result-t2-gain" class="bento-stat-val gain mono">+Rp 0</div>
+            <div class="bento-stat-foot">
+              <span id="calc-result-t2-rr" class="foot-rr mono">R:R 1 : 0.0</span>
+              <span id="calc-result-t2-pct" class="foot-pct mono">+0.0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="calc-actions-row">
+          <button type="button" class="btn-calc-action secondary" onclick="copyPositionSizingSummary()" title="Salin ringkasan ke clipboard">
+            <span>📋</span> Salin Rencana
+          </button>
+          <button type="button" class="btn-calc-action primary" onclick="transferCalcToTradeJournal()" title="Kirim data pembelian ini ke form Jurnal Trading">
+            <span>📝</span> Catat Beli ke Jurnal
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,177 @@
+<!-- ==========================================================================
+     PERSONAL WATCHLIST & TRADE JOURNALING VIEW (templates/views/view_watchlist.html)
+     ========================================================================== -->
+<div id="view-watchlist" class="screener-view hidden">
+  <div class="view-header">
+    <div class="view-header-left">
+      <h1>Portofolio, Watchlist & Trade Journaling</h1>
+      <p>Pantau radar saham incaran pribadi, kelola alokasi modal disiplin Minervini, dan evaluasi histori transaksi trading riil</p>
+    </div>
+  </div>
+
+  <!-- 1. STATS SUMMARY CARDS -->
+  <section class="stats-grid">
+    <!-- Card 1: Total Watchlist -->
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Saham Dipantau</span>
+        <span class="stat-icon">⭐</span>
+      </div>
+      <div id="wl-stat-watchlist-count" class="stat-value amber mono">0</div>
+      <div class="stat-meta">Active Watchlist Radar</div>
+    </div>
+
+    <!-- Card 2: Open Trades Capital -->
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Posisi Aktif (Open)</span>
+        <span class="stat-icon">💼</span>
+      </div>
+      <div id="wl-stat-open-trades" class="stat-value mono">0</div>
+      <div id="wl-stat-open-capital" class="stat-meta mono">Modal: Rp 0</div>
+    </div>
+
+    <!-- Card 3: Win Rate -->
+    <div class="stat-card confirmed">
+      <div class="stat-card-header">
+        <span class="stat-label">Win Rate Historis</span>
+        <span class="stat-icon">🏆</span>
+      </div>
+      <div id="wl-stat-win-rate" class="stat-value lime mono">0.0%</div>
+      <div id="wl-stat-win-loss-meta" class="stat-meta mono">0 Menang / 0 Kalah</div>
+    </div>
+
+    <!-- Card 4: Net Realized P&L -->
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Total Realized Net P&L</span>
+        <span class="stat-icon">💰</span>
+      </div>
+      <div id="wl-stat-net-pnl" class="stat-value mono">Rp 0</div>
+      <div id="wl-stat-profit-factor" class="stat-meta mono">Profit Factor: 0.0</div>
+    </div>
+  </section>
+
+  <!-- 2. DATA TABLE CONTAINER IN MASTER TABLE-CARD -->
+  <section class="table-card">
+    <div class="table-toolbar-2tier">
+      <!-- ROW 1: Title, Count, & Segmented Status Tabs -->
+      <div class="table-toolbar-row-top">
+        <div class="table-title-area">
+          <h2 id="wl-section-title">Active Watchlist Radar</h2>
+          <span id="wl-active-tab-counter" class="count-pill">0 Saham</span>
+        </div>
+
+        <!-- Segmented Status Tabs with Live Counters -->
+        <div class="segmented-tabs">
+          <button id="tab-wl-watchlist" class="segmented-tab-btn active" onclick="switchWatchlistTab('WATCHLIST')">
+            ⭐ Active Watchlist <span id="cnt-wl-watchlist" class="tab-counter">0</span>
+          </button>
+          <button id="tab-wl-journal" class="segmented-tab-btn" onclick="switchWatchlistTab('JOURNAL')">
+            📓 Trade Journal <span id="cnt-wl-journal" class="tab-counter">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ROW 2: Actionable Filters & Utilities -->
+      <div class="table-toolbar-row-bottom">
+        <!-- Journal Filter Controls (Visible on Journal tab) -->
+        <div class="filter-controls-group" id="wl-journal-filter-group" style="display: none;">
+          <div class="filter-item">
+            <span class="filter-label">Status:</span>
+            <div class="score-pills-group" id="journal-status-pills">
+              <button type="button" class="score-pill-btn active" data-status="ALL" onclick="filterJournalStatus('ALL')">Semua</button>
+              <button type="button" class="score-pill-btn" data-status="OPEN" onclick="filterJournalStatus('OPEN')">Open</button>
+              <button type="button" class="score-pill-btn" data-status="CLOSED_WIN" onclick="filterJournalStatus('CLOSED_WIN')">Win</button>
+              <button type="button" class="score-pill-btn" data-status="CLOSED_LOSS" onclick="filterJournalStatus('CLOSED_LOSS')">Loss</button>
+              <button type="button" class="score-pill-btn" data-status="CLOSED_BEP" onclick="filterJournalStatus('CLOSED_BEP')">BEP</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Utility Actions -->
+        <div class="table-actions" style="margin-left: auto;">
+          <button class="btn-table-util primary" onclick="openNewTradeEntryModal()" title="Catat posisi pembelian saham baru">
+            <span>➕</span> Catat Beli Baru
+          </button>
+          <button class="btn-table-util" onclick="openPositionCalculator()" title="Buka Kalkulator Position Sizing & Money Management">
+            <span>🧮</span> Kalkulator Sizing
+          </button>
+          <button class="btn-table-util" onclick="exportJournalCSV()" title="Download Jurnal ke format CSV/Excel">
+            <span>📥</span> CSV
+          </button>
+          <button class="btn-table-util" onclick="exportJournalBackupJSON()" title="Download Backup JSON lengkap">
+            <span>💾</span> Backup
+          </button>
+          <button class="btn-table-util" onclick="triggerRestoreBackupInput()" title="Pulihkan data dari file Backup JSON">
+            <span>📤</span> Restore
+          </button>
+          <button class="btn-table-util" onclick="openPortfolioSettingsModal()" title="Pengaturan Modal & Biaya Komisi Broker">
+            <span>⚙️</span> Pengaturan
+          </button>
+          <input type="file" id="wl-restore-file-input" accept=".json" class="hidden" onchange="handleRestoreBackupFile(event)">
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. CONTENT AREA 1: ACTIVE WATCHLIST TABLE -->
+    <div id="section-active-watchlist" class="table-container">
+      <table class="data-table" id="watchlist-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 50px;">Pin</th>
+            <th onclick="sortWatchlist('ticker')">Ticker <span class="sort-icon" id="sort-wl-ticker">↕</span></th>
+            <th onclick="sortWatchlist('name')">Nama Perusahaan</th>
+            <th>Sektor</th>
+            <th>Sumber Screener</th>
+            <th>Catatan Rencana</th>
+            <th onclick="sortWatchlist('pinned_at')">Ditambahkan <span class="sort-icon" id="sort-wl-date">↕</span></th>
+            <th class="text-center" style="width: 220px;">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="watchlist-table-body">
+          <!-- Rendered by watchlist.js -->
+        </tbody>
+      </table>
+
+      <!-- Empty State Watchlist -->
+      <div id="watchlist-empty-state" class="empty-state hidden">
+        <div class="empty-state-icon">⭐</div>
+        <h3>Watchlist Anda Masih Kosong</h3>
+        <p>Klik tombol bintang (⭐) pada baris saham di screener mana pun untuk menyematkannya ke sini.</p>
+        <button class="btn-table-util primary" onclick="switchScreener('quality')">Jelajahi Quality Setup Screener</button>
+      </div>
+    </div>
+
+    <!-- 4. CONTENT AREA 2: TRADE JOURNAL TABLE -->
+    <div id="section-trade-journal" class="table-container hidden">
+      <table class="data-table" id="journal-table">
+        <thead>
+          <tr>
+            <th class="text-center" style="width: 110px;">Status</th>
+            <th onclick="sortJournal('ticker')">Ticker <span class="sort-icon" id="sort-jr-ticker">↕</span></th>
+            <th>Strategi / Setup</th>
+            <th onclick="sortJournal('buy_date')">Tgl Beli <span class="sort-icon" id="sort-jr-date">↕</span></th>
+            <th class="text-right">Beli / SL</th>
+            <th class="text-right">Jumlah (Lot)</th>
+            <th class="text-right">Modal Terpakai</th>
+            <th class="text-right">Harga Jual / Exit</th>
+            <th class="text-right" onclick="sortJournal('realized_pnl')">Net P&L (IDR / %) <span class="sort-icon" id="sort-jr-pnl">↕</span></th>
+            <th class="text-center" style="width: 160px;">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="journal-table-body">
+          <!-- Rendered by watchlist.js -->
+        </tbody>
+      </table>
+
+      <!-- Empty State Journal -->
+      <div id="journal-empty-state" class="empty-state hidden">
+        <div class="empty-state-icon">📓</div>
+        <h3>Belum Ada Riwayat Transaksi Jurnal</h3>
+        <p>Mulai catat transaksi beli Anda untuk mendokumentasikan eksekusi dan melatih psikologi trading disiplin.</p>
+        <button class="btn-table-util primary" onclick="openNewTradeEntryModal()">➕ Catat Beli Sekarang</button>
+      </div>
+    </div>
+  </section>
+</div>

@@ -78,12 +78,54 @@ function openStockDetailModal(ticker, meta = {}) {
   const sepaBadge = document.getElementById("stock-modal-sepa-badge");
   sepaBadge.classList.add("hidden");
 
+  // Update Pin button state
+  const pinBtn = document.getElementById("detail-modal-pin-btn");
+  if (pinBtn) {
+    if (typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(ticker)) {
+      pinBtn.classList.add('pinned');
+      pinBtn.innerHTML = '<span>★</span> Pinned';
+    } else {
+      pinBtn.classList.remove('pinned');
+      pinBtn.innerHTML = '<span>☆</span> Pin';
+    }
+  }
+
   // Show Modal Backdrop
   const modal = document.getElementById("stock-detail-modal");
   modal.classList.remove("hidden");
 
   // Activate Default Tab
   switchStockModalTab(activeStockTab || "bandar");
+}
+
+function openSizingFromDetailModal() {
+  if (!currentStockTicker) return;
+  const price = currentStockMeta.price || 0;
+  if (typeof openPositionCalculator === 'function') {
+    openPositionCalculator({
+      ticker: currentStockTicker,
+      name: currentStockMeta.name || `${currentStockTicker} Tbk.`,
+      sector: currentStockMeta.sector || 'IDX Listed',
+      entry: price
+    });
+  }
+}
+
+function togglePinFromDetailModal() {
+  if (!currentStockTicker) return;
+  if (typeof togglePinStock === 'function') {
+    togglePinStock(currentStockTicker, currentStockMeta.name || `${currentStockTicker} Tbk.`, currentStockMeta.sector || 'IDX Listed', 'Detail Modal');
+    const pinBtn = document.getElementById("detail-modal-pin-btn");
+    if (pinBtn && typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers) {
+      if (watchlistState.pinnedTickers.has(currentStockTicker)) {
+        pinBtn.classList.add('pinned');
+        pinBtn.innerHTML = '<span>★</span> Pinned';
+      } else {
+        pinBtn.classList.remove('pinned');
+        pinBtn.innerHTML = '<span>☆</span> Pin';
+      }
+    }
+  }
 }
 
 function closeStockDetailModal() {

@@ -32,3 +32,12 @@ function formatCurrency(amount) {
 function formatNumber(num) {
   return new Intl.NumberFormat('id-ID').format(num || 0);
 }
+
+function formatIDR(val) {
+  if (val === null || val === undefined || isNaN(val)) return "Rp 0";
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    maximumFractionDigits: 0
+  }).format(Math.round(val));
+}

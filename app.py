@@ -3,7 +3,7 @@ import json
 import time
 import threading
 from datetime import datetime, timedelta, timezone
-from flask import Flask, render_template, jsonify, request, session, redirect, url_for
+from flask import Flask, render_template, jsonify, request, session, redirect, url_for, Response
 from screener.calculator import SEPACalculator
 from screener.rsi_divergence import RSIDivergenceCalculator
 from screener.pre_breakout import PreBreakoutCalculator
@@ -12,6 +12,24 @@ from screener.quality_screener import (
     run_quality_scan,
     get_cached_quality_results,
     get_quality_scan_status
+)
+from screener.journal_db import (
+    get_all_watchlist,
+    get_watchlist_tickers,
+    add_to_watchlist,
+    remove_from_watchlist,
+    calculate_position_sizing,
+    get_all_trades,
+    get_trade_by_id,
+    add_trade,
+    close_trade,
+    delete_trade,
+    get_journal_stats,
+    get_settings,
+    save_settings,
+    export_trades_to_csv,
+    backup_to_json,
+    restore_from_json
 )
 from screener.idx_api_client import IDXApiClient
 from screener.auth import (
@@ -679,6 +697,229 @@ def get_idx_analysis(ticker):
         return jsonify({"status": "success", "data": data, "quota": quota})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+
+# =========================================================================
+# WATCHLIST & TRADE JOURNAL API ENDPOINTS (SQLITE BACKED)
+# =========================================================================
+
+@app.route("/api/watchlist", methods=["GET"])
+@admin_required
+def api_get_watchlist():
+    """Get all pinned stocks in personal watchlist with active tickers set."""
+    try:
+        items = get_all_watchlist()
+        tickers = list(get_watchlist_tickers())
+        return jsonify({"status": "success", "data": items, "tickers": tickers, "total": len(items)})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/api/watchlist/pin", methods=["POST"])
+@admin_required
+def api_pin_stock():
+    """Add or update stock in personal watchlist."""
+    data = request.get_json(silent=True) or request.form
+    ticker = data.get("ticker", "").strip().upper()
+    if not ticker:
+        return jsonify({"status": "error", "message": "Ticker diperlukan"}), 400
+
+    name = data.get("name", ticker)
+    sector = data.get("sector", "General")
+    source = data.get("source", "Manual")
+    notes = data.get("notes", "")
+
+    try:
+        item = add_to_watchlist(ticker, name, sector, source, notes)
+        tickers = list(get_watchlist_tickers())
+        return jsonify({"status": "success", "data": item, "tickers": tickers, "message": f"{ticker} ditambahkan ke Watchlist"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/api/watchlist/unpin/<ticker>", methods=["DELETE"])
+@admin_required
+def api_unpin_stock(ticker):
+    """Remove stock from personal watchlist."""
+    clean_ticker = ticker.replace(".JK", "").strip().upper()
+    try:
+        removed = remove_from_watchlist(clean_ticker)
+        tickers = list(get_watchlist_tickers())
+        return jsonify({"status": "success", "removed": removed, "tickers": tickers, "message": f"{clean_ticker} dihapus dari Watchlist"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/api/calculator/position-sizing", methods=["POST"])
+@admin_required
+def api_calc_position_sizing():
+    """Calculate Minervini position sizing and risk allocation."""
+    data = request.get_json(silent=True) or request.form
+    try:
+        capital = float(data.get("portfolio_capital", 100000000))
+        risk_pct = float(data.get("risk_pct", 1.0))
+        entry = float(data.get("entry_price", 0))
+        sl = float(data.get("stop_loss", 0))
+        t1 = float(data.get("target_1")) if data.get("target_1") else None
+        t2 = float(data.get("target_2")) if data.get("target_2") else None
+        max_cap = float(data.get("max_cap_pct", 20.0))
+        buy_fee = float(data.get("buy_fee_pct", 0.15))
+        sell_fee = float(data.get("sell_fee_pct", 0.25))
+        fee_enabled = str(data.get("fee_enabled", "true")).lower() in ["true", "1", "on"]
+
+        res = calculate_position_sizing(
+            portfolio_capital=capital,
+            risk_pct=risk_pct,
+            entry_price=entry,
+            stop_loss=sl,
+            target_1=t1,
+            target_2=t2,
+            max_cap_pct=max_cap,
+            buy_fee_pct=buy_fee,
+            sell_fee_pct=sell_fee,
+            fee_enabled=fee_enabled
+        )
+        return jsonify({"status": "success", "data": res})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 400
+
+@app.route("/api/journal", methods=["GET"])
+@admin_required
+def api_get_journal():
+    """Get trade journal entries with optional status filter."""
+    status_filter = request.args.get("status", "ALL")
+    try:
+        trades = get_all_trades(status_filter)
+        stats = get_journal_stats()
+        return jsonify({"status": "success", "data": trades, "stats": stats})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/api/journal/entry", methods=["POST"])
+@admin_required
+def api_add_journal_entry():
+    """Create a new open trade entry."""
+    data = request.get_json(silent=True) or request.form
+    ticker = data.get("ticker", "").strip().upper()
+    if not ticker:
+        return jsonify({"status": "error", "message": "Ticker diperlukan"}), 400
+
+    try:
+        trade = add_trade(
+            ticker=ticker,
+            name=data.get("name", ticker),
+            sector=data.get("sector", "General"),
+            buy_date=data.get("buy_date", datetime.now().strftime("%Y-%m-%d")),
+            buy_price=float(data.get("buy_price", 0)),
+            lots=int(data.get("lots", 1)),
+            stop_loss=float(data.get("stop_loss")) if data.get("stop_loss") else None,
+            target_1=float(data.get("target_1")) if data.get("target_1") else None,
+            target_2=float(data.get("target_2")) if data.get("target_2") else None,
+            setup_type=data.get("setup_type", "Breakout"),
+            notes=data.get("notes", ""),
+            chart_url=data.get("chart_url", ""),
+            broker_fee_enabled=str(data.get("broker_fee_enabled", "true")).lower() in ["true", "1", "on"]
+        )
+        stats = get_journal_stats()
+        return jsonify({"status": "success", "data": trade, "stats": stats, "message": f"Transaksi {ticker} berhasil dicatat"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 400
+
+@app.route("/api/journal/close/<int:trade_id>", methods=["PUT", "POST"])
+@admin_required
+def api_close_trade(trade_id):
+    """Close an open trade."""
+    data = request.get_json(silent=True) or request.form
+    exit_date = data.get("exit_date", datetime.now().strftime("%Y-%m-%d"))
+    try:
+        exit_price = float(data.get("exit_price", 0))
+        exit_reason = data.get("exit_reason", "MANUAL")
+        notes = data.get("notes", "")
+
+        closed = close_trade(trade_id, exit_date, exit_price, exit_reason, notes)
+        stats = get_journal_stats()
+        return jsonify({"status": "success", "data": closed, "stats": stats, "message": f"Posisi #{trade_id} berhasil ditutup"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 400
+
+@app.route("/api/journal/<int:trade_id>", methods=["DELETE"])
+@admin_required
+def api_delete_trade(trade_id):
+    """Delete a trade from the journal."""
+    try:
+        deleted = delete_trade(trade_id)
+        stats = get_journal_stats()
+        return jsonify({"status": "success", "deleted": deleted, "stats": stats, "message": f"Transaksi #{trade_id} dihapus"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/api/journal/stats", methods=["GET"])
+@admin_required
+def api_get_journal_stats():
+    """Get portfolio journal statistics."""
+    try:
+        stats = get_journal_stats()
+        return jsonify({"status": "success", "data": stats})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/api/journal/export/csv", methods=["GET"])
+@admin_required
+def api_export_journal_csv():
+    """Download trade journal as CSV file."""
+    try:
+        csv_data = export_trades_to_csv()
+        filename = f"tirexxz_trade_journal_{datetime.now().strftime('%Y%m%d_%H%M')}.csv"
+        return Response(
+            csv_data,
+            mimetype="text/csv",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/api/journal/backup", methods=["GET"])
+@admin_required
+def api_backup_journal_json():
+    """Download complete backup as JSON."""
+    try:
+        backup = backup_to_json()
+        filename = f"tirexxz_backup_{datetime.now().strftime('%Y%m%d_%H%M')}.json"
+        return Response(
+            json.dumps(backup, indent=2, ensure_ascii=False),
+            mimetype="application/json",
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/api/journal/restore", methods=["POST"])
+@admin_required
+def api_restore_journal_json():
+    """Restore database from uploaded JSON backup."""
+    try:
+        if "file" in request.files:
+            file = request.files["file"]
+            content = file.read().decode("utf-8")
+            data = json.loads(content)
+        else:
+            data = request.get_json(silent=True) or {}
+
+        result = restore_from_json(data)
+        stats = get_journal_stats()
+        return jsonify({"status": "success", "result": result, "stats": stats, "message": "Data berhasil dipulihkan"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 400
+
+@app.route("/api/settings/money-management", methods=["GET", "POST"])
+@admin_required
+def api_money_management_settings():
+    """Get or save user money management settings."""
+    if request.method == "GET":
+        return jsonify({"status": "success", "data": get_settings()})
+
+    data = request.get_json(silent=True) or request.form
+    try:
+        saved = save_settings(data)
+        return jsonify({"status": "success", "data": saved, "message": "Pengaturan berhasil disimpan"})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 400
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)

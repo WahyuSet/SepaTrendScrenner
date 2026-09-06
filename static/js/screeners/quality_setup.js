@@ -287,7 +287,12 @@ function renderQualityTable() {
       <tr style="animation-delay: ${delay}ms" onclick="openQualityModal('${item.ticker}')">
         <!-- 1. Ticker & Nama -->
         <td>
-          <div class="ticker-cell">${item.ticker}</div>
+          <div class="ticker-cell-wrapper">
+            <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(item.ticker)) ? 'pinned' : ''}" data-ticker="${item.ticker}" onclick="togglePinStock('${item.ticker}', '${escapeQuotes(item.name)}', '${item.sector}', 'Quality Setup', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(item.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}">★</button>
+            <div class="ticker-info-stack">
+              <span class="ticker-cell">${item.ticker}</span>
+            </div>
+          </div>
           <div class="name-cell" title="${item.name}">${item.name}</div>
         </td>
 
@@ -342,7 +347,7 @@ function renderQualityTable() {
         <!-- 8. Risk:Reward -->
         <td class="text-center mono font-bold">1 : ${(item.risk_reward || 0).toFixed(1)}</td>
 
-        <!-- 9. Aksi Detail -->
+        <!-- 9. Aksi Detail Bento -->
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-detail-bento" onclick="openQualityModal('${item.ticker}')" title="Buka Detail Bento Quality Setup">
             <span>💎</span> Detail
@@ -463,6 +468,31 @@ function openTradingViewFromQuality() {
   if (!qualityState.selectedStock) return;
   const ticker = qualityState.selectedStock.ticker;
   window.open(`https://www.tradingview.com/chart/?symbol=IDX:${ticker}`, '_blank');
+}
+
+function openSizingFromQuality() {
+  if (!qualityState.selectedStock) return;
+  const s = qualityState.selectedStock;
+  closeQualityModal();
+  if (typeof openPositionCalculator === 'function') {
+    openPositionCalculator({
+      ticker: s.ticker,
+      name: s.name,
+      sector: s.sector,
+      entry: s.entry,
+      sl: s.stop_loss,
+      t1: s.target_1,
+      t2: s.target_2
+    });
+  }
+}
+
+function togglePinFromQuality() {
+  if (!qualityState.selectedStock) return;
+  const s = qualityState.selectedStock;
+  if (typeof togglePinStock === 'function') {
+    togglePinStock(s.ticker, s.name, s.sector, 'Quality Setup');
+  }
 }
 
 // 7. SCAN TRIGGER VIA UI

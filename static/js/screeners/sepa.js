@@ -320,9 +320,12 @@ function renderTable(data) {
     rowsHtml += `
       <tr style="animation-delay: ${delay}ms" onclick="openCriteriaModal('${stock.ticker}')">
         <td>
-          <div class="ticker-cell-box">
-            <span class="ticker-cell">${stock.ticker}</span>
-            ${stock.is_sepa_vcp_ready ? `<span class="badge-sepa-vcp" title="Setup Emas: SEPA Confirmed & VCP Ready to Breakout!">⭐ VCP READY</span>` : ''}
+          <div class="ticker-cell-wrapper">
+            <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'pinned' : ''}" data-ticker="${stock.ticker}" onclick="togglePinStock('${stock.ticker}', '${(stock.name || '').replace(/'/g, "\\'")}', '${stock.sector}', 'SEPA Trend', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}">★</button>
+            <div class="ticker-info-stack">
+              <span class="ticker-cell">${stock.ticker}</span>
+              ${stock.is_sepa_vcp_ready ? `<span class="badge-sepa-vcp" title="Setup Emas: SEPA Confirmed & VCP Ready to Breakout!">⭐ VCP READY</span>` : ''}
+            </div>
           </div>
         </td>
         <td><div class="name-cell" title="${stock.name}">${stock.name}</div></td>
@@ -360,7 +363,7 @@ function renderTable(data) {
           </button>
         </td>
         <td class="text-center" onclick="event.stopPropagation()">
-          <button class="btn-table-detail" onclick="openStockDetailModal('${stock.ticker}', {name: '${stock.name}', sector: '${stock.sector}', price: ${stock.price}})" title="Buka Detail Analisis Komprehensif">
+          <button class="btn-table-detail" onclick="openStockDetailModal('${stock.ticker}', {name: '${(stock.name || '').replace(/'/g, "\\'")}', sector: '${stock.sector}', price: ${stock.price}})" title="Buka Detail Analisis Komprehensif">
             📊 Detail
           </button>
         </td>

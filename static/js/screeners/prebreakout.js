@@ -333,7 +333,14 @@ function renderPreBreakoutTable(data) {
 
     rowsHtml += `
       <tr style="animation-delay: ${delay}ms" onclick="openPreBreakoutModal('${stock.ticker}')">
-        <td><span class="ticker-cell">${stock.ticker}</span></td>
+        <td>
+          <div class="ticker-cell-wrapper">
+            <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'pinned' : ''}" data-ticker="${stock.ticker}" onclick="togglePinStock('${stock.ticker}', '${(stock.name || '').replace(/'/g, "\\'")}', '${stock.sector}', 'Pre-Breakout', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}">★</button>
+            <div class="ticker-info-stack">
+              <span class="ticker-cell">${stock.ticker}</span>
+            </div>
+          </div>
+        </td>
         <td><div class="name-cell" title="${stock.name}">${stock.name}</div></td>
         <td><span class="sector-cell">${stock.sector}</span></td>
         <td>

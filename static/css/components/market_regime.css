@@ -238,10 +238,11 @@
 }
 
 /* 2. SEPA + VCP Ready Golden Badge */
-.ticker-cell-box {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+.ticker-cell-box,
+.ticker-cell-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .badge-sepa-vcp {
