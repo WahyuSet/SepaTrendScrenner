@@ -1,299 +1,288 @@
 <!-- ==========================================================================
-     SIGNAL BACKTEST & ACCURACY LAB VIEW (view_backtest.html)
+     SIGNAL BACKTEST & ACCURACY LAB VIEW (templates/views/view_backtest.html)
+     Financial Terminal Pro Layout (Unified with SEPA & Watchlist architecture)
      ========================================================================== -->
-<section id="view-backtest" class="screener-view hidden">
-  <!-- 1. LAB HEADER & BENCHMARK CONTROLS -->
-  <div class="table-card">
-    <div class="table-header-block">
-      <div class="table-title-area">
-        <div class="table-title-row">
-          <span class="view-icon-badge">🧪</span>
-          <h2>Signal Backtest & Accuracy Lab</h2>
-          <span class="header-badge-pro">QUANT ENGINE</span>
-          <span class="header-badge-live" id="backtest-active-sample-badge">BENCHMARK IDX</span>
-        </div>
-        <p class="table-subtitle">
-          Uji empiris validitas sinyal <strong>Quality Setup</strong> & <strong>Pre-Breakout (VCP)</strong> pada data historis 1–2 tahun IHSG.
-          Asumsi teruji: <em>Entry T+1 Open, Scale-Out Minervini (50% TP1 & SL ke BEP), Resolusi Konservatif, Fee 0.40%</em>.
-        </p>
+<div id="view-backtest" class="screener-view hidden">
+  <!-- 1. VIEW HEADER & BENCHMARK CONTROLS -->
+  <div class="view-header">
+    <div class="view-header-left">
+      <div class="view-title-row" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <h1>Signal Backtest & Accuracy Lab</h1>
+        <span class="count-pill" style="background: #f1f5f9; color: #475569; font-weight: 700; font-size: 11px;">QUANT ENGINE</span>
       </div>
-
-      <!-- Strategy Horizon Filter Pills & Period Selector -->
-      <div class="backtest-toolbar-row">
-        <div class="filter-pill-group" id="bt-strategy-pills">
-          <button class="btn-filter-pill active" data-strategy="ALL" onclick="setBacktestStrategyFilter('ALL')">
-            <span>🌐</span> Semua Setup
-          </button>
-          <button class="btn-filter-pill" data-strategy="MOMENTUM_BREAKOUT" onclick="setBacktestStrategyFilter('MOMENTUM_BREAKOUT')">
-            <span>⚡</span> Momentum Breakout (5-7D)
-          </button>
-          <button class="btn-filter-pill" data-strategy="PULLBACK_RBS" onclick="setBacktestStrategyFilter('PULLBACK_RBS')">
-            <span>🔄</span> Buy on Pullback / RBS (10-12D)
-          </button>
-          <button class="btn-filter-pill" data-strategy="BASE_BUILDING" onclick="setBacktestStrategyFilter('BASE_BUILDING')">
-            <span>💎</span> Base Building / VCP (15-20D)
-          </button>
-        </div>
-
-        <div class="bt-toolbar-controls">
-          <div class="select-wrapper-mini">
-            <label for="bt-period-select" class="sr-only">Periode Uji</label>
-            <select id="bt-period-select" onchange="onBacktestPeriodChange(this.value)">
-              <option value="2" selected>📅 2 Tahun Terakhir</option>
-              <option value="1">📅 1 Tahun Terakhir</option>
-            </select>
-          </div>
-
-          <button class="btn-table-util" onclick="refreshBacktestBenchmark()" title="Muat ulang benchmark">
-            <span>🔄</span> Muat Ulang
-          </button>
-        </div>
-      </div>
+      <p>Uji empiris validitas sinyal <strong>Quality Setup</strong> & <strong>Pre-Breakout (VCP)</strong> pada data historis 1–2 tahun IHSG (Entry T+1 Open, Scale-Out Minervini, Fee IDX 0.40%)</p>
     </div>
-
-    <!-- 2. ON-DEMAND TICKER INSPECTOR (INSTANT < 1s) -->
-    <div class="backtest-ticker-inspector-strip">
-      <div class="inspector-input-wrapper">
-        <span class="inspector-icon">🔍</span>
-        <input 
-          type="text" 
-          id="bt-ticker-input" 
-          placeholder="Uji emiten tertentu secara On-Demand (e.g. BBCA, BRPT, MEDC, BMRI)..."
-          maxlength="6"
-          style="text-transform: uppercase;"
-          onkeydown="if(event.key === 'Enter') runOnDemandTickerBacktest()"
-        >
-        <button class="btn-inspector-run" onclick="runOnDemandTickerBacktest()">
-          <span>⚡</span> Uji Saham
-        </button>
-      </div>
-      <div class="inspector-quick-chips">
-        <span class="chips-label">Populer:</span>
-        <button class="chip-item" onclick="quickInspectTicker('BBCA')">BBCA</button>
-        <button class="chip-item" onclick="quickInspectTicker('BRPT')">BRPT</button>
-        <button class="chip-item" onclick="quickInspectTicker('BMRI')">BMRI</button>
-        <button class="chip-item" onclick="quickInspectTicker('MEDC')">MEDC</button>
-        <button class="chip-item" onclick="quickInspectTicker('TLKM')">TLKM</button>
-        <button class="chip-item" onclick="quickInspectTicker('ASII')">ASII</button>
-        <button class="chip-item reset hidden" id="btn-reset-ticker-filter" onclick="resetToUniverseBenchmark()">
-          ✕ Kembali ke Benchmark Agregat
-        </button>
-      </div>
-    </div>
-
-    <!-- 3. TOP KPI BENTO CARDS -->
-    <div class="backtest-kpi-bento">
-      <!-- KPI 1: Win Rate -->
-      <div class="bt-kpi-card highlight-kpi">
-        <div class="kpi-head">
-          <span class="kpi-label">Overall Win Rate</span>
-          <span class="kpi-badge win" id="kpi-winrate-pill">AKURASI</span>
-        </div>
-        <div class="kpi-body">
-          <span class="kpi-number" id="kpi-winrate-val">0.0%</span>
-        </div>
-        <div class="kpi-foot" id="kpi-winrate-sub">
-          0 Menang / 0 Kalah (Total 0 Sinyal)
-        </div>
-      </div>
-
-      <!-- KPI 2: Profit Factor -->
-      <div class="bt-kpi-card">
-        <div class="kpi-head">
-          <span class="kpi-label">Profit Factor</span>
-          <span class="kpi-badge neutral">GROSS GAIN / LOSS</span>
-        </div>
-        <div class="kpi-body">
-          <span class="kpi-number" id="kpi-pf-val">0.00</span>
-        </div>
-        <div class="kpi-foot" id="kpi-pf-sub">
-          Threshold sehat: > 1.50
-        </div>
-      </div>
-
-      <!-- KPI 3: Payoff Ratio -->
-      <div class="bt-kpi-card">
-        <div class="kpi-head">
-          <span class="kpi-label">Payoff Ratio (Avg Gain vs Loss)</span>
-          <span class="kpi-badge neutral">RISK-TO-REWARD</span>
-        </div>
-        <div class="kpi-body">
-          <span class="kpi-number" id="kpi-payoff-val">0.00 : 1</span>
-        </div>
-        <div class="kpi-foot" id="kpi-payoff-sub">
-          Avg Win: +0.0% | Avg Loss: -0.0%
-        </div>
-      </div>
-
-      <!-- KPI 4: Avg Holding Duration -->
-      <div class="bt-kpi-card">
-        <div class="kpi-head">
-          <span class="kpi-label">Avg Holding Period</span>
-          <span class="kpi-badge neutral">VELOCITY</span>
-        </div>
-        <div class="kpi-body">
-          <span class="kpi-number" id="kpi-holding-val">0.0</span>
-          <span class="kpi-unit">Hari</span>
-        </div>
-        <div class="kpi-foot">
-          Rata-rata waktu sampai target / SL
-        </div>
-      </div>
-
-      <!-- KPI 5: Max Drawdown -->
-      <div class="bt-kpi-card">
-        <div class="kpi-head">
-          <span class="kpi-label">Max Drawdown (DD)</span>
-          <span class="kpi-badge risk">PROTEKSI</span>
-        </div>
-        <div class="kpi-body">
-          <span class="kpi-number text-danger" id="kpi-mdd-val">-0.0%</span>
-        </div>
-        <div class="kpi-foot">
-          Penurunan kumulatif terdalam
-        </div>
-      </div>
-    </div>
-
-    <!-- 4. STRATEGY COMPARISON HEAD-TO-HEAD BENTO -->
-    <div class="strategy-comparison-grid">
-      <!-- Card A: Momentum Breakout -->
-      <div class="strategy-bento-card">
-        <div class="strat-card-header">
-          <div class="strat-title-row">
-            <span class="strat-icon">⚡</span>
-            <div>
-              <h4>Momentum Breakout</h4>
-              <span class="strat-horizon-pill">Holding: 5 – 7 Hari</span>
-            </div>
-          </div>
-          <span class="strat-score-badge" id="strat-mb-wr">0.0% WR</span>
-        </div>
-        <div class="strat-card-metrics">
-          <div class="strat-col">
-            <span class="sub-txt">Total Sinyal</span>
-            <strong id="strat-mb-total">0</strong>
-          </div>
-          <div class="strat-col">
-            <span class="sub-txt">Menang / Kalah</span>
-            <strong id="strat-mb-wl">0 / 0</strong>
-          </div>
-          <div class="strat-col">
-            <span class="sub-txt">Avg Net Return</span>
-            <strong id="strat-mb-ret" class="text-gain">+0.0%</strong>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card B: Pullback / RBS -->
-      <div class="strategy-bento-card">
-        <div class="strat-card-header">
-          <div class="strat-title-row">
-            <span class="strat-icon">🔄</span>
-            <div>
-              <h4>Buy on Pullback / RBS</h4>
-              <span class="strat-horizon-pill">Holding: 10 – 12 Hari</span>
-            </div>
-          </div>
-          <span class="strat-score-badge" id="strat-pb-wr">0.0% WR</span>
-        </div>
-        <div class="strat-card-metrics">
-          <div class="strat-col">
-            <span class="sub-txt">Total Sinyal</span>
-            <strong id="strat-pb-total">0</strong>
-          </div>
-          <div class="strat-col">
-            <span class="sub-txt">Menang / Kalah</span>
-            <strong id="strat-pb-wl">0 / 0</strong>
-          </div>
-          <div class="strat-col">
-            <span class="sub-txt">Avg Net Return</span>
-            <strong id="strat-pb-ret" class="text-gain">+0.0%</strong>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card C: Base Building / VCP -->
-      <div class="strategy-bento-card">
-        <div class="strat-card-header">
-          <div class="strat-title-row">
-            <span class="strat-icon">💎</span>
-            <div>
-              <h4>Base Building / VCP</h4>
-              <span class="strat-horizon-pill">Holding: 15 – 20 Hari</span>
-            </div>
-          </div>
-          <span class="strat-score-badge" id="strat-bb-wr">0.0% WR</span>
-        </div>
-        <div class="strat-card-metrics">
-          <div class="strat-col">
-            <span class="sub-txt">Total Sinyal</span>
-            <strong id="strat-bb-total">0</strong>
-          </div>
-          <div class="strat-col">
-            <span class="sub-txt">Menang / Kalah</span>
-            <strong id="strat-bb-wl">0 / 0</strong>
-          </div>
-          <div class="strat-col">
-            <span class="sub-txt">Avg Net Return</span>
-            <strong id="strat-bb-ret" class="text-gain">+0.0%</strong>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 5. HISTORICAL TRADE LOG TABLE -->
-    <div class="table-toolbar-2tier" style="margin-top: 20px;">
-      <div class="toolbar-primary-row">
-        <div class="search-box">
-          <span class="search-icon">🔍</span>
-          <input type="text" id="bt-trade-search" placeholder="Cari emiten di log sinyal..." oninput="filterBacktestTable()">
-        </div>
-
-        <div class="filter-group">
-          <label for="bt-status-filter" class="filter-label">Status Keluar:</label>
-          <select id="bt-status-filter" onchange="onBacktestStatusFilterChange(this.value)">
-            <option value="ALL">Semua Hasil</option>
-            <option value="WIN">🎯 Menang (TP1 / TP2)</option>
-            <option value="LOSS">🛑 Kalah (SL / Stop)</option>
-            <option value="TP2_HIT">🚀 Runner Max (TP2)</option>
-            <option value="TP1_HIT">✅ Target 1 (TP1)</option>
-            <option value="SL_HIT">🛑 Cut Loss (SL)</option>
-            <option value="EXPIRED_EXIT">⏱️ Batas Waktu Habis</option>
+    <div class="view-header-right">
+      <div class="backtest-header-controls">
+        <div class="filter-select-wrapper">
+          <select id="bt-period-select" class="filter-select" onchange="onBacktestPeriodChange(this.value)">
+            <option value="2" selected>📅 Periode: 2 Tahun Terakhir</option>
+            <option value="1">📅 Periode: 1 Tahun Terakhir</option>
           </select>
+          <span class="filter-select-arrow">▼</span>
+        </div>
+        <button class="btn-table-util" onclick="refreshBacktestBenchmark()" title="Muat ulang benchmark agregat">
+          <span>🔄</span> Muat Ulang
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. TOP KPI SUMMARY STATS CARDS (Matching native stats-grid) -->
+  <section class="stats-grid backtest-stats-grid">
+    <!-- Card 1: Win Rate -->
+    <div class="stat-card confirmed">
+      <div class="stat-card-header">
+        <span class="stat-label">Overall Win Rate</span>
+        <span class="stat-icon">🎯</span>
+      </div>
+      <div id="kpi-winrate-val" class="stat-value lime mono">0.0%</div>
+      <div id="kpi-winrate-sub" class="stat-meta mono">0 Menang / 0 Kalah (Total 0 Sinyal)</div>
+    </div>
+
+    <!-- Card 2: Profit Factor -->
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Profit Factor</span>
+        <span class="stat-icon">📈</span>
+      </div>
+      <div id="kpi-pf-val" class="stat-value mono">0.00</div>
+      <div id="kpi-pf-sub" class="stat-meta">Threshold sehat: > 1.50</div>
+    </div>
+
+    <!-- Card 3: Payoff Ratio -->
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Payoff Ratio (R:R)</span>
+        <span class="stat-icon">⚖️</span>
+      </div>
+      <div id="kpi-payoff-val" class="stat-value mono">0.00 : 1</div>
+      <div id="kpi-payoff-sub" class="stat-meta mono">Avg Win: +0.0% | Loss: -0.0%</div>
+    </div>
+
+    <!-- Card 4: Avg Holding Duration -->
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Avg Holding Duration</span>
+        <span class="stat-icon">⏳</span>
+      </div>
+      <div class="stat-value-group" style="display: flex; align-items: baseline; gap: 4px;">
+        <span id="kpi-holding-val" class="stat-value mono">0.0</span>
+        <span class="stat-unit" style="font-size: 13px; font-weight: 700; color: var(--text-muted);">Hari</span>
+      </div>
+      <div class="stat-meta">Rata-rata waktu sampai target / exit</div>
+    </div>
+
+    <!-- Card 5: Max Drawdown -->
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Max Drawdown</span>
+        <span class="stat-icon">🛡️</span>
+      </div>
+      <div id="kpi-mdd-val" class="stat-value mono text-danger">-0.0%</div>
+      <div class="stat-meta">Penurunan modal kumulatif terdalam</div>
+    </div>
+  </section>
+
+  <!-- 3. ON-DEMAND TICKER SIMULATOR & HORIZON STRIP -->
+  <section class="backtest-deck-card">
+    <div class="deck-header">
+      <div class="deck-title-group">
+        <span class="deck-badge-icon">⚡</span>
+        <div>
+          <h3 class="deck-title">On-Demand Ticker Simulator</h3>
+          <p class="deck-subtitle">Simulasi instan (&lt;1 detik) untuk saham apa pun di IHSG atau klik tombol cepat di bawah</p>
+        </div>
+      </div>
+      <div class="deck-scope-pill" id="backtest-active-scope-badge">
+        <span class="scope-live-dot"></span>
+        <span class="scope-text" id="backtest-scope-text">BENCHMARK UNIVERSE (157 TRADES)</span>
+      </div>
+    </div>
+
+    <div class="deck-body">
+      <div class="deck-search-row">
+        <div class="deck-input-wrapper">
+          <span class="deck-input-icon">🔍</span>
+          <input 
+            type="text" 
+            id="bt-ticker-input" 
+            placeholder="Ketik ticker (e.g. BBCA, BRPT, BMRI)..." 
+            maxlength="6"
+            autocomplete="off"
+            onkeydown="if(event.key === 'Enter') runOnDemandTickerBacktest()"
+          />
+          <button class="btn-deck-run" onclick="runOnDemandTickerBacktest()">
+            <span>⚡</span> Jalankan Simulasi
+          </button>
         </div>
 
-        <div class="toolbar-actions">
-          <button class="btn-table-util" onclick="exportBacktestTradesCSV()" title="Ekspor log sinyal ke format CSV">
-            <span>📥</span> Ekspor CSV
+        <div class="deck-quick-chips">
+          <span class="chips-label">Quick Test:</span>
+          <button type="button" class="chip-btn" onclick="quickInspectTicker('BBCA')">BBCA</button>
+          <button type="button" class="chip-btn" onclick="quickInspectTicker('BBRI')">BBRI</button>
+          <button type="button" class="chip-btn" onclick="quickInspectTicker('BMRI')">BMRI</button>
+          <button type="button" class="chip-btn" onclick="quickInspectTicker('ASII')">ASII</button>
+          <button type="button" class="chip-btn" onclick="quickInspectTicker('BRPT')">BRPT</button>
+          <button type="button" class="chip-btn" onclick="quickInspectTicker('MEDC')">MEDC</button>
+          <button type="button" class="chip-btn" onclick="quickInspectTicker('TLKM')">TLKM</button>
+          <button type="button" class="chip-btn reset hidden" id="btn-reset-ticker-filter" onclick="resetToUniverseBenchmark()">
+            ✕ Kembali ke Benchmark Agregat
+          </button>
+        </div>
+      </div>
+
+      <!-- Strategy Horizon Breakdown Cards -->
+      <div class="strategy-horizon-strip">
+        <div class="horizon-card" onclick="setBacktestStrategyFilter('MOMENTUM_BREAKOUT')" title="Filter ke Momentum Breakout">
+          <div class="h-icon-box">⚡</div>
+          <div class="h-details">
+            <div class="h-title-row">
+              <span class="h-name">Momentum Breakout</span>
+              <span class="h-horizon-tag">5–7 Hari</span>
+            </div>
+            <div class="h-metric-row">
+              <span class="h-wr mono" id="strat-mb-wr">0.0% WR</span>
+              <span class="h-divider">•</span>
+              <span class="h-ret mono text-gain" id="strat-mb-ret">+0.0%</span>
+              <span class="h-count mono" id="strat-mb-total-badge">(0 trade)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="horizon-card" onclick="setBacktestStrategyFilter('PULLBACK_RBS')" title="Filter ke Buy on Pullback / RBS">
+          <div class="h-icon-box">🔄</div>
+          <div class="h-details">
+            <div class="h-title-row">
+              <span class="h-name">Buy on Pullback / RBS</span>
+              <span class="h-horizon-tag">10–12 Hari</span>
+            </div>
+            <div class="h-metric-row">
+              <span class="h-wr mono" id="strat-pb-wr">0.0% WR</span>
+              <span class="h-divider">•</span>
+              <span class="h-ret mono text-gain" id="strat-pb-ret">+0.0%</span>
+              <span class="h-count mono" id="strat-pb-total-badge">(0 trade)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="horizon-card" onclick="setBacktestStrategyFilter('BASE_BUILDING')" title="Filter ke Base Building / VCP">
+          <div class="h-icon-box">💎</div>
+          <div class="h-details">
+            <div class="h-title-row">
+              <span class="h-name">Base Building / VCP</span>
+              <span class="h-horizon-tag">15–20 Hari</span>
+            </div>
+            <div class="h-metric-row">
+              <span class="h-wr mono" id="strat-bb-wr">0.0% WR</span>
+              <span class="h-divider">•</span>
+              <span class="h-ret mono text-gain" id="strat-bb-ret">+0.0%</span>
+              <span class="h-count mono" id="strat-bb-total-badge">(0 trade)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. MASTER HISTORICAL TRADES TABLE CARD -->
+  <section class="table-card">
+    <div class="table-toolbar-2tier">
+      <!-- ROW 1: Title, Count Badge, & Segmented Strategy Tabs -->
+      <div class="table-toolbar-row-top">
+        <div class="table-title-area">
+          <h2 id="bt-table-title">Histori Transaksi Sinyal</h2>
+          <span id="bt-trades-count-badge" class="count-pill">0 Transaksi</span>
+        </div>
+
+        <!-- Segmented Strategy Tabs (Matching SEPA Trend & Watchlist standard) -->
+        <div class="segmented-tabs" id="bt-strategy-pills">
+          <button class="segmented-tab-btn active" data-strategy="ALL" onclick="setBacktestStrategyFilter('ALL')">
+            🌐 Semua Setup <span id="cnt-bt-all" class="tab-counter">0</span>
+          </button>
+          <button class="segmented-tab-btn" data-strategy="MOMENTUM_BREAKOUT" onclick="setBacktestStrategyFilter('MOMENTUM_BREAKOUT')">
+            ⚡ Momentum (5–7D) <span id="cnt-bt-mb" class="tab-counter">0</span>
+          </button>
+          <button class="segmented-tab-btn" data-strategy="PULLBACK_RBS" onclick="setBacktestStrategyFilter('PULLBACK_RBS')">
+            🔄 Pullback (10–12D) <span id="cnt-bt-pb" class="tab-counter">0</span>
+          </button>
+          <button class="segmented-tab-btn" data-strategy="BASE_BUILDING" onclick="setBacktestStrategyFilter('BASE_BUILDING')">
+            💎 Base (15–20D) <span id="cnt-bt-bb" class="tab-counter">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ROW 2: Search, Status Filter, and Action Buttons -->
+      <div class="table-toolbar-row-bottom">
+        <div class="filter-controls-group">
+          <!-- Search Box -->
+          <div class="filter-search-box" style="position: relative; display: inline-flex; align-items: center;">
+            <input 
+              type="text" 
+              id="bt-trade-search" 
+              class="filter-search-input" 
+              placeholder="Cari ticker di log..." 
+              oninput="filterBacktestTable()"
+            />
+            <span class="filter-search-icon">🔍</span>
+          </div>
+
+          <!-- Status Filter Dropdown -->
+          <div class="filter-item">
+            <span class="filter-label">Status Keluar:</span>
+            <div class="filter-select-wrapper">
+              <select id="bt-status-filter" class="filter-select" onchange="onBacktestStatusFilterChange(this.value)">
+                <option value="ALL">Semua Hasil (All)</option>
+                <option value="WIN">🎯 Menang (TP1 / TP2)</option>
+                <option value="LOSS">🛑 Kalah (Stop Loss)</option>
+                <option value="TP2_HIT">🚀 Runner Max (TP2)</option>
+                <option value="TP1_HIT">✅ Target 1 (TP1 Hit)</option>
+                <option value="SL_HIT">🛑 Cut Loss (SL Hit)</option>
+                <option value="EXPIRED_EXIT">⏱️ Batas Waktu Habis</option>
+              </select>
+              <span class="filter-select-arrow">▼</span>
+            </div>
+          </div>
+
+          <!-- Table Reset Button -->
+          <button id="bt-reset-filter-btn" class="btn-reset-filters hidden" onclick="resetBacktestTableFilters()" title="Reset pencarian dan filter status">
+            ↺ Reset
+          </button>
+        </div>
+
+        <!-- Table Utility Actions -->
+        <div class="table-actions">
+          <button class="btn-table-util" onclick="exportBacktestTradesCSV()" title="Download histori sinyal ke CSV">
+            <span>📥</span> Export CSV
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Trade Log Data Table -->
-    <div class="table-wrapper">
+    <!-- Table Responsive Wrapper -->
+    <div class="table-container">
       <table class="data-table" id="bt-trades-table">
         <thead>
           <tr>
-            <th class="col-center" style="width: 45px;">#</th>
-            <th class="col-left" style="width: 130px;">Ticker & Sektor</th>
-            <th class="col-left" style="width: 170px;">Setup & Horizon</th>
-            <th class="col-center" style="width: 95px;">Tgl Sinyal</th>
-            <th class="col-right" style="width: 100px;">Entry (T+1)</th>
-            <th class="col-right" style="width: 95px;">Stop Loss</th>
-            <th class="col-right" style="width: 95px;">Target 1</th>
-            <th class="col-center" style="width: 95px;">Tgl Keluar</th>
-            <th class="col-right" style="width: 95px;">Harga Keluar</th>
-            <th class="col-center" style="width: 70px;">Durasi</th>
-            <th class="col-center" style="width: 130px;">Status Keluar</th>
-            <th class="col-right" style="width: 110px;">Net Return</th>
-            <th class="col-center" style="width: 110px;">MFE / MAE</th>
+            <th class="text-center" style="width: 44px;">#</th>
+            <th style="min-width: 130px;">Ticker Saham</th>
+            <th style="min-width: 160px;">Setup & Horizon</th>
+            <th class="text-center" style="min-width: 95px;">Tgl Sinyal</th>
+            <th class="text-right" style="min-width: 100px;">Entry (T+1)</th>
+            <th class="text-right" style="min-width: 95px;">Stop Loss</th>
+            <th class="text-right" style="min-width: 95px;">Target 1</th>
+            <th class="text-center" style="min-width: 95px;">Tgl Keluar</th>
+            <th class="text-right" style="min-width: 100px;">Harga Keluar</th>
+            <th class="text-center" style="min-width: 70px;">Durasi</th>
+            <th class="text-center" style="min-width: 130px;">Status Keluar</th>
+            <th class="text-right" style="min-width: 115px;">Net Return (Fee 0.4%)</th>
+            <th class="text-center" style="min-width: 105px;">MFE / MAE</th>
+            <th class="text-center" style="width: 80px;">Aksi</th>
           </tr>
         </thead>
         <tbody id="bt-trades-tbody">
           <tr>
-            <td colspan="13" class="empty-state">
+            <td colspan="14" class="empty-state">
               <div class="empty-state-icon">⏳</div>
               <h3>Memuat data log sinyal backtest...</h3>
             </td>
@@ -302,14 +291,14 @@
       </table>
     </div>
 
-    <!-- Table Pagination Foot -->
+    <!-- Table Pagination Footer -->
     <div class="table-footer-bar">
       <div class="table-count-label">
-        Menampilkan <strong id="bt-trades-displayed-count">0</strong> dari <strong id="bt-trades-total-count">0</strong> transaksi sinyal
+        Menampilkan <strong id="bt-trades-displayed-count" class="mono">0</strong> dari <strong id="bt-trades-total-count" class="mono">0</strong> transaksi sinyal
       </div>
       <div class="pagination-actions" id="bt-pagination-wrap">
         <!-- Injected dynamically by JS -->
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>

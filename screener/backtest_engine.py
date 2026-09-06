@@ -508,15 +508,17 @@ class SignalBacktestEngine:
         payoff_ratio = round(float(avg_gain / avg_loss), 2) if avg_loss > 0 else (float(avg_gain) if avg_gain > 0 else 1.0)
         avg_holding = round(float(np.mean([t['holding_days'] for t in trades])), 1)
 
-        # Compute Max Drawdown on cumulative equity curve
-        cum_ret = 0.0
-        peak = 0.0
+        # Compute Max Drawdown on normalized portfolio equity curve (10% allocation per trade)
+        equity = 100.0
+        peak = 100.0
         max_dd = 0.0
         for t in trades:
-            cum_ret += float(t['net_return_pct'])
-            if cum_ret > peak:
-                peak = cum_ret
-            dd = peak - cum_ret
+            # Assume disciplined 10% position sizing per setup signal
+            trade_pnl_pct = float(t['net_return_pct'])
+            equity = equity * (1.0 + 0.10 * (trade_pnl_pct / 100.0))
+            if equity > peak:
+                peak = equity
+            dd = ((peak - equity) / peak) * 100.0 if peak > 0 else 0.0
             if dd > max_dd:
                 max_dd = dd
 
