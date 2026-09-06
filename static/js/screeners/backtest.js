@@ -218,12 +218,17 @@ async function runOnDemandTickerBacktest(targetSymbol = null) {
       filterAndRenderBacktestTrades();
 
       if (typeof showToast === 'function') {
-        showToast(`Simulasi ${ticker} selesai (${json.stats.total_trades} trade ditemukan, Win Rate: ${json.stats.win_rate}%)`, 'success');
+        if (json.stats && json.stats.total_trades > 0) {
+          showToast(`Simulasi ${ticker} selesai (${json.stats.total_trades} trade ditemukan, Win Rate: ${json.stats.win_rate}%)`, 'success');
+        } else {
+          showToast(`Simulasi ${ticker} selesai: 0 sinyal terpicu pada rentang ${years} tahun (Filter likuiditas / belum ada setup)`, 'info');
+        }
       }
     } else {
       if (typeof showToast === 'function') {
-        showToast(json.message || `Gagal simulasi ${ticker}`, 'error');
+        showToast(json.message || `Gagal simulasi ${ticker}`, 'warning');
       }
+      resetToUniverseBenchmark();
     }
   } catch (err) {
     console.error(`Error simulating ${ticker}:`, err);

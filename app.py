@@ -941,9 +941,9 @@ def api_backtest_summary():
 @app.route("/api/backtest/ticker", methods=["GET"])
 def api_backtest_ticker():
     """Run on-demand backtest for a specific ticker over requested period."""
-    ticker = request.args.get("symbol", "").strip().upper()
+    ticker = (request.args.get("ticker") or request.args.get("symbol") or "").strip().upper()
     if not ticker:
-        return jsonify({"status": "error", "message": "Parameter symbol wajib diisi"}), 400
+        return jsonify({"status": "error", "message": "Parameter ticker / symbol wajib diisi"}), 400
     try:
         years = int(request.args.get("years", 2))
         res = backtest_engine.run_ticker_backtest(ticker, years=years)
