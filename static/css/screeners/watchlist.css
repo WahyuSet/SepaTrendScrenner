@@ -173,7 +173,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. POSITION SIZING CALCULATOR MODAL LAYOUT
+   2. MODAL DIALOG WRAPPERS
    -------------------------------------------------------------------------- */
 .modal-dialog.position-calc-dialog,
 .modal-dialog.journal-modal-dialog {
@@ -194,8 +194,8 @@
 }
 
 .modal-dialog.journal-modal-dialog {
-  width: 720px !important;
-  max-width: 92vw;
+  width: 760px !important;
+  max-width: 94vw;
 }
 
 /* Modal Headers */
@@ -203,7 +203,7 @@
 .journal-modal-dialog .modal-header {
   background: #f8fafc;
   border-bottom: 1px solid var(--border-subtle, #e2e8f0);
-  padding: 16px 20px;
+  padding: 16px 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -228,6 +228,9 @@
   font-size: 1.15rem;
   font-weight: 800;
   color: var(--text-primary, #0f172a);
+  margin: 0;
+  padding: 0;
+  line-height: 1.2;
 }
 
 .calc-idx-pill {
@@ -250,12 +253,21 @@
   background: #f0fdf4;
   color: #166534;
   border: 1px solid #bbf7d0;
+  letter-spacing: 0.04em;
+  font-family: var(--font-mono);
 }
 
 .journal-mode-pill.close {
   background: #fefce8;
   color: #854d0e;
   border-color: #fef08a;
+}
+
+.journal-subtitle-row {
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--text-secondary, #64748b);
+  line-height: 1.3;
 }
 
 /* Modal Body */
@@ -269,12 +281,387 @@
 }
 
 .journal-modal-body {
-  padding: 20px !important;
+  padding: 20px 24px !important;
   overflow-y: auto;
+  flex: 1;
+  min-height: 0;
   background: #ffffff;
 }
 
-/* Left Panel / Form Fields */
+/* --------------------------------------------------------------------------
+   3. FORM CONTROLS & GRIDS
+   -------------------------------------------------------------------------- */
+.form-grid-ticker-row {
+  display: grid;
+  grid-template-columns: 130px 1.8fr 1.2fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.form-group,
+.calc-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 0;
+}
+
+.form-group.span-2 {
+  grid-column: span 2;
+}
+
+.form-group label,
+.calc-field-group label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary, #475569);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+}
+
+.req {
+  color: #ef4444;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+.calc-field-group input,
+.calc-field-group select {
+  width: 100%;
+  height: 38px;
+  line-height: 38px;
+  padding: 0 12px;
+  font-size: 13px;
+  font-family: var(--font-sans);
+  color: var(--text-primary, #0f172a);
+  background: #ffffff;
+  border: 1px solid var(--border-strong, #cbd5e1);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus,
+.calc-field-group input:focus,
+.calc-field-group select:focus {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+}
+
+.company-meta-inputs {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 8px;
+}
+
+.form-group textarea {
+  height: auto;
+  min-height: 58px;
+  padding: 8px 12px;
+  line-height: 1.4;
+  resize: vertical;
+}
+
+.form-input-mono {
+  font-family: var(--font-mono) !important;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: 0.02em;
+}
+
+.font-bold {
+  font-weight: 700 !important;
+}
+
+.mono {
+  font-family: var(--font-mono) !important;
+  font-feature-settings: "tnum" 1;
+}
+
+.form-select-custom {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+  padding-right: 30px !important;
+  cursor: pointer;
+}
+
+/* Mini Pill Badges for Stop Loss & Target Prices */
+.pill-mini {
+  display: inline-block;
+  padding: 1px 5px;
+  font-size: 9.5px;
+  font-weight: 800;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+.pill-sl {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.pill-tp {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+/* Journal Live Calculation Strip */
+.journal-calc-summary-strip {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 1fr;
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+}
+
+.journal-calc-summary-strip .summary-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.journal-calc-summary-strip .summary-col:not(:last-child) {
+  border-right: 1px solid var(--border-subtle, #e2e8f0);
+  padding-right: 14px;
+}
+
+.journal-calc-summary-strip .summary-col:not(:first-child) {
+  padding-left: 14px;
+}
+
+.sub-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-muted, #64748b);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sub-val {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+}
+
+.sub-val.highlight {
+  color: #0284c7;
+  font-size: 14.5px;
+  font-weight: 800;
+}
+
+/* Modal Footer Action Buttons */
+.modal-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle, #e2e8f0);
+}
+
+.btn-journal-cancel {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid var(--border-strong, #cbd5e1);
+  color: var(--text-secondary, #475569);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-journal-cancel:hover {
+  background: #f1f5f9;
+  color: var(--text-primary, #0f172a);
+}
+
+.btn-journal-save {
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 20px;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-journal-save.primary {
+  background: var(--brand-lime, #4d7c0f);
+  color: #ffffff;
+}
+
+.btn-journal-save.primary:hover {
+  background: var(--brand-lime-hover, #3f6212);
+  transform: translateY(-1px);
+}
+
+.btn-journal-save.success {
+  background: #15803d;
+  color: #ffffff;
+}
+
+.btn-journal-save.success:hover {
+  background: #166534;
+  transform: translateY(-1px);
+}
+
+/* Close Trade Overview & Bento */
+.close-trade-overview-card {
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+
+.trade-hero-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero-left {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.close-ticker {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary, #0f172a);
+  letter-spacing: 0.04em;
+}
+
+.close-name {
+  font-size: 13px;
+  color: var(--text-secondary, #475569);
+}
+
+.buy-summary-badge {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-secondary, #475569);
+  background: #ffffff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle, #e2e8f0);
+}
+
+.pnl-preview-bento {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr 1.3fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.pnl-preview-card {
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.pnl-preview-card.highlight {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.pnl-card-title {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted, #94a3b8);
+  margin-bottom: 4px;
+}
+
+.pnl-card-val {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary, #0f172a);
+}
+
+.pnl-card-val.bold {
+  color: #15803d;
+}
+
+.pnl-card-val.pos {
+  color: #16a34a !important;
+}
+
+.pnl-card-val.neg {
+  color: #dc2626 !important;
+}
+
+.pnl-card-val.neu {
+  color: #64748b !important;
+}
+
+/* Settings Mode Intro */
+.settings-modal-intro {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+
+/* --------------------------------------------------------------------------
+   4. POSITION SIZING SPECIFIC STYLES
+   -------------------------------------------------------------------------- */
 .calc-panel-title {
   display: flex;
   align-items: center;
@@ -292,76 +679,50 @@
   letter-spacing: 0.04em;
 }
 
-.calc-field-group,
-.form-field-group {
-  margin-bottom: 12px;
+.calc-ticker-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.calc-field-group label,
-.form-field-group label {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary, #475569);
+.calc-ticker-meta {
+  position: absolute;
+  right: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted, #94a3b8);
+  font-family: var(--font-mono);
+  pointer-events: none;
+}
+
+.field-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 5px;
 }
 
-.calc-field-group input,
-.calc-field-group select,
-.form-field-group input,
-.form-field-group select,
-.form-field-group textarea {
-  width: 100%;
-  padding: 8px 12px;
-  font-size: 13px;
-  font-family: var(--font-sans);
-  color: var(--text-primary, #0f172a);
-  background: #ffffff;
-  border: 1px solid var(--border-strong, #cbd5e1);
-  border-radius: 6px;
-  outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-  box-sizing: border-box;
+.calc-val-preview {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0284c7;
 }
 
-.calc-field-group input:focus,
-.calc-field-group select:focus,
-.form-field-group input:focus,
-.form-field-group select:focus,
-.form-field-group textarea:focus {
-  border-color: #0284c7;
-  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+.calc-val-preview.risk-val {
+  color: #e11d48;
 }
 
-.calc-field-group input.mono,
-.form-field-group input.mono {
-  font-family: var(--font-mono);
-  font-weight: 600;
-}
-
-.form-grid-2 {
+.calc-two-col-fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-.form-grid-3 {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 12px;
-}
-
-.field-helper {
-  font-size: 11px;
-  color: var(--text-muted, #94a3b8);
-  margin-top: 4px;
-}
-
-/* Preset Buttons */
 .risk-presets-row {
   display: flex;
   gap: 6px;
-  margin-top: 6px;
+  margin-top: 4px;
+  align-items: center;
 }
 
 .btn-risk-pill {
@@ -388,6 +749,101 @@
   background: #0284c7;
   border-color: #0284c7;
   color: #ffffff;
+}
+
+.calc-custom-risk-input {
+  width: 52px !important;
+  padding: 4px 6px !important;
+  font-size: 12px !important;
+  font-family: var(--font-mono);
+  text-align: center;
+  border-radius: 5px !important;
+}
+
+.custom-pct-sym {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-left: 2px;
+}
+
+.calc-advanced-box {
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: 8px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.calc-advanced-header {
+  padding: 10px 12px;
+  background: #f8fafc;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary, #475569);
+  user-select: none;
+}
+
+.calc-advanced-header:hover {
+  background: #f1f5f9;
+}
+
+.calc-advanced-content {
+  padding: 12px;
+  background: #ffffff;
+  border-top: 1px solid var(--border-subtle, #e2e8f0);
+}
+
+.field-hint {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted, #94a3b8);
+  margin-top: 4px;
+  line-height: 1.35;
+}
+
+.calc-fee-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-subtle, #e2e8f0);
+}
+
+.switch-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.switch-label input[type="checkbox"] {
+  width: auto !important;
+}
+
+.fee-subinputs {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  align-items: center;
+}
+
+.fee-subinputs input {
+  width: 50px !important;
+  padding: 2px 4px !important;
+  font-size: 11px !important;
+  font-family: var(--font-mono);
+  text-align: center;
+  display: inline-block;
+  margin: 0 2px;
 }
 
 /* Results Panel (Right Column) */
@@ -613,42 +1069,6 @@
 
 .btn-calc-action.secondary:hover {
   background: #f1f5f9;
-}
-
-/* Modal Footer Actions */
-.modal-footer-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border-subtle);
-}
-
-/* Close Trade P&L Preview Card */
-.close-pnl-preview-card {
-  background: #f8fafc;
-  border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin-bottom: 14px;
-}
-
-.pnl-preview-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-  font-family: var(--font-mono);
-  margin-bottom: 4px;
-}
-
-.pnl-preview-row.net-row {
-  margin-top: 8px;
-  padding-top: 6px;
-  border-top: 1px dashed var(--border-strong);
-  font-size: 14px;
-  font-weight: 800;
 }
 
 /* Empty State Styling */

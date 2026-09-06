@@ -24,18 +24,19 @@
       <form id="form-journal-entry" onsubmit="submitJournalEntry(event)">
         <input type="hidden" id="entry-trade-id" value="">
 
-        <!-- ROW 1: Emiten, Nama, Sektor -->
-        <div class="form-grid-3">
+        <!-- ROW 1: Ticker, Nama Emiten, Sektor (Proportional 130px / 1.8fr / 1.2fr Grid) -->
+        <div class="form-grid-ticker-row">
           <div class="form-group">
             <label for="entry-ticker">Ticker Saham <span class="req">*</span></label>
-            <input type="text" id="entry-ticker" placeholder="e.g. BBCA" required maxlength="6" oninput="onJournalTickerChange(this.value)">
+            <input type="text" id="entry-ticker" placeholder="e.g. BBCA" required maxlength="6" oninput="onJournalTickerChange(this.value)" class="form-input-mono font-bold" style="text-transform: uppercase;">
           </div>
-          <div class="form-group span-2">
-            <label for="entry-name">Nama Perusahaan & Sektor</label>
-            <div class="company-meta-inputs">
-              <input type="text" id="entry-name" placeholder="Nama Perusahaan" required>
-              <input type="text" id="entry-sector" placeholder="Sektor" value="General">
-            </div>
+          <div class="form-group">
+            <label for="entry-name">Nama Perusahaan <span class="req">*</span></label>
+            <input type="text" id="entry-name" placeholder="Bank Central Asia Tbk" required>
+          </div>
+          <div class="form-group">
+            <label for="entry-sector">Sektor Saham</label>
+            <input type="text" id="entry-sector" placeholder="Financials" value="General">
           </div>
         </div>
 
@@ -47,26 +48,26 @@
           </div>
           <div class="form-group">
             <label for="entry-price">Harga Beli / Entry (Rp) <span class="req">*</span></label>
-            <input type="number" id="entry-price" placeholder="e.g. 4000" min="1" step="1" required oninput="calcJournalEntrySummary()">
+            <input type="number" id="entry-price" placeholder="e.g. 4000" min="1" step="1" required oninput="calcJournalEntrySummary()" class="form-input-mono font-bold">
           </div>
           <div class="form-group">
             <label for="entry-lots">Jumlah Pembelian (Lot) <span class="req">*</span></label>
-            <input type="number" id="entry-lots" placeholder="e.g. 50" min="1" step="1" required oninput="calcJournalEntrySummary()">
+            <input type="number" id="entry-lots" placeholder="e.g. 50" min="1" step="1" required oninput="calcJournalEntrySummary()" class="form-input-mono font-bold">
           </div>
         </div>
 
         <!-- AUTO-CALCULATED VALUE BANNER -->
         <div class="journal-calc-summary-strip">
           <div class="summary-col">
-            <span class="sub-label">Total Lembar:</span>
+            <span class="sub-label">Total Lembar Saham</span>
             <span id="entry-shares-display" class="sub-val mono">0 Lembar</span>
           </div>
           <div class="summary-col">
-            <span class="sub-label">Total Modal Pembelian:</span>
+            <span class="sub-label">Total Modal Pembelian</span>
             <span id="entry-capital-display" class="sub-val mono highlight">Rp 0</span>
           </div>
           <div class="summary-col">
-            <span class="sub-label">Biaya Beli (0.15%):</span>
+            <span class="sub-label">Estimasi Fee Beli (0.15%)</span>
             <span id="entry-fee-display" class="sub-val mono text-muted">Rp 0</span>
           </div>
         </div>
@@ -74,16 +75,16 @@
         <!-- ROW 3: Stop Loss, Target 1, Target 2 -->
         <div class="form-grid-3">
           <div class="form-group">
-            <label for="entry-sl">Stop Loss / Cut Loss (Rp)</label>
-            <input type="number" id="entry-sl" placeholder="e.g. 3800" min="1" step="1" oninput="calcJournalEntrySummary()">
+            <label for="entry-sl"><span class="pill-mini pill-sl">SL</span> Stop Loss / Cut Loss (Rp)</label>
+            <input type="number" id="entry-sl" placeholder="e.g. 3800" min="1" step="1" oninput="calcJournalEntrySummary()" class="form-input-mono">
           </div>
           <div class="form-group">
-            <label for="entry-t1">Target 1 (Rp)</label>
-            <input type="number" id="entry-t1" placeholder="e.g. 4400" min="1" step="1">
+            <label for="entry-t1"><span class="pill-mini pill-tp">TP 1</span> Target 1 TP (Rp)</label>
+            <input type="number" id="entry-t1" placeholder="e.g. 4400" min="1" step="1" class="form-input-mono">
           </div>
           <div class="form-group">
-            <label for="entry-t2">Target 2 (Rp)</label>
-            <input type="number" id="entry-t2" placeholder="e.g. 4600" min="1" step="1">
+            <label for="entry-t2"><span class="pill-mini pill-tp">TP 2</span> Target 2 TP (Rp)</label>
+            <input type="number" id="entry-t2" placeholder="e.g. 4600" min="1" step="1" class="form-input-mono">
           </div>
         </div>
 
@@ -91,7 +92,7 @@
         <div class="form-grid-2">
           <div class="form-group">
             <label for="entry-setup">Strategi / Setup Masuk</label>
-            <select id="entry-setup">
+            <select id="entry-setup" class="form-select-custom">
               <option value="Quality Setup">💎 Quality Setup (100-pt Score)</option>
               <option value="Pre-Breakout Ready">🎯 Pre-Breakout (VCP / Tight Base)</option>
               <option value="SEPA Stage 2">📈 SEPA Stage 2 Confirmed</option>
@@ -101,15 +102,15 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="entry-chart">URL Chart / TradingView Link</label>
+            <label for="entry-chart">URL Chart / TradingView Link (Opsional)</label>
             <input type="url" id="entry-chart" placeholder="https://tradingview.com/x/...">
           </div>
         </div>
 
         <!-- ROW 5: Notes & Trading Psychology -->
         <div class="form-group">
-          <label for="entry-notes">Alasan Pembelian & Rencana Disiplin (Psikologi Trading)</label>
-          <textarea id="entry-notes" rows="3" placeholder="Contoh: Entry saat breakout resisten 50D dengan lonjakan volume 2.5x. Disiplin cut loss jika jebol EMA 20. Target R:R minimal 1:2."></textarea>
+          <label for="entry-notes">Alasan Pembelian & Catatan Rencana Disiplin</label>
+          <textarea id="entry-notes" rows="2" placeholder="Contoh: Entry saat breakout resisten 50D dengan lonjakan volume 2.5x. Disiplin cut loss jika jebol EMA 20. Target R:R minimal 1:2."></textarea>
         </div>
 
         <!-- MODAL FOOTER ACTIONS -->
@@ -146,11 +147,11 @@
           </div>
           <div class="form-group">
             <label for="close-exit-price">Harga Jual / Exit (Rp) <span class="req">*</span></label>
-            <input type="number" id="close-exit-price" placeholder="e.g. 4400" min="1" step="1" required oninput="recomputeClosePnlPreview()">
+            <input type="number" id="close-exit-price" placeholder="e.g. 4400" min="1" step="1" required oninput="recomputeClosePnlPreview()" class="form-input-mono font-bold">
           </div>
           <div class="form-group">
             <label for="close-exit-reason">Alasan Tutup Posisi <span class="req">*</span></label>
-            <select id="close-exit-reason" required>
+            <select id="close-exit-reason" required class="form-select-custom">
               <option value="TARGET_1">🎯 Target 1 Tercapai (Take Profit)</option>
               <option value="TARGET_2">🚀 Target 2 Tercapai (Runner Profit)</option>
               <option value="TRAILING_STOP">📈 Trailing Stop Terpukul</option>
@@ -199,33 +200,36 @@
       <!-- 3. MODE SETTINGS: PENGATURAN PORTOFOLIO & FEE BROKER -->
       <form id="form-journal-settings" class="hidden" onsubmit="submitJournalSettings(event)">
         <div class="settings-modal-intro">
-          <span>⚙️</span>
-          <p>Konfigurasikan ukuran modal awal, parameter risiko Minervini, dan tarif biaya komisi broker saham Anda.</p>
+          <span style="font-size: 1.4rem;">⚙️</span>
+          <div>
+            <strong>Pengaturan Parameter Portofolio</strong>
+            <p style="margin: 2px 0 0 0; font-size: 12px; color: #475569;">Atur ukuran modal dasar, toleransi risiko Minervini, dan tarif komisi broker Anda.</p>
+          </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
             <label for="set-capital">Total Modal Portofolio (IDR) <span class="req">*</span></label>
-            <input type="number" id="set-capital" value="100000000" min="1000000" step="1000000" required>
+            <input type="number" id="set-capital" value="100000000" min="1000000" step="1000000" required class="form-input-mono font-bold">
           </div>
           <div class="form-group">
             <label for="set-risk-pct">Default Risiko per Transaksi (% Modal) <span class="req">*</span></label>
-            <input type="number" id="set-risk-pct" value="1.0" min="0.1" max="10" step="0.1" required>
+            <input type="number" id="set-risk-pct" value="1.0" min="0.1" max="10" step="0.1" required class="form-input-mono font-bold">
           </div>
         </div>
 
         <div class="form-grid-3">
           <div class="form-group">
             <label for="set-max-cap">Batas Alokasi per Emiten (Maks %)</label>
-            <input type="number" id="set-max-cap" value="20.0" min="5" max="100" step="1">
+            <input type="number" id="set-max-cap" value="20.0" min="5" max="100" step="1" class="form-input-mono">
           </div>
           <div class="form-group">
             <label for="set-fee-buy">Fee Beli Broker (%)</label>
-            <input type="number" id="set-fee-buy" value="0.15" min="0" max="2" step="0.01">
+            <input type="number" id="set-fee-buy" value="0.15" min="0" max="2" step="0.01" class="form-input-mono">
           </div>
           <div class="form-group">
             <label for="set-fee-sell">Fee Jual Broker (%)</label>
-            <input type="number" id="set-fee-sell" value="0.25" min="0" max="2" step="0.01">
+            <input type="number" id="set-fee-sell" value="0.25" min="0" max="2" step="0.01" class="form-input-mono">
           </div>
         </div>
 
