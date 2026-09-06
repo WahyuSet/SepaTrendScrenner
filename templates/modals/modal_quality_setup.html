@@ -1,0 +1,212 @@
+<!-- ======================================================== -->
+<!-- QUALITY SETUP MODAL (BENTO GRID ARCHITECTURE) -->
+<!-- ======================================================== -->
+<div id="modal-quality-setup" class="modal hidden" onclick="closeQualityModalOnBackdrop(event)">
+  <div class="modal-dialog quality-modal-dialog" onclick="event.stopPropagation()">
+    <!-- MODAL HEADER -->
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <div class="qs-title-row">
+          <span id="qs-modal-ticker" class="modal-ticker-symbol">TICKER</span>
+          <span id="qs-modal-grade-badge" class="badge-status ready">👑 ELITE</span>
+          <span id="qs-modal-setup-badge" class="qs-setup-badge breakout">🚀 BREAKOUT READY</span>
+        </div>
+        <div class="qs-subtitle-row">
+          <span id="qs-modal-name" class="modal-company-name">Nama Perusahaan</span>
+          <span class="meta-dot">•</span>
+          <span id="qs-modal-sector" class="modal-sector-tag">Sektor</span>
+        </div>
+      </div>
+
+      <div class="header-price-info">
+        <div class="modal-price-display">
+          <span id="qs-modal-price" class="current-price mono">Rp 0</span>
+          <span id="qs-modal-change" class="price-change-sub pos">+0.0%</span>
+        </div>
+        <button class="modal-close" onclick="closeQualityModal()" title="Tutup Modal (Esc)">✕</button>
+      </div>
+    </div>
+
+    <!-- MODAL BODY: BENTO GRID -->
+    <div class="modal-body quality-bento-body">
+
+      <!-- BENTO 1: TRADE EXECUTION PLAN -->
+      <div class="qs-bento-card span-2 bento-trade-plan">
+        <div class="bento-header">
+          <div class="bento-title">
+            <span class="bento-icon">🎯</span>
+            <h3>Actionable Trading Plan</h3>
+          </div>
+          <div id="qs-modal-rr-badge" class="rr-badge-pill">Risk:Reward 1 : 2.5</div>
+        </div>
+
+        <div class="trade-plan-metrics-grid">
+          <div class="plan-metric-box entry-box">
+            <span class="plan-metric-label">Area Entry Optimal</span>
+            <span id="qs-modal-entry" class="plan-metric-val mono">Rp 0</span>
+            <span id="qs-modal-entry-note" class="plan-metric-sub">Nearest Resistance</span>
+          </div>
+
+          <div class="plan-metric-box sl-box">
+            <span class="plan-metric-label">Stop Loss Disiplin</span>
+            <span id="qs-modal-sl" class="plan-metric-val mono danger">Rp 0</span>
+            <span id="qs-modal-sl-pct" class="plan-metric-sub danger">-0.0% (1.5x ATR)</span>
+          </div>
+
+          <div class="plan-metric-box target-box">
+            <span class="plan-metric-label">Target 1 (R1)</span>
+            <span id="qs-modal-t1" class="plan-metric-val mono success">Rp 0</span>
+            <span class="plan-metric-sub">Take Profit Parsial</span>
+          </div>
+
+          <div class="plan-metric-box target-box">
+            <span class="plan-metric-label">Target 2 (R2 / Runner)</span>
+            <span id="qs-modal-t2" class="plan-metric-val mono success">Rp 0</span>
+            <span class="plan-metric-sub">Full Swing Target</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BENTO 2: 100-PT COMPOSITE SCORE BREAKDOWN -->
+      <div class="qs-bento-card bento-score-breakdown">
+        <div class="bento-header">
+          <div class="bento-title">
+            <span class="bento-icon">📊</span>
+            <h3>Skor Kualitas (100 Poin)</h3>
+          </div>
+          <div class="score-circle-pill">
+            <span id="qs-modal-score" class="score-num font-bold">0</span>
+            <span class="score-den">/100</span>
+          </div>
+        </div>
+
+        <div class="score-pillars-list">
+          <div class="score-pillar-row">
+            <span class="pillar-name">Trend & EMA Alignment (50 pt)</span>
+            <span id="qs-modal-p-trend" class="pillar-val mono font-semibold">0</span>
+          </div>
+          <div class="score-pillar-row">
+            <span class="pillar-name">Volume & ADX Momentum (20 pt)</span>
+            <span id="qs-modal-p-volume" class="pillar-val mono font-semibold">0</span>
+          </div>
+          <div class="score-pillar-row">
+            <span class="pillar-name">Kontrol Volatilitas ATR (15 pt)</span>
+            <span id="qs-modal-p-volatility" class="pillar-val mono font-semibold">0</span>
+          </div>
+          <div class="score-pillar-row">
+            <span class="pillar-name">Supertrend & Stability (15 pt)</span>
+            <span id="qs-modal-p-overlay" class="pillar-val mono font-semibold">0</span>
+          </div>
+        </div>
+
+        <div class="score-signals-box">
+          <div class="signals-header">Konfirmasi Sinyal Terverifikasi:</div>
+          <ul id="qs-modal-signals" class="signals-list">
+            <li>Memuat sinyal...</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- BENTO 3: FIBONACCI RETRACEMENT & EXTENSIONS -->
+      <div class="qs-bento-card bento-fibonacci">
+        <div class="bento-header">
+          <div class="bento-title">
+            <span class="bento-icon">📐</span>
+            <h3>Fibonacci Levels (Swing 60D)</h3>
+          </div>
+          <span id="qs-modal-fib-trend" class="fib-trend-tag">UPTREND</span>
+        </div>
+
+        <div class="fib-grid">
+          <div class="fib-column">
+            <div class="fib-col-title">Retracement Levels</div>
+            <div class="fib-row">
+              <span class="fib-level-lbl">0.236 Retrace</span>
+              <span id="qs-fib-236" class="fib-level-val mono">—</span>
+            </div>
+            <div class="fib-row">
+              <span class="fib-level-lbl">0.382 Retrace</span>
+              <span id="qs-fib-382" class="fib-level-val mono">—</span>
+            </div>
+            <div class="fib-row">
+              <span class="fib-level-lbl">0.500 Midpoint</span>
+              <span id="qs-fib-500" class="fib-level-val mono">—</span>
+            </div>
+            <div class="fib-row golden-pocket-row">
+              <span class="fib-level-lbl">👑 0.618 Golden Pocket</span>
+              <span id="qs-fib-618" class="fib-level-val mono font-bold">—</span>
+            </div>
+            <div class="fib-row">
+              <span class="fib-level-lbl">0.786 Deep Retrace</span>
+              <span id="qs-fib-786" class="fib-level-val mono">—</span>
+            </div>
+          </div>
+
+          <div class="fib-column">
+            <div class="fib-col-title">Extension Targets</div>
+            <div class="fib-row">
+              <span class="fib-level-lbl">1.272 Extension</span>
+              <span id="qs-ext-1272" class="fib-level-val mono success">—</span>
+            </div>
+            <div class="fib-row golden-ext-row">
+              <span class="fib-level-lbl">🚀 1.618 Golden Ratio</span>
+              <span id="qs-ext-1618" class="fib-level-val mono success font-bold">—</span>
+            </div>
+            <div class="fib-row">
+              <span class="fib-level-lbl">2.618 Macro Ext</span>
+              <span id="qs-ext-2618" class="fib-level-val mono success">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BENTO 4: SUPERTREND & CANDLE STRUCTURE -->
+      <div class="qs-bento-card bento-structure">
+        <div class="bento-header">
+          <div class="bento-title">
+            <span class="bento-icon">🕯️</span>
+            <h3>Candle & Supertrend</h3>
+          </div>
+          <span id="qs-modal-st-badge" class="st-badge bullish">BULLISH</span>
+        </div>
+
+        <div class="structure-details">
+          <div class="struct-row">
+            <span class="struct-label">Tipe Candle Terakhir:</span>
+            <span id="qs-struct-candle" class="struct-val font-semibold">—</span>
+          </div>
+          <div class="struct-row">
+            <span class="struct-label">Kekuatan Body Candle:</span>
+            <span id="qs-struct-body" class="struct-val mono">—</span>
+          </div>
+          <div class="struct-row">
+            <span class="struct-label">Upper Wick / Ekor Atas:</span>
+            <span id="qs-struct-upper-wick" class="struct-val mono">—</span>
+          </div>
+          <div class="struct-row">
+            <span class="struct-label">Lower Wick / Rejection:</span>
+            <span id="qs-struct-lower-wick" class="struct-val mono">—</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MODAL FOOTER -->
+    <div class="modal-footer quality-modal-footer">
+      <div class="footer-left">
+        <span class="source-pill">Tirexxz 100-Pt Engine</span>
+        <span class="coverage-pill">941 IDX Universe</span>
+      </div>
+
+      <div class="footer-actions">
+        <button id="qs-btn-check-bandar" class="btn-table-util" onclick="openBandarFromQuality()">
+          <span>🕵️</span> Cek Bandarmologi (IDX Edge)
+        </button>
+        <button id="qs-btn-tv-chart" class="btn-table-util" onclick="openTradingViewFromQuality()">
+          <span>📈</span> TradingView Chart ↗
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

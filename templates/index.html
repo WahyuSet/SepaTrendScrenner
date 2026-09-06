@@ -33,6 +33,9 @@
       <!-- 3. Pre-Breakout Screener View -->
       {% include 'views/view_prebreakout.html' %}
 
+      <!-- 4. Quality Setup Screener View -->
+      {% include 'views/view_quality_setup.html' %}
+
       <!-- App Footer -->
       {% include 'components/footer.html' %}
     </main>
@@ -42,6 +45,7 @@
   {% include 'modals/modal_sepa.html' %}
   {% include 'modals/modal_rsi.html' %}
   {% include 'modals/modal_prebreakout.html' %}
+  {% include 'modals/modal_quality_setup.html' %}
   {% include 'modals/modal_stock_detail.html' %}
   {% include 'modals/command_palette.html' %}
 
@@ -56,6 +60,7 @@
   <script src="/static/js/screeners/sepa.js"></script>
   <script src="/static/js/screeners/rsi.js"></script>
   <script src="/static/js/screeners/prebreakout.js"></script>
+  <script src="/static/js/screeners/quality_setup.js"></script>
   <script src="/static/js/components/command-palette.js"></script>
   <script src="/static/js/main.js"></script>
 </body>

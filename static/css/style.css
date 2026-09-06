@@ -28,3 +28,6 @@
 /* 8. Market Regime Banner & Advanced Screener Badges */
 @import url('/static/css/components/market_regime.css');
 
+/* 9. Quality Setup Screener & Bento Grid Modal */
+@import url('/static/css/screeners/quality_setup.css');
+

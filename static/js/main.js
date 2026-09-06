@@ -71,11 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   checkScanStatus();
 
-  // Initial load of cached results across all three screeners + market regime
+  // Initial load of cached results across all four screeners + market regime
   loadMarketRegime();
   loadCachedResults();
   loadRsiResults();
   loadPreBreakoutResults();
+  loadQualityResults();
 });
 
 async function loadMarketRegime() {
@@ -160,7 +161,7 @@ function updateSliderBackground(val) {
 
 function switchScreener(screenerId) {
   // Hide all views
-  ['view-sepa', 'view-rsi-div', 'view-prebreakout'].forEach(id => {
+  ['view-sepa', 'view-rsi-div', 'view-prebreakout', 'view-quality'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.classList.remove('active');
@@ -169,7 +170,7 @@ function switchScreener(screenerId) {
   });
 
   // Remove active from all nav items / tabs
-  ['nav-sepa', 'nav-rsi-div', 'nav-prebreakout'].forEach(id => {
+  ['nav-sepa', 'nav-rsi-div', 'nav-prebreakout', 'nav-quality'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('active');
   });
@@ -186,6 +187,10 @@ function switchScreener(screenerId) {
     document.getElementById('view-prebreakout')?.classList.remove('hidden');
     document.getElementById('view-prebreakout')?.classList.add('active');
     document.getElementById('nav-prebreakout')?.classList.add('active');
+  } else if (screenerId === 'quality' || screenerId === 'quality-setup') {
+    document.getElementById('view-quality')?.classList.remove('hidden');
+    document.getElementById('view-quality')?.classList.add('active');
+    document.getElementById('nav-quality')?.classList.add('active');
   }
 }
 
@@ -196,6 +201,7 @@ function refreshActiveScreener() {
     loadCachedResults(),
     loadRsiResults(),
     loadPreBreakoutResults(),
+    loadQualityResults(),
     checkScanStatus()
   ]).then(() => {
     showToast('✓ Data berhasil dimuat ulang dari server!');

@@ -1,0 +1,481 @@
+/* ==========================================================================
+   QUALITY SETUP SCREENER & BENTO MODAL STYLESHEET
+   ========================================================================== */
+
+/* 1. BADGES IN TABLE */
+.qs-grade-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.qs-grade-badge.elite {
+  background: linear-gradient(135deg, #fef08a 0%, #facc15 100%);
+  color: #713f12;
+  border: 1px solid #eab308;
+  box-shadow: 0 1px 6px rgba(234, 179, 8, 0.3);
+}
+
+.qs-grade-badge.strong {
+  background: linear-gradient(135deg, #dcfce7 0%, #86efac 100%);
+  color: #14532d;
+  border: 1px solid #4ade80;
+  box-shadow: 0 1px 6px rgba(74, 222, 128, 0.25);
+}
+
+.qs-setup-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.qs-setup-badge.breakout {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #7dd3fc;
+}
+
+.qs-setup-badge.pullback {
+  background: #f3e8ff;
+  color: #6b21a8;
+  border: 1px solid #d8b4fe;
+}
+
+.st-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.st-badge.bullish {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.st-badge.bearish {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+/* 2. TABLE CELL SPECIAL FORMATTERS */
+.table-plan-capsule {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  text-align: left;
+  background: #f8fafc;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+  min-width: 170px;
+}
+
+.table-plan-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.table-plan-lbl {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.table-plan-val {
+  font-weight: 700;
+  font-feature-settings: "tnum" 1;
+}
+
+.table-setup-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-detail-bento {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.btn-detail-bento:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--brand-lime);
+  color: var(--brand-lime-hover);
+  transform: translateY(-1px);
+}
+
+.score-cell-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 90px;
+}
+
+.score-bar-track {
+  flex: 1;
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.score-bar-fill.elite {
+  background: linear-gradient(90deg, #eab308, #ca8a04);
+}
+
+.score-bar-fill.strong {
+  background: linear-gradient(90deg, #10b981, #059669);
+}
+
+/* 3. BENTO MODAL DIALOG */
+.quality-modal-dialog {
+  width: 900px;
+  max-width: 95vw;
+}
+
+.qs-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.modal-ticker-symbol {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.qs-subtitle-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.quality-bento-body {
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  max-height: calc(90vh - 140px);
+  overflow-y: auto;
+}
+
+.qs-bento-card {
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.qs-bento-card.span-2 {
+  grid-column: span 2;
+}
+
+.bento-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 8px;
+}
+
+.bento-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bento-title h3 {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.bento-icon {
+  font-size: 15px;
+}
+
+.rr-badge-pill {
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 700;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  border: 1px solid #86efac;
+}
+
+/* 4. TRADE PLAN METRICS GRID IN MODAL */
+.trade-plan-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.plan-metric-box {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.plan-metric-box.entry-box {
+  border-left: 3px solid #3b82f6;
+}
+
+.plan-metric-box.sl-box {
+  border-left: 3px solid #ef4444;
+}
+
+.plan-metric-box.target-box {
+  border-left: 3px solid #10b981;
+}
+
+.plan-metric-label {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.plan-metric-val {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.plan-metric-sub {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+/* 5. SCORE BREAKDOWN PILLARS */
+.score-circle-pill {
+  display: flex;
+  align-items: baseline;
+  background: #ffffff;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+}
+
+.score-num {
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.score-den {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.score-pillars-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.score-pillar-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11.5px;
+  padding: 5px 8px;
+  background: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #f1f5f9;
+}
+
+.pillar-name {
+  color: var(--text-secondary);
+}
+
+.score-signals-box {
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 11px;
+}
+
+.signals-header {
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.signals-list {
+  margin: 0;
+  padding-left: 16px;
+  color: #15803d;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* 6. FIBONACCI GRID IN MODAL */
+.fib-trend-tag {
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.fib-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.fib-column {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.fib-col-title {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.fib-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 7px;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #f1f5f9;
+  font-size: 11.5px;
+}
+
+.fib-row.golden-pocket-row {
+  background: #fefce8;
+  border: 1px solid #fef08a;
+  border-left: 3px solid #eab308;
+}
+
+.fib-row.golden-ext-row {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-left: 3px solid #22c55e;
+}
+
+.fib-level-lbl {
+  color: var(--text-secondary);
+}
+
+/* 7. CANDLE & STRUCTURE IN MODAL */
+.structure-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.struct-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11.5px;
+  padding: 5px 8px;
+  background: #ffffff;
+  border-radius: 5px;
+  border: 1px solid #f1f5f9;
+}
+
+.struct-label {
+  color: var(--text-muted);
+}
+
+.struct-val {
+  color: var(--text-primary);
+}
+
+/* 8. MODAL FOOTER */
+.quality-modal-footer {
+  padding: 12px 20px;
+  background: #f8fafc;
+  border-top: 1px solid var(--border-subtle);
+  border-radius: 0 0 12px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.source-pill, .coverage-pill {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-right: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .quality-bento-body {
+    grid-template-columns: 1fr;
+  }
+  .qs-bento-card.span-2 {
+    grid-column: span 1;
+  }
+  .trade-plan-metrics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .fib-grid {
+    grid-template-columns: 1fr;
+  }
+}

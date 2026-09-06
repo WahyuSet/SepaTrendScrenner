@@ -1,4 +1,5 @@
 import os
+import json
 import pandas as pd
 import yfinance as yf
 import logging
@@ -7,23 +8,41 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 logger = logging.getLogger(__name__)
 
 class DataFetcher:
-    def __init__(self, tickers_csv_path="data/idx_tickers.csv"):
-        self.tickers_csv_path = tickers_csv_path
+    def __init__(self, tickers_path="data/idx_master_tickers.json"):
+        self.tickers_path = tickers_path
         self.tickers_df = None
         self.load_tickers()
 
     def load_tickers(self):
-        """Load tickers from CSV."""
-        if os.path.exists(self.tickers_csv_path):
+        """Load tickers from master JSON (941 tickers) or CSV fallback."""
+        target = self.tickers_path
+        
+        # Check if master JSON exists
+        base_data_dir = os.path.dirname(target) if os.path.dirname(target) else "data"
+        master_json = os.path.join(base_data_dir, "idx_master_tickers.json")
+        if not os.path.exists(master_json):
+            if os.path.exists("data/idx_master_tickers.json"):
+                master_json = "data/idx_master_tickers.json"
+
+        # If requested target is legacy idx_tickers.csv or target not found, prefer master JSON
+        if os.path.exists(master_json) and ("idx_tickers.csv" in target or not os.path.exists(target)):
+            target = master_json
+
+        if os.path.exists(target):
             try:
-                self.tickers_df = pd.read_csv(self.tickers_csv_path)
+                if target.endswith(".json"):
+                    with open(target, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                    self.tickers_df = pd.DataFrame(data)
+                else:
+                    self.tickers_df = pd.read_csv(target)
                 self.tickers_df['ticker'] = self.tickers_df['ticker'].str.strip().str.upper()
-                logger.info(f"Loaded {len(self.tickers_df)} tickers from {self.tickers_csv_path}")
+                logger.info(f"Loaded {len(self.tickers_df)} tickers from {target}")
             except Exception as e:
-                logger.error(f"Failed to read {self.tickers_csv_path}: {e}")
+                logger.error(f"Failed to read {target}: {e}")
                 self.tickers_df = pd.DataFrame(columns=['ticker', 'name', 'sector'])
         else:
-            logger.warning(f"Ticker CSV not found at {self.tickers_csv_path}")
+            logger.warning(f"Ticker file not found at {target}")
             self.tickers_df = pd.DataFrame(columns=['ticker', 'name', 'sector'])
 
     def get_ticker_meta(self, ticker):
@@ -53,7 +72,7 @@ class DataFetcher:
         except Exception as e:
             return ticker, None, str(e)
 
-    def fetch_batch_concurrent(self, ticker_list=None, max_workers=8, period="2y"):
+    def fetch_batch_concurrent(self, ticker_list=None, max_workers=16, period="2y"):
         """Fetch historical data for a list of tickers using ThreadPoolExecutor."""
         if ticker_list is None:
             if self.tickers_df is not None and not self.tickers_df.empty:

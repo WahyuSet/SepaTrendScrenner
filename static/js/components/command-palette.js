@@ -107,6 +107,15 @@ function getBaseCommands() {
       action: () => switchScreener('prebreakout')
     },
     {
+      id: 'nav-quality',
+      group: 'Navigasi Screener',
+      icon: '💎',
+      title: 'Beralih ke Quality Setup Screener',
+      desc: '100-Pt Momentum & Setup Pullback / Breakout (941 IDX)',
+      badge: 'Menu',
+      action: () => switchScreener('quality')
+    },
+    {
       id: 'act-scan',
       group: 'Aksi Cepat',
       icon: '⚡',

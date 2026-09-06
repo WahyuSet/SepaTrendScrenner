@@ -21,9 +21,10 @@ from screener.calculator import SEPACalculator
 from screener.rsi_divergence import RSIDivergenceCalculator
 from screener.pre_breakout import PreBreakoutCalculator
 from screener.market_regime import MarketRegimeEvaluator
+from screener.quality_screener import run_quality_scan
 
 CACHE_DIR = os.path.join(BASE_DIR, "data", "cache")
-TICKERS_FILE = os.path.join(BASE_DIR, "data", "idx_tickers.csv")
+TICKERS_FILE = os.path.join(BASE_DIR, "data", "idx_master_tickers.json")
 LOG_FILE = os.path.join(BASE_DIR, "data", "cron_scan.log")
 
 def log_msg(msg):
@@ -63,7 +64,7 @@ def main():
     log_msg(f"2/5 Mengunduh data historis untuk {len(tickers)} universe saham IDX...")
 
     all_data = {}
-    max_workers = 10
+    max_workers = 16
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_ticker = {
@@ -184,6 +185,14 @@ def main():
 
     save_json(os.path.join(CACHE_DIR, "scan_result.json"), sepa_payload)
     log_msg(f"Sinergi SEPA+VCP: {sepa_vcp_count} saham terverifikasi SEPA Confirmed + VCP Ready!")
+
+    # 6. Evaluasi Quality Setup (941 IDX Universe)
+    log_msg("6/6 Mengevaluasi Quality Setup (941 IDX Universe)...")
+    try:
+        q_res = run_quality_scan(max_workers=16, preloaded_data=all_data)
+        log_msg(f"Quality Setup Selesai: {q_res.get('passed_count', 0)}/{q_res.get('total_scanned', 0)} lolos (Elite: {q_res.get('elite_count', 0)}, Strong: {q_res.get('strong_count', 0)}).")
+    except Exception as qe:
+        log_msg(f"Quality Setup warning: {qe}")
 
     duration = round(time.time() - start_time, 2)
     log_msg(f"=== CRON SCAN SELESAI SUKSES DALAM {duration} DETIK ===\n")

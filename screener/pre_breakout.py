@@ -12,7 +12,7 @@ class PreBreakoutCalculator:
             volatility contraction (VCP), volume dry-up (VDU), positive momentum,
             and tight proximity to 50-day resistance.
     """
-    def __init__(self, tickers_csv_path="data/idx_tickers.csv", min_turnover_20d=500_000_000):
+    def __init__(self, tickers_csv_path="data/idx_master_tickers.json", min_turnover_20d=500_000_000):
         self.fetcher = DataFetcher(tickers_csv_path)
         self.min_turnover_20d = min_turnover_20d  # Default Rp 500 Juta avg daily turnover
 

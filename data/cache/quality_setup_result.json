@@ -1,0 +1,6895 @@
+{
+  "status": "success",
+  "scan_time": "2026-09-06 13:44:40",
+  "total_scanned": 896,
+  "passed_count": 73,
+  "elite_count": 3,
+  "strong_count": 68,
+  "breakout_count": 56,
+  "pullback_count": 17,
+  "avg_rr": 2.5,
+  "data": [
+    {
+      "ticker": "MPMX",
+      "name": "Mitra Pinasthika Mustika Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 1030.0,
+      "change_pct": 0.0,
+      "score": 90,
+      "grade": "Elite",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 1030.0,
+      "stop_loss": 1012.0,
+      "stop_loss_pct": 1.7,
+      "target_1": 1040.0,
+      "target_2": 1074.0,
+      "risk_reward": 2.5,
+      "rsi": 66.0,
+      "atr_pct": 1.1,
+      "volume_ratio": 1.3,
+      "turnover_idr": 3629926000.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 66 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 67)",
+        "ATR% 1.1% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 1010.0,
+        "fib_382": 992.0,
+        "fib_500": 978.0,
+        "fib_618": 963.0,
+        "fib_786": 942.0,
+        "ext_1272": 1074.0,
+        "ext_1618": 1117.0,
+        "ext_2618": 1242.0,
+        "golden_pocket": 963.0,
+        "swing_high": 1040.0,
+        "swing_low": 915.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Doji",
+        "strength": "Weak",
+        "body_pct": 0.0,
+        "upper_wick_pct": 100.0,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        1014.0,
+        1004.0,
+        995.0
+      ],
+      "resistances": [
+        1030.0,
+        1040.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1030.0,
+          "stop_loss": 1012.0,
+          "stop_loss_pct": 1.7,
+          "target_1": 1040.0,
+          "target_2": 1074.0,
+          "rr_target_1": 0.6,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 1014.0,
+          "stop_loss": 998.0,
+          "stop_loss_pct": 1.6,
+          "target_1": 1040.0,
+          "target_2": 1054.0,
+          "rr_target_1": 1.6,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "NEST",
+      "name": "Esta Indonesia Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 740.0,
+      "change_pct": 1.37,
+      "score": 90,
+      "grade": "Elite",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 749.0,
+      "stop_loss": 714.0,
+      "stop_loss_pct": 4.7,
+      "target_1": 775.0,
+      "target_2": 838.0,
+      "risk_reward": 2.5,
+      "rsi": 64.6,
+      "atr_pct": 3.2,
+      "volume_ratio": 2.9,
+      "turnover_idr": 2861624400.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 2,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 65 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 2.9x above 20-day average",
+        "Strong trend momentum (ADX 58)",
+        "ATR% 3.2% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 707.0,
+        "fib_382": 665.0,
+        "fib_500": 632.0,
+        "fib_618": 598.0,
+        "fib_786": 549.0,
+        "ext_1272": 853.0,
+        "ext_1618": 952.0,
+        "ext_2618": 1239.0,
+        "golden_pocket": 598.0,
+        "swing_high": 775.0,
+        "swing_low": 488.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 40.0,
+        "upper_wick_pct": 40.0,
+        "lower_wick_pct": 20.0
+      },
+      "supports": [
+        705.0,
+        663.0,
+        658.0
+      ],
+      "resistances": [
+        749.0,
+        775.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 749.0,
+          "stop_loss": 714.0,
+          "stop_loss_pct": 4.7,
+          "target_1": 775.0,
+          "target_2": 838.0,
+          "rr_target_1": 0.7,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 705.0,
+          "stop_loss": 670.0,
+          "stop_loss_pct": 5.0,
+          "target_1": 775.0,
+          "target_2": 794.0,
+          "rr_target_1": 2.0,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "TINS",
+      "name": "Timah Tbk.",
+      "sector": "Basic Materials",
+      "price": 4420.0,
+      "change_pct": 7.28,
+      "score": 87,
+      "grade": "Elite",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 4508.0,
+      "stop_loss": 4268.0,
+      "stop_loss_pct": 5.3,
+      "target_1": 4868.0,
+      "target_2": 5108.0,
+      "risk_reward": 2.5,
+      "rsi": 70.5,
+      "atr_pct": 3.6,
+      "volume_ratio": 2.0,
+      "turnover_idr": 223729084800.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 5,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 71 slightly elevated",
+        "MACD bullish + histogram rising",
+        "Volume 2.0x above 20-day average",
+        "Strong trend momentum (ADX 44)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 4108.0,
+        "fib_382": 3916.0,
+        "fib_500": 3760.0,
+        "fib_618": 3604.0,
+        "fib_786": 3382.0,
+        "ext_1272": 4779.0,
+        "ext_1618": 5236.0,
+        "ext_2618": 6556.0,
+        "golden_pocket": 3604.0,
+        "swing_high": 4420.0,
+        "swing_low": 3100.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Strong",
+        "body_pct": 96.8,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 3.2
+      },
+      "supports": [
+        4003.0,
+        3805.0,
+        3694.0
+      ],
+      "resistances": [],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 4508.0,
+          "stop_loss": 4268.0,
+          "stop_loss_pct": 5.3,
+          "target_1": 4868.0,
+          "target_2": 5108.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 4003.0,
+          "stop_loss": 3763.0,
+          "stop_loss_pct": 6.0,
+          "target_1": 4363.0,
+          "target_2": 4603.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "BDMN",
+      "name": "Bank Danamon Indonesia Tbk.",
+      "sector": "Financials",
+      "price": 4460.0,
+      "change_pct": -0.22,
+      "score": 84,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 4475.0,
+      "stop_loss": 4303.0,
+      "stop_loss_pct": 3.8,
+      "target_1": 4680.0,
+      "target_2": 4904.0,
+      "risk_reward": 2.5,
+      "rsi": 61.6,
+      "atr_pct": 2.6,
+      "volume_ratio": 1.0,
+      "turnover_idr": 10204502300.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 4,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 2,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 62 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 51)",
+        "ATR% 2.6% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 4437.0,
+        "fib_382": 4287.0,
+        "fib_500": 4165.0,
+        "fib_618": 4043.0,
+        "fib_786": 3870.0,
+        "ext_1272": 4960.0,
+        "ext_1618": 5317.0,
+        "ext_2618": 6347.0,
+        "golden_pocket": 4043.0,
+        "swing_high": 4680.0,
+        "swing_low": 3650.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 9.1,
+        "upper_wick_pct": 18.2,
+        "lower_wick_pct": 72.7
+      },
+      "supports": [
+        4306.0,
+        4201.0,
+        4131.0
+      ],
+      "resistances": [
+        4475.0,
+        4680.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 4475.0,
+          "stop_loss": 4303.0,
+          "stop_loss_pct": 3.8,
+          "target_1": 4680.0,
+          "target_2": 4904.0,
+          "rr_target_1": 1.2,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 4306.0,
+          "stop_loss": 4144.0,
+          "stop_loss_pct": 3.8,
+          "target_1": 4475.0,
+          "target_2": 4680.0,
+          "rr_target_1": 1.0,
+          "rr_target_2": 2.3
+        }
+      }
+    },
+    {
+      "ticker": "SIMP",
+      "name": "Salim Ivomas Pratama Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 645.0,
+      "change_pct": -0.77,
+      "score": 84,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 650.0,
+      "stop_loss": 621.0,
+      "stop_loss_pct": 4.4,
+      "target_1": 693.0,
+      "target_2": 722.0,
+      "risk_reward": 2.5,
+      "rsi": 64.9,
+      "atr_pct": 3.0,
+      "volume_ratio": 1.4,
+      "turnover_idr": 7689622275.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 65 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 57)",
+        "ATR% 3.0% (ideal swing volatility)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 625.0,
+        "fib_382": 600.0,
+        "fib_500": 580.0,
+        "fib_618": 561.0,
+        "fib_786": 532.0,
+        "ext_1272": 711.0,
+        "ext_1618": 769.0,
+        "ext_2618": 938.0,
+        "golden_pocket": 561.0,
+        "swing_high": 665.0,
+        "swing_low": 496.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 20.0,
+        "upper_wick_pct": 60.0,
+        "lower_wick_pct": 20.0
+      },
+      "supports": [
+        614.0,
+        597.0,
+        571.0
+      ],
+      "resistances": [
+        650.0,
+        665.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 650.0,
+          "stop_loss": 621.0,
+          "stop_loss_pct": 4.4,
+          "target_1": 693.0,
+          "target_2": 722.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 614.0,
+          "stop_loss": 587.0,
+          "stop_loss_pct": 4.3,
+          "target_1": 665.0,
+          "target_2": 680.0,
+          "rr_target_1": 1.9,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "TMAS",
+      "name": "Temas Tbk.",
+      "sector": "Transportation & Logistics",
+      "price": 144.0,
+      "change_pct": -0.69,
+      "score": 84,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 148.0,
+      "stop_loss": 140.0,
+      "stop_loss_pct": 5.5,
+      "target_1": 160.0,
+      "target_2": 168.0,
+      "risk_reward": 2.5,
+      "rsi": 69.7,
+      "atr_pct": 3.7,
+      "volume_ratio": 3.4,
+      "turnover_idr": 1281140640.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 70 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 3.4x above 20-day average",
+        "Strong trend momentum (ADX 53)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 141.0,
+        "fib_382": 134.0,
+        "fib_500": 128.0,
+        "fib_618": 123.0,
+        "fib_786": 115.0,
+        "ext_1272": 165.0,
+        "ext_1618": 181.0,
+        "ext_2618": 228.0,
+        "golden_pocket": 123.0,
+        "swing_high": 152.0,
+        "swing_low": 105.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 11.1,
+        "upper_wick_pct": 77.8,
+        "lower_wick_pct": 11.1
+      },
+      "supports": [
+        135.0,
+        129.0,
+        122.0
+      ],
+      "resistances": [
+        148.0,
+        152.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 148.0,
+          "stop_loss": 140.0,
+          "stop_loss_pct": 5.5,
+          "target_1": 160.0,
+          "target_2": 168.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 135.0,
+          "stop_loss": 127.0,
+          "stop_loss_pct": 6.0,
+          "target_1": 152.0,
+          "target_2": 155.0,
+          "rr_target_1": 2.1,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "ITMG",
+      "name": "Indo Tambangraya Megah Tbk.",
+      "sector": "Energy",
+      "price": 26100.0,
+      "change_pct": -0.29,
+      "score": 83,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 26378.0,
+      "stop_loss": 25685.0,
+      "stop_loss_pct": 2.6,
+      "target_1": 26775.0,
+      "target_2": 28111.0,
+      "risk_reward": 2.5,
+      "rsi": 67.7,
+      "atr_pct": 1.8,
+      "volume_ratio": 0.6,
+      "turnover_idr": 39272931000.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 68 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 52)",
+        "ATR% 1.8% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 25577.0,
+        "fib_382": 24836.0,
+        "fib_500": 24238.0,
+        "fib_618": 23639.0,
+        "fib_786": 22786.0,
+        "ext_1272": 28155.0,
+        "ext_1618": 29911.0,
+        "ext_2618": 34986.0,
+        "golden_pocket": 23639.0,
+        "swing_high": 26775.0,
+        "swing_low": 21700.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 16.7,
+        "upper_wick_pct": 66.7,
+        "lower_wick_pct": 16.7
+      },
+      "supports": [
+        25415.0,
+        24722.0,
+        24295.0
+      ],
+      "resistances": [
+        26378.0,
+        26775.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 26378.0,
+          "stop_loss": 25685.0,
+          "stop_loss_pct": 2.6,
+          "target_1": 26775.0,
+          "target_2": 28111.0,
+          "rr_target_1": 0.6,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 25415.0,
+          "stop_loss": 24722.0,
+          "stop_loss_pct": 2.7,
+          "target_1": 26775.0,
+          "target_2": 27148.0,
+          "rr_target_1": 2.0,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "ADRO",
+      "name": "Adaro Energy Indonesia Tbk.",
+      "sector": "Energy",
+      "price": 2720.0,
+      "change_pct": -0.73,
+      "score": 82,
+      "grade": "Strong",
+      "setup_type": "Pullback Setup",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 2632.0,
+      "stop_loss": 2510.0,
+      "stop_loss_pct": 4.6,
+      "target_1": 2860.0,
+      "target_2": 2937.0,
+      "risk_reward": 2.5,
+      "rsi": 58.7,
+      "atr_pct": 3.0,
+      "volume_ratio": 1.0,
+      "turnover_idr": 113887732800.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 59 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 40)",
+        "ATR% 3.0% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 2704.0,
+        "fib_382": 2608.0,
+        "fib_500": 2530.0,
+        "fib_618": 2452.0,
+        "fib_786": 2341.0,
+        "ext_1272": 3040.0,
+        "ext_1618": 3268.0,
+        "ext_2618": 3928.0,
+        "golden_pocket": 2452.0,
+        "swing_high": 2860.0,
+        "swing_low": 2200.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 33.3,
+        "upper_wick_pct": 16.7,
+        "lower_wick_pct": 50.0
+      },
+      "supports": [
+        2632.0,
+        2534.0,
+        2411.0
+      ],
+      "resistances": [
+        2809.0,
+        2860.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 2809.0,
+          "stop_loss": 2687.0,
+          "stop_loss_pct": 4.3,
+          "target_1": 2992.0,
+          "target_2": 3114.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 2632.0,
+          "stop_loss": 2510.0,
+          "stop_loss_pct": 4.6,
+          "target_1": 2860.0,
+          "target_2": 2937.0,
+          "rr_target_1": 1.9,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "MSIE",
+      "name": "Multisarana Intan Eduka Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 123.0,
+      "change_pct": 9.82,
+      "score": 82,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 138.0,
+      "stop_loss": 125.0,
+      "stop_loss_pct": 9.7,
+      "target_1": 158.0,
+      "target_2": 171.0,
+      "risk_reward": 2.5,
+      "rsi": 66.6,
+      "atr_pct": 7.3,
+      "volume_ratio": 1.9,
+      "turnover_idr": 1367239095.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 0,
+        "drawdown_stability": 1,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 67 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 1.9x above 20-day average",
+        "Strong trend momentum (ADX 37)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [
+        "ATR% 7.3% (high volatility)"
+      ],
+      "fibonacci": {
+        "fib_236": 121.0,
+        "fib_382": 110.0,
+        "fib_500": 102.0,
+        "fib_618": 94.0,
+        "fib_786": 81.0,
+        "ext_1272": 158.0,
+        "ext_1618": 182.0,
+        "ext_2618": 254.0,
+        "golden_pocket": 94.0,
+        "swing_high": 138.0,
+        "swing_low": 66.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Strong",
+        "body_pct": 84.6,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 15.4
+      },
+      "supports": [
+        105.0,
+        99.0,
+        82.0
+      ],
+      "resistances": [
+        138.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 138.0,
+          "stop_loss": 125.0,
+          "stop_loss_pct": 9.7,
+          "target_1": 158.0,
+          "target_2": 171.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 105.0,
+          "stop_loss": 95.0,
+          "stop_loss_pct": 10.0,
+          "target_1": 121.0,
+          "target_2": 131.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "TOOL",
+      "name": "Rohartindo Nusantara Luas Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 71.0,
+      "change_pct": 5.97,
+      "score": 80,
+      "grade": "Strong",
+      "setup_type": "Pullback Setup",
+      "primary_scenario": "pullback",
+      "supertrend": "BEARISH",
+      "entry": 67.0,
+      "stop_loss": 64.0,
+      "stop_loss_pct": 4.4,
+      "target_1": 71.0,
+      "target_2": 76.0,
+      "risk_reward": 3.1,
+      "rsi": 63.5,
+      "atr_pct": 5.5,
+      "volume_ratio": 6.7,
+      "turnover_idr": 2232182490.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 5
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 63 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 6.7x above 20-day average",
+        "Strong trend momentum (ADX 60)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 71.0,
+        "fib_382": 68.0,
+        "fib_500": 65.0,
+        "fib_618": 62.0,
+        "fib_786": 58.0,
+        "ext_1272": 84.0,
+        "ext_1618": 92.0,
+        "ext_2618": 116.0,
+        "golden_pocket": 62.0,
+        "swing_high": 77.0,
+        "swing_low": 53.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 44.4,
+        "upper_wick_pct": 55.6,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        67.0,
+        66.0,
+        64.0
+      ],
+      "resistances": [
+        76.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 76.0,
+          "stop_loss": 70.0,
+          "stop_loss_pct": 7.7,
+          "target_1": 85.0,
+          "target_2": 91.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 67.0,
+          "stop_loss": 64.0,
+          "stop_loss_pct": 4.4,
+          "target_1": 71.0,
+          "target_2": 76.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 3.1
+        }
+      }
+    },
+    {
+      "ticker": "DSNG",
+      "name": "Dharma Satya Nusantara Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 1640.0,
+      "change_pct": -0.61,
+      "score": 80,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 1730.0,
+      "stop_loss": 1638.0,
+      "stop_loss_pct": 5.3,
+      "target_1": 1868.0,
+      "target_2": 1961.0,
+      "risk_reward": 2.5,
+      "rsi": 68.9,
+      "atr_pct": 3.8,
+      "volume_ratio": 1.4,
+      "turnover_idr": 10222341400.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 69 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 93)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 1568.0,
+        "fib_382": 1468.0,
+        "fib_500": 1388.0,
+        "fib_618": 1307.0,
+        "fib_786": 1192.0,
+        "ext_1272": 1916.0,
+        "ext_1618": 2153.0,
+        "ext_2618": 2838.0,
+        "golden_pocket": 1307.0,
+        "swing_high": 1730.0,
+        "swing_low": 1045.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 22.2,
+        "upper_wick_pct": 66.7,
+        "lower_wick_pct": 11.1
+      },
+      "supports": [
+        1498.0,
+        1394.0,
+        1230.0
+      ],
+      "resistances": [
+        1730.0,
+        1735.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1730.0,
+          "stop_loss": 1638.0,
+          "stop_loss_pct": 5.3,
+          "target_1": 1868.0,
+          "target_2": 1961.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 1498.0,
+          "stop_loss": 1406.0,
+          "stop_loss_pct": 6.2,
+          "target_1": 1636.0,
+          "target_2": 1735.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.6
+        }
+      }
+    },
+    {
+      "ticker": "LAJU",
+      "name": "Jasa Berdikari Logistics Tbk.",
+      "sector": "Transportation & Logistics",
+      "price": 75.0,
+      "change_pct": 4.17,
+      "score": 80,
+      "grade": "Strong",
+      "setup_type": "Pullback Setup",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 69.0,
+      "stop_loss": 66.0,
+      "stop_loss_pct": 4.2,
+      "target_1": 73.0,
+      "target_2": 76.0,
+      "risk_reward": 2.5,
+      "rsi": 69.0,
+      "atr_pct": 5.1,
+      "volume_ratio": 12.6,
+      "turnover_idr": 4444866000.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 69 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 12.6x above 20-day average",
+        "Strong trend momentum (ADX 70)",
+        "Supertrend Bullish confirm",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 76.0,
+        "fib_382": 71.0,
+        "fib_500": 68.0,
+        "fib_618": 64.0,
+        "fib_786": 59.0,
+        "ext_1272": 91.0,
+        "ext_1618": 102.0,
+        "ext_2618": 133.0,
+        "golden_pocket": 64.0,
+        "swing_high": 83.0,
+        "swing_low": 52.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 25.0,
+        "upper_wick_pct": 66.7,
+        "lower_wick_pct": 8.3
+      },
+      "supports": [
+        69.0,
+        68.0,
+        65.0
+      ],
+      "resistances": [
+        83.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 83.0,
+          "stop_loss": 77.0,
+          "stop_loss_pct": 6.9,
+          "target_1": 92.0,
+          "target_2": 97.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 69.0,
+          "stop_loss": 66.0,
+          "stop_loss_pct": 4.2,
+          "target_1": 73.0,
+          "target_2": 76.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "TUGU",
+      "name": "Asuransi Tugu Pratama Indonesi",
+      "sector": "Financials",
+      "price": 1355.0,
+      "change_pct": 0.74,
+      "score": 80,
+      "grade": "Strong",
+      "setup_type": "Pullback Swing",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 1328.0,
+      "stop_loss": 1262.0,
+      "stop_loss_pct": 5.0,
+      "target_1": 1460.0,
+      "target_2": 1494.0,
+      "risk_reward": 2.5,
+      "rsi": 58.6,
+      "atr_pct": 3.3,
+      "volume_ratio": 2.0,
+      "turnover_idr": 3259628650.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 0,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 8,
+        "volatility_control": 10,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 59 in optimal momentum zone (55\u201370)",
+        "Volume 2.0x above 20-day average",
+        "ATR% 3.3% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 1361.0,
+        "fib_382": 1300.0,
+        "fib_500": 1250.0,
+        "fib_618": 1200.0,
+        "fib_786": 1130.0,
+        "ext_1272": 1574.0,
+        "ext_1618": 1720.0,
+        "ext_2618": 2140.0,
+        "golden_pocket": 1200.0,
+        "swing_high": 1460.0,
+        "swing_low": 1040.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 12.5,
+        "upper_wick_pct": 18.8,
+        "lower_wick_pct": 68.8
+      },
+      "supports": [
+        1328.0,
+        1278.0,
+        1212.0
+      ],
+      "resistances": [
+        1448.0,
+        1460.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1448.0,
+          "stop_loss": 1382.0,
+          "stop_loss_pct": 4.6,
+          "target_1": 1548.0,
+          "target_2": 1614.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 1328.0,
+          "stop_loss": 1262.0,
+          "stop_loss_pct": 5.0,
+          "target_1": 1460.0,
+          "target_2": 1494.0,
+          "rr_target_1": 2.0,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "CFIN",
+      "name": "Clipan Finance Indonesia Tbk.",
+      "sector": "Financials",
+      "price": 368.0,
+      "change_pct": 1.1,
+      "score": 79,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 370.0,
+      "stop_loss": 359.0,
+      "stop_loss_pct": 3.0,
+      "target_1": 386.0,
+      "target_2": 397.0,
+      "risk_reward": 2.5,
+      "rsi": 69.8,
+      "atr_pct": 2.0,
+      "volume_ratio": 2.0,
+      "turnover_idr": 750664800.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 0,
+        "volatility_control": 10,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 70 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 2.0x above 20-day average",
+        "ATR% 2.0% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 365.0,
+        "fib_382": 353.0,
+        "fib_500": 344.0,
+        "fib_618": 335.0,
+        "fib_786": 321.0,
+        "ext_1272": 406.0,
+        "ext_1618": 433.0,
+        "ext_2618": 513.0,
+        "golden_pocket": 335.0,
+        "swing_high": 384.0,
+        "swing_low": 304.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 33.3,
+        "upper_wick_pct": 16.7,
+        "lower_wick_pct": 50.0
+      },
+      "supports": [
+        355.0,
+        348.0,
+        345.0
+      ],
+      "resistances": [
+        370.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 370.0,
+          "stop_loss": 359.0,
+          "stop_loss_pct": 3.0,
+          "target_1": 386.0,
+          "target_2": 397.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 355.0,
+          "stop_loss": 344.0,
+          "stop_loss_pct": 3.0,
+          "target_1": 370.0,
+          "target_2": 382.0,
+          "rr_target_1": 1.4,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "ERAL",
+      "name": "Sinar Eka Selaras Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 326.0,
+      "change_pct": -1.21,
+      "score": 79,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 338.0,
+      "stop_loss": 319.0,
+      "stop_loss_pct": 5.5,
+      "target_1": 366.0,
+      "target_2": 385.0,
+      "risk_reward": 2.5,
+      "rsi": 63.4,
+      "atr_pct": 3.8,
+      "volume_ratio": 1.8,
+      "turnover_idr": 2312052310.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 63 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 1.8x above 20-day average",
+        "Strong trend momentum (ADX 38)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 316.0,
+        "fib_382": 303.0,
+        "fib_500": 292.0,
+        "fib_618": 281.0,
+        "fib_786": 266.0,
+        "ext_1272": 363.0,
+        "ext_1618": 395.0,
+        "ext_2618": 487.0,
+        "golden_pocket": 281.0,
+        "swing_high": 338.0,
+        "swing_low": 246.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 25.0,
+        "upper_wick_pct": 37.5,
+        "lower_wick_pct": 37.5
+      },
+      "supports": [
+        307.0,
+        299.0,
+        286.0
+      ],
+      "resistances": [
+        338.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 338.0,
+          "stop_loss": 319.0,
+          "stop_loss_pct": 5.5,
+          "target_1": 366.0,
+          "target_2": 385.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 307.0,
+          "stop_loss": 293.0,
+          "stop_loss_pct": 4.6,
+          "target_1": 338.0,
+          "target_2": 343.0,
+          "rr_target_1": 2.2,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "JRPT",
+      "name": "Jaya Real Property Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 1090.0,
+      "change_pct": 0.93,
+      "score": 79,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 1099.0,
+      "stop_loss": 1078.0,
+      "stop_loss_pct": 1.9,
+      "target_1": 1135.0,
+      "target_2": 1150.0,
+      "risk_reward": 2.5,
+      "rsi": 58.6,
+      "atr_pct": 1.3,
+      "volume_ratio": 0.8,
+      "turnover_idr": 590654650.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 59 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 50)",
+        "ATR% 1.3% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 1078.0,
+        "fib_382": 1089.0,
+        "fib_500": 1098.0,
+        "fib_618": 1106.0,
+        "fib_786": 1119.0,
+        "ext_1272": 1040.0,
+        "ext_1618": 1014.0,
+        "ext_2618": 939.0,
+        "golden_pocket": 1106.0,
+        "swing_high": 1135.0,
+        "swing_low": 1060.0,
+        "trend": "downtrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Strong",
+        "body_pct": 66.7,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 33.3
+      },
+      "supports": [
+        1083.0,
+        1082.0,
+        1070.0
+      ],
+      "resistances": [
+        1099.0,
+        1135.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1099.0,
+          "stop_loss": 1078.0,
+          "stop_loss_pct": 1.9,
+          "target_1": 1135.0,
+          "target_2": 1150.0,
+          "rr_target_1": 1.8,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 1083.0,
+          "stop_loss": 1075.0,
+          "stop_loss_pct": 0.7,
+          "target_1": 1135.0,
+          "target_2": 1103.0,
+          "rr_target_1": 6.6,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "AUTO",
+      "name": "Astra Otoparts Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 3330.0,
+      "change_pct": -2.06,
+      "score": 78,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 3520.0,
+      "stop_loss": 3383.0,
+      "stop_loss_pct": 3.9,
+      "target_1": 3726.0,
+      "target_2": 3863.0,
+      "risk_reward": 2.5,
+      "rsi": 77.8,
+      "atr_pct": 2.7,
+      "volume_ratio": 1.2,
+      "turnover_idr": 17189643150.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 73)",
+        "ATR% 2.7% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 3237.0,
+        "fib_382": 3062.0,
+        "fib_500": 2920.0,
+        "fib_618": 2778.0,
+        "fib_786": 2577.0,
+        "ext_1272": 3846.0,
+        "ext_1618": 4262.0,
+        "ext_2618": 5462.0,
+        "golden_pocket": 2778.0,
+        "swing_high": 3520.0,
+        "swing_low": 2320.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Moderate",
+        "body_pct": 58.3,
+        "upper_wick_pct": 16.7,
+        "lower_wick_pct": 25.0
+      },
+      "supports": [
+        3136.0,
+        2891.0,
+        2617.0
+      ],
+      "resistances": [
+        3520.0,
+        3559.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 3520.0,
+          "stop_loss": 3383.0,
+          "stop_loss_pct": 3.9,
+          "target_1": 3726.0,
+          "target_2": 3863.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 3136.0,
+          "stop_loss": 2999.0,
+          "stop_loss_pct": 4.4,
+          "target_1": 3342.0,
+          "target_2": 3559.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 3.1
+        }
+      }
+    },
+    {
+      "ticker": "DGIK",
+      "name": "Nusa Konstruksi Enjiniring Tbk",
+      "sector": "Infrastructure",
+      "price": 143.0,
+      "change_pct": 0.7,
+      "score": 78,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 147.0,
+      "stop_loss": 138.0,
+      "stop_loss_pct": 6.4,
+      "target_1": 161.0,
+      "target_2": 171.0,
+      "risk_reward": 2.5,
+      "rsi": 62.3,
+      "atr_pct": 4.4,
+      "volume_ratio": 1.0,
+      "turnover_idr": 1281382960.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 4,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 62 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 47)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 140.0,
+        "fib_382": 135.0,
+        "fib_500": 131.0,
+        "fib_618": 127.0,
+        "fib_786": 121.0,
+        "ext_1272": 157.0,
+        "ext_1618": 169.0,
+        "ext_2618": 203.0,
+        "golden_pocket": 127.0,
+        "swing_high": 148.0,
+        "swing_low": 114.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 25.0,
+        "upper_wick_pct": 50.0,
+        "lower_wick_pct": 25.0
+      },
+      "supports": [
+        136.0,
+        132.0,
+        121.0
+      ],
+      "resistances": [
+        147.0,
+        148.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 147.0,
+          "stop_loss": 138.0,
+          "stop_loss_pct": 6.4,
+          "target_1": 161.0,
+          "target_2": 171.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 136.0,
+          "stop_loss": 129.0,
+          "stop_loss_pct": 5.3,
+          "target_1": 148.0,
+          "target_2": 154.0,
+          "rr_target_1": 1.7,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "ELSA",
+      "name": "Elnusa Tbk.",
+      "sector": "Energy",
+      "price": 730.0,
+      "change_pct": -3.31,
+      "score": 78,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 744.0,
+      "stop_loss": 705.0,
+      "stop_loss_pct": 5.3,
+      "target_1": 803.0,
+      "target_2": 843.0,
+      "risk_reward": 2.5,
+      "rsi": 57.5,
+      "atr_pct": 3.6,
+      "volume_ratio": 1.0,
+      "turnover_idr": 14562510850.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 8,
+        "volatility_control": 7,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 58 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 696.0,
+        "fib_382": 660.0,
+        "fib_500": 630.0,
+        "fib_618": 600.0,
+        "fib_786": 558.0,
+        "ext_1272": 823.0,
+        "ext_1618": 910.0,
+        "ext_2618": 1160.0,
+        "golden_pocket": 600.0,
+        "swing_high": 755.0,
+        "swing_low": 505.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 83.3,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 16.7
+      },
+      "supports": [
+        707.0,
+        683.0,
+        672.0
+      ],
+      "resistances": [
+        744.0,
+        755.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 744.0,
+          "stop_loss": 705.0,
+          "stop_loss_pct": 5.3,
+          "target_1": 803.0,
+          "target_2": 843.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 707.0,
+          "stop_loss": 670.0,
+          "stop_loss_pct": 5.3,
+          "target_1": 755.0,
+          "target_2": 800.0,
+          "rr_target_1": 1.3,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "DKFT",
+      "name": "Central Omega Resources Tbk.",
+      "sector": "Basic Materials",
+      "price": 710.0,
+      "change_pct": -1.39,
+      "score": 78,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 730.0,
+      "stop_loss": 694.0,
+      "stop_loss_pct": 4.9,
+      "target_1": 784.0,
+      "target_2": 820.0,
+      "risk_reward": 2.5,
+      "rsi": 63.7,
+      "atr_pct": 3.4,
+      "volume_ratio": 2.0,
+      "turnover_idr": 4557142100.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 8,
+        "volatility_control": 10,
+        "drawdown_stability": 2,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 64 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 2.0x above 20-day average",
+        "ATR% 3.4% (ideal swing volatility)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 711.0,
+        "fib_382": 687.0,
+        "fib_500": 668.0,
+        "fib_618": 648.0,
+        "fib_786": 620.0,
+        "ext_1272": 795.0,
+        "ext_1618": 852.0,
+        "ext_2618": 1017.0,
+        "golden_pocket": 648.0,
+        "swing_high": 750.0,
+        "swing_low": 585.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Moderate",
+        "body_pct": 50.0,
+        "upper_wick_pct": 50.0,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        674.0,
+        671.0,
+        637.0
+      ],
+      "resistances": [
+        730.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 730.0,
+          "stop_loss": 694.0,
+          "stop_loss_pct": 4.9,
+          "target_1": 784.0,
+          "target_2": 820.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 674.0,
+          "stop_loss": 659.0,
+          "stop_loss_pct": 2.2,
+          "target_1": 696.0,
+          "target_2": 730.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 3.7
+        }
+      }
+    },
+    {
+      "ticker": "MMIX",
+      "name": "Multi Medika Internasional Tbk",
+      "sector": "Healthcare",
+      "price": 800.0,
+      "change_pct": 1.27,
+      "score": 78,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 805.0,
+      "stop_loss": 751.0,
+      "stop_loss_pct": 6.7,
+      "target_1": 886.0,
+      "target_2": 940.0,
+      "risk_reward": 2.5,
+      "rsi": 63.3,
+      "atr_pct": 4.5,
+      "volume_ratio": 1.7,
+      "turnover_idr": 21418484000.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 0,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 63 in optimal momentum zone (55\u201370)",
+        "Volume 1.7x above 20-day average",
+        "Strong trend momentum (ADX 55)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 803.0,
+        "fib_382": 731.0,
+        "fib_500": 672.0,
+        "fib_618": 613.0,
+        "fib_786": 530.0,
+        "ext_1272": 1055.0,
+        "ext_1618": 1227.0,
+        "ext_2618": 1723.0,
+        "golden_pocket": 613.0,
+        "swing_high": 920.0,
+        "swing_low": 424.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Strong",
+        "body_pct": 66.7,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 33.3
+      },
+      "supports": [
+        769.0,
+        727.0,
+        714.0
+      ],
+      "resistances": [
+        805.0,
+        809.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 805.0,
+          "stop_loss": 751.0,
+          "stop_loss_pct": 6.7,
+          "target_1": 886.0,
+          "target_2": 940.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 769.0,
+          "stop_loss": 715.0,
+          "stop_loss_pct": 7.1,
+          "target_1": 851.0,
+          "target_2": 905.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "POWR",
+      "name": "Cikarang Listrindo Tbk.",
+      "sector": "Infrastructure",
+      "price": 900.0,
+      "change_pct": -2.17,
+      "score": 78,
+      "grade": "Strong",
+      "setup_type": "Pullback Setup",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 859.0,
+      "stop_loss": 804.0,
+      "stop_loss_pct": 6.4,
+      "target_1": 978.0,
+      "target_2": 997.0,
+      "risk_reward": 2.5,
+      "rsi": 61.8,
+      "atr_pct": 4.1,
+      "volume_ratio": 0.5,
+      "turnover_idr": 9319734000.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 62 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 85)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 902.0,
+        "fib_382": 859.0,
+        "fib_500": 825.0,
+        "fib_618": 791.0,
+        "fib_786": 742.0,
+        "ext_1272": 1049.0,
+        "ext_1618": 1149.0,
+        "ext_2618": 1439.0,
+        "golden_pocket": 791.0,
+        "swing_high": 970.0,
+        "swing_low": 680.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 80.0,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 20.0
+      },
+      "supports": [
+        859.0,
+        797.0,
+        721.0
+      ],
+      "resistances": [
+        970.0,
+        978.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 970.0,
+          "stop_loss": 915.0,
+          "stop_loss_pct": 5.7,
+          "target_1": 1053.0,
+          "target_2": 1108.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 859.0,
+          "stop_loss": 804.0,
+          "stop_loss_pct": 6.4,
+          "target_1": 978.0,
+          "target_2": 997.0,
+          "rr_target_1": 2.2,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "SMIL",
+      "name": "Sarana Mitra Luas Tbk.",
+      "sector": "Industrials",
+      "price": 428.0,
+      "change_pct": 2.88,
+      "score": 78,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BEARISH",
+      "entry": 432.0,
+      "stop_loss": 406.0,
+      "stop_loss_pct": 6.1,
+      "target_1": 471.0,
+      "target_2": 498.0,
+      "risk_reward": 2.5,
+      "rsi": 69.9,
+      "atr_pct": 4.1,
+      "volume_ratio": 1.2,
+      "turnover_idr": 14961593860.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 1,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 70 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 61)",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 383.0,
+        "fib_382": 353.0,
+        "fib_500": 329.0,
+        "fib_618": 305.0,
+        "fib_786": 270.0,
+        "ext_1272": 488.0,
+        "ext_1618": 559.0,
+        "ext_2618": 765.0,
+        "golden_pocket": 305.0,
+        "swing_high": 432.0,
+        "swing_low": 226.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Strong",
+        "body_pct": 66.7,
+        "upper_wick_pct": 11.1,
+        "lower_wick_pct": 22.2
+      },
+      "supports": [
+        399.0,
+        367.0,
+        362.0
+      ],
+      "resistances": [
+        432.0,
+        437.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 432.0,
+          "stop_loss": 406.0,
+          "stop_loss_pct": 6.1,
+          "target_1": 471.0,
+          "target_2": 498.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 399.0,
+          "stop_loss": 373.0,
+          "stop_loss_pct": 6.6,
+          "target_1": 437.0,
+          "target_2": 465.0,
+          "rr_target_1": 1.4,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "BJBR",
+      "name": "Bank Pembangunan Daerah Jawa Barat dan Banten Tbk.",
+      "sector": "Financials",
+      "price": 805.0,
+      "change_pct": 0.62,
+      "score": 77,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 810.0,
+      "stop_loss": 793.0,
+      "stop_loss_pct": 2.1,
+      "target_1": 835.0,
+      "target_2": 852.0,
+      "risk_reward": 2.5,
+      "rsi": 64.1,
+      "atr_pct": 1.4,
+      "volume_ratio": 1.2,
+      "turnover_idr": 1565342625.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 4,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 64 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 60)",
+        "ATR% 1.4% (ideal swing volatility)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 799.0,
+        "fib_382": 786.0,
+        "fib_500": 775.0,
+        "fib_618": 764.0,
+        "fib_786": 749.0,
+        "ext_1272": 844.0,
+        "ext_1618": 876.0,
+        "ext_2618": 966.0,
+        "golden_pocket": 764.0,
+        "swing_high": 820.0,
+        "swing_low": 730.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 50.0,
+        "upper_wick_pct": 50.0,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        791.0,
+        787.0,
+        781.0
+      ],
+      "resistances": [
+        810.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 810.0,
+          "stop_loss": 793.0,
+          "stop_loss_pct": 2.1,
+          "target_1": 835.0,
+          "target_2": 852.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 791.0,
+          "stop_loss": 781.0,
+          "stop_loss_pct": 1.2,
+          "target_1": 810.0,
+          "target_2": 815.0,
+          "rr_target_1": 2.0,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "BNGA",
+      "name": "Bank CIMB Niaga Tbk.",
+      "sector": "Financials",
+      "price": 1710.0,
+      "change_pct": 0.0,
+      "score": 77,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 1717.0,
+      "stop_loss": 1688.0,
+      "stop_loss_pct": 1.7,
+      "target_1": 1720.0,
+      "target_2": 1791.0,
+      "risk_reward": 2.5,
+      "rsi": 67.7,
+      "atr_pct": 1.1,
+      "volume_ratio": 1.4,
+      "turnover_idr": 3463263000.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 2,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 68 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 60)",
+        "ATR% 1.1% (ideal swing volatility)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 1669.0,
+        "fib_382": 1638.0,
+        "fib_500": 1612.0,
+        "fib_618": 1587.0,
+        "fib_786": 1551.0,
+        "ext_1272": 1778.0,
+        "ext_1618": 1853.0,
+        "ext_2618": 2068.0,
+        "golden_pocket": 1587.0,
+        "swing_high": 1720.0,
+        "swing_low": 1505.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Doji",
+        "strength": "Weak",
+        "body_pct": 0.0,
+        "upper_wick_pct": 100.0,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        1676.0,
+        1654.0,
+        1629.0
+      ],
+      "resistances": [
+        1717.0,
+        1720.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1717.0,
+          "stop_loss": 1688.0,
+          "stop_loss_pct": 1.7,
+          "target_1": 1720.0,
+          "target_2": 1791.0,
+          "rr_target_1": 0.1,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 1676.0,
+          "stop_loss": 1647.0,
+          "stop_loss_pct": 1.8,
+          "target_1": 1720.0,
+          "target_2": 1750.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "BSSR",
+      "name": "Baramulti Suksessarana Tbk.",
+      "sector": "Energy",
+      "price": 4930.0,
+      "change_pct": 0.2,
+      "score": 77,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 5000.0,
+      "stop_loss": 4883.0,
+      "stop_loss_pct": 2.3,
+      "target_1": 5175.0,
+      "target_2": 5292.0,
+      "risk_reward": 2.5,
+      "rsi": 84.2,
+      "atr_pct": 1.6,
+      "volume_ratio": 1.5,
+      "turnover_idr": 5641744100.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Volume 1.5x above 20-day average",
+        "Strong trend momentum (ADX 92)",
+        "ATR% 1.6% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [
+        "RSI 84 extreme overbought (-5)"
+      ],
+      "fibonacci": {
+        "fib_236": 4740.0,
+        "fib_382": 4580.0,
+        "fib_500": 4450.0,
+        "fib_618": 4320.0,
+        "fib_786": 4135.0,
+        "ext_1272": 5299.0,
+        "ext_1618": 5680.0,
+        "ext_2618": 6780.0,
+        "golden_pocket": 4320.0,
+        "swing_high": 5000.0,
+        "swing_low": 3900.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 10.0,
+        "upper_wick_pct": 70.0,
+        "lower_wick_pct": 20.0
+      },
+      "supports": [
+        4562.0,
+        4382.0,
+        4200.0
+      ],
+      "resistances": [
+        5000.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 5000.0,
+          "stop_loss": 4883.0,
+          "stop_loss_pct": 2.3,
+          "target_1": 5175.0,
+          "target_2": 5292.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 4562.0,
+          "stop_loss": 4445.0,
+          "stop_loss_pct": 2.6,
+          "target_1": 4737.0,
+          "target_2": 5000.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 3.8
+        }
+      }
+    },
+    {
+      "ticker": "FORU",
+      "name": "Fortune Indonesia Tbk",
+      "sector": "Consumer Cyclicals",
+      "price": 3430.0,
+      "change_pct": 14.33,
+      "score": 77,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 3970.0,
+      "stop_loss": 3495.0,
+      "stop_loss_pct": 12.0,
+      "target_1": 4682.0,
+      "target_2": 5157.0,
+      "risk_reward": 2.5,
+      "rsi": 70.9,
+      "atr_pct": 9.2,
+      "volume_ratio": 4.7,
+      "turnover_idr": 6093532200.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 5,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 0,
+        "drawdown_stability": 1,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 71 slightly elevated",
+        "MACD bullish + histogram rising",
+        "Volume 4.7x above 20-day average",
+        "Strong trend momentum (ADX 70)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [
+        "ATR% 9.2% (high volatility)"
+      ],
+      "fibonacci": {
+        "fib_236": 3603.0,
+        "fib_382": 3271.0,
+        "fib_500": 3002.0,
+        "fib_618": 2734.0,
+        "fib_786": 2352.0,
+        "ext_1272": 4759.0,
+        "ext_1618": 5546.0,
+        "ext_2618": 7821.0,
+        "golden_pocket": 2734.0,
+        "swing_high": 4140.0,
+        "swing_low": 1865.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 44.3,
+        "upper_wick_pct": 55.7,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        2544.0,
+        2542.0,
+        1865.0
+      ],
+      "resistances": [
+        3970.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 3970.0,
+          "stop_loss": 3495.0,
+          "stop_loss_pct": 12.0,
+          "target_1": 4682.0,
+          "target_2": 5157.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 2544.0,
+          "stop_loss": 2384.0,
+          "stop_loss_pct": 6.3,
+          "target_1": 2784.0,
+          "target_2": 2945.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "KKES",
+      "name": "Kusuma Kemindo Sentosa Tbk.",
+      "sector": "Basic Materials",
+      "price": 96.0,
+      "change_pct": 4.35,
+      "score": 77,
+      "grade": "Strong",
+      "setup_type": "Pullback Setup",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 76.0,
+      "stop_loss": 64.0,
+      "stop_loss_pct": 16.4,
+      "target_1": 95.0,
+      "target_2": 107.0,
+      "risk_reward": 2.5,
+      "rsi": 72.6,
+      "atr_pct": 8.7,
+      "volume_ratio": 2.5,
+      "turnover_idr": 12732430080.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 5,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 0,
+        "drawdown_stability": 1,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 73 slightly elevated",
+        "MACD bullish + histogram rising",
+        "Volume 2.5x above 20-day average",
+        "Strong trend momentum (ADX 56)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [
+        "ATR% 8.7% (high volatility)"
+      ],
+      "fibonacci": {
+        "fib_236": 100.0,
+        "fib_382": 88.0,
+        "fib_500": 78.0,
+        "fib_618": 69.0,
+        "fib_786": 55.0,
+        "ext_1272": 141.0,
+        "ext_1618": 169.0,
+        "ext_2618": 250.0,
+        "golden_pocket": 69.0,
+        "swing_high": 119.0,
+        "swing_low": 38.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 28.6,
+        "upper_wick_pct": 64.3,
+        "lower_wick_pct": 7.1
+      },
+      "supports": [
+        76.0,
+        67.0,
+        60.0
+      ],
+      "resistances": [
+        119.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 119.0,
+          "stop_loss": 107.0,
+          "stop_loss_pct": 10.5,
+          "target_1": 138.0,
+          "target_2": 150.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 76.0,
+          "stop_loss": 64.0,
+          "stop_loss_pct": 16.4,
+          "target_1": 95.0,
+          "target_2": 107.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "SMDR",
+      "name": "Samudera Indonesia Tbk.",
+      "sector": "Transportation & Logistics",
+      "price": 346.0,
+      "change_pct": -1.14,
+      "score": 77,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 354.0,
+      "stop_loss": 340.0,
+      "stop_loss_pct": 4.0,
+      "target_1": 375.0,
+      "target_2": 389.0,
+      "risk_reward": 2.5,
+      "rsi": 74.4,
+      "atr_pct": 2.7,
+      "volume_ratio": 1.7,
+      "turnover_idr": 4447041120.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 5,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 74 slightly elevated",
+        "MACD bullish + histogram rising",
+        "Volume 1.7x above 20-day average",
+        "Strong trend momentum (ADX 56)",
+        "ATR% 2.7% (ideal swing volatility)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 333.0,
+        "fib_382": 320.0,
+        "fib_500": 309.0,
+        "fib_618": 298.0,
+        "fib_786": 283.0,
+        "ext_1272": 378.0,
+        "ext_1618": 410.0,
+        "ext_2618": 500.0,
+        "golden_pocket": 298.0,
+        "swing_high": 354.0,
+        "swing_low": 264.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Moderate",
+        "body_pct": 50.0,
+        "upper_wick_pct": 25.0,
+        "lower_wick_pct": 25.0
+      },
+      "supports": [
+        316.0,
+        307.0,
+        288.0
+      ],
+      "resistances": [
+        354.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 354.0,
+          "stop_loss": 340.0,
+          "stop_loss_pct": 4.0,
+          "target_1": 375.0,
+          "target_2": 389.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 316.0,
+          "stop_loss": 302.0,
+          "stop_loss_pct": 4.3,
+          "target_1": 337.0,
+          "target_2": 354.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.8
+        }
+      }
+    },
+    {
+      "ticker": "TOSK",
+      "name": "Topindo Solusi Komunika Tbk.",
+      "sector": "Technology",
+      "price": 80.0,
+      "change_pct": 3.9,
+      "score": 77,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 85.0,
+      "stop_loss": 80.0,
+      "stop_loss_pct": 6.2,
+      "target_1": 93.0,
+      "target_2": 98.0,
+      "risk_reward": 2.5,
+      "rsi": 80.6,
+      "atr_pct": 4.4,
+      "volume_ratio": 2.9,
+      "turnover_idr": 2001017200.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Volume 2.9x above 20-day average",
+        "Strong trend momentum (ADX 70)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [
+        "RSI 81 extreme overbought (-5)"
+      ],
+      "fibonacci": {
+        "fib_236": 77.0,
+        "fib_382": 73.0,
+        "fib_500": 69.0,
+        "fib_618": 65.0,
+        "fib_786": 60.0,
+        "ext_1272": 94.0,
+        "ext_1618": 105.0,
+        "ext_2618": 137.0,
+        "golden_pocket": 65.0,
+        "swing_high": 85.0,
+        "swing_low": 53.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 60.0,
+        "upper_wick_pct": 40.0,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        73.0,
+        69.0,
+        67.0
+      ],
+      "resistances": [
+        85.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 85.0,
+          "stop_loss": 80.0,
+          "stop_loss_pct": 6.2,
+          "target_1": 93.0,
+          "target_2": 98.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 73.0,
+          "stop_loss": 68.0,
+          "stop_loss_pct": 7.2,
+          "target_1": 81.0,
+          "target_2": 85.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.3
+        }
+      }
+    },
+    {
+      "ticker": "PGJO",
+      "name": "Bahtera Bumi Raya Tbk",
+      "sector": "Technology",
+      "price": 935.0,
+      "change_pct": 0.54,
+      "score": 76,
+      "grade": "Strong",
+      "setup_type": "Pullback Setup",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 877.0,
+      "stop_loss": 794.0,
+      "stop_loss_pct": 9.5,
+      "target_1": 1030.0,
+      "target_2": 1095.0,
+      "risk_reward": 2.6,
+      "rsi": 61.0,
+      "atr_pct": 5.9,
+      "volume_ratio": 1.8,
+      "turnover_idr": 871910875.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 61 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 1.8x above 20-day average",
+        "Strong trend momentum (ADX 64)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 988.0,
+        "fib_382": 921.0,
+        "fib_500": 868.0,
+        "fib_618": 814.0,
+        "fib_786": 737.0,
+        "ext_1272": 1219.0,
+        "ext_1618": 1376.0,
+        "ext_2618": 1831.0,
+        "golden_pocket": 814.0,
+        "swing_high": 1095.0,
+        "swing_low": 640.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 5.3,
+        "upper_wick_pct": 52.6,
+        "lower_wick_pct": 42.1
+      },
+      "supports": [
+        877.0,
+        811.0,
+        692.0
+      ],
+      "resistances": [
+        1030.0,
+        1095.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1030.0,
+          "stop_loss": 947.0,
+          "stop_loss_pct": 8.1,
+          "target_1": 1155.0,
+          "target_2": 1238.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 877.0,
+          "stop_loss": 794.0,
+          "stop_loss_pct": 9.5,
+          "target_1": 1030.0,
+          "target_2": 1095.0,
+          "rr_target_1": 1.8,
+          "rr_target_2": 2.6
+        }
+      }
+    },
+    {
+      "ticker": "ADMG",
+      "name": "Polychem Indonesia Tbk",
+      "sector": "Basic Materials",
+      "price": 278.0,
+      "change_pct": -3.47,
+      "score": 76,
+      "grade": "Strong",
+      "setup_type": "Pullback Setup",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 256.0,
+      "stop_loss": 234.0,
+      "stop_loss_pct": 8.6,
+      "target_1": 289.0,
+      "target_2": 310.0,
+      "risk_reward": 2.4,
+      "rsi": 68.3,
+      "atr_pct": 5.3,
+      "volume_ratio": 1.3,
+      "turnover_idr": 643100180.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 1,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 68 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 61)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 282.0,
+        "fib_382": 265.0,
+        "fib_500": 252.0,
+        "fib_618": 238.0,
+        "fib_786": 218.0,
+        "ext_1272": 342.0,
+        "ext_1618": 382.0,
+        "ext_2618": 499.0,
+        "golden_pocket": 238.0,
+        "swing_high": 310.0,
+        "swing_low": 193.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 35.7,
+        "upper_wick_pct": 64.3,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        256.0,
+        239.0,
+        238.0
+      ],
+      "resistances": [
+        310.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 310.0,
+          "stop_loss": 288.0,
+          "stop_loss_pct": 7.1,
+          "target_1": 343.0,
+          "target_2": 365.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 256.0,
+          "stop_loss": 234.0,
+          "stop_loss_pct": 8.6,
+          "target_1": 289.0,
+          "target_2": 310.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.4
+        }
+      }
+    },
+    {
+      "ticker": "ASGR",
+      "name": "Astra Graphia Tbk.",
+      "sector": "Industrials",
+      "price": 2160.0,
+      "change_pct": 0.0,
+      "score": 75,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 2299.0,
+      "stop_loss": 2154.0,
+      "stop_loss_pct": 6.3,
+      "target_1": 2517.0,
+      "target_2": 2662.0,
+      "risk_reward": 2.5,
+      "rsi": 69.1,
+      "atr_pct": 4.5,
+      "volume_ratio": 0.7,
+      "turnover_idr": 3698427600.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 0,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 69 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 85)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 2175.0,
+        "fib_382": 2030.0,
+        "fib_500": 1912.0,
+        "fib_618": 1795.0,
+        "fib_786": 1628.0,
+        "ext_1272": 2681.0,
+        "ext_1618": 3025.0,
+        "ext_2618": 4020.0,
+        "golden_pocket": 1795.0,
+        "swing_high": 2410.0,
+        "swing_low": 1415.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Doji",
+        "strength": "Weak",
+        "body_pct": 0.0,
+        "upper_wick_pct": 80.0,
+        "lower_wick_pct": 20.0
+      },
+      "supports": [
+        1998.0,
+        1860.0,
+        1740.0
+      ],
+      "resistances": [
+        2299.0,
+        2410.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 2299.0,
+          "stop_loss": 2154.0,
+          "stop_loss_pct": 6.3,
+          "target_1": 2517.0,
+          "target_2": 2662.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 1998.0,
+          "stop_loss": 1853.0,
+          "stop_loss_pct": 7.3,
+          "target_1": 2216.0,
+          "target_2": 2299.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.1
+        }
+      }
+    },
+    {
+      "ticker": "DMAS",
+      "name": "Puradelta Lestari Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 196.0,
+      "change_pct": -3.92,
+      "score": 75,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 214.0,
+      "stop_loss": 200.0,
+      "stop_loss_pct": 6.6,
+      "target_1": 235.0,
+      "target_2": 249.0,
+      "risk_reward": 2.5,
+      "rsi": 68.0,
+      "atr_pct": 4.8,
+      "volume_ratio": 0.6,
+      "turnover_idr": 81313607620.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 0,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 68 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 89)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 195.0,
+        "fib_382": 183.0,
+        "fib_500": 174.0,
+        "fib_618": 164.0,
+        "fib_786": 150.0,
+        "ext_1272": 236.0,
+        "ext_1618": 264.0,
+        "ext_2618": 345.0,
+        "golden_pocket": 164.0,
+        "swing_high": 214.0,
+        "swing_low": 133.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 88.9,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 11.1
+      },
+      "supports": [
+        177.0,
+        161.0,
+        136.0
+      ],
+      "resistances": [
+        214.0,
+        215.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 214.0,
+          "stop_loss": 200.0,
+          "stop_loss_pct": 6.6,
+          "target_1": 235.0,
+          "target_2": 249.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 177.0,
+          "stop_loss": 163.0,
+          "stop_loss_pct": 8.0,
+          "target_1": 198.0,
+          "target_2": 215.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.7
+        }
+      }
+    },
+    {
+      "ticker": "GGRP",
+      "name": "Gunung Raja Paksi Tbk.",
+      "sector": "Basic Materials",
+      "price": 322.0,
+      "change_pct": -1.23,
+      "score": 75,
+      "grade": "Watchlist",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 328.0,
+      "stop_loss": 317.0,
+      "stop_loss_pct": 3.4,
+      "target_1": 345.0,
+      "target_2": 356.0,
+      "risk_reward": 2.5,
+      "rsi": 71.8,
+      "atr_pct": 2.3,
+      "volume_ratio": 1.5,
+      "turnover_idr": 374135020.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 5,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 72 slightly elevated",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 73)",
+        "ATR% 2.3% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [
+        "Moderate turnover Rp 374 Jt/day (-10)",
+        "Grade capped Strong -> Watchlist (liquidity constraint)"
+      ],
+      "fibonacci": {
+        "fib_236": 317.0,
+        "fib_382": 310.0,
+        "fib_500": 304.0,
+        "fib_618": 298.0,
+        "fib_786": 290.0,
+        "ext_1272": 341.0,
+        "ext_1618": 358.0,
+        "ext_2618": 406.0,
+        "golden_pocket": 298.0,
+        "swing_high": 328.0,
+        "swing_low": 280.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Moderate",
+        "body_pct": 50.0,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 50.0
+      },
+      "supports": [
+        308.0,
+        302.0,
+        291.0
+      ],
+      "resistances": [
+        328.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 328.0,
+          "stop_loss": 317.0,
+          "stop_loss_pct": 3.4,
+          "target_1": 345.0,
+          "target_2": 356.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 308.0,
+          "stop_loss": 298.0,
+          "stop_loss_pct": 3.2,
+          "target_1": 328.0,
+          "target_2": 332.0,
+          "rr_target_1": 2.0,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "HYGN",
+      "name": "Ecocare Indo Pasifik Tbk.",
+      "sector": "Industrials",
+      "price": 188.0,
+      "change_pct": 2.73,
+      "score": 75,
+      "grade": "Watchlist",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 189.0,
+      "stop_loss": 181.0,
+      "stop_loss_pct": 4.2,
+      "target_1": 201.0,
+      "target_2": 209.0,
+      "risk_reward": 2.5,
+      "rsi": 77.8,
+      "atr_pct": 2.8,
+      "volume_ratio": 1.6,
+      "turnover_idr": 341770840.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Volume 1.6x above 20-day average",
+        "Strong trend momentum (ADX 69)",
+        "ATR% 2.8% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [
+        "Moderate turnover Rp 342 Jt/day (-10)",
+        "Grade capped Strong -> Watchlist (liquidity constraint)"
+      ],
+      "fibonacci": {
+        "fib_236": 174.0,
+        "fib_382": 165.0,
+        "fib_500": 158.0,
+        "fib_618": 151.0,
+        "fib_786": 141.0,
+        "ext_1272": 204.0,
+        "ext_1618": 225.0,
+        "ext_2618": 285.0,
+        "golden_pocket": 151.0,
+        "swing_high": 188.0,
+        "swing_low": 128.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 62.5,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 37.5
+      },
+      "supports": [
+        176.0,
+        166.0,
+        161.0
+      ],
+      "resistances": [
+        189.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 189.0,
+          "stop_loss": 181.0,
+          "stop_loss_pct": 4.2,
+          "target_1": 201.0,
+          "target_2": 209.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 176.0,
+          "stop_loss": 168.0,
+          "stop_loss_pct": 4.5,
+          "target_1": 189.0,
+          "target_2": 196.0,
+          "rr_target_1": 1.7,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "IMJS",
+      "name": "Indomobil Multi Jasa Tbk.",
+      "sector": "Financials",
+      "price": 188.0,
+      "change_pct": -5.05,
+      "score": 75,
+      "grade": "Strong",
+      "setup_type": "Pullback Setup",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 170.0,
+      "stop_loss": 157.0,
+      "stop_loss_pct": 7.5,
+      "target_1": 189.0,
+      "target_2": 202.0,
+      "risk_reward": 2.5,
+      "rsi": 65.0,
+      "atr_pct": 5.0,
+      "volume_ratio": 1.8,
+      "turnover_idr": 1811793600.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 0,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 65 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 1.8x above 20-day average",
+        "Strong trend momentum (ADX 53)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 193.0,
+        "fib_382": 181.0,
+        "fib_500": 171.0,
+        "fib_618": 161.0,
+        "fib_786": 148.0,
+        "ext_1272": 234.0,
+        "ext_1618": 263.0,
+        "ext_2618": 345.0,
+        "golden_pocket": 161.0,
+        "swing_high": 212.0,
+        "swing_low": 130.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 76.9,
+        "upper_wick_pct": 15.4,
+        "lower_wick_pct": 7.7
+      },
+      "supports": [
+        170.0,
+        162.0,
+        150.0
+      ],
+      "resistances": [
+        212.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 212.0,
+          "stop_loss": 198.0,
+          "stop_loss_pct": 6.6,
+          "target_1": 233.0,
+          "target_2": 247.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 170.0,
+          "stop_loss": 157.0,
+          "stop_loss_pct": 7.5,
+          "target_1": 189.0,
+          "target_2": 202.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "IRSX",
+      "name": "Folago Global Nusantara Tbk",
+      "sector": "Technology",
+      "price": 424.0,
+      "change_pct": 3.92,
+      "score": 75,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 446.0,
+      "stop_loss": 408.0,
+      "stop_loss_pct": 8.5,
+      "target_1": 503.0,
+      "target_2": 540.0,
+      "risk_reward": 2.5,
+      "rsi": 67.8,
+      "atr_pct": 5.9,
+      "volume_ratio": 1.8,
+      "turnover_idr": 27506236800.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 0,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 68 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 1.8x above 20-day average",
+        "Strong trend momentum (ADX 39)",
+        "Supertrend Bullish confirm",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 395.0,
+        "fib_382": 364.0,
+        "fib_500": 339.0,
+        "fib_618": 314.0,
+        "fib_786": 278.0,
+        "ext_1272": 504.0,
+        "ext_1618": 578.0,
+        "ext_2618": 792.0,
+        "golden_pocket": 314.0,
+        "swing_high": 446.0,
+        "swing_low": 232.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 40.0,
+        "upper_wick_pct": 55.0,
+        "lower_wick_pct": 5.0
+      },
+      "supports": [
+        374.0,
+        352.0,
+        331.0
+      ],
+      "resistances": [
+        446.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 446.0,
+          "stop_loss": 408.0,
+          "stop_loss_pct": 8.5,
+          "target_1": 503.0,
+          "target_2": 540.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 374.0,
+          "stop_loss": 339.0,
+          "stop_loss_pct": 9.2,
+          "target_1": 426.0,
+          "target_2": 446.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.1
+        }
+      }
+    },
+    {
+      "ticker": "KUAS",
+      "name": "Ace Oldfields Tbk.",
+      "sector": "Industrials",
+      "price": 108.0,
+      "change_pct": -0.92,
+      "score": 75,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 117.0,
+      "stop_loss": 108.0,
+      "stop_loss_pct": 7.7,
+      "target_1": 130.0,
+      "target_2": 139.0,
+      "risk_reward": 2.5,
+      "rsi": 65.9,
+      "atr_pct": 5.5,
+      "volume_ratio": 0.8,
+      "turnover_idr": 6056392140.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 66 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 75)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 109.0,
+        "fib_382": 103.0,
+        "fib_500": 99.0,
+        "fib_618": 95.0,
+        "fib_786": 89.0,
+        "ext_1272": 127.0,
+        "ext_1618": 139.0,
+        "ext_2618": 175.0,
+        "golden_pocket": 95.0,
+        "swing_high": 117.0,
+        "swing_low": 81.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 20.0,
+        "upper_wick_pct": 80.0,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        97.0,
+        95.0,
+        86.0
+      ],
+      "resistances": [
+        117.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 117.0,
+          "stop_loss": 108.0,
+          "stop_loss_pct": 7.7,
+          "target_1": 130.0,
+          "target_2": 139.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 97.0,
+          "stop_loss": 92.0,
+          "stop_loss_pct": 5.1,
+          "target_1": 104.0,
+          "target_2": 109.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "PKPK",
+      "name": "Perdana Karya Perkasa Tbk",
+      "sector": "Energy",
+      "price": 4380.0,
+      "change_pct": 17.43,
+      "score": 75,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 4450.0,
+      "stop_loss": 4183.0,
+      "stop_loss_pct": 6.0,
+      "target_1": 4850.0,
+      "target_2": 5117.0,
+      "risk_reward": 2.5,
+      "rsi": 78.6,
+      "atr_pct": 4.1,
+      "volume_ratio": 7.0,
+      "turnover_idr": 4825139400.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 2,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Volume 7.0x above 20-day average",
+        "Strong trend momentum (ADX 57)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [
+        "RSI 79 extreme overbought (-5)"
+      ],
+      "fibonacci": {
+        "fib_236": 3990.0,
+        "fib_382": 3705.0,
+        "fib_500": 3475.0,
+        "fib_618": 3245.0,
+        "fib_786": 2917.0,
+        "ext_1272": 4980.0,
+        "ext_1618": 5655.0,
+        "ext_2618": 7605.0,
+        "golden_pocket": 3245.0,
+        "swing_high": 4450.0,
+        "swing_low": 2500.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Strong",
+        "body_pct": 83.3,
+        "upper_wick_pct": 9.0,
+        "lower_wick_pct": 7.7
+      },
+      "supports": [
+        3773.0,
+        3562.0,
+        3450.0
+      ],
+      "resistances": [
+        4450.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 4450.0,
+          "stop_loss": 4183.0,
+          "stop_loss_pct": 6.0,
+          "target_1": 4850.0,
+          "target_2": 5117.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 3773.0,
+          "stop_loss": 3506.0,
+          "stop_loss_pct": 7.1,
+          "target_1": 4173.0,
+          "target_2": 4450.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "SMLE",
+      "name": "Sinergi Multi Lestarindo Tbk.",
+      "sector": "Basic Materials",
+      "price": 190.0,
+      "change_pct": -0.52,
+      "score": 75,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 191.0,
+      "stop_loss": 172.0,
+      "stop_loss_pct": 10.0,
+      "target_1": 220.0,
+      "target_2": 239.0,
+      "risk_reward": 2.5,
+      "rsi": 66.7,
+      "atr_pct": 6.7,
+      "volume_ratio": 1.5,
+      "turnover_idr": 4939438550.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 5,
+        "volatility_control": 4,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 67 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 1.5x above 20-day average",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 168.0,
+        "fib_382": 152.0,
+        "fib_500": 140.0,
+        "fib_618": 127.0,
+        "fib_786": 108.0,
+        "ext_1272": 224.0,
+        "ext_1618": 261.0,
+        "ext_2618": 370.0,
+        "golden_pocket": 127.0,
+        "swing_high": 194.0,
+        "swing_low": 85.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 16.7,
+        "upper_wick_pct": 16.7,
+        "lower_wick_pct": 66.7
+      },
+      "supports": [
+        170.0,
+        153.0,
+        151.0
+      ],
+      "resistances": [
+        191.0,
+        194.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 191.0,
+          "stop_loss": 172.0,
+          "stop_loss_pct": 10.0,
+          "target_1": 220.0,
+          "target_2": 239.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 170.0,
+          "stop_loss": 151.0,
+          "stop_loss_pct": 11.2,
+          "target_1": 194.0,
+          "target_2": 218.0,
+          "rr_target_1": 1.3,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "JKON",
+      "name": "Jaya Konstruksi Manggala Prata",
+      "sector": "Infrastructure",
+      "price": 88.0,
+      "change_pct": 1.15,
+      "score": 75,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 89.0,
+      "stop_loss": 83.0,
+      "stop_loss_pct": 6.2,
+      "target_1": 97.0,
+      "target_2": 102.0,
+      "risk_reward": 2.4,
+      "rsi": 62.7,
+      "atr_pct": 4.2,
+      "volume_ratio": 2.2,
+      "turnover_idr": 3159218920.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 0,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 63 in optimal momentum zone (55\u201370)",
+        "Volume 2.2x above 20-day average",
+        "Strong trend momentum (ADX 53)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 93.0,
+        "fib_382": 87.0,
+        "fib_500": 82.0,
+        "fib_618": 77.0,
+        "fib_786": 71.0,
+        "ext_1272": 113.0,
+        "ext_1618": 127.0,
+        "ext_2618": 167.0,
+        "golden_pocket": 77.0,
+        "swing_high": 102.0,
+        "swing_low": 62.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 16.7,
+        "upper_wick_pct": 66.7,
+        "lower_wick_pct": 16.7
+      },
+      "supports": [
+        85.0,
+        84.0,
+        79.0
+      ],
+      "resistances": [
+        89.0,
+        102.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 89.0,
+          "stop_loss": 83.0,
+          "stop_loss_pct": 6.2,
+          "target_1": 97.0,
+          "target_2": 102.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.4
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 85.0,
+          "stop_loss": 82.0,
+          "stop_loss_pct": 3.3,
+          "target_1": 89.0,
+          "target_2": 92.0,
+          "rr_target_1": 1.4,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "MARK",
+      "name": "Mark Dynamics Indonesia Tbk.",
+      "sector": "Industrials",
+      "price": 1075.0,
+      "change_pct": -0.92,
+      "score": 74,
+      "grade": "Strong",
+      "setup_type": "Pullback Swing",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 1074.0,
+      "stop_loss": 1040.0,
+      "stop_loss_pct": 3.2,
+      "target_1": 1125.0,
+      "target_2": 1159.0,
+      "risk_reward": 2.5,
+      "rsi": 52.2,
+      "atr_pct": 3.0,
+      "volume_ratio": 1.1,
+      "turnover_idr": 14254215125.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 7,
+        "macd": 0,
+        "relative_performance": 8,
+        "volume_confirmation": 4,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "Strong trend momentum (ADX 44)",
+        "ATR% 3.0% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 1050.0,
+        "fib_382": 995.0,
+        "fib_500": 950.0,
+        "fib_618": 905.0,
+        "fib_786": 841.0,
+        "ext_1272": 1243.0,
+        "ext_1618": 1375.0,
+        "ext_2618": 1755.0,
+        "golden_pocket": 905.0,
+        "swing_high": 1140.0,
+        "swing_low": 760.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Moderate",
+        "body_pct": 40.0,
+        "upper_wick_pct": 20.0,
+        "lower_wick_pct": 40.0
+      },
+      "supports": [
+        1074.0,
+        1056.0,
+        1032.0
+      ],
+      "resistances": [
+        1119.0,
+        1125.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1119.0,
+          "stop_loss": 1071.0,
+          "stop_loss_pct": 4.3,
+          "target_1": 1191.0,
+          "target_2": 1240.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 1074.0,
+          "stop_loss": 1040.0,
+          "stop_loss_pct": 3.2,
+          "target_1": 1125.0,
+          "target_2": 1159.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "MOLI",
+      "name": "Madusari Murni Indah Tbk.",
+      "sector": "Basic Materials",
+      "price": 314.0,
+      "change_pct": -4.85,
+      "score": 74,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 318.0,
+      "stop_loss": 294.0,
+      "stop_loss_pct": 7.6,
+      "target_1": 354.0,
+      "target_2": 379.0,
+      "risk_reward": 2.5,
+      "rsi": 66.9,
+      "atr_pct": 5.2,
+      "volume_ratio": 1.0,
+      "turnover_idr": 1940529420.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 4,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 67 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 75)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 306.0,
+        "fib_382": 289.0,
+        "fib_500": 275.0,
+        "fib_618": 261.0,
+        "fib_786": 241.0,
+        "ext_1272": 366.0,
+        "ext_1618": 407.0,
+        "ext_2618": 525.0,
+        "golden_pocket": 261.0,
+        "swing_high": 334.0,
+        "swing_low": 216.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 88.9,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 11.1
+      },
+      "supports": [
+        288.0,
+        271.0,
+        254.0
+      ],
+      "resistances": [
+        318.0,
+        334.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 318.0,
+          "stop_loss": 294.0,
+          "stop_loss_pct": 7.6,
+          "target_1": 354.0,
+          "target_2": 379.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 288.0,
+          "stop_loss": 264.0,
+          "stop_loss_pct": 8.4,
+          "target_1": 318.0,
+          "target_2": 349.0,
+          "rr_target_1": 1.2,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "NOBU",
+      "name": "Bank Nationalnobu Tbk.",
+      "sector": "Financials",
+      "price": 540.0,
+      "change_pct": 2.86,
+      "score": 74,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 565.0,
+      "stop_loss": 535.0,
+      "stop_loss_pct": 5.3,
+      "target_1": 610.0,
+      "target_2": 640.0,
+      "risk_reward": 2.5,
+      "rsi": 69.6,
+      "atr_pct": 3.7,
+      "volume_ratio": 1.1,
+      "turnover_idr": 1008838800.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 4,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 70 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 72)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 528.0,
+        "fib_382": 506.0,
+        "fib_500": 488.0,
+        "fib_618": 469.0,
+        "fib_786": 443.0,
+        "ext_1272": 607.0,
+        "ext_1618": 661.0,
+        "ext_2618": 816.0,
+        "golden_pocket": 469.0,
+        "swing_high": 565.0,
+        "swing_low": 410.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 37.5,
+        "upper_wick_pct": 62.5,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        504.0,
+        486.0,
+        478.0
+      ],
+      "resistances": [
+        565.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 565.0,
+          "stop_loss": 535.0,
+          "stop_loss_pct": 5.3,
+          "target_1": 610.0,
+          "target_2": 640.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 504.0,
+          "stop_loss": 476.0,
+          "stop_loss_pct": 5.6,
+          "target_1": 565.0,
+          "target_2": 574.0,
+          "rr_target_1": 2.2,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "PRDA",
+      "name": "Prodia Widyahusada Tbk.",
+      "sector": "Healthcare",
+      "price": 2820.0,
+      "change_pct": 3.3,
+      "score": 74,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 2830.0,
+      "stop_loss": 2723.0,
+      "stop_loss_pct": 3.8,
+      "target_1": 2991.0,
+      "target_2": 3098.0,
+      "risk_reward": 2.5,
+      "rsi": 80.0,
+      "atr_pct": 2.5,
+      "volume_ratio": 1.6,
+      "turnover_idr": 2426469000.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "MACD bullish + histogram rising",
+        "Volume 1.6x above 20-day average",
+        "Strong trend momentum (ADX 67)",
+        "ATR% 2.5% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [
+        "RSI 80 extreme overbought (-5)"
+      ],
+      "fibonacci": {
+        "fib_236": 2720.0,
+        "fib_382": 2640.0,
+        "fib_500": 2575.0,
+        "fib_618": 2510.0,
+        "fib_786": 2418.0,
+        "ext_1272": 3000.0,
+        "ext_1618": 3190.0,
+        "ext_2618": 3740.0,
+        "golden_pocket": 2510.0,
+        "swing_high": 2850.0,
+        "swing_low": 2300.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Strong",
+        "body_pct": 81.8,
+        "upper_wick_pct": 9.1,
+        "lower_wick_pct": 9.1
+      },
+      "supports": [
+        2559.0,
+        2497.0,
+        2300.0
+      ],
+      "resistances": [
+        2830.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 2830.0,
+          "stop_loss": 2723.0,
+          "stop_loss_pct": 3.8,
+          "target_1": 2991.0,
+          "target_2": 3098.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 2559.0,
+          "stop_loss": 2461.0,
+          "stop_loss_pct": 3.8,
+          "target_1": 2706.0,
+          "target_2": 2830.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.8
+        }
+      }
+    },
+    {
+      "ticker": "UCID",
+      "name": "Uni-Charm Indonesia Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 520.0,
+      "change_pct": -4.59,
+      "score": 74,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 538.0,
+      "stop_loss": 507.0,
+      "stop_loss_pct": 5.8,
+      "target_1": 585.0,
+      "target_2": 616.0,
+      "risk_reward": 2.5,
+      "rsi": 74.8,
+      "atr_pct": 4.0,
+      "volume_ratio": 2.4,
+      "turnover_idr": 895156600.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 5,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 75 slightly elevated",
+        "MACD bullish + histogram rising",
+        "Volume 2.4x above 20-day average",
+        "Strong trend momentum (ADX 95)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 513.0,
+        "fib_382": 484.0,
+        "fib_500": 460.0,
+        "fib_618": 436.0,
+        "fib_786": 403.0,
+        "ext_1272": 614.0,
+        "ext_1618": 684.0,
+        "ext_2618": 884.0,
+        "golden_pocket": 436.0,
+        "swing_high": 560.0,
+        "swing_low": 360.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Moderate",
+        "body_pct": 55.6,
+        "upper_wick_pct": 33.3,
+        "lower_wick_pct": 11.1
+      },
+      "supports": [
+        476.0,
+        437.0,
+        404.0
+      ],
+      "resistances": [
+        538.0,
+        560.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 538.0,
+          "stop_loss": 507.0,
+          "stop_loss_pct": 5.8,
+          "target_1": 585.0,
+          "target_2": 616.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 476.0,
+          "stop_loss": 445.0,
+          "stop_loss_pct": 6.6,
+          "target_1": 538.0,
+          "target_2": 560.0,
+          "rr_target_1": 2.0,
+          "rr_target_2": 2.7
+        }
+      }
+    },
+    {
+      "ticker": "EKAD",
+      "name": "Ekadharma International Tbk.",
+      "sector": "Basic Materials",
+      "price": 374.0,
+      "change_pct": -6.5,
+      "score": 73,
+      "grade": "Strong",
+      "setup_type": "Pullback Setup",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 337.0,
+      "stop_loss": 298.0,
+      "stop_loss_pct": 11.6,
+      "target_1": 396.0,
+      "target_2": 435.0,
+      "risk_reward": 2.5,
+      "rsi": 68.6,
+      "atr_pct": 7.0,
+      "volume_ratio": 0.8,
+      "turnover_idr": 8594303080.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 1,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 69 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 39)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 390.0,
+        "fib_382": 343.0,
+        "fib_500": 306.0,
+        "fib_618": 268.0,
+        "fib_786": 214.0,
+        "ext_1272": 553.0,
+        "ext_1618": 664.0,
+        "ext_2618": 985.0,
+        "golden_pocket": 268.0,
+        "swing_high": 466.0,
+        "swing_low": 145.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 68.4,
+        "upper_wick_pct": 15.8,
+        "lower_wick_pct": 15.8
+      },
+      "supports": [
+        337.0,
+        264.0,
+        164.0
+      ],
+      "resistances": [
+        466.0,
+        501.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 466.0,
+          "stop_loss": 427.0,
+          "stop_loss_pct": 8.4,
+          "target_1": 525.0,
+          "target_2": 564.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 337.0,
+          "stop_loss": 298.0,
+          "stop_loss_pct": 11.6,
+          "target_1": 396.0,
+          "target_2": 435.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "INET",
+      "name": "Sinergi Inti Andalan Prima Tbk",
+      "sector": "Infrastructure",
+      "price": 366.0,
+      "change_pct": 3.39,
+      "score": 73,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 376.0,
+      "stop_loss": 339.0,
+      "stop_loss_pct": 9.8,
+      "target_1": 431.0,
+      "target_2": 468.0,
+      "risk_reward": 2.5,
+      "rsi": 73.0,
+      "atr_pct": 6.7,
+      "volume_ratio": 1.6,
+      "turnover_idr": 251751778740.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 5,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 73 slightly elevated",
+        "MACD bullish + histogram rising",
+        "Volume 1.6x above 20-day average",
+        "Strong trend momentum (ADX 74)",
+        "Supertrend Bullish confirm",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 328.0,
+        "fib_382": 298.0,
+        "fib_500": 274.0,
+        "fib_618": 251.0,
+        "fib_786": 216.0,
+        "ext_1272": 431.0,
+        "ext_1618": 501.0,
+        "ext_2618": 704.0,
+        "golden_pocket": 251.0,
+        "swing_high": 376.0,
+        "swing_low": 173.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 60.0,
+        "upper_wick_pct": 30.0,
+        "lower_wick_pct": 10.0
+      },
+      "supports": [
+        308.0,
+        271.0,
+        206.0
+      ],
+      "resistances": [
+        376.0,
+        403.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 376.0,
+          "stop_loss": 339.0,
+          "stop_loss_pct": 9.8,
+          "target_1": 431.0,
+          "target_2": 468.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 308.0,
+          "stop_loss": 271.0,
+          "stop_loss_pct": 11.9,
+          "target_1": 363.0,
+          "target_2": 403.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.6
+        }
+      }
+    },
+    {
+      "ticker": "LSIP",
+      "name": "PP London Sumatra Indonesia Tb",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 1685.0,
+      "change_pct": 1.81,
+      "score": 73,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 1715.0,
+      "stop_loss": 1647.0,
+      "stop_loss_pct": 4.0,
+      "target_1": 1817.0,
+      "target_2": 1885.0,
+      "risk_reward": 2.5,
+      "rsi": 80.9,
+      "atr_pct": 2.7,
+      "volume_ratio": 1.8,
+      "turnover_idr": 19495180400.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 0,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Volume 1.8x above 20-day average",
+        "Strong trend momentum (ADX 58)",
+        "ATR% 2.7% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [
+        "RSI 81 extreme overbought (-5)"
+      ],
+      "fibonacci": {
+        "fib_236": 1590.0,
+        "fib_382": 1513.0,
+        "fib_500": 1450.0,
+        "fib_618": 1387.0,
+        "fib_786": 1298.0,
+        "ext_1272": 1859.0,
+        "ext_1618": 2043.0,
+        "ext_2618": 2573.0,
+        "golden_pocket": 1387.0,
+        "swing_high": 1715.0,
+        "swing_low": 1185.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 50.0,
+        "upper_wick_pct": 50.0,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        1498.0,
+        1432.0,
+        1350.0
+      ],
+      "resistances": [
+        1715.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1715.0,
+          "stop_loss": 1647.0,
+          "stop_loss_pct": 4.0,
+          "target_1": 1817.0,
+          "target_2": 1885.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 1498.0,
+          "stop_loss": 1430.0,
+          "stop_loss_pct": 4.5,
+          "target_1": 1600.0,
+          "target_2": 1715.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 3.2
+        }
+      }
+    },
+    {
+      "ticker": "MSJA",
+      "name": "Multi Spunindo Jaya Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 450.0,
+      "change_pct": 1.35,
+      "score": 73,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 458.0,
+      "stop_loss": 435.0,
+      "stop_loss_pct": 5.1,
+      "target_1": 493.0,
+      "target_2": 516.0,
+      "risk_reward": 2.5,
+      "rsi": 61.5,
+      "atr_pct": 3.5,
+      "volume_ratio": 0.7,
+      "turnover_idr": 7603989750.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 0,
+        "volatility_control": 10,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 61 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "ATR% 3.5% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 437.0,
+        "fib_382": 424.0,
+        "fib_500": 413.0,
+        "fib_618": 402.0,
+        "fib_786": 387.0,
+        "ext_1272": 482.0,
+        "ext_1618": 514.0,
+        "ext_2618": 604.0,
+        "golden_pocket": 402.0,
+        "swing_high": 458.0,
+        "swing_low": 368.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 60.0,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 40.0
+      },
+      "supports": [
+        434.0,
+        426.0,
+        408.0
+      ],
+      "resistances": [
+        458.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 458.0,
+          "stop_loss": 435.0,
+          "stop_loss_pct": 5.1,
+          "target_1": 493.0,
+          "target_2": 516.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 434.0,
+          "stop_loss": 418.0,
+          "stop_loss_pct": 3.6,
+          "target_1": 458.0,
+          "target_2": 473.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "YELO",
+      "name": "Yelooo Integra Datanet Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 104.0,
+      "change_pct": -3.7,
+      "score": 73,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 107.0,
+      "stop_loss": 95.0,
+      "stop_loss_pct": 11.3,
+      "target_1": 125.0,
+      "target_2": 137.0,
+      "risk_reward": 2.5,
+      "rsi": 61.5,
+      "atr_pct": 7.8,
+      "volume_ratio": 1.4,
+      "turnover_idr": 17230433480.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 10,
+        "volatility_control": 0,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 61 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 49)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [
+        "ATR% 7.8% (high volatility)"
+      ],
+      "fibonacci": {
+        "fib_236": 99.0,
+        "fib_382": 92.0,
+        "fib_500": 86.0,
+        "fib_618": 80.0,
+        "fib_786": 72.0,
+        "ext_1272": 125.0,
+        "ext_1618": 142.0,
+        "ext_2618": 192.0,
+        "golden_pocket": 80.0,
+        "swing_high": 111.0,
+        "swing_low": 61.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Moderate",
+        "body_pct": 44.4,
+        "upper_wick_pct": 33.3,
+        "lower_wick_pct": 22.2
+      },
+      "supports": [
+        94.0,
+        88.0,
+        80.0
+      ],
+      "resistances": [
+        107.0,
+        111.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 107.0,
+          "stop_loss": 95.0,
+          "stop_loss_pct": 11.3,
+          "target_1": 125.0,
+          "target_2": 137.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 94.0,
+          "stop_loss": 84.0,
+          "stop_loss_pct": 10.7,
+          "target_1": 107.0,
+          "target_2": 119.0,
+          "rr_target_1": 1.3,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "MUTU",
+      "name": "Mutuagung Lestari Tbk.",
+      "sector": "Industrials",
+      "price": 122.0,
+      "change_pct": -3.17,
+      "score": 72,
+      "grade": "Strong",
+      "setup_type": "Pullback Swing",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 121.0,
+      "stop_loss": 113.0,
+      "stop_loss_pct": 6.9,
+      "target_1": 135.0,
+      "target_2": 146.0,
+      "risk_reward": 3.0,
+      "rsi": 54.2,
+      "atr_pct": 5.4,
+      "volume_ratio": 0.4,
+      "turnover_idr": 4624230050.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 7,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 57)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 114.0,
+        "fib_382": 120.0,
+        "fib_500": 125.0,
+        "fib_618": 130.0,
+        "fib_786": 137.0,
+        "ext_1272": 93.0,
+        "ext_1618": 78.0,
+        "ext_2618": 36.0,
+        "golden_pocket": 130.0,
+        "swing_high": 146.0,
+        "swing_low": 104.0,
+        "trend": "downtrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 80.0,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 20.0
+      },
+      "supports": [
+        121.0,
+        116.0,
+        105.0
+      ],
+      "resistances": [
+        135.0,
+        146.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 135.0,
+          "stop_loss": 125.0,
+          "stop_loss_pct": 7.3,
+          "target_1": 146.0,
+          "target_2": 160.0,
+          "rr_target_1": 1.1,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 121.0,
+          "stop_loss": 113.0,
+          "stop_loss_pct": 6.9,
+          "target_1": 135.0,
+          "target_2": 146.0,
+          "rr_target_1": 1.7,
+          "rr_target_2": 3.0
+        }
+      }
+    },
+    {
+      "ticker": "BBTN",
+      "name": "Bank Tabungan Negara (Persero) Tbk.",
+      "sector": "Financials",
+      "price": 1240.0,
+      "change_pct": -1.2,
+      "score": 72,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 1251.0,
+      "stop_loss": 1212.0,
+      "stop_loss_pct": 3.1,
+      "target_1": 1275.0,
+      "target_2": 1348.0,
+      "risk_reward": 2.5,
+      "rsi": 54.9,
+      "atr_pct": 2.3,
+      "volume_ratio": 1.5,
+      "turnover_idr": 19032729000.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 7,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 8,
+        "volatility_control": 10,
+        "drawdown_stability": 2,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "MACD bullish + histogram rising",
+        "ATR% 2.3% (ideal swing volatility)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 1267.0,
+        "fib_382": 1229.0,
+        "fib_500": 1198.0,
+        "fib_618": 1166.0,
+        "fib_786": 1122.0,
+        "ext_1272": 1402.0,
+        "ext_1618": 1494.0,
+        "ext_2618": 1759.0,
+        "golden_pocket": 1166.0,
+        "swing_high": 1330.0,
+        "swing_low": 1065.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Moderate",
+        "body_pct": 50.0,
+        "upper_wick_pct": 50.0,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        1226.0,
+        1223.0,
+        1195.0
+      ],
+      "resistances": [
+        1251.0,
+        1275.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1251.0,
+          "stop_loss": 1212.0,
+          "stop_loss_pct": 3.1,
+          "target_1": 1275.0,
+          "target_2": 1348.0,
+          "rr_target_1": 0.6,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 1226.0,
+          "stop_loss": 1209.0,
+          "stop_loss_pct": 1.4,
+          "target_1": 1275.0,
+          "target_2": 1268.0,
+          "rr_target_1": 2.9,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "BEST",
+      "name": "Bekasi Fajar Industrial Estate Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 136.0,
+      "change_pct": -4.23,
+      "score": 72,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 143.0,
+      "stop_loss": 132.0,
+      "stop_loss_pct": 7.5,
+      "target_1": 159.0,
+      "target_2": 170.0,
+      "risk_reward": 2.5,
+      "rsi": 64.5,
+      "atr_pct": 5.3,
+      "volume_ratio": 0.9,
+      "turnover_idr": 9214399160.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 0,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 65 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 65)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 131.0,
+        "fib_382": 123.0,
+        "fib_500": 117.0,
+        "fib_618": 111.0,
+        "fib_786": 102.0,
+        "ext_1272": 159.0,
+        "ext_1618": 177.0,
+        "ext_2618": 231.0,
+        "golden_pocket": 111.0,
+        "swing_high": 144.0,
+        "swing_low": 90.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 85.7,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 14.3
+      },
+      "supports": [
+        124.0,
+        114.0,
+        101.0
+      ],
+      "resistances": [
+        143.0,
+        144.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 143.0,
+          "stop_loss": 132.0,
+          "stop_loss_pct": 7.5,
+          "target_1": 159.0,
+          "target_2": 170.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 124.0,
+          "stop_loss": 113.0,
+          "stop_loss_pct": 8.7,
+          "target_1": 144.0,
+          "target_2": 151.0,
+          "rr_target_1": 1.9,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "GJTL",
+      "name": "Gajah Tunggal Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 1390.0,
+      "change_pct": -1.07,
+      "score": 72,
+      "grade": "Strong",
+      "setup_type": "Pullback Swing",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 1356.0,
+      "stop_loss": 1304.0,
+      "stop_loss_pct": 3.8,
+      "target_1": 1455.0,
+      "target_2": 1486.0,
+      "risk_reward": 2.5,
+      "rsi": 61.5,
+      "atr_pct": 2.5,
+      "volume_ratio": 0.7,
+      "turnover_idr": 9160190350.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 0,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 61 in optimal momentum zone (55\u201370)",
+        "Strong trend momentum (ADX 67)",
+        "ATR% 2.5% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 1363.0,
+        "fib_382": 1306.0,
+        "fib_500": 1260.0,
+        "fib_618": 1214.0,
+        "fib_786": 1148.0,
+        "ext_1272": 1561.0,
+        "ext_1618": 1696.0,
+        "ext_2618": 2086.0,
+        "golden_pocket": 1214.0,
+        "swing_high": 1455.0,
+        "swing_low": 1065.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 75.0,
+        "upper_wick_pct": 25.0,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        1356.0,
+        1281.0,
+        1267.0
+      ],
+      "resistances": [
+        1450.0,
+        1455.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1450.0,
+          "stop_loss": 1398.0,
+          "stop_loss_pct": 3.6,
+          "target_1": 1528.0,
+          "target_2": 1580.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 1356.0,
+          "stop_loss": 1304.0,
+          "stop_loss_pct": 3.8,
+          "target_1": 1455.0,
+          "target_2": 1486.0,
+          "rr_target_1": 1.9,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "MPIX",
+      "name": "Mitra Pedagang Indonesia Tbk.",
+      "sector": "Technology",
+      "price": 117.0,
+      "change_pct": 1.74,
+      "score": 72,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 118.0,
+      "stop_loss": 108.0,
+      "stop_loss_pct": 8.5,
+      "target_1": 133.0,
+      "target_2": 143.0,
+      "risk_reward": 2.5,
+      "rsi": 69.1,
+      "atr_pct": 5.7,
+      "volume_ratio": 1.0,
+      "turnover_idr": 2096885115.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 0,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 69 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 71)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 115.0,
+        "fib_382": 108.0,
+        "fib_500": 103.0,
+        "fib_618": 98.0,
+        "fib_786": 90.0,
+        "ext_1272": 139.0,
+        "ext_1618": 154.0,
+        "ext_2618": 200.0,
+        "golden_pocket": 98.0,
+        "swing_high": 126.0,
+        "swing_low": 80.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 33.3,
+        "upper_wick_pct": 50.0,
+        "lower_wick_pct": 16.7
+      },
+      "supports": [
+        105.0,
+        99.0,
+        87.0
+      ],
+      "resistances": [
+        118.0,
+        126.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 118.0,
+          "stop_loss": 108.0,
+          "stop_loss_pct": 8.5,
+          "target_1": 133.0,
+          "target_2": 143.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 105.0,
+          "stop_loss": 96.0,
+          "stop_loss_pct": 8.9,
+          "target_1": 118.0,
+          "target_2": 126.0,
+          "rr_target_1": 1.4,
+          "rr_target_2": 2.2
+        }
+      }
+    },
+    {
+      "ticker": "MPOW",
+      "name": "Megapower Makmur Tbk.",
+      "sector": "Infrastructure",
+      "price": 115.0,
+      "change_pct": -16.67,
+      "score": 72,
+      "grade": "Strong",
+      "setup_type": "Pullback Setup",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 111.0,
+      "stop_loss": 103.0,
+      "stop_loss_pct": 7.5,
+      "target_1": 123.0,
+      "target_2": 132.0,
+      "risk_reward": 2.5,
+      "rsi": 59.2,
+      "atr_pct": 7.5,
+      "volume_ratio": 10.4,
+      "turnover_idr": 2359097350.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 0,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 59 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 10.4x above 20-day average",
+        "Strong trend momentum (ADX 96)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [
+        "ATR% 7.5% (high volatility)"
+      ],
+      "fibonacci": {
+        "fib_236": 99.0,
+        "fib_382": 109.0,
+        "fib_500": 116.0,
+        "fib_618": 124.0,
+        "fib_786": 136.0,
+        "ext_1272": 65.0,
+        "ext_1618": 42.0,
+        "ext_2618": -25.0,
+        "golden_pocket": 124.0,
+        "swing_high": 150.0,
+        "swing_low": 83.0,
+        "trend": "downtrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 65.7,
+        "upper_wick_pct": 34.3,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        111.0,
+        107.0,
+        101.0
+      ],
+      "resistances": [
+        119.0,
+        150.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 119.0,
+          "stop_loss": 107.0,
+          "stop_loss_pct": 10.4,
+          "target_1": 137.0,
+          "target_2": 150.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 111.0,
+          "stop_loss": 103.0,
+          "stop_loss_pct": 7.5,
+          "target_1": 123.0,
+          "target_2": 132.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "SMGA",
+      "name": "Sumber Mineral Global Abadi Tb",
+      "sector": "Basic Materials",
+      "price": 89.0,
+      "change_pct": 0.0,
+      "score": 72,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 90.0,
+      "stop_loss": 82.0,
+      "stop_loss_pct": 8.8,
+      "target_1": 102.0,
+      "target_2": 110.0,
+      "risk_reward": 2.5,
+      "rsi": 69.6,
+      "atr_pct": 6.0,
+      "volume_ratio": 2.0,
+      "turnover_idr": 2275772275.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 0,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 70 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 2.0x above 20-day average",
+        "Strong trend momentum (ADX 60)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 87.0,
+        "fib_382": 81.0,
+        "fib_500": 77.0,
+        "fib_618": 73.0,
+        "fib_786": 67.0,
+        "ext_1272": 105.0,
+        "ext_1618": 117.0,
+        "ext_2618": 153.0,
+        "golden_pocket": 73.0,
+        "swing_high": 95.0,
+        "swing_low": 59.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Doji",
+        "strength": "Weak",
+        "body_pct": 0.0,
+        "upper_wick_pct": 85.7,
+        "lower_wick_pct": 14.3
+      },
+      "supports": [
+        81.0,
+        77.0,
+        70.0
+      ],
+      "resistances": [
+        90.0,
+        95.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 90.0,
+          "stop_loss": 82.0,
+          "stop_loss_pct": 8.8,
+          "target_1": 102.0,
+          "target_2": 110.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 81.0,
+          "stop_loss": 74.0,
+          "stop_loss_pct": 8.2,
+          "target_1": 90.0,
+          "target_2": 95.0,
+          "rr_target_1": 1.4,
+          "rr_target_2": 2.1
+        }
+      }
+    },
+    {
+      "ticker": "SQMI",
+      "name": "Wilton Makmur Indonesia Tbk.",
+      "sector": "Basic Materials",
+      "price": 103.0,
+      "change_pct": 5.1,
+      "score": 72,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 114.0,
+      "stop_loss": 100.0,
+      "stop_loss_pct": 12.5,
+      "target_1": 135.0,
+      "target_2": 150.0,
+      "risk_reward": 2.5,
+      "rsi": 75.1,
+      "atr_pct": 9.3,
+      "volume_ratio": 5.3,
+      "turnover_idr": 31480955535.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 0,
+        "drawdown_stability": 1,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Volume 5.3x above 20-day average",
+        "Strong trend momentum (ADX 100)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [
+        "ATR% 9.3% (high volatility)"
+      ],
+      "fibonacci": {
+        "fib_236": 94.0,
+        "fib_382": 82.0,
+        "fib_500": 72.0,
+        "fib_618": 62.0,
+        "fib_786": 48.0,
+        "ext_1272": 137.0,
+        "ext_1618": 166.0,
+        "ext_2618": 250.0,
+        "golden_pocket": 62.0,
+        "swing_high": 114.0,
+        "swing_low": 30.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 33.3,
+        "upper_wick_pct": 53.3,
+        "lower_wick_pct": 13.3
+      },
+      "supports": [
+        74.0,
+        65.0,
+        59.0
+      ],
+      "resistances": [
+        114.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 114.0,
+          "stop_loss": 100.0,
+          "stop_loss_pct": 12.5,
+          "target_1": 135.0,
+          "target_2": 150.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 74.0,
+          "stop_loss": 60.0,
+          "stop_loss_pct": 18.6,
+          "target_1": 95.0,
+          "target_2": 108.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "SSIA",
+      "name": "Surya Semesta Internusa Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 1810.0,
+      "change_pct": -4.23,
+      "score": 72,
+      "grade": "Strong",
+      "setup_type": "Pullback Swing",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 1804.0,
+      "stop_loss": 1695.0,
+      "stop_loss_pct": 6.0,
+      "target_1": 1980.0,
+      "target_2": 2077.0,
+      "risk_reward": 2.5,
+      "rsi": 53.2,
+      "atr_pct": 4.0,
+      "volume_ratio": 1.5,
+      "turnover_idr": 47846155400.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 7,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 0,
+        "volatility_control": 7,
+        "drawdown_stability": 3,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 1843.0,
+        "fib_382": 1758.0,
+        "fib_500": 1690.0,
+        "fib_618": 1622.0,
+        "fib_786": 1524.0,
+        "ext_1272": 2138.0,
+        "ext_1618": 2338.0,
+        "ext_2618": 2918.0,
+        "golden_pocket": 1622.0,
+        "swing_high": 1980.0,
+        "swing_low": 1400.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 84.2,
+        "upper_wick_pct": 10.5,
+        "lower_wick_pct": 5.3
+      },
+      "supports": [
+        1804.0,
+        1719.0,
+        1600.0
+      ],
+      "resistances": [
+        1979.0,
+        1980.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1979.0,
+          "stop_loss": 1870.0,
+          "stop_loss_pct": 5.5,
+          "target_1": 2143.0,
+          "target_2": 2252.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 1804.0,
+          "stop_loss": 1695.0,
+          "stop_loss_pct": 6.0,
+          "target_1": 1980.0,
+          "target_2": 2077.0,
+          "rr_target_1": 1.6,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "TLDN",
+      "name": "Teladan Prima Agro Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 655.0,
+      "change_pct": 2.34,
+      "score": 72,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 670.0,
+      "stop_loss": 630.0,
+      "stop_loss_pct": 6.0,
+      "target_1": 731.0,
+      "target_2": 771.0,
+      "risk_reward": 2.5,
+      "rsi": 75.1,
+      "atr_pct": 4.1,
+      "volume_ratio": 1.5,
+      "turnover_idr": 1317977900.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "MACD bullish + histogram rising",
+        "Volume 1.5x above 20-day average",
+        "Strong trend momentum (ADX 65)",
+        "Supertrend Bullish confirm",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 617.0,
+        "fib_382": 584.0,
+        "fib_500": 558.0,
+        "fib_618": 532.0,
+        "fib_786": 494.0,
+        "ext_1272": 731.0,
+        "ext_1618": 808.0,
+        "ext_2618": 1032.0,
+        "golden_pocket": 532.0,
+        "swing_high": 670.0,
+        "swing_low": 446.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Weak",
+        "body_pct": 37.5,
+        "upper_wick_pct": 37.5,
+        "lower_wick_pct": 25.0
+      },
+      "supports": [
+        581.0,
+        560.0,
+        522.0
+      ],
+      "resistances": [
+        670.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 670.0,
+          "stop_loss": 630.0,
+          "stop_loss_pct": 6.0,
+          "target_1": 731.0,
+          "target_2": 771.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 581.0,
+          "stop_loss": 547.0,
+          "stop_loss_pct": 5.9,
+          "target_1": 633.0,
+          "target_2": 670.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.6
+        }
+      }
+    },
+    {
+      "ticker": "VISI",
+      "name": "Satu Visi Putra Tbk.",
+      "sector": "Industrials",
+      "price": 965.0,
+      "change_pct": -1.03,
+      "score": 71,
+      "grade": "Strong",
+      "setup_type": "Pullback Swing",
+      "primary_scenario": "pullback",
+      "supertrend": "BULLISH",
+      "entry": 957.0,
+      "stop_loss": 901.0,
+      "stop_loss_pct": 5.9,
+      "target_1": 1026.0,
+      "target_2": 1110.0,
+      "risk_reward": 2.7,
+      "rsi": 52.8,
+      "atr_pct": 6.3,
+      "volume_ratio": 0.4,
+      "turnover_idr": 1601152125.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 7,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 2,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 39)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 875.0,
+        "fib_382": 952.0,
+        "fib_500": 1015.0,
+        "fib_618": 1078.0,
+        "fib_786": 1167.0,
+        "ext_1272": 606.0,
+        "ext_1618": 422.0,
+        "ext_2618": -108.0,
+        "golden_pocket": 1078.0,
+        "swing_high": 1280.0,
+        "swing_low": 750.0,
+        "trend": "downtrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Moderate",
+        "body_pct": 40.0,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 60.0
+      },
+      "supports": [
+        957.0,
+        931.0,
+        889.0
+      ],
+      "resistances": [
+        1026.0,
+        1110.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 1026.0,
+          "stop_loss": 935.0,
+          "stop_loss_pct": 8.8,
+          "target_1": 1162.0,
+          "target_2": 1252.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 957.0,
+          "stop_loss": 901.0,
+          "stop_loss_pct": 5.9,
+          "target_1": 1026.0,
+          "target_2": 1110.0,
+          "rr_target_1": 1.2,
+          "rr_target_2": 2.7
+        }
+      }
+    },
+    {
+      "ticker": "CBRE",
+      "name": "Cakra Buana Resources Energi Tbk.",
+      "sector": "Transportation & Logistics",
+      "price": 770.0,
+      "change_pct": 6.94,
+      "score": 71,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 815.0,
+      "stop_loss": 751.0,
+      "stop_loss_pct": 7.9,
+      "target_1": 911.0,
+      "target_2": 976.0,
+      "risk_reward": 2.5,
+      "rsi": 67.4,
+      "atr_pct": 5.6,
+      "volume_ratio": 3.6,
+      "turnover_idr": 14565878250.0,
+      "score_breakdown": {
+        "ema_trend": 5,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 1,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Price above EMA20",
+        "RSI 67 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 3.6x above 20-day average",
+        "Strong trend momentum (ADX 54)",
+        "Supertrend Bullish confirm",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 755.0,
+        "fib_382": 715.0,
+        "fib_500": 682.0,
+        "fib_618": 650.0,
+        "fib_786": 604.0,
+        "ext_1272": 895.0,
+        "ext_1618": 990.0,
+        "ext_2618": 1265.0,
+        "golden_pocket": 650.0,
+        "swing_high": 820.0,
+        "swing_low": 545.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 62.5,
+        "upper_wick_pct": 31.2,
+        "lower_wick_pct": 6.2
+      },
+      "supports": [
+        710.0,
+        704.0,
+        655.0
+      ],
+      "resistances": [
+        815.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 815.0,
+          "stop_loss": 751.0,
+          "stop_loss_pct": 7.9,
+          "target_1": 911.0,
+          "target_2": 976.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 704.0,
+          "stop_loss": 640.0,
+          "stop_loss_pct": 9.1,
+          "target_1": 815.0,
+          "target_2": 865.0,
+          "rr_target_1": 1.7,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "ERAA",
+      "name": "Erajaya Swasembada Tbk.",
+      "sector": "Consumer Cyclicals",
+      "price": 590.0,
+      "change_pct": -2.48,
+      "score": 71,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 635.0,
+      "stop_loss": 596.0,
+      "stop_loss_pct": 6.2,
+      "target_1": 694.0,
+      "target_2": 733.0,
+      "risk_reward": 2.5,
+      "rsi": 84.7,
+      "atr_pct": 4.4,
+      "volume_ratio": 2.4,
+      "turnover_idr": 81967198450.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 1,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Volume 2.4x above 20-day average",
+        "Strong trend momentum (ADX 88)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [
+        "RSI 85 extreme overbought (-5)"
+      ],
+      "fibonacci": {
+        "fib_236": 563.0,
+        "fib_382": 519.0,
+        "fib_500": 484.0,
+        "fib_618": 448.0,
+        "fib_786": 397.0,
+        "ext_1272": 717.0,
+        "ext_1618": 822.0,
+        "ext_2618": 1125.0,
+        "golden_pocket": 448.0,
+        "swing_high": 635.0,
+        "swing_low": 332.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 30.0,
+        "upper_wick_pct": 60.0,
+        "lower_wick_pct": 10.0
+      },
+      "supports": [
+        491.0,
+        444.0,
+        406.0
+      ],
+      "resistances": [
+        635.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 635.0,
+          "stop_loss": 596.0,
+          "stop_loss_pct": 6.2,
+          "target_1": 694.0,
+          "target_2": 733.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 491.0,
+          "stop_loss": 452.0,
+          "stop_loss_pct": 8.0,
+          "target_1": 550.0,
+          "target_2": 589.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "ISSP",
+      "name": "Steel Pipe Industry of Indonesia Tbk.",
+      "sector": "Basic Materials",
+      "price": 452.0,
+      "change_pct": -0.88,
+      "score": 71,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 468.0,
+      "stop_loss": 446.0,
+      "stop_loss_pct": 4.7,
+      "target_1": 501.0,
+      "target_2": 523.0,
+      "risk_reward": 2.5,
+      "rsi": 65.3,
+      "atr_pct": 3.2,
+      "volume_ratio": 1.3,
+      "turnover_idr": 645406280.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 7,
+        "adx": 0,
+        "volatility_control": 10,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 65 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "ATR% 3.2% (ideal swing volatility)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 445.0,
+        "fib_382": 431.0,
+        "fib_500": 419.0,
+        "fib_618": 407.0,
+        "fib_786": 391.0,
+        "ext_1272": 495.0,
+        "ext_1618": 529.0,
+        "ext_2618": 627.0,
+        "golden_pocket": 407.0,
+        "swing_high": 468.0,
+        "swing_low": 370.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Weak",
+        "body_pct": 33.3,
+        "upper_wick_pct": 16.7,
+        "lower_wick_pct": 50.0
+      },
+      "supports": [
+        430.0,
+        423.0,
+        412.0
+      ],
+      "resistances": [
+        468.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 468.0,
+          "stop_loss": 446.0,
+          "stop_loss_pct": 4.7,
+          "target_1": 501.0,
+          "target_2": 523.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 430.0,
+          "stop_loss": 416.0,
+          "stop_loss_pct": 3.3,
+          "target_1": 468.0,
+          "target_2": 466.0,
+          "rr_target_1": 2.7,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "LUCK",
+      "name": "Sentral Mitra Informatika Tbk.",
+      "sector": "Technology",
+      "price": 117.0,
+      "change_pct": 1.74,
+      "score": 71,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 118.0,
+      "stop_loss": 110.0,
+      "stop_loss_pct": 6.6,
+      "target_1": 133.0,
+      "target_2": 137.0,
+      "risk_reward": 2.5,
+      "rsi": 59.6,
+      "atr_pct": 4.7,
+      "volume_ratio": 1.7,
+      "turnover_idr": 558315225.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 10,
+        "macd": 0,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 5,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 60 in optimal momentum zone (55\u201370)",
+        "Volume 1.7x above 20-day average",
+        "Strong trend momentum (ADX 33)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 123.0,
+        "fib_382": 117.0,
+        "fib_500": 112.0,
+        "fib_618": 107.0,
+        "fib_786": 100.0,
+        "ext_1272": 144.0,
+        "ext_1618": 159.0,
+        "ext_2618": 201.0,
+        "golden_pocket": 107.0,
+        "swing_high": 133.0,
+        "swing_low": 91.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 50.0,
+        "upper_wick_pct": 25.0,
+        "lower_wick_pct": 25.0
+      },
+      "supports": [
+        113.0,
+        111.0,
+        110.0
+      ],
+      "resistances": [
+        118.0,
+        133.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 118.0,
+          "stop_loss": 110.0,
+          "stop_loss_pct": 6.6,
+          "target_1": 133.0,
+          "target_2": 137.0,
+          "rr_target_1": 1.9,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 113.0,
+          "stop_loss": 108.0,
+          "stop_loss_pct": 4.2,
+          "target_1": 118.0,
+          "target_2": 125.0,
+          "rr_target_1": 1.1,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "SOCI",
+      "name": "Soechi Lines Tbk.",
+      "sector": "Energy",
+      "price": 640.0,
+      "change_pct": 4.92,
+      "score": 71,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 665.0,
+      "stop_loss": 616.0,
+      "stop_loss_pct": 7.4,
+      "target_1": 739.0,
+      "target_2": 788.0,
+      "risk_reward": 2.5,
+      "rsi": 76.3,
+      "atr_pct": 5.1,
+      "volume_ratio": 2.4,
+      "turnover_idr": 10844048000.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 1,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Volume 2.4x above 20-day average",
+        "Strong trend momentum (ADX 80)",
+        "Supertrend Bullish confirm",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 577.0,
+        "fib_382": 523.0,
+        "fib_500": 478.0,
+        "fib_618": 434.0,
+        "fib_786": 372.0,
+        "ext_1272": 766.0,
+        "ext_1618": 896.0,
+        "ext_2618": 1269.0,
+        "golden_pocket": 434.0,
+        "swing_high": 665.0,
+        "swing_low": 292.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 54.5,
+        "upper_wick_pct": 45.5,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        541.0,
+        478.0,
+        457.0
+      ],
+      "resistances": [
+        665.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 665.0,
+          "stop_loss": 616.0,
+          "stop_loss_pct": 7.4,
+          "target_1": 739.0,
+          "target_2": 788.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 541.0,
+          "stop_loss": 492.0,
+          "stop_loss_pct": 9.1,
+          "target_1": 615.0,
+          "target_2": 665.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "CLEO",
+      "name": "Sariguna Primatirta Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 426.0,
+      "change_pct": 4.41,
+      "score": 70,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 436.0,
+      "stop_loss": 419.0,
+      "stop_loss_pct": 4.0,
+      "target_1": 462.0,
+      "target_2": 479.0,
+      "risk_reward": 2.5,
+      "rsi": 72.1,
+      "atr_pct": 2.7,
+      "volume_ratio": 2.3,
+      "turnover_idr": 4769732430.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 5,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 4,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 72 slightly elevated",
+        "MACD bullish + histogram rising",
+        "Volume 2.3x above 20-day average",
+        "Strong trend momentum (ADX 68)",
+        "ATR% 2.7% (ideal swing volatility)",
+        "Supertrend Bullish confirm",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [
+        "Price below EMA200 (-10)"
+      ],
+      "fibonacci": {
+        "fib_236": 413.0,
+        "fib_382": 399.0,
+        "fib_500": 387.0,
+        "fib_618": 375.0,
+        "fib_786": 359.0,
+        "ext_1272": 463.0,
+        "ext_1618": 497.0,
+        "ext_2618": 595.0,
+        "golden_pocket": 375.0,
+        "swing_high": 436.0,
+        "swing_low": 338.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Moderate",
+        "body_pct": 64.3,
+        "upper_wick_pct": 35.7,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        399.0,
+        391.0,
+        370.0
+      ],
+      "resistances": [
+        436.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 436.0,
+          "stop_loss": 419.0,
+          "stop_loss_pct": 4.0,
+          "target_1": 462.0,
+          "target_2": 479.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 399.0,
+          "stop_loss": 385.0,
+          "stop_loss_pct": 3.5,
+          "target_1": 420.0,
+          "target_2": 436.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.7
+        }
+      }
+    },
+    {
+      "ticker": "CTRA",
+      "name": "Ciputra Development Tbk.",
+      "sector": "Properties & Real Estate",
+      "price": 635.0,
+      "change_pct": -2.31,
+      "score": 70,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 648.0,
+      "stop_loss": 620.0,
+      "stop_loss_pct": 4.3,
+      "target_1": 690.0,
+      "target_2": 718.0,
+      "risk_reward": 2.5,
+      "rsi": 57.4,
+      "atr_pct": 2.9,
+      "volume_ratio": 1.8,
+      "turnover_idr": 7643577550.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 10,
+        "drawdown_stability": 2,
+        "supertrend_overlay": 10
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 57 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 1.8x above 20-day average",
+        "Strong trend momentum (ADX 45)",
+        "ATR% 2.9% (ideal swing volatility)",
+        "Supertrend Bullish confirm"
+      ],
+      "penalties": [
+        "Price below EMA200 (-10)"
+      ],
+      "fibonacci": {
+        "fib_236": 626.0,
+        "fib_382": 607.0,
+        "fib_500": 592.0,
+        "fib_618": 578.0,
+        "fib_786": 557.0,
+        "ext_1272": 689.0,
+        "ext_1618": 732.0,
+        "ext_2618": 857.0,
+        "golden_pocket": 578.0,
+        "swing_high": 655.0,
+        "swing_low": 530.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Moderate",
+        "body_pct": 60.0,
+        "upper_wick_pct": 20.0,
+        "lower_wick_pct": 20.0
+      },
+      "supports": [
+        620.0,
+        609.0,
+        596.0
+      ],
+      "resistances": [
+        648.0,
+        655.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 648.0,
+          "stop_loss": 620.0,
+          "stop_loss_pct": 4.3,
+          "target_1": 690.0,
+          "target_2": 718.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 620.0,
+          "stop_loss": 600.0,
+          "stop_loss_pct": 3.3,
+          "target_1": 655.0,
+          "target_2": 671.0,
+          "rr_target_1": 1.7,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "JAYA",
+      "name": "Armada Berjaya Trans Tbk.",
+      "sector": "Transportation & Logistics",
+      "price": 170.0,
+      "change_pct": 18.06,
+      "score": 70,
+      "grade": "Strong",
+      "setup_type": "Breakout Ready",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 175.0,
+      "stop_loss": 161.0,
+      "stop_loss_pct": 7.9,
+      "target_1": 196.0,
+      "target_2": 209.0,
+      "risk_reward": 2.5,
+      "rsi": 84.3,
+      "atr_pct": 5.4,
+      "volume_ratio": 4.3,
+      "turnover_idr": 1474199200.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 0,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 0,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "MACD bullish + histogram rising",
+        "Volume 4.3x above 20-day average",
+        "Strong trend momentum (ADX 80)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [
+        "RSI 84 extreme overbought (-5)"
+      ],
+      "fibonacci": {
+        "fib_236": 160.0,
+        "fib_382": 151.0,
+        "fib_500": 144.0,
+        "fib_618": 137.0,
+        "fib_786": 126.0,
+        "ext_1272": 192.0,
+        "ext_1618": 213.0,
+        "ext_2618": 275.0,
+        "golden_pocket": 137.0,
+        "swing_high": 175.0,
+        "swing_low": 113.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Strong",
+        "body_pct": 81.2,
+        "upper_wick_pct": 15.6,
+        "lower_wick_pct": 3.1
+      },
+      "supports": [
+        138.0,
+        133.0,
+        122.0
+      ],
+      "resistances": [
+        175.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 175.0,
+          "stop_loss": 161.0,
+          "stop_loss_pct": 7.9,
+          "target_1": 196.0,
+          "target_2": 209.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 138.0,
+          "stop_loss": 128.0,
+          "stop_loss_pct": 6.9,
+          "target_1": 152.0,
+          "target_2": 162.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "NTBK",
+      "name": "Nusatama Berkah Tbk.",
+      "sector": "Industrials",
+      "price": 88.0,
+      "change_pct": 4.76,
+      "score": 70,
+      "grade": "Strong",
+      "setup_type": "Pullback Setup",
+      "primary_scenario": "pullback",
+      "supertrend": "BEARISH",
+      "entry": 84.0,
+      "stop_loss": 80.0,
+      "stop_loss_pct": 4.8,
+      "target_1": 93.0,
+      "target_2": 94.0,
+      "risk_reward": 2.5,
+      "rsi": 55.9,
+      "atr_pct": 6.8,
+      "volume_ratio": 1.7,
+      "turnover_idr": 3962892120.0,
+      "score_breakdown": {
+        "ema_trend": 10,
+        "rsi": 10,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 10,
+        "adx": 10,
+        "volatility_control": 4,
+        "drawdown_stability": 0,
+        "supertrend_overlay": 5
+      },
+      "signals": [
+        "EMA bullish (Price > 20 > 50)",
+        "RSI 56 in optimal momentum zone (55\u201370)",
+        "MACD bullish + histogram rising",
+        "Volume 1.7x above 20-day average",
+        "Strong trend momentum (ADX 31)",
+        "Volume surge with price expansion"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 98.0,
+        "fib_382": 89.0,
+        "fib_500": 82.0,
+        "fib_618": 74.0,
+        "fib_786": 63.0,
+        "ext_1272": 130.0,
+        "ext_1618": 152.0,
+        "ext_2618": 215.0,
+        "golden_pocket": 74.0,
+        "swing_high": 113.0,
+        "swing_low": 50.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bullish",
+        "strength": "Strong",
+        "body_pct": 80.0,
+        "upper_wick_pct": 20.0,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        84.0,
+        83.0,
+        74.0
+      ],
+      "resistances": [
+        93.0,
+        103.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 93.0,
+          "stop_loss": 84.0,
+          "stop_loss_pct": 9.7,
+          "target_1": 103.0,
+          "target_2": 115.0,
+          "rr_target_1": 1.1,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 84.0,
+          "stop_loss": 80.0,
+          "stop_loss_pct": 4.8,
+          "target_1": 93.0,
+          "target_2": 94.0,
+          "rr_target_1": 2.3,
+          "rr_target_2": 2.5
+        }
+      }
+    },
+    {
+      "ticker": "TAPG",
+      "name": "Triputra Agro Persada Tbk.",
+      "sector": "Consumer Non-Cyclicals",
+      "price": 2230.0,
+      "change_pct": -5.11,
+      "score": 70,
+      "grade": "Strong",
+      "setup_type": "Breakout Setup",
+      "primary_scenario": "breakout",
+      "supertrend": "BULLISH",
+      "entry": 2350.0,
+      "stop_loss": 2220.0,
+      "stop_loss_pct": 5.5,
+      "target_1": 2545.0,
+      "target_2": 2674.0,
+      "risk_reward": 2.5,
+      "rsi": 70.6,
+      "atr_pct": 3.9,
+      "volume_ratio": 0.9,
+      "turnover_idr": 54986381100.0,
+      "score_breakdown": {
+        "ema_trend": 15,
+        "rsi": 5,
+        "macd": 10,
+        "relative_performance": 8,
+        "volume_confirmation": 0,
+        "adx": 10,
+        "volatility_control": 7,
+        "drawdown_stability": 0,
+        "supertrend_overlay": 15
+      },
+      "signals": [
+        "Perfect EMA alignment (Price > 20 > 50 > 200)",
+        "RSI 71 slightly elevated",
+        "MACD bullish + histogram rising",
+        "Strong trend momentum (ADX 87)",
+        "Supertrend Bullish confirm",
+        "Golden Cross (SMA50 > SMA200)"
+      ],
+      "penalties": [],
+      "fibonacci": {
+        "fib_236": 2107.0,
+        "fib_382": 1957.0,
+        "fib_500": 1835.0,
+        "fib_618": 1713.0,
+        "fib_786": 1540.0,
+        "ext_1272": 2630.0,
+        "ext_1618": 2987.0,
+        "ext_2618": 4017.0,
+        "golden_pocket": 1713.0,
+        "swing_high": 2350.0,
+        "swing_low": 1320.0,
+        "trend": "uptrend"
+      },
+      "structure": {
+        "candle_type": "Bearish",
+        "strength": "Strong",
+        "body_pct": 100.0,
+        "upper_wick_pct": 0.0,
+        "lower_wick_pct": 0.0
+      },
+      "supports": [
+        2026.0,
+        1850.0,
+        1630.0
+      ],
+      "resistances": [
+        2350.0,
+        2360.0
+      ],
+      "scenarios": {
+        "breakout": {
+          "mode": "Breakout",
+          "entry": 2350.0,
+          "stop_loss": 2220.0,
+          "stop_loss_pct": 5.5,
+          "target_1": 2545.0,
+          "target_2": 2674.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.5
+        },
+        "pullback": {
+          "mode": "Pullback",
+          "entry": 2026.0,
+          "stop_loss": 1896.0,
+          "stop_loss_pct": 6.4,
+          "target_1": 2221.0,
+          "target_2": 2360.0,
+          "rr_target_1": 1.5,
+          "rr_target_2": 2.6
+        }
+      }
+    }
+  ]
+}

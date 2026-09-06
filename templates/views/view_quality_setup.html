@@ -1,0 +1,157 @@
+<!-- ======================================================== -->
+<!-- 4. QUALITY SETUP SCREENER VIEW -->
+<!-- ======================================================== -->
+<div id="view-quality" class="screener-view hidden">
+  <div class="view-header">
+    <div class="view-header-left">
+      <h1>Quality Setup Screener (100-Pt Momentum)</h1>
+      <p>Screener komposit 100 poin menyaring saham Grade Elite & Strong dengan setup taktis Breakout atau Pullback (941 Emiten IDX)</p>
+    </div>
+  </div>
+
+  <!-- STATS SUMMARY CARDS -->
+  <section class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Total Saham Lolos</span>
+        <span class="stat-icon">💎</span>
+      </div>
+      <div id="qs-stat-total" class="stat-value">0</div>
+      <div class="stat-meta">Skor Kualitas ≥ 70 / 100</div>
+    </div>
+
+    <div class="stat-card confirmed">
+      <div class="stat-card-header">
+        <span class="stat-label">Elite Setups</span>
+        <span class="stat-icon">👑</span>
+      </div>
+      <div id="qs-stat-elite" class="stat-value lime">0</div>
+      <div class="stat-meta">Skor Superior ≥ 85 / 100</div>
+    </div>
+
+    <div class="stat-card watchlist">
+      <div class="stat-card-header">
+        <span class="stat-label">Strong Setups</span>
+        <span class="stat-icon">🟢</span>
+      </div>
+      <div id="qs-stat-strong" class="stat-value amber">0</div>
+      <div class="stat-meta">Skor Solid 70 – 84 / 100</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-card-header">
+        <span class="stat-label">Rata-rata Risk:Reward</span>
+        <span class="stat-icon">⚖️</span>
+      </div>
+      <div id="qs-stat-rr" class="stat-value text-sm">1 : 2.5</div>
+      <div id="qs-stat-last-time" class="stat-meta">{{ last_scan_time or 'Belum pernah scan' }}</div>
+    </div>
+  </section>
+
+  <!-- DATA TABLE CONTAINER -->
+  <section class="table-card">
+    <div class="table-toolbar-2tier">
+      <!-- ROW 1: Title, Count, & Segmented Status Tabs -->
+      <div class="table-toolbar-row-top">
+        <div class="table-title-area">
+          <h2>Daftar Saham Quality Setup</h2>
+          <span id="qs-table-count-badge" class="count-pill">0 Setup</span>
+        </div>
+
+        <!-- Segmented Quick Status Tabs with Live Counters -->
+        <div class="segmented-tabs">
+          <button id="qs-tab-all" class="segmented-tab-btn active" onclick="setQualityTabFilter('ALL')">
+            Semua <span id="cnt-qs-all" class="tab-counter">0</span>
+          </button>
+          <button id="qs-tab-elite" class="segmented-tab-btn" onclick="setQualityTabFilter('ELITE')">
+            👑 Elite <span id="cnt-qs-elite" class="tab-counter">0</span>
+          </button>
+          <button id="qs-tab-breakout" class="segmented-tab-btn" onclick="setQualityTabFilter('BREAKOUT')">
+            🚀 Breakout <span id="cnt-qs-breakout" class="tab-counter">0</span>
+          </button>
+          <button id="qs-tab-pullback" class="segmented-tab-btn" onclick="setQualityTabFilter('PULLBACK')">
+            ⚡ Pullback <span id="cnt-qs-pullback" class="tab-counter">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ROW 2: Actionable Filters & Utilities -->
+      <div class="table-toolbar-row-bottom">
+        <div class="filter-controls-group">
+          <!-- Sector Dropdown Filter -->
+          <div class="filter-item">
+            <span class="filter-label">Sektor:</span>
+            <div class="filter-select-wrapper">
+              <select id="qs-sector-filter" class="filter-select" onchange="handleQualitySectorFilter(this.value)">
+                <option value="ALL">Semua Sektor (All)</option>
+              </select>
+              <span class="filter-select-arrow">▼</span>
+            </div>
+          </div>
+
+          <!-- Real-time Search Box -->
+          <div class="filter-item">
+            <span class="filter-label">Cari:</span>
+            <div class="filter-search-wrapper">
+              <input
+                type="text"
+                id="qs-search-input"
+                class="filter-search-input"
+                placeholder="Ticker / emiten..."
+                oninput="applyQualityFilters()"
+              />
+              <span class="filter-search-icon">🔍</span>
+            </div>
+          </div>
+
+          <!-- Quick Reset Button -->
+          <button id="qs-reset-btn" class="btn-reset-filters hidden" onclick="resetQualityFilters()" title="Reset semua filter">
+            ↺ Reset
+          </button>
+        </div>
+
+        <!-- Table Action Utilities -->
+        <div class="table-actions">
+          <button class="btn-table-util" onclick="exportQualityCSV()" title="Download file CSV">
+            <span>📥</span> Export CSV
+          </button>
+          <button class="btn-table-util" onclick="triggerQualityScanUI()" title="Scan 941 Saham IDX">
+            <span>⚡</span> Scan Quality
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESPONSIVE TABLE WRAPPER -->
+    <div class="table-container">
+      <table class="data-table" id="quality-table">
+        <thead>
+          <tr>
+            <th onclick="sortQualityTable('ticker')">Ticker & Nama <span class="sort-icon" id="qs-sort-ticker">↕</span></th>
+            <th onclick="sortQualityTable('sector')">Sektor <span class="sort-icon" id="qs-sort-sector">↕</span></th>
+            <th onclick="sortQualityTable('price')">Harga Terakhir <span class="sort-icon" id="qs-sort-price">↕</span></th>
+            <th class="text-center" onclick="sortQualityTable('score')">Quality Score <span class="sort-icon" id="qs-sort-score">↕</span></th>
+            <th class="text-center" onclick="sortQualityTable('grade')">Grade <span class="sort-icon" id="qs-sort-grade">↕</span></th>
+            <th class="text-center">Setup & Supertrend</th>
+            <th class="text-center">Trading Plan Taktis (Entry • SL • TP1)</th>
+            <th class="text-center" onclick="sortQualityTable('risk_reward')">R:R <span class="sort-icon" id="qs-sort-risk_reward">↕</span></th>
+            <th class="text-center">Aksi / Detail</th>
+          </tr>
+        </thead>
+        <tbody id="quality-table-body">
+          <!-- Rendered via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div id="qs-empty-state" class="empty-state hidden">
+      <div class="empty-icon">🔍</div>
+      <h3>Tidak Ada Saham Quality Setup yang Memenuhi Filter</h3>
+      <p>Coba ganti tab filter atau bersihkan kata kunci pencarian.</p>
+      <div class="empty-actions">
+        <button class="btn-table-util" onclick="resetQualityFilters()">🔄 Reset Filter</button>
+      </div>
+    </div>
+  </section>
+</div>

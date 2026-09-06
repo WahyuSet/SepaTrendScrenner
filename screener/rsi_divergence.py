@@ -6,13 +6,15 @@ from .data_fetcher import DataFetcher
 logger = logging.getLogger(__name__)
 
 class RSIDivergenceCalculator:
-    def __init__(self, tickers_csv_path="data/idx_tickers.csv", rsi_period=14, lb_left=5, lb_right=5, range_lower=5, range_upper=60):
+    def __init__(self, tickers_csv_path="data/idx_master_tickers.json", rsi_period=14, lb_left=5, lb_right=5, range_lower=5, range_upper=60, min_turnover_20d=100_000_000, min_price=50):
         self.fetcher = DataFetcher(tickers_csv_path)
         self.rsi_period = rsi_period
         self.lb_left = lb_left
         self.lb_right = lb_right
         self.range_lower = range_lower
         self.range_upper = range_upper
+        self.min_turnover_20d = min_turnover_20d
+        self.min_price = min_price
 
     @staticmethod
     def compute_rsi(series, period=14):
@@ -47,7 +49,13 @@ class RSIDivergenceCalculator:
         volume = df['Volume'] if 'Volume' in df else pd.Series([0]*len(df), index=df.index)
 
         curr_price = float(close.iloc[-1])
-        if curr_price <= 0 or np.isnan(curr_price):
+        if curr_price < self.min_price or np.isnan(curr_price):
+            return None
+
+        # Liquidity Filter (Min daily turnover)
+        daily_turnover = close * volume
+        avg_turnover_20d = float(daily_turnover.iloc[-20:].mean()) if len(daily_turnover) >= 20 else 0.0
+        if avg_turnover_20d < self.min_turnover_20d:
             return None
 
         rsi_series = self.compute_rsi(close, period=self.rsi_period)

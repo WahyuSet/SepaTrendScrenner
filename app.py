@@ -8,6 +8,11 @@ from screener.calculator import SEPACalculator
 from screener.rsi_divergence import RSIDivergenceCalculator
 from screener.pre_breakout import PreBreakoutCalculator
 from screener.market_regime import MarketRegimeEvaluator
+from screener.quality_screener import (
+    run_quality_scan,
+    get_cached_quality_results,
+    get_quality_scan_status
+)
 from screener.idx_api_client import IDXApiClient
 from screener.auth import (
     get_secret_key,
@@ -32,7 +37,7 @@ CACHE_FILE = os.path.join(CACHE_DIR, "scan_result.json")
 RSI_CACHE_FILE = os.path.join(CACHE_DIR, "rsi_div_result.json")
 PREBREAKOUT_CACHE_FILE = os.path.join(CACHE_DIR, "pre_breakout_result.json")
 MARKET_REGIME_CACHE_FILE = os.path.join(CACHE_DIR, "market_regime.json")
-TICKERS_FILE = os.path.join(os.path.dirname(__file__), "data", "idx_tickers.csv")
+TICKERS_FILE = os.path.join(os.path.dirname(__file__), "data", "idx_master_tickers.json")
 MASTER_TICKERS_FILE = os.path.join(os.path.dirname(__file__), "data", "idx_master_tickers.json")
 
 def load_master_tickers():
@@ -193,7 +198,7 @@ def background_scan_worker():
         # Concurrent fetch with progress tracking
         results = []
         all_data = {}
-        max_workers = 10
+        max_workers = 16
         from concurrent.futures import ThreadPoolExecutor, as_completed
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -321,6 +326,13 @@ def background_scan_worker():
 
         # Re-save SEPA results with cross-referenced badge
         save_cached_results(payload)
+
+        # Step 7: Evaluate Quality Setup across 941 IDX Universe
+        scan_state["current_ticker"] = "Evaluasi Quality Setup (941 IDX)..."
+        try:
+            run_quality_scan(max_workers=16, preloaded_data=all_data)
+        except Exception as qe:
+            print(f"Quality scan worker warning: {qe}")
 
     except Exception as e:
         scan_state["error"] = str(e)
@@ -512,6 +524,51 @@ def get_status():
         "market_status": get_idx_market_status(),
         "stats": stats
     })
+
+# =========================================================================
+# QUALITY SETUP SCREENER API ENDPOINTS
+# =========================================================================
+
+@app.route("/api/quality-setup", methods=["GET"])
+@app.route("/api/results/quality-setup", methods=["GET"])
+@admin_required
+def get_quality_setup_results():
+    """Get the cached Quality Setup screening results (Elite & Strong)."""
+    cached = get_cached_quality_results()
+    if cached:
+        return jsonify({"status": "success", "data": cached})
+    return jsonify({
+        "status": "empty",
+        "data": {
+            "scan_time": None,
+            "total_scanned": 0,
+            "passed_count": 0,
+            "elite_count": 0,
+            "strong_count": 0,
+            "breakout_count": 0,
+            "pullback_count": 0,
+            "avg_rr": 0,
+            "data": []
+        }
+    })
+
+@app.route("/api/scan/quality-setup", methods=["POST"])
+@admin_required
+def trigger_quality_scan():
+    """Trigger Quality Setup scan over 941 IDX stocks in background."""
+    status = get_quality_scan_status()
+    if status["is_scanning"]:
+        return jsonify({"status": "running", "message": "Quality Setup scan is already in progress"}), 409
+
+    t = threading.Thread(target=run_quality_scan, kwargs={"max_workers": 16}, daemon=True)
+    t.start()
+    return jsonify({"status": "started", "message": "Quality Setup scan initiated in background"})
+
+@app.route("/api/status/quality-setup", methods=["GET"])
+@admin_required
+def get_quality_status():
+    """Get status of Quality Setup scan."""
+    return jsonify(get_quality_scan_status())
 
 # =========================================================================
 # IDX EDGE PRO API ENDPOINTS (ON-DEMAND & CACHED)

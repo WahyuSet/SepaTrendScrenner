@@ -7,7 +7,7 @@ from .data_fetcher import DataFetcher
 logger = logging.getLogger(__name__)
 
 class SEPACalculator:
-    def __init__(self, tickers_csv_path="data/idx_tickers.csv", benchmark_symbol="^JKSE"):
+    def __init__(self, tickers_csv_path="data/idx_master_tickers.json", benchmark_symbol="^JKSE", min_turnover_20d=100_000_000, min_price=50):
         self.fetcher = DataFetcher(tickers_csv_path)
         self.rs_calc = RSCalculator(benchmark_symbol)
         self.len_52w = 252
@@ -16,6 +16,8 @@ class SEPACalculator:
         self.len_slope_min = 22
         self.len_slope_ideal = 88
         self.rs_threshold = 70.0
+        self.min_turnover_20d = min_turnover_20d
+        self.min_price = min_price
 
     def evaluate_stock(self, ticker, df):
         """
@@ -37,9 +39,15 @@ class SEPACalculator:
         low = df['Low']
         volume = df['Volume'] if 'Volume' in df else pd.Series([0]*len(df))
 
-        # Current Price
+        # Current Price & Price Filter
         curr_price = float(close.iloc[-1])
-        if curr_price <= 0 or np.isnan(curr_price):
+        if curr_price < self.min_price or np.isnan(curr_price):
+            return None
+
+        # Liquidity Filter (Min daily turnover)
+        daily_turnover = close * volume
+        avg_turnover_20d = float(daily_turnover.iloc[-20:].mean()) if len(daily_turnover) >= 20 else 0.0
+        if avg_turnover_20d < self.min_turnover_20d:
             return None
 
         # 1. Moving Averages
@@ -161,7 +169,7 @@ class SEPACalculator:
             'tradingview_url': f"https://www.tradingview.com/chart/?symbol=IDX:{clean_ticker}"
         }
 
-    def run_full_scan(self, max_workers=10, period="2y"):
+    def run_full_scan(self, max_workers=16, period="2y"):
         """Run scan across all tickers in the dataset."""
         logger.info("Initializing benchmark data...")
         self.rs_calc.fetch_benchmark(period=period)
