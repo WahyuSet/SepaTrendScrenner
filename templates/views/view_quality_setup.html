@@ -48,6 +48,11 @@
     </div>
   </section>
 
+  <!-- Stale Data Warning Banner -->
+  <div id="qs-stale-warning" class="stale-warning-banner hidden">
+    ⚠️ Data sudah lebih dari 24 jam — klik "Scan Quality" untuk refresh data terbaru
+  </div>
+
   <!-- DATA TABLE CONTAINER -->
   <section class="table-card">
     <div class="table-toolbar-2tier">
@@ -65,6 +70,9 @@
           </button>
           <button id="qs-tab-elite" class="segmented-tab-btn" onclick="setQualityTabFilter('ELITE')">
             👑 Elite <span id="cnt-qs-elite" class="tab-counter">0</span>
+          </button>
+          <button id="qs-tab-strong" class="segmented-tab-btn" onclick="setQualityTabFilter('STRONG')">
+            🟢 Strong <span id="cnt-qs-strong" class="tab-counter">0</span>
           </button>
           <button id="qs-tab-breakout" class="segmented-tab-btn" onclick="setQualityTabFilter('BREAKOUT')">
             🚀 Breakout <span id="cnt-qs-breakout" class="tab-counter">0</span>

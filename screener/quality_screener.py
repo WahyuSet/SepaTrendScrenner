@@ -12,7 +12,7 @@ import os
 import json
 import math
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional, Dict, List, Tuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -22,13 +22,14 @@ import numpy as np
 
 from screener.indicators_calc import (
     calc_ema, calc_sma, calc_rsi, calc_bollinger,
-    calc_macd, calc_atr, calc_supertrend, calc_donchian
+    calc_macd, calc_atr, calc_supertrend, calc_donchian, calc_adx
 )
 
 logger = logging.getLogger(__name__)
 
 CACHE_FILE = os.path.join("data", "cache", "quality_setup_result.json")
 MASTER_TICKERS_FILE = os.path.join("data", "idx_master_tickers.json")
+FETCH_PERIOD = "2y"   # Consistent with main scan pipeline; ensures 200+ bars for EMA200
 
 # In-memory scan status tracking
 _scan_state = {
@@ -105,6 +106,9 @@ def compute_stock_score(indicators: Dict, change_pct_rank: Optional[float] = Non
         elif 70 < rsi <= 75:
             rsi_pts = 5
             signals.append(f"RSI {rsi:.0f} slightly elevated")
+        elif 75 < rsi <= 78:
+            rsi_pts = 2
+            penalties.append(f"RSI {rsi:.0f} approaching overbought zone (-gap penalty)")
         elif 45 <= rsi < 50:
             rsi_pts = 3
     breakdown["rsi"] = rsi_pts
@@ -245,6 +249,13 @@ def compute_stock_score(indicators: Dict, change_pct_rank: Optional[float] = Non
     if vol_ratio and vol_ratio >= 1.5 and change_pct > 2.0:
         bonus += 3
         signals.append("Volume surge with price expansion")
+
+    # Donchian Breakout confirmation (+3 bonus)
+    donchian_data = indicators.get("donchian", {})
+    don_upper = donchian_data.get("upper") if donchian_data else None
+    if don_upper and close >= don_upper:
+        bonus += 3
+        signals.append(f"Donchian 20 Breakout (close >= {_safe_round(don_upper, 0)})")
 
     if ema200 and close < ema200:
         bonus -= 10
@@ -540,7 +551,12 @@ def _detect_market_structure(open_p: float, high: float, low: float, close: floa
 # 5. WORKER EVALUATOR PER TICKER
 # =========================================================================
 
-def evaluate_ticker_quality(ticker: str, meta: Dict, df: pd.DataFrame) -> Optional[Dict]:
+def evaluate_ticker_quality(
+    ticker: str,
+    meta: Dict,
+    df: pd.DataFrame,
+    change_pct_rank: Optional[float] = None
+) -> Optional[Dict]:
     """Calculate all technical indicators and run quality scoring on a ticker dataframe."""
     try:
         if df is None or len(df) < 50:
@@ -561,6 +577,11 @@ def evaluate_ticker_quality(ticker: str, meta: Dict, df: pd.DataFrame) -> Option
         ema20_arr = calc_ema(closes, 20)
         ema50_arr = calc_ema(closes, 50)
         ema200_arr = calc_ema(closes, 200)
+        # Guard: Mark EMA200 unreliable if fewer than 220 bars available
+        _ema200_valid = n >= 220
+        if not _ema200_valid:
+            logger.debug(f"[{ticker}] Only {n} bars — EMA200 may be unreliable")
+
         sma20_arr = calc_sma(closes, 20)
         sma50_arr = calc_sma(closes, 50)
         sma200_arr = calc_sma(closes, 200)
@@ -572,19 +593,9 @@ def evaluate_ticker_quality(ticker: str, meta: Dict, df: pd.DataFrame) -> Option
         donchian = calc_donchian(highs, lows, 20)
         vol_sma20_arr = calc_sma(volumes, 20)
 
-        # ADX approximation via ATR and directional difference
-        # Simplified standard Wilder's ADX for speed
-        tr_arr = [max(highs[i] - lows[i], abs(highs[i] - closes[i - 1]), abs(lows[i] - closes[i - 1])) for i in range(1, n)]
-        tr_smooth = calc_sma(tr_arr, 14)
-        adx_val = 25.0  # default
-        if len(tr_smooth) > 14 and tr_smooth[-1]:
-            plus_dm = [max(highs[i] - highs[i - 1], 0) if (highs[i] - highs[i - 1]) > (lows[i - 1] - lows[i]) else 0 for i in range(1, n)]
-            minus_dm = [max(lows[i - 1] - lows[i], 0) if (lows[i - 1] - lows[i]) > (highs[i] - highs[i - 1]) else 0 for i in range(1, n)]
-            plus_di = (sum(plus_dm[-14:]) / (tr_smooth[-1] * 14)) * 100 if tr_smooth[-1] else 20
-            minus_di = (sum(minus_dm[-14:]) / (tr_smooth[-1] * 14)) * 100 if tr_smooth[-1] else 20
-            di_sum = plus_di + minus_di
-            dx = abs(plus_di - minus_di) / di_sum * 100 if di_sum > 0 else 20
-            adx_val = dx
+        # ADX via proper Wilder's smoothing
+        adx_arr = calc_adx(highs, lows, closes, 14)
+        adx_val = next((v for v in reversed(adx_arr) if v is not None), 25.0)
 
         # Build indicators dict for current bar
         curr_ind = {
@@ -615,12 +626,13 @@ def evaluate_ticker_quality(ticker: str, meta: Dict, df: pd.DataFrame) -> Option
             },
             "donchian": {
                 "upper": donchian["upper"][-1] if donchian["upper"] else None,
-                "lower": donchian["lower"][-1] if donchian["lower"] else None
+                "lower": donchian["lower"][-1] if donchian["lower"] else None,
+                "middle": donchian.get("middle", [None])[-1] if donchian.get("middle") else None
             }
         }
 
         # 2. Score
-        score_res = compute_stock_score(curr_ind)
+        score_res = compute_stock_score(curr_ind, change_pct_rank=change_pct_rank)
         if not score_res:
             return None
 
@@ -718,6 +730,22 @@ def load_master_universe() -> Dict[str, Dict]:
     return universe
 
 
+def _compute_30d_return(df: pd.DataFrame) -> Optional[float]:
+    """Compute 30-day (approx 20-30 trading days) price return for cross-universe ranking."""
+    try:
+        closes = df["Close"].dropna().astype(float)
+        if len(closes) < 20:
+            return None
+        lookback = min(30, len(closes) - 1)
+        c_end = float(closes.iloc[-1])
+        c_start = float(closes.iloc[-1 - lookback])
+        if c_start <= 0:
+            return None
+        return float((c_end - c_start) / c_start * 100.0)
+    except Exception:
+        return None
+
+
 def run_quality_scan(max_workers: int = 16, preloaded_data: Optional[Dict[str, pd.DataFrame]] = None) -> Dict:
     """
     Run the full quality setup scan over the 941 IDX universe.
@@ -736,31 +764,73 @@ def run_quality_scan(max_workers: int = 16, preloaded_data: Optional[Dict[str, p
 
     logger.info(f"🚀 Starting Quality Setup Scan for {total} IDX tickers with {max_workers} threads...")
 
-    # Fast concurrent fetch & eval
-    passed_results = []
-    completed_count = 0
-
-    def _fetch_and_eval(t: str):
-        meta = universe.get(t, {"name": t, "sector": "General"})
-        try:
-            if preloaded_data and t in preloaded_data:
-                df = preloaded_data[t]
-            else:
+    # Data dictionary: either preloaded or fetched
+    data_map: Dict[str, pd.DataFrame] = {}
+    if preloaded_data is not None:
+        data_map = dict(preloaded_data)
+    else:
+        # Standalone mode: fetch data first across threads
+        def _fetch_one(t: str):
+            try:
                 symbol = f"{t}.JK"
                 stock = yf.Ticker(symbol)
-                df = stock.history(period="1y", auto_adjust=False)
-            if df is None or df.empty or len(df) < 50:
-                return None
-            df = df.dropna(subset=["Close"])
-            return evaluate_ticker_quality(t, meta, df)
-        except Exception:
+                df = stock.history(period=FETCH_PERIOD, auto_adjust=False)
+                if df is not None and not df.empty and len(df) >= 50:
+                    df = df.dropna(subset=["Close"])
+                    return t, df
+            except Exception:
+                pass
+            return t, None
+
+        logger.info(f"Fetching {total} tickers with period={FETCH_PERIOD}...")
+        fetch_done = 0
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_map = {executor.submit(_fetch_one, t): t for t in tickers}
+            for future in as_completed(future_map):
+                fetch_done += 1
+                _scan_state["progress"] = int((fetch_done / max(total, 1)) * 50)
+                t, df = future.result()
+                if df is not None:
+                    data_map[t] = df
+
+    # ── PRE-PASS: Compute 30d returns for universe ranking ─────────────
+    logger.info("Computing 30d return ranks across universe...")
+    returns_map: Dict[str, float] = {}
+    for t, df in data_map.items():
+        ret = _compute_30d_return(df)
+        if ret is not None:
+            returns_map[t] = ret
+
+    # Build percentile rank map (0.0 – 1.0)
+    rank_map: Dict[str, float] = {}
+    if returns_map:
+        sorted_tickers = sorted(returns_map, key=lambda x: returns_map[x])
+        n_ranked = len(sorted_tickers)
+        for i, t in enumerate(sorted_tickers):
+            rank_map[t] = i / (n_ranked - 1) if n_ranked > 1 else 0.5
+    logger.info(f"Ranked {len(rank_map)} tickers by 30d return.")
+
+    # ── EVALUATION PASS: Evaluate with rank ─────────────────────────────
+    passed_results = []
+    eval_done = 0
+    total_to_eval = len(data_map)
+
+    def _eval_one(t: str):
+        meta = universe.get(t, {"name": t, "sector": "General"})
+        df = data_map.get(t)
+        if df is None:
             return None
+        rank = rank_map.get(t)
+        return evaluate_ticker_quality(t, meta, df, change_pct_rank=rank)
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        future_map = {executor.submit(_fetch_and_eval, t): t for t in tickers}
+        future_map = {executor.submit(_eval_one, t): t for t in data_map.keys()}
         for future in as_completed(future_map):
-            completed_count += 1
-            _scan_state["progress"] = completed_count
+            eval_done += 1
+            if preloaded_data is not None:
+                _scan_state["progress"] = int((eval_done / max(total, 1)) * 100)
+            else:
+                _scan_state["progress"] = 50 + int((eval_done / max(total_to_eval, 1)) * 50)
             res = future.result()
             if res:
                 passed_results.append(res)
@@ -775,9 +845,14 @@ def run_quality_scan(max_workers: int = 16, preloaded_data: Optional[Dict[str, p
     pullback_count = sum(1 for x in passed_results if "Pullback" in x.get("setup_type", ""))
     avg_rr = _safe_round(sum(x.get("risk_reward", 0) for x in passed_results) / len(passed_results), 1) if passed_results else 0.0
 
+    now_dt = datetime.now()
     output = {
         "status": "success",
-        "scan_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "scan_time": now_dt.strftime("%Y-%m-%d %H:%M:%S"),
+        "scan_time_iso": now_dt.isoformat(),
+        "expires_at_iso": (now_dt + timedelta(hours=24)).isoformat(),
+        "fetch_period": FETCH_PERIOD,
+        "scan_mode": "preloaded" if preloaded_data is not None else "standalone",
         "total_scanned": total,
         "passed_count": len(passed_results),
         "elite_count": elite_count,
@@ -798,7 +873,8 @@ def run_quality_scan(max_workers: int = 16, preloaded_data: Optional[Dict[str, p
         logger.error(f"Failed to save quality setup cache: {e}")
 
     _scan_state["is_scanning"] = False
-    _scan_state["completed_at"] = datetime.now().isoformat()
+    _scan_state["progress"] = total
+    _scan_state["completed_at"] = now_dt.isoformat()
     return output
 
 
@@ -826,7 +902,7 @@ if __name__ == "__main__":
     for sym in sample_tickers:
         meta = u.get(sym, {"name": sym, "sector": "Energy"})
         t = yf.Ticker(f"{sym}.JK")
-        hist = t.history(period="1y")
+        hist = t.history(period=FETCH_PERIOD)
         res = evaluate_ticker_quality(sym, meta, hist)
         if res:
             print(f"[{res['grade']}] {sym} - Score: {res['score']} | Setup: {res['setup_type']} | R:R: {res['risk_reward']}")

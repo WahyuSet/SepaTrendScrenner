@@ -271,3 +271,82 @@ def calc_donchian(
         middle[i] = (u + l) / 2.0
 
     return {"upper": upper, "lower": lower, "middle": middle}
+
+
+# ─── ADX (Wilder's Average Directional Index) ────────────────────────────────
+
+def calc_adx(
+    highs: list[float], lows: list[float], closes: list[float], period: int = 14
+) -> list[Optional[float]]:
+    """
+    Wilder's ADX — measures trend strength (0-100).
+    Uses proper Wilder smoothing for TR, +DM, -DM, and DX.
+    Returns ADX values (None before warmup = 2*period - 1 bars).
+    """
+    n = len(closes)
+    result: list[Optional[float]] = [None] * n
+    if n < 2 * period + 1 or period <= 0:
+        return result
+
+    tr_list: list[float] = []
+    pdm_list: list[float] = []
+    mdm_list: list[float] = []
+
+    for i in range(1, n):
+        tr = max(
+            highs[i] - lows[i],
+            abs(highs[i] - closes[i - 1]),
+            abs(lows[i] - closes[i - 1])
+        )
+        up_move = highs[i] - highs[i - 1]
+        down_move = lows[i - 1] - lows[i]
+        pdm = up_move if (up_move > down_move and up_move > 0) else 0.0
+        mdm = down_move if (down_move > up_move and down_move > 0) else 0.0
+        tr_list.append(tr)
+        pdm_list.append(pdm)
+        mdm_list.append(mdm)
+
+    if len(tr_list) < 2 * period:
+        return result
+
+    # 1. Initial Wilder sum for first `period` bars (tr_list[0..period-1], corresponding to bars 1..period)
+    tr_s = sum(tr_list[:period])
+    pdm_s = sum(pdm_list[:period])
+    mdm_s = sum(mdm_list[:period])
+
+    dx_values: list[tuple[int, float]] = []  # (bar_index, dx)
+    pdi = (pdm_s / tr_s * 100.0) if tr_s > 0 else 0.0
+    mdi = (mdm_s / tr_s * 100.0) if tr_s > 0 else 0.0
+    di_sum = pdi + mdi
+    dx = (abs(pdi - mdi) / di_sum * 100.0) if di_sum > 0 else 0.0
+    dx_values.append((period, dx))
+
+    for idx in range(period, len(tr_list)):
+        bar_idx = idx + 1
+        tr_s = tr_s - (tr_s / period) + tr_list[idx]
+        pdm_s = pdm_s - (pdm_s / period) + pdm_list[idx]
+        mdm_s = mdm_s - (mdm_s / period) + mdm_list[idx]
+
+        pdi = (pdm_s / tr_s * 100.0) if tr_s > 0 else 0.0
+        mdi = (mdm_s / tr_s * 100.0) if tr_s > 0 else 0.0
+        di_sum = pdi + mdi
+        dx = (abs(pdi - mdi) / di_sum * 100.0) if di_sum > 0 else 0.0
+        dx_values.append((bar_idx, dx))
+
+    if len(dx_values) < period:
+        return result
+
+    # 2. ADX initial seed = SMA of first `period` DX values
+    first_adx = sum(v[1] for v in dx_values[:period]) / period
+    seed_bar_idx = dx_values[period - 1][0]
+    if seed_bar_idx < n:
+        result[seed_bar_idx] = first_adx
+
+    curr_adx = first_adx
+    for i in range(period, len(dx_values)):
+        b_idx, dx_val = dx_values[i]
+        curr_adx = (curr_adx * (period - 1) + dx_val) / period
+        if b_idx < n:
+            result[b_idx] = curr_adx
+
+    return result

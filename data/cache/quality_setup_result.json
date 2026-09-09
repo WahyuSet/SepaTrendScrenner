@@ -4140,5 +4140,9 @@
         }
       }
     }
-  ]
+  ],
+  "scan_time_iso": "2026-09-09T11:10:08",
+  "expires_at_iso": "2026-09-10T11:10:08",
+  "fetch_period": "2y",
+  "scan_mode": "preloaded"
 }

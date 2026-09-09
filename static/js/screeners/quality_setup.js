@@ -5,7 +5,7 @@
 const qualityState = {
   allResults: [],
   filteredResults: [],
-  tabFilter: 'ALL', // 'ALL' | 'ELITE' | 'BREAKOUT' | 'PULLBACK'
+  tabFilter: 'ALL', // 'ALL' | 'ELITE' | 'STRONG' | 'BREAKOUT' | 'PULLBACK'
   sectorFilter: 'ALL',
   searchQuery: '',
   sortCol: 'score',
@@ -58,21 +58,37 @@ function renderQualityStatsCards(stats) {
   const timeText = (stats && stats.scan_time) ? stats.scan_time : 'Belum pernah scan';
   if (statTime) statTime.textContent = timeText;
   if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '—');
+
+  // Stale data warning (>24 hours)
+  const expiresAt = stats && stats.expires_at_iso ? new Date(stats.expires_at_iso) : null;
+  const now = new Date();
+  const staleWarning = document.getElementById('qs-stale-warning');
+  if (staleWarning) {
+    if (expiresAt && now > expiresAt) {
+      staleWarning.classList.remove('hidden');
+      staleWarning.textContent = '⚠️ Data sudah lebih dari 24 jam — klik "Scan Quality" untuk refresh data terbaru';
+    } else {
+      staleWarning.classList.add('hidden');
+    }
+  }
 }
 
 function updateQualityTabCounters() {
   const all = qualityState.allResults.length;
   const elite = qualityState.allResults.filter(r => r.grade === 'Elite').length;
+  const strong = qualityState.allResults.filter(r => r.grade === 'Strong').length;
   const breakout = qualityState.allResults.filter(r => (r.setup_type || '').includes('Breakout')).length;
   const pullback = qualityState.allResults.filter(r => (r.setup_type || '').includes('Pullback')).length;
 
   const elAll = document.getElementById('cnt-qs-all');
   const elElite = document.getElementById('cnt-qs-elite');
+  const elStrong = document.getElementById('cnt-qs-strong');
   const elBreakout = document.getElementById('cnt-qs-breakout');
   const elPullback = document.getElementById('cnt-qs-pullback');
 
   if (elAll) elAll.textContent = all;
   if (elElite) elElite.textContent = elite;
+  if (elStrong) elStrong.textContent = strong;
   if (elBreakout) elBreakout.textContent = breakout;
   if (elPullback) elPullback.textContent = pullback;
 }
@@ -121,7 +137,7 @@ function renderQualitySkeleton(count = 8) {
 // 4. FILTERING & SORTING
 function setQualityTabFilter(tab) {
   qualityState.tabFilter = tab;
-  ['all', 'elite', 'breakout', 'pullback'].forEach(t => {
+  ['all', 'elite', 'strong', 'breakout', 'pullback'].forEach(t => {
     const btn = document.getElementById(`qs-tab-${t}`);
     if (btn) {
       if (t === tab.toLowerCase()) {
@@ -150,7 +166,7 @@ function resetQualityFilters() {
   const sectorSelect = document.getElementById('qs-sector-filter');
   if (sectorSelect) sectorSelect.value = 'ALL';
 
-  ['all', 'elite', 'breakout', 'pullback'].forEach(t => {
+  ['all', 'elite', 'strong', 'breakout', 'pullback'].forEach(t => {
     const btn = document.getElementById(`qs-tab-${t}`);
     if (btn) {
       if (t === 'all') btn.classList.add('active');
@@ -179,6 +195,7 @@ function applyQualityFilters() {
   qualityState.filteredResults = qualityState.allResults.filter(item => {
     // Tab Filter
     if (qualityState.tabFilter === 'ELITE' && item.grade !== 'Elite') return false;
+    if (qualityState.tabFilter === 'STRONG' && item.grade !== 'Strong') return false;
     if (qualityState.tabFilter === 'BREAKOUT' && !(item.setup_type || '').includes('Breakout')) return false;
     if (qualityState.tabFilter === 'PULLBACK' && !(item.setup_type || '').includes('Pullback')) return false;
 
