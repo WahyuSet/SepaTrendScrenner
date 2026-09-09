@@ -4,7 +4,22 @@
 <div id="view-rsi-div" class="screener-view hidden">
   <div class="view-header">
     <div class="view-header-left">
-      <h1>RSI Divergence Screener</h1>
+      <div class="view-title-row">
+        <h1>RSI Divergence Screener</h1>
+        <!-- Enterprise Timeframe Toggle Pill Control -->
+        <div class="rsi-tf-selector" role="group" aria-label="Pilih Timeframe RSI">
+          <button id="rsi-tf-btn-1d" class="rsi-tf-pill active" onclick="switchRsiTimeframe('1D')" title="Timeframe Harian (Daily)">
+            <span class="tf-dot dot-1d"></span>
+            <span class="tf-name">1D</span>
+            <span class="tf-desc">Daily</span>
+          </button>
+          <button id="rsi-tf-btn-4h" class="rsi-tf-pill" onclick="switchRsiTimeframe('4H')" title="Timeframe 4 Jam (Intraday)">
+            <span class="tf-dot dot-4h"></span>
+            <span class="tf-name">4H</span>
+            <span class="tf-desc">Intraday</span>
+          </button>
+        </div>
+      </div>
       <p>Deteksi sinyal Bullish Reversal (Regular) & Bullish Continuation (Hidden) dengan konfirmasi pivot swing</p>
     </div>
   </div>
@@ -17,7 +32,7 @@
         <span class="stat-icon">📈</span>
       </div>
       <div id="rsi-stat-total" class="stat-value">0</div>
-      <div class="stat-meta">≤ 5 Hari Bursa Terakhir</div>
+      <div id="rsi-stat-meta-recency" class="stat-meta">≤ 5 Hari Terakhir</div>
     </div>
 
     <div class="stat-card confirmed">
@@ -43,10 +58,11 @@
         <span class="stat-label">Setting Indikator</span>
         <span class="stat-icon">⚙️</span>
       </div>
-      <div class="stat-value text-sm">RSI 14 (P: 5/5)</div>
+      <div id="rsi-stat-setting-display" class="stat-value text-sm">RSI 14 (P: 5/5) · 1D</div>
       <div id="rsi-stat-last-time" class="stat-meta">{{ last_scan_time or 'Belum pernah scan' }}</div>
     </div>
   </section>
+
 
   <!-- DATA TABLE CONTAINER -->
   <section class="table-card">
@@ -140,7 +156,7 @@
     <div id="rsi-empty-state" class="empty-state hidden">
       <div class="empty-icon">📉</div>
       <h3>Tidak Ada Saham yang Terdeteksi RSI Divergence</h3>
-      <p>Belum ada emiten dengan divergensi bullish dalam 5 bar terakhir. Klik tombol "Scan IDX Sekarang" untuk memperbarui data.</p>
+      <p id="rsi-empty-desc">Belum ada emiten dengan divergensi bullish dalam 5 bar terakhir. Klik tombol "Scan IDX Sekarang" untuk memperbarui data.</p>
       <div class="empty-actions">
         <button class="btn-secondary" onclick="resetRsiFilters()">🔄 Reset Filter</button>
         <button class="btn-scan-small" onclick="triggerScan()">⚡ Scan IDX Sekarang</button>

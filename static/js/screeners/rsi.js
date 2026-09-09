@@ -3,6 +3,9 @@
 // ============================================================================
 
 const rsiState = {
+  activeTf: '1D', // '1D' | '4H'
+  data1D: { results: [], stats: null, timestamp: null },
+  data4H: { results: [], stats: null, timestamp: null },
   allResults: [],
   filteredResults: [],
   sectorFilter: 'ALL',
@@ -17,27 +20,91 @@ const rsiState = {
 async function loadRsiResults() {
   renderRsiSkeleton(6);
   try {
-    const res = await fetch('/api/rsi-divergence');
-    const json = await res.json();
+    const [res1d, res4h] = await Promise.all([
+      fetch('/api/rsi-divergence?tf=1D').then(r => r.json()).catch(() => null),
+      fetch('/api/rsi-divergence/4h').then(r => r.json()).catch(() => null)
+    ]);
 
-    if (json.status === 'success' && json.data) {
-      const { timestamp, stats, results } = json.data;
-      rsiState.allResults = results || [];
-      renderRsiStatsCards(stats, timestamp);
-      populateRsiSectorDropdown(rsiState.allResults);
-      updateRsiTabCounters(rsiState.allResults);
-      applyRsiFilters();
+    if (res1d && res1d.status === 'success' && res1d.data) {
+      rsiState.data1D = {
+        results: res1d.data.results || [],
+        stats: res1d.data.stats || null,
+        timestamp: res1d.data.timestamp || null
+      };
     } else {
-      renderRsiStatsCards(null, null);
-      rsiState.allResults = [];
-      applyRsiFilters();
+      rsiState.data1D = { results: [], stats: null, timestamp: null };
     }
+
+    if (res4h && res4h.status === 'success' && res4h.data) {
+      rsiState.data4H = {
+        results: res4h.data.results || [],
+        stats: res4h.data.stats || null,
+        timestamp: res4h.data.timestamp || null
+      };
+    } else {
+      rsiState.data4H = { results: [], stats: null, timestamp: null };
+    }
+
+    switchRsiTimeframe(rsiState.activeTf || '1D', false);
   } catch (err) {
     console.error('Failed to load RSI results:', err);
     rsiState.allResults = [];
     applyRsiFilters();
   }
 }
+
+function switchRsiTimeframe(tf, resetFilters = false) {
+  rsiState.activeTf = tf;
+
+  // Toggle active pill button
+  const btn1d = document.getElementById('rsi-tf-btn-1d');
+  const btn4h = document.getElementById('rsi-tf-btn-4h');
+  if (btn1d) btn1d.classList.toggle('active', tf === '1D');
+  if (btn4h) btn4h.classList.toggle('active', tf === '4H');
+
+  // Select active dataset
+  const currentDataset = tf === '4H' ? rsiState.data4H : rsiState.data1D;
+  rsiState.allResults = currentDataset.results || [];
+
+  // Update card recency label (1D: "≤ 5 Hari Terakhir", 4H: "≤ 5 Bar Terakhir (4H)")
+  const metaRecency = document.getElementById('rsi-stat-meta-recency');
+  if (metaRecency) {
+    metaRecency.textContent = tf === '4H' ? '≤ 5 Bar Terakhir (4H)' : '≤ 5 Hari Terakhir';
+  }
+
+  // Update stats cards
+  renderRsiStatsCards(currentDataset.stats, currentDataset.timestamp);
+
+  // Update setting display
+  const settingDisplay = document.getElementById('rsi-stat-setting-display');
+  if (settingDisplay) {
+    settingDisplay.textContent = `RSI 14 (P: 5/5) · ${tf}`;
+  }
+
+  // Update empty state description
+  const emptyDesc = document.getElementById('rsi-empty-desc');
+  if (emptyDesc) {
+    emptyDesc.textContent = `Belum ada emiten dengan divergensi bullish timeframe ${tf} dalam 5 bar terakhir. Klik tombol "Scan IDX Sekarang" untuk memperbarui data.`;
+  }
+
+  if (resetFilters) {
+    rsiState.sectorFilter = 'ALL';
+    rsiState.typeFilter = 'ALL';
+    rsiState.gradeFilter = 'ALL';
+    rsiState.hideHighRisk = false;
+    const select = document.getElementById('rsi-sector-filter');
+    if (select) select.value = 'ALL';
+    ['rsi-tab-all', 'rsi-tab-reg', 'rsi-tab-hid', 'rsi-tab-gradea'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('active', id === 'rsi-tab-all');
+    });
+  }
+
+  populateRsiSectorDropdown(rsiState.allResults);
+  updateRsiTabCounters(rsiState.allResults);
+  applyRsiFilters();
+}
+
 
 function populateRsiSectorDropdown(data) {
   const select = document.getElementById('rsi-sector-filter');
@@ -392,9 +459,10 @@ function openRsiModal(ticker) {
   const techText = document.getElementById('rsi-tech-text');
 
   const isReg = stock.divergence_type === 'REGULAR_BULL';
+  const tfLabel = stock.timeframe || rsiState.activeTf || '1D';
 
   if (title) title.textContent = `${stock.ticker} — ${stock.name}`;
-  if (subtitle) subtitle.textContent = `Inspeksi Sinyal ${stock.divergence_label} (IDX:${stock.ticker})`;
+  if (subtitle) subtitle.textContent = `Inspeksi Sinyal ${stock.divergence_label} • TF ${tfLabel} (IDX:${stock.ticker})`;
   if (price) price.textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(stock.price);
   if (type) {
     type.textContent = stock.divergence_label;
@@ -440,16 +508,29 @@ function closeRsiModalOnBackdrop(event) {
 }
 
 function resetRsiFilters() {
+  rsiState.sectorFilter = 'ALL';
   rsiState.typeFilter = 'ALL';
+  rsiState.gradeFilter = 'ALL';
+  rsiState.hideHighRisk = false;
   rsiState.searchQuery = '';
 
-  ['rsi-tab-all', 'rsi-tab-reg', 'rsi-tab-hid'].forEach(id => {
+  const select = document.getElementById('rsi-sector-filter');
+  if (select) select.value = 'ALL';
+
+  const riskBtn = document.getElementById('rsi-toggle-highrisk');
+  if (riskBtn) {
+    riskBtn.classList.remove('active-filter');
+    riskBtn.innerHTML = '⚠️ Sembunyikan Grade C';
+  }
+
+  ['rsi-tab-all', 'rsi-tab-reg', 'rsi-tab-hid', 'rsi-tab-gradea'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.classList.remove('active');
+    if (el) el.classList.toggle('active', id === 'rsi-tab-all');
   });
-  const allTab = document.getElementById('rsi-tab-all');
-  if (allTab) allTab.classList.add('active');
 
   applyRsiFilters();
-  showToast('Filter RSI Divergence telah direset ke default.');
+  if (typeof showToast === 'function') {
+    showToast('Filter RSI Divergence telah direset ke default.');
+  }
 }
+

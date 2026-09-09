@@ -56,6 +56,8 @@ backtest_engine = SignalBacktestEngine()
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "data", "cache")
 CACHE_FILE = os.path.join(CACHE_DIR, "scan_result.json")
 RSI_CACHE_FILE = os.path.join(CACHE_DIR, "rsi_div_result.json")
+RSI_CACHE_FILE_1D = os.path.join(CACHE_DIR, "rsi_div_1d.json")
+RSI_CACHE_FILE_4H = os.path.join(CACHE_DIR, "rsi_div_4h.json")
 PREBREAKOUT_CACHE_FILE = os.path.join(CACHE_DIR, "pre_breakout_result.json")
 MARKET_REGIME_CACHE_FILE = os.path.join(CACHE_DIR, "market_regime.json")
 TICKERS_FILE = os.path.join(os.path.dirname(__file__), "data", "idx_master_tickers.json")
@@ -147,24 +149,44 @@ def save_cached_results(data):
     except Exception as e:
         print(f"Error saving cache: {e}")
 
-def load_rsi_cached_results():
-    """Load RSI Divergence results from cache JSON file."""
-    if os.path.exists(RSI_CACHE_FILE):
+def load_rsi_cached_results(tf="1D"):
+    """Load RSI Divergence results from cache JSON file for 1D or 4H."""
+    tf_clean = str(tf).upper().strip()
+    target_file = RSI_CACHE_FILE_4H if tf_clean == "4H" else RSI_CACHE_FILE_1D
+    # Fallback to legacy RSI_CACHE_FILE if 1D doesn't exist yet
+    if not os.path.exists(target_file) and tf_clean != "4H" and os.path.exists(RSI_CACHE_FILE):
+        target_file = RSI_CACHE_FILE
+
+    if os.path.exists(target_file):
         try:
-            with open(RSI_CACHE_FILE, "r", encoding="utf-8") as f:
+            with open(target_file, "r", encoding="utf-8") as f:
                 return json.load(f)
         except Exception as e:
-            print(f"Error loading RSI cache: {e}")
+            print(f"Error loading RSI {tf_clean} cache: {e}")
     return None
 
-def save_rsi_cached_results(data):
-    """Save RSI Divergence results to cache JSON file."""
+def save_rsi_cached_results(data, tf="1D"):
+    """Save RSI Divergence results to cache JSON file for 1D or 4H."""
+    tf_clean = str(tf).upper().strip()
+    target_file = RSI_CACHE_FILE_4H if tf_clean == "4H" else RSI_CACHE_FILE_1D
     os.makedirs(CACHE_DIR, exist_ok=True)
     try:
-        with open(RSI_CACHE_FILE, "w", encoding="utf-8") as f:
+        with open(target_file, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2)
+        # Sync 1D to legacy file for full backward compatibility
+        if tf_clean == "1D":
+            with open(RSI_CACHE_FILE, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=2)
     except Exception as e:
-        print(f"Error saving RSI cache: {e}")
+        print(f"Error saving RSI {tf_clean} cache: {e}")
+
+def load_rsi_4h_cached_results():
+    """Load RSI Divergence 4H results from cache JSON file."""
+    return load_rsi_cached_results(tf="4H")
+
+def save_rsi_4h_cached_results(data):
+    """Save RSI Divergence 4H results to cache JSON file."""
+    save_rsi_cached_results(data, tf="4H")
 
 def load_prebreakout_cached_results():
     """Load Pre-Breakout results from cache JSON file."""
@@ -270,35 +292,86 @@ def background_scan_worker():
         }
         save_cached_results(payload)
 
-        # Step 4: Evaluate RSI Divergence (using pre-downloaded all_data, zero extra latency)
-        scan_state["current_ticker"] = "Evaluasi RSI Divergence..."
+        # Step 4a: Evaluate RSI Divergence (1D Daily)
+        scan_state["current_ticker"] = "Evaluasi RSI Divergence (1D)..."
         rsi_calc = RSIDivergenceCalculator(tickers_csv_path=TICKERS_FILE)
-        rsi_results = []
+        rsi_results_1d = []
 
         for ticker, df in all_data.items():
-            rsi_res = rsi_calc.detect_divergence(ticker, df)
+            rsi_res = rsi_calc.detect_divergence(ticker, df, timeframe="1D", daily_df=df)
             if rsi_res is not None:
-                rsi_results.append(rsi_res)
+                rsi_results_1d.append(rsi_res)
 
         # Sort: bars_ago ASC (freshest first), then RSI ASC (most oversold)
-        rsi_results.sort(key=lambda x: (x['bars_ago'], x['rsi']))
+        rsi_results_1d.sort(key=lambda x: (x['bars_ago'], x['rsi']))
 
-        reg_bull_count = sum(1 for r in rsi_results if r['divergence_type'] == 'REGULAR_BULL')
-        hid_bull_count = sum(1 for r in rsi_results if r['divergence_type'] == 'HIDDEN_BULL')
+        reg_bull_count_1d = sum(1 for r in rsi_results_1d if r['divergence_type'] == 'REGULAR_BULL')
+        hid_bull_count_1d = sum(1 for r in rsi_results_1d if r['divergence_type'] == 'HIDDEN_BULL')
 
-        rsi_payload = {
+        rsi_payload_1d = {
             "timestamp": time_str,
             "iso_timestamp": iso_time,
+            "timeframe": "1D",
             "stats": {
                 "total_universe": len(tickers),
                 "total_scanned": len(all_data),
-                "total_divergences": len(rsi_results),
-                "regular_bull_count": reg_bull_count,
-                "hidden_bull_count": hid_bull_count
+                "total_divergences": len(rsi_results_1d),
+                "regular_bull_count": reg_bull_count_1d,
+                "hidden_bull_count": hid_bull_count_1d
             },
-            "results": rsi_results
+            "results": rsi_results_1d
         }
-        save_rsi_cached_results(rsi_payload)
+        save_rsi_cached_results(rsi_payload_1d, tf="1D")
+
+        # Step 4b: Evaluate RSI Divergence (4H Intraday)
+        scan_state["current_ticker"] = "Fetch & Evaluasi RSI Divergence (4H)..."
+        # Candidates: active stocks with price >= 50 and avg 20d turnover >= 100M
+        candidate_tickers_4h = []
+        for ticker, df in all_data.items():
+            close_s = df['Close']
+            if close_s.empty or float(close_s.iloc[-1]) < 50:
+                continue
+            vol_s = df['Volume'] if 'Volume' in df else pd.Series([0]*len(df), index=df.index)
+            turnover_20d = float((close_s * vol_s).iloc[-20:].mean()) if len(df) >= 20 else 0.0
+            if turnover_20d >= 100_000_000:
+                candidate_tickers_4h.append(ticker)
+
+        rsi_results_4h = []
+        all_data_4h = {}
+        if candidate_tickers_4h:
+            print(f"Fetching 4H data for {len(candidate_tickers_4h)} candidate tickers...")
+            all_data_4h = calc.fetcher.fetch_batch_concurrent(
+                ticker_list=candidate_tickers_4h,
+                max_workers=16,
+                period="60d",
+                interval="4h"
+            )
+            for ticker, df_4h in all_data_4h.items():
+                daily_df_stock = all_data.get(ticker)
+                rsi_res_4h = rsi_calc.detect_divergence(ticker, df_4h, timeframe="4H", daily_df=daily_df_stock)
+                if rsi_res_4h is not None:
+                    rsi_results_4h.append(rsi_res_4h)
+
+            rsi_results_4h.sort(key=lambda x: (x['bars_ago'], x['rsi']))
+
+        reg_bull_count_4h = sum(1 for r in rsi_results_4h if r['divergence_type'] == 'REGULAR_BULL')
+        hid_bull_count_4h = sum(1 for r in rsi_results_4h if r['divergence_type'] == 'HIDDEN_BULL')
+
+        rsi_payload_4h = {
+            "timestamp": time_str,
+            "iso_timestamp": iso_time,
+            "timeframe": "4H",
+            "stats": {
+                "total_universe": len(candidate_tickers_4h),
+                "total_scanned": len(all_data_4h),
+                "total_divergences": len(rsi_results_4h),
+                "regular_bull_count": reg_bull_count_4h,
+                "hidden_bull_count": hid_bull_count_4h
+            },
+            "results": rsi_results_4h
+        }
+        save_rsi_4h_cached_results(rsi_payload_4h)
+
 
         # Step 5: Evaluate Pre-Breakout Setups (using pre-downloaded all_data, zero extra network latency)
         scan_state["current_ticker"] = "Evaluasi Pre-Breakout Setup..."
@@ -466,14 +539,16 @@ def get_results():
 @app.route("/api/rsi-divergence", methods=["GET"])
 @admin_required
 def get_rsi_results():
-    """Get the most recent cached RSI Divergence screening results."""
-    cached = load_rsi_cached_results()
+    """Get the most recent cached RSI Divergence screening results (supports ?timeframe=1D|4H)."""
+    tf = request.args.get("timeframe", request.args.get("tf", "1D")).upper()
+    cached = load_rsi_cached_results(tf=tf)
     if cached:
         return jsonify({"status": "success", "data": cached})
     return jsonify({
         "status": "empty",
         "data": {
             "timestamp": None,
+            "timeframe": tf,
             "stats": {
                 "total_universe": 0,
                 "total_scanned": 0,
@@ -484,6 +559,30 @@ def get_rsi_results():
             "results": []
         }
     })
+
+@app.route("/api/rsi-divergence/4h", methods=["GET"])
+@admin_required
+def get_rsi_4h_results():
+    """Get the most recent cached RSI Divergence 4H screening results."""
+    cached = load_rsi_4h_cached_results()
+    if cached:
+        return jsonify({"status": "success", "data": cached})
+    return jsonify({
+        "status": "empty",
+        "data": {
+            "timestamp": None,
+            "timeframe": "4H",
+            "stats": {
+                "total_universe": 0,
+                "total_scanned": 0,
+                "total_divergences": 0,
+                "regular_bull_count": 0,
+                "hidden_bull_count": 0
+            },
+            "results": []
+        }
+    })
+
 
 @app.route("/api/pre-breakout", methods=["GET"])
 @admin_required

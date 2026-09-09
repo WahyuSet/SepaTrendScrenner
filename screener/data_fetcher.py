@@ -57,22 +57,24 @@ class DataFetcher:
                 }
         return {'name': clean_ticker, 'sector': 'General'}
 
-    def fetch_single_ticker(self, ticker, period="2y"):
-        """Fetch historical daily data for a single ticker."""
+    def fetch_single_ticker(self, ticker, period="2y", interval="1d"):
+        """Fetch historical data for a single ticker with configurable period and interval."""
         yf_symbol = f"{ticker}.JK" if not ticker.endswith(".JK") else ticker
         try:
             stock = yf.Ticker(yf_symbol)
-            df = stock.history(period=period, auto_adjust=False)
+            df = stock.history(period=period, interval=interval, auto_adjust=False)
             if df.empty:
                 return ticker, None, "Insufficient data"
             df = df.dropna(subset=['Close'])
-            if len(df) < 50:
+            # For intraday (4h/1h), min 30 bars required; for daily, min 50 bars
+            min_bars = 30 if interval in ["4h", "60m", "1h", "15m", "5m"] else 50
+            if len(df) < min_bars:
                 return ticker, None, "Insufficient data"
             return ticker, df, None
         except Exception as e:
             return ticker, None, str(e)
 
-    def fetch_batch_concurrent(self, ticker_list=None, max_workers=16, period="2y"):
+    def fetch_batch_concurrent(self, ticker_list=None, max_workers=16, period="2y", interval="1d"):
         """Fetch historical data for a list of tickers using ThreadPoolExecutor."""
         if ticker_list is None:
             if self.tickers_df is not None and not self.tickers_df.empty:
@@ -82,11 +84,11 @@ class DataFetcher:
 
         results = {}
         total = len(ticker_list)
-        logger.info(f"Starting batch fetch for {total} tickers with {max_workers} workers...")
+        logger.info(f"Starting batch fetch for {total} tickers with {max_workers} workers (interval={interval})...")
 
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             future_to_ticker = {
-                executor.submit(self.fetch_single_ticker, ticker, period): ticker
+                executor.submit(self.fetch_single_ticker, ticker, period, interval): ticker
                 for ticker in ticker_list
             }
 

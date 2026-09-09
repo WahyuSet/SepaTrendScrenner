@@ -30,11 +30,12 @@ class RSIDivergenceCalculator:
         rsi = 100.0 - (100.0 / (1.0 + rs))
         return rsi.fillna(50.0)
 
-    def detect_divergence(self, ticker, df, max_bars_ago=5):
+    def detect_divergence(self, ticker, df, max_bars_ago=5, timeframe="1D", daily_df=None):
         """
         Detect Regular Bullish and Hidden Bullish Divergence on RSI(14) vs Price,
         with Trend-Filter Grading (Grade A: Stage 2 Pullback, Grade B: Moderate,
         Grade C: High Risk Downtrend / Falling Knife).
+        Supports multi-timeframe ("1D" Daily and "4H" Intraday).
         """
         if df is None or df.empty:
             return None
@@ -43,6 +44,7 @@ class RSIDivergenceCalculator:
         if len(df) < (self.rsi_period + self.lb_left + self.lb_right + self.range_lower):
             return None
 
+        tf_clean = str(timeframe).upper().strip()
         close = df['Close']
         low = df['Low'] if 'Low' in df else close
         high = df['High'] if 'High' in df else close
@@ -53,7 +55,11 @@ class RSIDivergenceCalculator:
             return None
 
         # Liquidity Filter (Min daily turnover)
-        daily_turnover = close * volume
+        # Use daily_df if provided for robust 20d turnover and 1d change calculation
+        ref_df = daily_df if (daily_df is not None and not daily_df.empty) else df
+        ref_close = ref_df['Close']
+        ref_vol = ref_df['Volume'] if 'Volume' in ref_df else pd.Series([0]*len(ref_df), index=ref_df.index)
+        daily_turnover = ref_close * ref_vol
         avg_turnover_20d = float(daily_turnover.iloc[-20:].mean()) if len(daily_turnover) >= 20 else 0.0
         if avg_turnover_20d < self.min_turnover_20d:
             return None
@@ -136,18 +142,25 @@ class RSIDivergenceCalculator:
         recent_vol = int(volume.iloc[-1]) if not volume.empty else 0
         avg_vol_20 = int(volume.iloc[-20:].mean()) if len(volume) >= 20 else recent_vol
 
-        prev_close = float(close.iloc[-2]) if len(close) >= 2 else curr_price
+        prev_close = float(ref_close.iloc[-2]) if len(ref_close) >= 2 else curr_price
         pct_change_1d = ((curr_price - prev_close) / prev_close) * 100.0 if prev_close > 0 else 0.0
 
-        recency_text = "Hari Ini" if latest_sig['bars_ago'] == 0 else f"{latest_sig['bars_ago']} Hari Lalu"
+        if tf_clean == "4H":
+            recency_text = "Sinyal Baru (4H)" if latest_sig['bars_ago'] == 0 else f"{latest_sig['bars_ago']} Bar Lalu (4H)"
+            tradingview_url = f"https://www.tradingview.com/chart/?symbol=IDX:{clean_ticker}&interval=240"
+        else:
+            recency_text = "Hari Ini" if latest_sig['bars_ago'] == 0 else f"{latest_sig['bars_ago']} Hari Lalu"
+            tradingview_url = f"https://www.tradingview.com/chart/?symbol=IDX:{clean_ticker}"
 
         # -------------------------------------------------------------
         # Trend Filter & Quality Grading (Anti-Falling Knife Protection)
+        # Use ref_close (daily close) to calculate MA50 and MA200 reliably
         # -------------------------------------------------------------
-        ma50_s = close.rolling(50).mean()
-        ma200_s = close.rolling(200).mean()
-        m50 = float(ma50_s.iloc[-1]) if len(close) >= 50 and not np.isnan(ma50_s.iloc[-1]) else curr_price
-        m200 = float(ma200_s.iloc[-1]) if len(close) >= 200 and not np.isnan(ma200_s.iloc[-1]) else curr_price
+        ma_source = ref_close
+        ma50_s = ma_source.rolling(50).mean()
+        ma200_s = ma_source.rolling(200).mean()
+        m50 = float(ma50_s.iloc[-1]) if len(ma_source) >= 50 and not np.isnan(ma50_s.iloc[-1]) else curr_price
+        m200 = float(ma200_s.iloc[-1]) if len(ma_source) >= 200 and not np.isnan(ma200_s.iloc[-1]) else curr_price
 
         is_above_m200 = bool(curr_price > m200)
         is_above_m50 = bool(curr_price > m50)
@@ -193,6 +206,7 @@ class RSIDivergenceCalculator:
             'divergence_label': latest_sig['label'],
             'bars_ago': latest_sig['bars_ago'],
             'recency_text': recency_text,
+            'timeframe': tf_clean,
             'pivot_rsi': latest_sig['pivot_rsi'],
             'prev_pivot_rsi': latest_sig['prev_pivot_rsi'],
             'pivot_low': latest_sig['pivot_low'],
@@ -200,5 +214,5 @@ class RSIDivergenceCalculator:
             'bars_between': latest_sig['bars_between_pivots'],
             'volume': recent_vol,
             'avg_volume_20': avg_vol_20,
-            'tradingview_url': f"https://www.tradingview.com/chart/?symbol=IDX:{clean_ticker}"
+            'tradingview_url': tradingview_url
         }

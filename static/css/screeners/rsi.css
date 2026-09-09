@@ -2,6 +2,99 @@
    RSI DIVERGENCE SCREENER STYLES
    ========================================================================== */
 
+/* Timeframe Selector (1D / 4H) — Enterprise Design */
+.view-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.rsi-tf-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-tertiary);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.rsi-tf-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border-radius: 7px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.rsi-tf-pill:hover:not(.active) {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateY(-1px);
+}
+
+.rsi-tf-pill.active {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+}
+
+.rsi-tf-pill .tf-name {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: -0.01em;
+}
+
+.rsi-tf-pill .tf-desc {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.rsi-tf-pill.active .tf-desc {
+  color: var(--text-secondary);
+}
+
+.tf-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.dot-1d {
+  background: #16a34a;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+}
+
+.dot-4h {
+  background: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
+
+.rsi-tf-pill.active .dot-1d {
+  box-shadow: 0 0 8px rgba(22, 163, 74, 0.65);
+}
+
+.rsi-tf-pill.active .dot-4h {
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.65);
+}
+
 /* Badges for Divergence Type */
 .badge-div-type {
   display: inline-flex;
