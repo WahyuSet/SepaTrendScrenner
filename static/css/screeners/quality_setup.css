@@ -46,6 +46,12 @@
   border: 1px solid #7dd3fc;
 }
 
+.qs-setup-badge.breakout-jauh {
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
 .qs-setup-badge.pullback {
   background: #f3e8ff;
   color: #6b21a8;

@@ -350,10 +350,11 @@ def compute_stock_score(indicators: Dict, change_pct_rank: Optional[float] = Non
 # 2. TRADE SETUP & SCENARIOS (PULLBACK vs BREAKOUT)
 # =========================================================================
 
-def compute_trade_setup(indicators: Dict, recent_highs: List[float], recent_lows: List[float]) -> Optional[Dict]:
+def compute_trade_setup(indicators: Dict, recent_highs: List[float], recent_lows: List[float], fib_levels: Optional[Dict] = None) -> Optional[Dict]:
     """
     Generate actionable trade setups (Pullback vs Breakout),
-    anchoring Entry, Stop Loss (1.5x ATR), Target 1/2, and Risk/Reward ratio.
+    anchoring Entry, Adaptive Stop Loss (1.5x - 2.0x ATR, min -3% floor),
+    Resistance-driven Target 1/2, and dynamic Risk/Reward ratio.
     """
     close = indicators.get("close")
     atr = indicators.get("ATR")
@@ -386,48 +387,112 @@ def compute_trade_setup(indicators: Dict, recent_highs: List[float], recent_lows
         elif em and em > close:
             resistance_candidates.append(em)
 
-    # BB
+    # Bollinger Bands
     if bb_lower and bb_lower < close:
         support_candidates.append(bb_lower)
     if bb_upper and bb_upper > close:
         resistance_candidates.append(bb_upper)
 
-    supports = sorted(list(set(_safe_round(s, 0) for s in support_candidates if s and s < close)), reverse=True)[:3]
-    resistances = sorted(list(set(_safe_round(r, 0) for r in resistance_candidates if r and r > close)))[:3]
+    # Donchian Channels (Upper Resistance, Lower Support)
+    donchian = indicators.get("donchian") or {}
+    donchian_upper = donchian.get("upper")
+    donchian_lower = donchian.get("lower")
+    if donchian_upper and donchian_upper > close:
+        resistance_candidates.append(donchian_upper)
+    if donchian_lower and donchian_lower < close:
+        support_candidates.append(donchian_lower)
+
+    # Fibonacci Extension (Resistance) & Retracement (Support)
+    if fib_levels:
+        for ext_key in ["ext_1272", "ext_1618"]:
+            ext_val = fib_levels.get(ext_key)
+            if ext_val and ext_val > close:
+                resistance_candidates.append(ext_val)
+        gp = fib_levels.get("golden_pocket")
+        if gp and gp < close:
+            support_candidates.append(gp)
+        f500 = fib_levels.get("fib_500")
+        if f500 and f500 < close:
+            support_candidates.append(f500)
+
+    all_supports = sorted(list(set(_safe_round(s, 0) for s in support_candidates if s and s < close)), reverse=True)
+    all_resistances = sorted(list(set(_safe_round(r, 0) for r in resistance_candidates if r and r > close)))
+
+    supports = all_supports[:5]
+    resistances = all_resistances[:5]
 
     # Breakout Entry: Nearest resistance
-    breakout_entry = resistances[0] if resistances else _safe_round(close * 1.02, 0)
-    # Pullback Entry: EMA20 or nearest support
-    pullback_entry = _safe_round(ema20, 0) if ema20 and ema20 < close else (supports[0] if supports else _safe_round(close * 0.97, 0))
+    if resistances:
+        breakout_entry = resistances[0]
+        breakout_entry_source = "Nearest Resistance"
+    else:
+        breakout_entry = _safe_round(close * 1.02, 0)
+        breakout_entry_source = "Fallback +2%"
+
+    # Pullback Entry priority: EMA20 > Golden Pocket 61.8% > Fib 50% > Nearest Support
+    pullback_candidates = []
+    if ema20 and ema20 < close:
+        pullback_candidates.append(("EMA20", _safe_round(ema20, 0)))
+    if fib_levels and fib_levels.get("golden_pocket") and fib_levels["golden_pocket"] < close:
+        pullback_candidates.append(("Golden Pocket 61.8%", _safe_round(fib_levels["golden_pocket"], 0)))
+    if fib_levels and fib_levels.get("fib_500") and fib_levels["fib_500"] < close:
+        pullback_candidates.append(("Fib 50%", _safe_round(fib_levels["fib_500"], 0)))
+    if supports:
+        pullback_candidates.append(("Dynamic Support", supports[0]))
+
+    if pullback_candidates:
+        pullback_entry_source = pullback_candidates[0][0]
+        pullback_entry = pullback_candidates[0][1]
+    else:
+        pullback_entry_source = "Fallback -3%"
+        pullback_entry = _safe_round(close * 0.97, 0)
 
     scenarios = {}
 
-    def _build_scenario(entry_price: float, mode: str):
+    def _build_scenario(entry_price: float, mode: str, entry_src: str):
         if not entry_price or entry_price <= 0:
             return None
-        # Stop loss: 1.5 x ATR below entry or under nearest support
-        sl_cand = [entry_price - 1.5 * atr]
-        sups_under = [s for s in supports if s < entry_price]
+
+        # Adaptive Stop Loss based on volatility
+        atr_pct = (atr / entry_price) * 100.0 if entry_price > 0 else 0
+        atr_mult = 1.5 if atr_pct <= 3.5 else 2.0
+
+        sl_cand = [entry_price - atr_mult * atr]
+        sups_under = [s for s in all_supports if s < entry_price]
         if sups_under:
             sl_cand.append(sups_under[0] - 0.5 * atr)
         stop = max(sl_cand)
+
+        # Floor: SL minimum -3% di bawah entry (tidak boleh lebih dangkal dari -3%)
+        sl_floor = entry_price * 0.97
+        if stop > sl_floor:
+            stop = sl_floor
+
         if stop >= entry_price or (entry_price - stop) <= 0:
-            stop = entry_price - 1.0 * atr
+            stop = entry_price - atr_mult * atr
+        if stop >= entry_price:
+            stop = entry_price * 0.95
 
         risk = entry_price - stop
         risk_pct = (risk / entry_price) * 100.0
 
-        # Targets based on R:R and resistance
-        t1 = entry_price + 1.5 * risk
-        t2 = entry_price + 2.5 * risk
+        # Targets based on real resistance (with minimum R:R >= 1.0)
+        res_above = [r for r in all_resistances if r > entry_price]
+        valid_targets = [r for r in res_above if (r - entry_price) >= 1.0 * risk]
 
-        # If actual resistance exists near target, snap to resistance
-        if resistances:
-            for r in resistances:
-                if r > entry_price and abs(r - t1) / entry_price < 0.04:
-                    t1 = r
-                elif r > t1 and abs(r - t2) / entry_price < 0.05:
-                    t2 = r
+        if len(valid_targets) >= 2:
+            t1 = valid_targets[0]
+            t2 = valid_targets[1]
+        elif len(valid_targets) == 1:
+            t1 = valid_targets[0]
+            t2 = max(entry_price + 2.5 * risk, t1 + 1.0 * risk)
+        else:
+            t1 = entry_price + 1.5 * risk
+            t2 = entry_price + 2.5 * risk
+
+        # Ensure t2 > t1
+        if t2 <= t1:
+            t2 = t1 + 1.0 * risk
 
         rr_1 = (t1 - entry_price) / risk if risk > 0 else 1.0
         rr_2 = (t2 - entry_price) / risk if risk > 0 else 2.0
@@ -435,6 +500,7 @@ def compute_trade_setup(indicators: Dict, recent_highs: List[float], recent_lows
         return {
             "mode": mode,
             "entry": _safe_round(entry_price, 0),
+            "entry_source": entry_src,
             "stop_loss": _safe_round(stop, 0),
             "stop_loss_pct": _safe_round(risk_pct, 1),
             "target_1": _safe_round(t1, 0),
@@ -443,26 +509,41 @@ def compute_trade_setup(indicators: Dict, recent_highs: List[float], recent_lows
             "rr_target_2": _safe_round(rr_2, 1)
         }
 
-    sc_breakout = _build_scenario(breakout_entry, "Breakout")
-    sc_pullback = _build_scenario(pullback_entry, "Pullback")
-    if sc_breakout:
-        scenarios["breakout"] = sc_breakout
-    if sc_pullback:
-        scenarios["pullback"] = sc_pullback
+    sc_breakout = _build_scenario(breakout_entry, "Breakout", breakout_entry_source)
+    sc_pullback = _build_scenario(pullback_entry, "Pullback", pullback_entry_source)
 
-    # Determine primary setup based on proximity
     dist_res_pct = ((breakout_entry - close) / close) * 100 if breakout_entry else 99
     dist_ema_pct = abs((close - pullback_entry) / close) * 100 if pullback_entry else 99
 
+    if sc_breakout:
+        sc_breakout["distance_pct"] = _safe_round(dist_res_pct, 1)
+        scenarios["breakout"] = sc_breakout
+    if sc_pullback:
+        sc_pullback["distance_pct"] = _safe_round(dist_ema_pct, 1)
+        scenarios["pullback"] = sc_pullback
+
+    # Determine primary setup based on proximity
+    dist_pct = 0.0
     if dist_res_pct <= 3.0:
         primary_name = "breakout"
         setup_type = "Breakout Ready"
+        dist_pct = dist_res_pct
     elif dist_ema_pct <= 2.5:
         primary_name = "pullback"
         setup_type = "Pullback Swing"
+        dist_pct = dist_ema_pct
     else:
-        primary_name = "breakout" if dist_res_pct < dist_ema_pct else "pullback"
-        setup_type = "Breakout Setup" if primary_name == "breakout" else "Pullback Setup"
+        if dist_res_pct < dist_ema_pct:
+            primary_name = "breakout"
+            dist_pct = dist_res_pct
+            setup_type = "Breakout Jauh" if dist_res_pct > 8.0 else "Breakout Setup"
+        else:
+            primary_name = "pullback"
+            dist_pct = dist_ema_pct
+            setup_type = "Pullback Setup"
+
+    if primary_name == "breakout" and dist_res_pct > 8.0:
+        setup_type = "Breakout Jauh"
 
     primary = scenarios.get(primary_name) or scenarios.get("breakout") or scenarios.get("pullback")
 
@@ -470,6 +551,8 @@ def compute_trade_setup(indicators: Dict, recent_highs: List[float], recent_lows
         "setup_type": setup_type,
         "primary_scenario": primary_name,
         "entry": primary["entry"] if primary else _safe_round(close, 0),
+        "entry_source": primary.get("entry_source", "") if primary else "",
+        "distance_pct": _safe_round(dist_pct, 1),
         "stop_loss": primary["stop_loss"] if primary else _safe_round(close * 0.95, 0),
         "stop_loss_pct": primary["stop_loss_pct"] if primary else 5.0,
         "target_1": primary["target_1"] if primary else _safe_round(close * 1.05, 0),
@@ -640,15 +723,15 @@ def evaluate_ticker_quality(
         if score_res["score"] < 70:
             return None
 
-        # 3. Trade Setup
-        trade_setup = compute_trade_setup(curr_ind, highs, lows)
-
-        # 4. Fibonacci Levels (over last 60 bars)
+        # 3. Fibonacci Levels (over last 60 bars)
         lookback_fib = min(n, 60)
         f_high = max(highs[-lookback_fib:])
         f_low = min(lows[-lookback_fib:])
         trend_dir = "uptrend" if closes[-1] >= ((f_high + f_low) / 2.0) else "downtrend"
         fib_levels = compute_fibonacci_levels(f_high, f_low, trend_dir)
+
+        # 4. Trade Setup (with Fib levels integrated)
+        trade_setup = compute_trade_setup(curr_ind, highs, lows, fib_levels=fib_levels)
 
         # 5. Structure & Candle
         structure = _detect_market_structure(opens[-1], highs[-1], lows[-1], closes[-1])
@@ -668,6 +751,8 @@ def evaluate_ticker_quality(
             "grade": score_res["grade"],
             "setup_type": trade_setup["setup_type"] if trade_setup else "Swing Setup",
             "primary_scenario": trade_setup["primary_scenario"] if trade_setup else "breakout",
+            "entry_source": trade_setup["entry_source"] if trade_setup else "",
+            "distance_pct": trade_setup["distance_pct"] if trade_setup else 0.0,
             "supertrend": st_label,
             "entry": trade_setup["entry"] if trade_setup else closes[-1],
             "stop_loss": trade_setup["stop_loss"] if trade_setup else _safe_round(closes[-1] * 0.95, 0),

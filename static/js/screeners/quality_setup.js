@@ -279,9 +279,10 @@ function renderQualityTable() {
       ? `<span class="qs-grade-badge elite">👑 Elite</span>`
       : `<span class="qs-grade-badge strong">🟢 Strong</span>`;
 
+    const isBreakoutJauh = (item.setup_type || '').includes('Jauh');
     const isBreakout = (item.setup_type || '').includes('Breakout');
     const setupBadge = isBreakout
-      ? `<span class="qs-setup-badge breakout">🚀 ${item.setup_type}</span>`
+      ? `<span class="qs-setup-badge ${isBreakoutJauh ? 'breakout-jauh' : 'breakout'}">${isBreakoutJauh ? '⚠️' : '🚀'} ${item.setup_type}</span>`
       : `<span class="qs-setup-badge pullback">⚡ ${item.setup_type}</span>`;
 
     const isBullish = item.supertrend === 'BULLISH';
@@ -362,7 +363,7 @@ function renderQualityTable() {
         </td>
 
         <!-- 8. Risk:Reward -->
-        <td class="text-center mono font-bold">1 : ${(item.risk_reward || 0).toFixed(1)}</td>
+        <td class="text-center mono font-bold">1 : ${(item.risk_reward != null ? item.risk_reward : 2.0).toFixed(1)}</td>
 
         <!-- 9. Aksi Detail Bento -->
         <td class="text-center" onclick="event.stopPropagation()">
@@ -403,19 +404,24 @@ function openQualityModal(ticker) {
   gradeBadgeEl.textContent = isElite ? '👑 ELITE' : '🟢 STRONG';
   gradeBadgeEl.className = `badge-status ${isElite ? 'ready' : 'forming'}`;
 
+  const isBreakoutJauh = (stock.setup_type || '').includes('Jauh');
   const isBreakout = (stock.setup_type || '').includes('Breakout');
   const setupBadgeEl = document.getElementById('qs-modal-setup-badge');
   setupBadgeEl.textContent = (stock.setup_type || 'SWING SETUP').toUpperCase();
-  setupBadgeEl.className = `qs-setup-badge ${isBreakout ? 'breakout' : 'pullback'}`;
+  setupBadgeEl.className = `qs-setup-badge ${isBreakout ? (isBreakoutJauh ? 'breakout-jauh' : 'breakout') : 'pullback'}`;
 
   // Trade Execution Plan (Bento 1)
   document.getElementById('qs-modal-entry').textContent = `Rp ${(stock.entry || 0).toLocaleString('id-ID')}`;
-  document.getElementById('qs-modal-entry-note').textContent = isBreakout ? 'Nearest Resistance (Breakout Trigger)' : 'Dynamic Support / EMA20 (Pullback Retest)';
+  const defaultNote = isBreakout ? 'Nearest Resistance (Breakout Trigger)' : 'Dynamic Support / EMA20 (Pullback Retest)';
+  const entryNote = stock.entry_source ? `Entry via ${stock.entry_source}` : defaultNote;
+  document.getElementById('qs-modal-entry-note').textContent = entryNote;
+
+  const slMult = (stock.atr_pct && stock.atr_pct > 3.5) ? '2.0x' : '1.5x';
   document.getElementById('qs-modal-sl').textContent = `Rp ${(stock.stop_loss || 0).toLocaleString('id-ID')}`;
-  document.getElementById('qs-modal-sl-pct').textContent = `-${(stock.stop_loss_pct || 0).toFixed(1)}% (1.5x ATR Protection)`;
+  document.getElementById('qs-modal-sl-pct').textContent = `-${(stock.stop_loss_pct || 0).toFixed(1)}% (${slMult} ATR Protection)`;
   document.getElementById('qs-modal-t1').textContent = `Rp ${(stock.target_1 || 0).toLocaleString('id-ID')}`;
   document.getElementById('qs-modal-t2').textContent = `Rp ${(stock.target_2 || 0).toLocaleString('id-ID')}`;
-  document.getElementById('qs-modal-rr-badge').textContent = `Risk:Reward 1 : ${(stock.risk_reward || 0).toFixed(1)}`;
+  document.getElementById('qs-modal-rr-badge').textContent = `Risk:Reward 1 : ${(stock.risk_reward != null ? stock.risk_reward : 2.0).toFixed(1)}`;
 
   // Score Breakdown (Bento 2)
   document.getElementById('qs-modal-score').textContent = stock.score;
