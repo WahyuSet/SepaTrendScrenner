@@ -115,3 +115,119 @@ class RSCalculator:
         rs_score = float(np.clip(round(percentrank), 1.0, 99.0))
 
         return rs_score, latest_stock_perf
+
+    @staticmethod
+    def calc_ibd_performance_ratio(close_series):
+        """
+        Calculate single point IBD performance ratio using 4 lookback windows:
+        performa = 0.40 * (P_today / P_63d)
+                 + 0.20 * (P_today / P_126d)
+                 + 0.20 * (P_today / P_189d)
+                 + 0.20 * (P_today / P_252d)
+        Requires at least 252 bars. Returns float or None.
+        """
+        if close_series is None or len(close_series) < 252:
+            return None
+
+        clean_close = close_series.dropna()
+        if len(clean_close) < 252:
+            return None
+
+        p0 = float(clean_close.iloc[-1])
+        if p0 <= 0 or np.isnan(p0):
+            return None
+
+        p63 = float(clean_close.iloc[-64]) if len(clean_close) >= 64 else None
+        p126 = float(clean_close.iloc[-127]) if len(clean_close) >= 127 else None
+        p189 = float(clean_close.iloc[-190]) if len(clean_close) >= 190 else None
+        p252 = float(clean_close.iloc[-253]) if len(clean_close) >= 253 else float(clean_close.iloc[0])
+
+        if any(p is None or p <= 0 or np.isnan(p) for p in [p63, p126, p189, p252]):
+            return None
+
+        perf = (
+            0.40 * (p0 / p63)
+            + 0.20 * (p0 / p126)
+            + 0.20 * (p0 / p189)
+            + 0.20 * (p0 / p252)
+        )
+        return float(perf)
+
+    def compute_market_distribution(self, all_stock_data=None, date_str=None):
+        """
+        Compute RS Score distribution (7 percentiles: P99, P90, P70, P50, P30, P10, P01)
+        across all IDX stocks with >= 252 bars history vs IHSG.
+        """
+        from datetime import datetime
+
+        if self.bench_data is None or self.bench_data.empty:
+            logger.info("Fetching IHSG benchmark data...")
+            self.fetch_benchmark()
+
+        if self.bench_data is None or 'Close' not in self.bench_data or self.bench_data.empty:
+            logger.error("Failed to acquire benchmark data for IHSG.")
+            return None
+
+        bench_close = self.bench_data['Close'].dropna()
+        perf_bench = self.calc_ibd_performance_ratio(bench_close)
+        if perf_bench is None or perf_bench <= 0:
+            logger.error(f"Invalid benchmark performance ratio: {perf_bench}")
+            return None
+
+        # Determine date from benchmark or current date
+        if date_str is None:
+            if not bench_close.empty and hasattr(bench_close.index[-1], 'strftime'):
+                date_str = bench_close.index[-1].strftime("%Y-%m-%d")
+            else:
+                date_str = datetime.now().strftime("%Y-%m-%d")
+
+        # If stock data not provided, fetch from DataFetcher
+        if all_stock_data is None:
+            from .data_fetcher import DataFetcher
+            fetcher = DataFetcher()
+            all_stock_data = fetcher.fetch_batch_concurrent(max_workers=16, period="2y")
+
+        stock_scores = []
+        for ticker, df in all_stock_data.items():
+            if df is None or df.empty or 'Close' not in df:
+                continue
+            close_s = df['Close'].dropna()
+            if len(close_s) < 252:
+                continue
+
+            perf_stock = self.calc_ibd_performance_ratio(close_s)
+            if perf_stock is None or perf_stock <= 0:
+                continue
+
+            rs_score = (perf_stock / perf_bench) * 100.0
+            if not np.isnan(rs_score) and not np.isinf(rs_score):
+                stock_scores.append(float(rs_score))
+
+        if not stock_scores:
+            logger.warning("No valid stock RS scores could be calculated.")
+            return None
+
+        stock_scores.sort()
+        scores_arr = np.array(stock_scores)
+
+        distribution = {
+            "pct_99": round(float(np.percentile(scores_arr, 99)), 2),
+            "pct_90": round(float(np.percentile(scores_arr, 90)), 2),
+            "pct_70": round(float(np.percentile(scores_arr, 70)), 2),
+            "pct_50": round(float(np.percentile(scores_arr, 50)), 2),
+            "pct_30": round(float(np.percentile(scores_arr, 30)), 2),
+            "pct_10": round(float(np.percentile(scores_arr, 10)), 2),
+            "pct_01": round(float(np.percentile(scores_arr, 1)), 2),
+        }
+
+        output = {
+            "date": date_str,
+            "market": "IDX",
+            "total_stocks": len(stock_scores),
+            "benchmark": "IHSG",
+            "distribution": distribution
+        }
+
+        logger.info(f"RS distribution calculated for {len(stock_scores)} stocks on {date_str}: {distribution}")
+        return output
+

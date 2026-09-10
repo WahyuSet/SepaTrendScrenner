@@ -1,38 +1,171 @@
 <!-- ======================================================== -->
-<!-- MARKET REGIME BANNER (IHSG HEALTH & EXPOSURE MONITOR) -->
+<!-- MARKET REGIME BANNER (IHSG HEALTH & RS DISTRIBUTION) -->
 <!-- ======================================================== -->
 <div id="market-regime-banner" class="market-regime-card regime-loading">
-  <div class="regime-left">
-    <div class="regime-status-wrap">
-      <span class="regime-icon">🏛️</span>
-      <div>
-        <div class="regime-header-title">
-          <span class="regime-title">Kondisi Pasar Modal (IHSG)</span>
-          <span id="regime-badge" class="regime-pill badge-regime-yellow">MEMUAT...</span>
+  <!-- Top Row: IHSG Market Health & Capital Allocation -->
+  <div class="regime-top-row">
+    <div class="regime-left">
+      <div class="regime-status-wrap">
+        <span class="regime-icon">🏛️</span>
+        <div>
+          <div class="regime-header-title">
+            <span class="regime-title">Kondisi Pasar Modal (IHSG)</span>
+            <span id="regime-badge" class="regime-pill badge-regime-yellow">MEMUAT...</span>
+          </div>
+          <div class="regime-stats-row">
+            <span id="regime-ihsg-val" class="regime-val">--</span>
+            <span id="regime-ihsg-chg" class="regime-chg">(--)</span>
+            <span class="regime-divider">•</span>
+            <span id="regime-ma-info" class="regime-ma">MA50: -- | MA200: --</span>
+          </div>
         </div>
-        <div class="regime-stats-row">
-          <span id="regime-ihsg-val" class="regime-val">--</span>
-          <span id="regime-ihsg-chg" class="regime-chg">(--)</span>
-          <span class="regime-divider">•</span>
-          <span id="regime-ma-info" class="regime-ma">MA50: -- | MA200: --</span>
-        </div>
+      </div>
+    </div>
+
+    <div class="regime-center">
+      <div class="regime-exposure-box">
+        <span class="exposure-tag">Rekomendasi Alokasi Modal:</span>
+        <span id="regime-exposure-val" class="exposure-value">Memuat Rekomendasi...</span>
+      </div>
+      <div id="regime-action-desc" class="regime-desc">
+        Mengambil status kesehatan tren pasar IHSG...
+      </div>
+    </div>
+
+    <div class="regime-right">
+      <div class="regime-meta-info">
+        <span id="regime-updated-time" class="regime-time">Update: --</span>
       </div>
     </div>
   </div>
 
-  <div class="regime-center">
-    <div class="regime-exposure-box">
-      <span class="exposure-tag">Rekomendasi Alokasi Modal:</span>
-      <span id="regime-exposure-val" class="exposure-value">Memuat Rekomendasi...</span>
-    </div>
-    <div id="regime-action-desc" class="regime-desc">
-      Mengambil status kesehatan tren pasar IHSG...
-    </div>
-  </div>
+  <!-- Divider -->
+  <div class="regime-rs-divider"></div>
 
-  <div class="regime-right">
-    <div class="regime-meta-info">
-      <span id="regime-updated-time" class="regime-time">Update: --</span>
+  <!-- Bottom Row: IDX RS Score Distribution (7 Percentiles vs IHSG) -->
+  <div class="regime-rs-row" id="regime-rs-row">
+    <div class="regime-rs-header">
+      <div class="regime-rs-title-wrap">
+        <span class="rs-dist-icon">📊</span>
+        <span class="rs-dist-title">Distribusi RS Score IDX</span>
+        <span class="rs-dist-bench-pill">vs IHSG</span>
+        <span class="rs-dist-hint" title="Distribusi Relative Strength (RS) score seluruh saham IDX dengan bobot IBD (40% 3M, 20% 6M, 20% 9M, 20% 12M) terhadap IHSG. Nilai > 100 menandakan outperform IHSG.">ℹ️</span>
+      </div>
+      <div class="regime-rs-meta">
+        <span class="rs-meta-item">Semesta: <strong id="rs-dist-total-stocks">--</strong> Saham</span>
+        <span class="rs-meta-sep">•</span>
+        <span class="rs-meta-item">Tanggal: <strong id="rs-dist-date">--</strong></span>
+        <button id="btn-copy-all-rs" class="btn-action-ghost" title="Salin seluruh nilai 7 persentil RS Score ke clipboard">
+          <svg class="action-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span id="copy-all-rs-label">Salin Semua</span>
+        </button>
+        <button id="btn-refresh-rs-dist" class="btn-refresh-rs" title="Hitung ulang distribusi RS Score sekarang">
+          <svg class="rs-refresh-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          <span id="rs-refresh-label">Refresh RS</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 7 Percentile Chips Grid (Click any card to copy its value) -->
+    <div class="regime-rs-chips" id="regime-rs-chips">
+      <div class="rs-chip rs-chip-p99" data-pct="P99" data-target="rs-val-p99" title="Persentil 99 (~Top 1% Saham Terkuat). Klik untuk salin nilai.">
+        <div class="rs-chip-top">
+          <span class="rs-chip-lbl">P99</span>
+          <span class="rs-chip-copy" title="Salin nilai P99">
+            <svg class="copy-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </span>
+        </div>
+        <span class="rs-chip-val" id="rs-val-p99">--</span>
+      </div>
+
+      <div class="rs-chip rs-chip-p90" data-pct="P90" data-target="rs-val-p90" title="Persentil 90 (~Top 10% Saham Terkuat). Klik untuk salin nilai.">
+        <div class="rs-chip-top">
+          <span class="rs-chip-lbl">P90</span>
+          <span class="rs-chip-copy" title="Salin nilai P90">
+            <svg class="copy-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </span>
+        </div>
+        <span class="rs-chip-val" id="rs-val-p90">--</span>
+      </div>
+
+      <div class="rs-chip rs-chip-p70" data-pct="P70" data-target="rs-val-p70" title="Persentil 70 (Batas Saham Outperforming). Klik untuk salin nilai.">
+        <div class="rs-chip-top">
+          <span class="rs-chip-lbl">P70</span>
+          <span class="rs-chip-copy" title="Salin nilai P70">
+            <svg class="copy-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </span>
+        </div>
+        <span class="rs-chip-val" id="rs-val-p70">--</span>
+      </div>
+
+      <div class="rs-chip rs-chip-p50" data-pct="P50" data-target="rs-val-p50" title="Persentil 50 (Median Seluruh IDX). Klik untuk salin nilai.">
+        <div class="rs-chip-top">
+          <span class="rs-chip-lbl">P50 (Med)</span>
+          <span class="rs-chip-copy" title="Salin nilai P50">
+            <svg class="copy-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </span>
+        </div>
+        <span class="rs-chip-val" id="rs-val-p50">--</span>
+      </div>
+
+      <div class="rs-chip rs-chip-p30" data-pct="P30" data-target="rs-val-p30" title="Persentil 30 (Batas Saham Melemah). Klik untuk salin nilai.">
+        <div class="rs-chip-top">
+          <span class="rs-chip-lbl">P30</span>
+          <span class="rs-chip-copy" title="Salin nilai P30">
+            <svg class="copy-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </span>
+        </div>
+        <span class="rs-chip-val" id="rs-val-p30">--</span>
+      </div>
+
+      <div class="rs-chip rs-chip-p10" data-pct="P10" data-target="rs-val-p10" title="Persentil 10 (Bottom 10% Terlemah). Klik untuk salin nilai.">
+        <div class="rs-chip-top">
+          <span class="rs-chip-lbl">P10</span>
+          <span class="rs-chip-copy" title="Salin nilai P10">
+            <svg class="copy-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </span>
+        </div>
+        <span class="rs-chip-val" id="rs-val-p10">--</span>
+      </div>
+
+      <div class="rs-chip rs-chip-p01" data-pct="P01" data-target="rs-val-p01" title="Persentil 1 (~Bottom 1% Terpuruk). Klik untuk salin nilai.">
+        <div class="rs-chip-top">
+          <span class="rs-chip-lbl">P01</span>
+          <span class="rs-chip-copy" title="Salin nilai P01">
+            <svg class="copy-svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+          </span>
+        </div>
+        <span class="rs-chip-val" id="rs-val-p01">--</span>
+      </div>
     </div>
   </div>
 </div>
+

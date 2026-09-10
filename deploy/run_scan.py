@@ -83,6 +83,16 @@ def main():
 
     log_msg(f"Data valid terkumpul: {len(all_data)}/{len(tickers)} emiten.")
 
+    # 2b. Evaluasi Distribusi RS Score Seluruh IDX (7 Titik Persentil vs IHSG)
+    try:
+        log_msg("2b/5 Menghitung Distribusi RS Score IDX (7 Titik Persentil vs IHSG)...")
+        rs_dist_payload = calc.rs_calc.compute_market_distribution(all_stock_data=all_data)
+        if rs_dist_payload:
+            save_json(os.path.join(CACHE_DIR, "rs_distribution.json"), rs_dist_payload)
+            log_msg(f"Distribusi RS IDX Berhasil disimpan: {rs_dist_payload['total_stocks']} emiten (Median P50: {rs_dist_payload['distribution']['pct_50']}).")
+    except Exception as rse:
+        log_msg(f"Peringatan RS Distribution: {rse}")
+
     time_str = datetime.now().strftime("%d %b %Y, %H:%M WIB")
     iso_time = datetime.now().isoformat()
 

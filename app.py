@@ -60,6 +60,7 @@ RSI_CACHE_FILE_1D = os.path.join(CACHE_DIR, "rsi_div_1d.json")
 RSI_CACHE_FILE_4H = os.path.join(CACHE_DIR, "rsi_div_4h.json")
 PREBREAKOUT_CACHE_FILE = os.path.join(CACHE_DIR, "pre_breakout_result.json")
 MARKET_REGIME_CACHE_FILE = os.path.join(CACHE_DIR, "market_regime.json")
+RS_DISTRIBUTION_CACHE_FILE = os.path.join(CACHE_DIR, "rs_distribution.json")
 TICKERS_FILE = os.path.join(os.path.dirname(__file__), "data", "idx_master_tickers.json")
 MASTER_TICKERS_FILE = os.path.join(os.path.dirname(__file__), "data", "idx_master_tickers.json")
 
@@ -218,6 +219,25 @@ def load_market_regime_cached_results():
     regime_eval = MarketRegimeEvaluator(cache_dir=CACHE_DIR)
     return regime_eval.get_cached_or_default()
 
+def load_rs_distribution_cached_results():
+    """Load RS distribution from cache JSON file."""
+    if os.path.exists(RS_DISTRIBUTION_CACHE_FILE):
+        try:
+            with open(RS_DISTRIBUTION_CACHE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error loading RS distribution cache: {e}")
+    return None
+
+def save_rs_distribution_cached_results(data):
+    """Save RS distribution to cache JSON file."""
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    try:
+        with open(RS_DISTRIBUTION_CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+    except Exception as e:
+        print(f"Error saving RS distribution cache: {e}")
+
 def background_scan_worker():
     """Background worker that performs the screening on all IDX tickers (SEPA + RSI + Pre-Breakout)."""
     global scan_state
@@ -261,6 +281,15 @@ def background_scan_worker():
                             all_data[t] = clean
                 except Exception as ex:
                     print(f"Error processing future: {ex}")
+
+        # Step 2b: Calculate RS Score Distribution (7 Percentiles vs IHSG) across all IDX stocks
+        try:
+            scan_state["current_ticker"] = "Kalkulasi Distribusi RS IDX (7 Titik)..."
+            rs_dist = calc.rs_calc.compute_market_distribution(all_stock_data=all_data)
+            if rs_dist:
+                save_rs_distribution_cached_results(rs_dist)
+        except Exception as ex:
+            print(f"Error computing RS distribution in worker: {ex}")
 
         # Step 3: Evaluate SEPA Criteria
         scan_state["current_ticker"] = "Evaluasi SEPA Trend..."
@@ -612,6 +641,48 @@ def get_market_regime():
     """Get current IHSG Market Regime status and exposure recommendation."""
     data = load_market_regime_cached_results()
     return jsonify({"status": "success", "data": data})
+
+@app.route("/api/rs-distribution", methods=["GET"])
+@admin_required
+def get_rs_distribution():
+    """Get current IDX RS Score distribution (7 percentiles)."""
+    cached = load_rs_distribution_cached_results()
+    if cached:
+        return jsonify({"status": "success", "data": cached})
+    return jsonify({
+        "status": "empty",
+        "data": {
+            "date": None,
+            "market": "IDX",
+            "total_stocks": 0,
+            "benchmark": "IHSG",
+            "distribution": {
+                "pct_99": 0.0,
+                "pct_90": 0.0,
+                "pct_70": 0.0,
+                "pct_50": 0.0,
+                "pct_30": 0.0,
+                "pct_10": 0.0,
+                "pct_01": 0.0
+            }
+        }
+    })
+
+@app.route("/api/rs-distribution/refresh", methods=["POST"])
+@admin_required
+def refresh_rs_distribution():
+    """On-demand calculation and refresh of IDX RS Score distribution."""
+    try:
+        from screener.rs_calculator import RSCalculator
+        calc = RSCalculator(benchmark_symbol="^JKSE")
+        calc.fetch_benchmark(period="2y")
+        dist = calc.compute_market_distribution()
+        if dist:
+            save_rs_distribution_cached_results(dist)
+            return jsonify({"status": "success", "data": dist, "message": "Distribusi RS berhasil diperbarui"})
+        return jsonify({"status": "error", "message": "Gagal menghitung distribusi RS Score"}), 500
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.route("/api/scan", methods=["POST"])
 @admin_required

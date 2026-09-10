@@ -41,3 +41,38 @@ function formatIDR(val) {
     maximumFractionDigits: 0
   }).format(Math.round(val));
 }
+
+function copyToClipboard(text, successMsg) {
+  if (!text || text === '--') return;
+  const msg = successMsg || `Tersalin: ${text}`;
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(msg);
+    }).catch(() => {
+      fallbackCopy(text, msg);
+    });
+  } else {
+    fallbackCopy(text, msg);
+  }
+}
+
+function fallbackCopy(text, msg) {
+  try {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    const successful = document.execCommand('copy');
+    document.body.removeChild(textArea);
+    if (successful) {
+      showToast(msg);
+    }
+  } catch (err) {
+    console.error('Fallback copy failed:', err);
+  }
+}
+

@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-10",
+  "market": "IDX",
+  "total_stocks": 886,
+  "benchmark": "IHSG",
+  "distribution": {
+    "pct_99": 376.21,
+    "pct_90": 170.13,
+    "pct_70": 127.02,
+    "pct_50": 112.45,
+    "pct_30": 103.3,
+    "pct_10": 88.89,
+    "pct_01": 61.62
+  }
+}

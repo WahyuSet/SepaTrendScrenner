@@ -71,14 +71,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   checkScanStatus();
 
-  // Initial load of cached results across all four screeners + market regime
+  // Initial load of cached results across all four screeners + market regime + RS distribution
   loadMarketRegime();
+  loadRsDistribution();
   loadCachedResults();
   loadRsiResults();
   loadPreBreakoutResults();
   loadQualityResults();
   loadWatchlistAndJournal();
   if (typeof loadBacktestData === 'function') loadBacktestData();
+
+  const btnRefreshRs = document.getElementById('btn-refresh-rs-dist');
+  if (btnRefreshRs) {
+    btnRefreshRs.addEventListener('click', handleRefreshRsDistribution);
+  }
+
+  const btnCopyAllRs = document.getElementById('btn-copy-all-rs');
+  if (btnCopyAllRs) {
+    btnCopyAllRs.addEventListener('click', handleCopyAllRsDistribution);
+  }
+
+  initRsChipsCopyEvents();
 });
 
 async function loadMarketRegime() {
@@ -143,6 +156,136 @@ function renderMarketRegime(data) {
   const timeEl = document.getElementById('regime-updated-time');
   if (timeEl) {
     timeEl.textContent = `Update: ${data.updated_at || '--'}`;
+  }
+}
+
+async function loadRsDistribution() {
+  const container = document.getElementById('regime-rs-row');
+  if (!container) return;
+
+  try {
+    const res = await fetch('/api/rs-distribution');
+    if (res.status === 401) return;
+    const json = await res.json();
+    if (json.status === 'success' && json.data) {
+      renderRsDistribution(json.data);
+    }
+  } catch (err) {
+    console.error('Failed to load RS distribution:', err);
+  }
+}
+
+function renderRsDistribution(data) {
+  if (!data || !data.distribution) return;
+
+  const totalStocks = document.getElementById('rs-dist-total-stocks');
+  if (totalStocks) {
+    totalStocks.textContent = data.total_stocks || '--';
+  }
+
+  const dateEl = document.getElementById('rs-dist-date');
+  if (dateEl) {
+    dateEl.textContent = data.date || '--';
+  }
+
+  const dist = data.distribution;
+  const pMap = {
+    'p99': dist.pct_99,
+    'p90': dist.pct_90,
+    'p70': dist.pct_70,
+    'p50': dist.pct_50,
+    'p30': dist.pct_30,
+    'p10': dist.pct_10,
+    'p01': dist.pct_01
+  };
+
+  for (const [key, val] of Object.entries(pMap)) {
+    const el = document.getElementById(`rs-val-${key}`);
+    if (el) {
+      el.textContent = (val !== undefined && val !== null) ? Number(val).toFixed(2) : '--';
+    }
+  }
+}
+
+async function handleRefreshRsDistribution() {
+  const btn = document.getElementById('btn-refresh-rs-dist');
+  const label = document.getElementById('rs-refresh-label');
+  if (btn) btn.classList.add('spinning');
+  if (label) label.textContent = 'Menghitung...';
+
+  if (typeof showToast === 'function') {
+    showToast('info', 'Memulai kalkulasi distribusi RS Score seluruh IDX...', 4000);
+  }
+
+  try {
+    const res = await fetch('/api/rs-distribution/refresh', { method: 'POST' });
+    const json = await res.json();
+    if (json.status === 'success' && json.data) {
+      renderRsDistribution(json.data);
+      if (typeof showToast === 'function') {
+        showToast('success', `Distribusi RS diperbarui untuk ${json.data.total_stocks} saham!`);
+      }
+    } else {
+      if (typeof showToast === 'function') {
+        showToast('error', json.message || 'Gagal menghitung distribusi RS');
+      }
+    }
+  } catch (err) {
+    console.error('Error refreshing RS distribution:', err);
+    if (typeof showToast === 'function') {
+      showToast('error', 'Koneksi gagal saat refresh distribusi RS');
+    }
+  } finally {
+    if (btn) btn.classList.remove('spinning');
+    if (label) label.textContent = 'Refresh RS';
+  }
+}
+
+function initRsChipsCopyEvents() {
+  const chips = document.querySelectorAll('.regime-rs-chips .rs-chip');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const pct = chip.getAttribute('data-pct') || 'RS';
+      const targetId = chip.getAttribute('data-target');
+      const valEl = targetId ? document.getElementById(targetId) : chip.querySelector('.rs-chip-val');
+      const val = valEl ? valEl.textContent.trim() : '';
+
+      if (!val || val === '--') return;
+
+      chip.classList.add('copied');
+      setTimeout(() => chip.classList.remove('copied'), 400);
+
+      if (typeof copyToClipboard === 'function') {
+        copyToClipboard(val, `📋 RS Score ${pct}: ${val} tersalin ke clipboard!`);
+      }
+    });
+  });
+}
+
+function handleCopyAllRsDistribution() {
+  const pMap = ['p99', 'p90', 'p70', 'p50', 'p30', 'p10', 'p01'];
+  const labels = {'p99': 'P99', 'p90': 'P90', 'p70': 'P70', 'p50': 'P50 (Med)', 'p30': 'P30', 'p10': 'P10', 'p01': 'P01'};
+  const lines = [];
+
+  pMap.forEach(k => {
+    const el = document.getElementById(`rs-val-${k}`);
+    const v = el ? el.textContent.trim() : '--';
+    lines.push(`${labels[k]}: ${v}`);
+  });
+
+  const totalStocks = document.getElementById('rs-dist-total-stocks')?.textContent || '--';
+  const dateStr = document.getElementById('rs-dist-date')?.textContent || '--';
+  const text = `Distribusi RS Score IDX (vs IHSG) - ${dateStr} (Semesta: ${totalStocks} Saham)\n` + lines.join(' | ');
+
+  const btn = document.getElementById('btn-copy-all-rs');
+  const label = document.getElementById('copy-all-rs-label');
+  if (label) label.textContent = 'Tersalin!';
+  setTimeout(() => {
+    if (label) label.textContent = 'Salin Semua';
+  }, 1500);
+
+  if (typeof copyToClipboard === 'function') {
+    copyToClipboard(text, '📋 7 Titik Distribusi RS Score IDX berhasil disalin!');
   }
 }
 

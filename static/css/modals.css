@@ -144,6 +144,35 @@
   font-feature-settings: "tnum" 1;
 }
 
+.stat-item-copyable {
+  cursor: pointer;
+  transition: background 0.15s ease;
+  user-select: none;
+}
+
+.stat-item-copyable:hover {
+  background: #f1f5f9;
+}
+
+.m-stat-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.m-stat-copy-btn {
+  opacity: 0.4;
+  display: inline-flex;
+  align-items: center;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.stat-item-copyable:hover .m-stat-copy-btn {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
 .m-stat-val.lime,
 .m-val.highlight {
   color: var(--status-confirmed-text);

@@ -348,8 +348,8 @@ function renderTable(data) {
         <td class="text-center" onclick="event.stopPropagation()">
           ${critPillsHtml}
         </td>
-        <td class="text-center">
-          <span class="rs-badge ${rsClass}">${stock.rs_score.toFixed(0)}</span>
+        <td class="text-center" onclick="event.stopPropagation(); copyToClipboard('${stock.rs_score.toFixed(0)}', '📋 RS Rating ${stock.ticker}: ${stock.rs_score.toFixed(0)} tersalin!')" title="Klik untuk salin RS Rating ${stock.ticker}">
+          <span class="rs-badge ${rsClass}" style="cursor: pointer;">${stock.rs_score.toFixed(0)}</span>
         </td>
         <td class="text-right" style="color: ${stock.dist_low_pct >= 25 ? 'var(--status-confirmed-text)' : 'var(--text-secondary)'}; font-family: var(--font-mono); font-weight: 700;">
           +${stock.dist_low_pct.toFixed(1)}%
@@ -436,6 +436,15 @@ function openCriteriaModal(ticker) {
 function closeModal() {
   const modal = document.getElementById('criteria-modal');
   if (modal) modal.classList.add('hidden');
+}
+
+function copyModalRSValue() {
+  const rsEl = document.getElementById('modal-rs');
+  const tickerEl = document.getElementById('modal-ticker');
+  if (!rsEl) return;
+  const raw = rsEl.textContent.trim();
+  const ticker = tickerEl ? tickerEl.textContent.trim() : '';
+  copyToClipboard(raw, `📋 RS Rating ${ticker} (${raw}) tersalin ke clipboard!`);
 }
 
 function closeModalOnBackdrop(event) {
