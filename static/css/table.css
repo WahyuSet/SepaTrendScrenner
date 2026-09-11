@@ -542,3 +542,148 @@
   background: var(--brand-lime-hover);
   transform: translateY(-1px);
 }
+
+/* ==========================================================================
+   TABLE & TOOLBAR MOBILE RESPONSIVE SYSTEM
+   ========================================================================== */
+@media (max-width: 768px) {
+  .table-card {
+    border-radius: 10px;
+  }
+
+  .table-toolbar-row-top {
+    padding: 10px 14px;
+    gap: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .table-title-area {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .table-title-area h2 {
+    font-size: 13px;
+  }
+
+  /* Horizontal touch scrolling tabs without ugly line breaking */
+  .segmented-tabs {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 2px;
+  }
+
+  .segmented-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .segmented-tab-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .table-toolbar-row-bottom {
+    padding: 10px 14px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .filter-controls-group {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .filter-item {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .filter-select-wrapper {
+    flex: 1;
+    max-width: 200px;
+  }
+
+  .filter-select {
+    width: 100%;
+    font-size: 11px;
+    height: 30px;
+  }
+
+  .score-pills-group {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .score-pills-group::-webkit-scrollbar {
+    display: none;
+  }
+
+  .score-pill-btn {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  .filter-search-input {
+    width: 100%;
+  }
+
+  .filter-search-input:focus {
+    width: 100%;
+  }
+
+  .table-actions {
+    width: 100%;
+    gap: 6px;
+  }
+
+  .btn-table-util {
+    flex: 1;
+    justify-content: center;
+    font-size: 11px;
+    height: 30px;
+    padding: 0 8px;
+  }
+
+  .table-container {
+    max-height: calc(100vh - 230px);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 9px 10px;
+    font-size: 12px;
+  }
+
+  .ticker-cell {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-toolbar-row-top {
+    padding: 8px 10px;
+  }
+
+  .table-toolbar-row-bottom {
+    padding: 8px 10px;
+  }
+
+  .filter-item {
+    font-size: 11px;
+  }
+
+  .btn-table-util {
+    font-size: 10px;
+    padding: 0 6px;
+  }
+}
+

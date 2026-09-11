@@ -25,12 +25,6 @@
   gap: 20px;
   width: 100%;
 }
-  margin-bottom: 20px;
-  transition: all 0.25s ease;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
-}
 
 .market-regime-card::before {
   content: '';
@@ -779,29 +773,121 @@
   color: #be123c;
 }
 
-/* Mobile Responsive */
+/* Mobile & Tablet Responsive */
 @media (max-width: 900px) {
   .regime-top-row {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 12px;
   }
+  
+  .regime-left {
+    width: 100%;
+  }
+
   .regime-center {
     border-left: none;
     border-right: none;
     border-top: 1px solid #e2e8f0;
     border-bottom: 1px solid #e2e8f0;
-    padding: 12px 0;
+    padding: 10px 0;
     width: 100%;
   }
+
+  .regime-right {
+    width: 100%;
+    text-align: left;
+  }
+
   .regime-rs-chips {
     grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
   }
+
   .m-plan-grid {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 600px) {
+  .market-regime-card {
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+  }
+
+  .regime-status-wrap {
+    gap: 10px;
+  }
+
+  .regime-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+    border-radius: 8px;
+  }
+
+  .regime-title {
+    font-size: 11px;
+  }
+
+  .regime-pill {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .regime-stats-row {
+    flex-wrap: wrap;
+    gap: 5px;
+    font-size: 11px;
+  }
+
+  .regime-val {
+    font-size: 14px;
+  }
+
+  .regime-exposure-box {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .regime-desc {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .regime-rs-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .regime-rs-meta {
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 10px;
+    width: 100%;
+  }
+
+  .regime-rs-chips {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+
+  .rs-chip {
+    padding: 5px 6px;
+  }
+
+  .rs-chip-lbl {
+    font-size: 9px;
+  }
+
+  .rs-chip-val {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 400px) {
   .regime-rs-chips {
     grid-template-columns: repeat(2, 1fr);
   }

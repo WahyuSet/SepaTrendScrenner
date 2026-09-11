@@ -1,6 +1,130 @@
 /* ==========================================================================
-   APP LAYOUT, SIDEBAR & STATS GRID
+   APP LAYOUT, MOBILE TOPBAR & SIDEBAR DRAWER
    ========================================================================== */
+.mobile-topbar {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: 250;
+  padding: 0 14px;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.mobile-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu-btn:hover {
+  background: #ffffff;
+  border-color: var(--border-strong);
+}
+
+.mobile-menu-btn:active {
+  transform: scale(0.95);
+}
+
+.mobile-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mobile-brand-dino {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.mobile-brand-title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.mobile-brand-title span {
+  color: var(--brand-lime);
+}
+
+.mobile-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mobile-action-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-action-btn:hover {
+  background: #ffffff;
+  border-color: var(--border-strong);
+}
+
+.mobile-action-btn:active {
+  transform: scale(0.95);
+}
+
+.mobile-action-btn.scan-btn {
+  background: var(--brand-lime);
+  color: #ffffff;
+  border: none;
+  font-size: 13px;
+  box-shadow: 0 1px 4px rgba(77, 124, 15, 0.35);
+}
+
+.mobile-action-btn.scan-btn:hover {
+  background: var(--brand-lime-hover);
+}
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 280;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .app-layout {
   display: flex;
   min-height: 100vh;
@@ -29,11 +153,36 @@
   gap: 16px;
 }
 
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .sidebar-header .brand {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 0 4px;
+}
+
+.btn-sidebar-close {
+  display: none;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  color: var(--text-muted);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-sidebar-close:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .brand-badge {
@@ -321,7 +470,7 @@
   transition: width 0.3s ease;
 }
 
-/* 5. System Status & Bottom Footer */
+/* 5. System Status & Bottom Footer - Terminal Hardware Aesthetic */
 .sidebar-bottom {
   display: flex;
   flex-direction: column;
@@ -329,31 +478,36 @@
 }
 
 .system-status-card {
-  background: var(--bg-tertiary);
+  background: #ffffff;
   border: 1px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 9px 12px;
+  border-radius: 10px;
+  padding: 10px 12px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  position: relative;
+  transition: all 0.2s ease;
 }
 
 .system-status-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
 }
 
 .system-status-pill {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 3px 7px;
+  gap: 7px;
+  padding: 4px 9px;
   border-radius: 6px;
-  background: #f1f5f9;
+  background: #f8fafc;
   border: 1px solid #e2e8f0;
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: help;
+  user-select: none;
 }
 
 .status-live-dot {
@@ -361,8 +515,9 @@
   height: 7px;
   border-radius: 50%;
   background: #94a3b8;
-  transition: all 0.3s ease;
+  position: relative;
   flex-shrink: 0;
+  transition: all 0.3s ease;
 }
 
 .status-text {
@@ -373,61 +528,91 @@
   white-space: nowrap;
 }
 
-/* 1. Open / Live Trading */
+/* 1. Open / Live Trading - Rich Emerald Glow with Radar Ping */
 .system-status-pill.open {
-  background: #f0fdf4;
-  border-color: #bbf7d0;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: #86efac;
+  box-shadow: 0 1px 3px rgba(22, 163, 74, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+
 .system-status-pill.open .status-live-dot {
-  background: #10b981;
-  box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
-  animation: pulseGreenDot 2s infinite;
+  background: #16a34a;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.25);
+  animation: radarPing 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
+
 .system-status-pill.open .status-text {
   color: #15803d;
+  font-weight: 800;
 }
 
-/* 2. Break / Pre-Market */
+/* 2. Break / Pre-Market - Warm Amber Terminal */
 .system-status-pill.break {
-  background: #fffbeb;
-  border-color: #fde68a;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border-color: #fcd34d;
+  box-shadow: 0 1px 3px rgba(217, 119, 6, 0.1);
 }
+
 .system-status-pill.break .status-live-dot {
-  background: #f59e0b;
-  box-shadow: 0 0 5px rgba(245, 158, 11, 0.6);
+  background: #d97706;
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+  animation: radarPingAmber 2.2s infinite;
 }
+
 .system-status-pill.break .status-text {
   color: #b45309;
+  font-weight: 800;
 }
 
-/* 3. Closed / Weekend */
+/* 3. Closed / Weekend - Crisp Muted Slate */
 .system-status-pill.closed {
   background: #f8fafc;
   border-color: #e2e8f0;
 }
+
 .system-status-pill.closed .status-live-dot {
   background: #94a3b8;
   box-shadow: none;
 }
+
 .system-status-pill.closed .status-text {
   color: #64748b;
+  font-weight: 700;
 }
 
-@keyframes pulseGreenDot {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-  70% { transform: scale(1.15); box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+@keyframes radarPing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(22, 163, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
+}
+
+@keyframes radarPingAmber {
+  0% {
+    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 5px rgba(217, 119, 6, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0);
+  }
 }
 
 .btn-sidebar-refresh {
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 4px;
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 12px;
-  padding: 2px 4px;
-  color: var(--text-muted);
-  transition: all 0.3s ease;
+  width: 26px;
+  height: 26px;
+  color: var(--text-secondary);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -435,9 +620,21 @@
 
 .btn-sidebar-refresh:hover {
   background: #ffffff;
-  border-color: var(--border-subtle);
-  color: var(--text-primary);
+  border-color: var(--border-strong);
+  color: var(--brand-lime);
+  transform: translateY(-1px);
+}
+
+.btn-sidebar-refresh:active {
+  transform: scale(0.95);
+}
+
+.btn-sidebar-refresh:hover .refresh-icon-svg {
   transform: rotate(180deg);
+}
+
+.refresh-icon-svg {
+  transition: transform 0.4s ease;
 }
 
 .system-status-time {
@@ -565,7 +762,7 @@
   margin-top: 2px;
 }
 
-/* Stats Summary Cards */
+/* Stats Summary Cards - Enterprise Financial Terminal Pro */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -573,66 +770,127 @@
 }
 
 .stat-card {
+  position: relative;
   background: #ffffff;
   border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-  padding: 16px 20px;
+  border-radius: 12px;
+  padding: 16px 18px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  box-shadow: var(--shadow-card);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  gap: 10px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+/* Subtle top indicator accent line */
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #94a3b8 0%, #cbd5e1 100%);
+  opacity: 0.7;
+  transition: all 0.25s ease;
+}
+
+.stat-card.confirmed::before {
+  background: linear-gradient(90deg, #16a34a 0%, #84cc16 100%);
+  opacity: 1;
+}
+
+.stat-card.watchlist::before {
+  background: linear-gradient(90deg, #d97706 0%, #f59e0b 100%);
+  opacity: 1;
 }
 
 .stat-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: #cbd5e1;
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08), 0 3px 6px -2px rgba(15, 23, 42, 0.03);
+}
+
+.stat-card:hover::before {
+  height: 4px;
 }
 
 .stat-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
 }
 
 .stat-label {
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  color: #64748b;
+  line-height: 1.2;
 }
 
+/* Polished micro-badge for stat-icon */
 .stat-icon {
-  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.stat-card.confirmed .stat-icon {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.stat-card.watchlist .stat-icon {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.stat-card:hover .stat-icon {
+  transform: scale(1.08);
 }
 
 .stat-value {
   font-size: 26px;
   font-weight: 800;
   font-family: var(--font-mono);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
-  font-feature-settings: "tnum" 1;
+  font-feature-settings: "tnum" 1, "zero" 1;
+  line-height: 1.15;
 }
 
 .stat-value.lime {
-  color: var(--status-confirmed-text);
+  color: #15803d;
 }
 
 .stat-value.amber {
-  color: var(--status-watchlist-text);
+  color: #b45309;
 }
 
 .stat-value.text-sm {
   font-size: 15px;
   font-weight: 700;
   font-family: var(--font-sans);
+  color: #334155;
 }
 
 .stat-meta {
   font-size: 11px;
-  color: var(--text-muted);
+  color: #64748b;
+  font-weight: 500;
+  line-height: 1.3;
 }
 
 /* ==========================================================================
@@ -774,5 +1032,167 @@
 @keyframes heartPulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.22); }
+}
+
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVE LAYOUT SYSTEM
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .main-content {
+    padding: 20px 24px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* 1. Show Mobile Sticky Topbar */
+  .mobile-topbar {
+    display: flex;
+  }
+
+  /* 2. Lock page scroll when sidebar drawer is open */
+  body.sidebar-locked {
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  /* 3. App Layout Stacking */
+  .app-layout {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    position: relative;
+  }
+
+  /* 4. Off-Canvas Sidebar Drawer */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 285px;
+    max-width: 86vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 300;
+    transform: translateX(-105%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-right: 1px solid var(--border-subtle);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .btn-sidebar-close {
+    display: flex;
+  }
+
+  /* 5. Main Content Container Adjustment */
+  .main-content {
+    padding: 14px 14px 32px;
+    padding-top: 70px;
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+    gap: 16px;
+  }
+
+  /* 6. View Header */
+  .view-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .view-header-left h1 {
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  .view-header-left p {
+    font-size: 11px;
+  }
+
+  /* 7. Stats Grid - 2 Column Clean Mobile Fit */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 12px 14px;
+    gap: 8px;
+    border-radius: 10px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+
+  .stat-icon {
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .stat-value {
+    font-size: 22px;
+  }
+
+  .stat-value.text-sm {
+    font-size: 13px;
+  }
+
+  .stat-meta {
+    font-size: 10px;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-topbar {
+    padding: 0 12px;
+    height: 52px;
+  }
+
+  .main-content {
+    padding: 10px 10px 24px;
+    padding-top: 64px;
+    gap: 12px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 10px 11px;
+    gap: 6px;
+  }
+
+  .stat-value {
+    font-size: 19px;
+  }
+
+  .app-footer {
+    padding: 20px 0 12px;
+  }
+
+  .footer-content {
+    font-size: 11px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 

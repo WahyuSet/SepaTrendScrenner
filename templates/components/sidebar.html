@@ -13,6 +13,12 @@
           <h2>Tirexxz <span>Screnner</span></h2>
         </div>
       </div>
+      <button class="btn-sidebar-close" id="btn-sidebar-close" onclick="closeMobileSidebar()" aria-label="Tutup Menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
 
     <!-- 2. TOP OMNIBAR SEARCH TRIGGER (LINEAR / RAYCAST STYLE) -->
@@ -119,8 +125,12 @@
           <span class="status-live-dot" id="sidebar-market-dot"></span>
           <span class="status-text" id="sidebar-market-text">{{ market_status.label if market_status else 'IDX Closed' }}</span>
         </div>
-        <button class="btn-sidebar-refresh" onclick="refreshActiveScreener()" title="Muat ulang cache hasil scan">
-          <span>🔄</span>
+        <button class="btn-sidebar-refresh" onclick="refreshActiveScreener()" title="Muat ulang status pasar & cache hasil scan" aria-label="Refresh status">
+          <svg class="refresh-icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
         </button>
       </div>
       <div class="system-status-time">
@@ -146,8 +156,12 @@
             <span class="user-status-label"><span class="user-live-dot"></span>Online</span>
           </div>
         </div>
-        <a href="/logout" class="btn-sidebar-logout" title="Keluar dari sesi Admin" onclick="return confirm('Apakah Anda yakin ingin keluar dari sesi Admin?')">
-          <span>🚪</span>
+        <a href="/logout" class="btn-sidebar-logout" title="Keluar dari sesi Admin" onclick="return confirm('Apakah Anda yakin ingin keluar dari sesi Admin?')" aria-label="Logout">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
         </a>
       </div>
     </div>

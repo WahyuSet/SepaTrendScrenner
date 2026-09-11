@@ -349,6 +349,11 @@ function switchScreener(screenerId) {
       loadBacktestData();
     }
   }
+
+  // Auto-close mobile drawer after navigating on phone
+  if (window.innerWidth <= 768) {
+    closeMobileSidebar();
+  }
 }
 
 function refreshActiveScreener() {
@@ -365,3 +370,48 @@ function refreshActiveScreener() {
     showToast('✓ Data berhasil dimuat ulang dari server!');
   });
 }
+
+// ============================================================================
+// MOBILE NAVIGATION & DRAWER CONTROLLER
+// ============================================================================
+
+function toggleMobileSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  if (!sidebar) return;
+
+  const isOpen = sidebar.classList.contains('mobile-open');
+  if (isOpen) {
+    closeMobileSidebar();
+  } else {
+    openMobileSidebar();
+  }
+}
+
+function openMobileSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (sidebar) sidebar.classList.add('mobile-open');
+  if (overlay) overlay.classList.add('active');
+  document.body.classList.add('sidebar-locked');
+}
+
+function closeMobileSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (sidebar) sidebar.classList.remove('mobile-open');
+  if (overlay) overlay.classList.remove('active');
+  document.body.classList.remove('sidebar-locked');
+}
+
+// Close drawer on Escape key or on window resize > 768px
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeMobileSidebar();
+  }
+});
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) {
+    closeMobileSidebar();
+  }
+});

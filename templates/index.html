@@ -17,6 +17,32 @@
 </head>
 <body>
 
+  <!-- Mobile Sticky Header Bar (Visible only on <= 768px) -->
+  <header class="mobile-topbar" id="mobile-topbar">
+    <button class="mobile-menu-btn" id="btn-mobile-menu" onclick="toggleMobileSidebar()" aria-label="Buka Menu Navigasi">
+      <svg class="hamburger-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    <div class="mobile-brand" onclick="switchScreener('sepa')">
+      <span class="mobile-brand-dino">🦖</span>
+      <span class="mobile-brand-title">Tirexxz <span>Screnner</span></span>
+    </div>
+    <div class="mobile-topbar-actions">
+      <button class="mobile-action-btn" onclick="openCommandPalette()" title="Cari Emiten (Ctrl + K)">
+        🔍
+      </button>
+      <button class="mobile-action-btn scan-btn" onclick="triggerScan()" title="Scan Universe IDX Sekarang">
+        ⚡
+      </button>
+    </div>
+  </header>
+
+  <!-- Sidebar Backdrop Overlay for Mobile Drawer -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
   <div class="app-layout">
     <!-- Sleek Minimalist Sidebar -->
     {% include 'components/sidebar.html' %}
