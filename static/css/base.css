@@ -49,14 +49,23 @@
   --status-div-hid-text: #1d4ed8;
   --status-div-hid-border: #bfdbfe;
 
-  /* Typography - Apple San Francisco Stack */
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "SF Mono", Monaco, Menlo, Consolas, "Liberation Mono", monospace;
+  /* Typography - Plus Jakarta Sans & JetBrains Mono Stack */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', "SF Mono", Monaco, Menlo, Consolas, "Liberation Mono", monospace;
 
   /* Shadows */
   --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
   --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   --shadow-lime: 0 4px 14px 0 rgba(77, 124, 15, 0.39);
+
+  /* Z-Index Design Tokens */
+  --z-base: 1;
+  --z-sticky: 100;
+  --z-dropdown: 200;
+  --z-drawer: 250;
+  --z-backdrop: 300;
+  --z-modal: 400;
+  --z-toast: 500;
 }
 
 body {
@@ -64,10 +73,24 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accessibility Focus States */
+:focus-visible {
+  outline: 2px solid var(--brand-lime);
+  outline-offset: 2px;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--brand-lime);
+  outline-offset: 2px;
 }
 
 /* Custom Scrollbars */
@@ -95,12 +118,24 @@ body {
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 
+/* Financial Data & Number Formatting */
+.mono,
+.tabular-nums,
+.price-cell,
+.stat-value,
+.tab-counter,
+.count-pill,
+.data-table td.text-right {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
 /* Toast Notification */
 .toast-container {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 9999;
+  z-index: var(--z-toast);
   display: flex;
   flex-direction: column;
   gap: 8px;

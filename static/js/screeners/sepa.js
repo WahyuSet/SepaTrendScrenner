@@ -2,7 +2,7 @@
 // SEPA TREND SCREENER MODULE (Mark Minervini 8-Criteria Stage 2)
 // ============================================================================
 
-const state = {
+const sepaState = {
   allResults: [],
   filteredResults: [],
   minScore: 6,
@@ -21,19 +21,19 @@ async function loadCachedResults() {
 
     if (json.status === 'success' && json.data) {
       const { timestamp, stats, results } = json.data;
-      state.allResults = results || [];
+      sepaState.allResults = results || [];
       renderStatsCards(stats, timestamp);
-      populateSectorDropdown(state.allResults);
-      updateTabCounters(state.allResults);
+      populateSectorDropdown(sepaState.allResults);
+      updateTabCounters(sepaState.allResults);
       applyFilters();
     } else {
       renderStatsCards(null, null);
-      state.allResults = [];
+      sepaState.allResults = [];
       applyFilters();
     }
   } catch (err) {
     console.error('Failed to load cached results:', err);
-    state.allResults = [];
+    sepaState.allResults = [];
     applyFilters();
   }
 }
@@ -68,12 +68,12 @@ function updateTabCounters(data) {
 }
 
 function handleScorePill(val) {
-  state.minScore = parseInt(val, 10);
+  sepaState.minScore = parseInt(val, 10);
   
   const pills = document.querySelectorAll('#sepa-score-pills .score-pill-btn');
   pills.forEach(p => {
     const scoreVal = parseInt(p.getAttribute('data-score'), 10);
-    if (scoreVal === state.minScore) {
+    if (scoreVal === sepaState.minScore) {
       p.classList.add('active');
     } else {
       p.classList.remove('active');
@@ -84,14 +84,14 @@ function handleScorePill(val) {
 }
 
 function handleSectorFilter(val) {
-  state.sectorFilter = val;
+  sepaState.sectorFilter = val;
   applyFilters();
 }
 
 function resetSepaFilters() {
-  state.minScore = 6;
-  state.sectorFilter = 'ALL';
-  state.tabFilter = 'ALL';
+  sepaState.minScore = 6;
+  sepaState.sectorFilter = 'ALL';
+  sepaState.tabFilter = 'ALL';
 
   // Reset UI elements
   const select = document.getElementById('sepa-sector-filter');
@@ -109,10 +109,11 @@ function resetSepaFilters() {
   });
 
   applyFilters();
+  if (typeof showToast === 'function') showToast('Filter SEPA telah direset ke default.');
 }
 
 function setTabFilter(tab) {
-  state.tabFilter = tab;
+  sepaState.tabFilter = tab;
   ['tab-all', 'tab-confirmed', 'tab-watchlist', 'tab-vcp'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('active');
@@ -127,11 +128,11 @@ function setTabFilter(tab) {
 }
 
 function sortTable(column) {
-  if (state.sortCol === column) {
-    state.sortAsc = !state.sortAsc;
+  if (sepaState.sortCol === column) {
+    sepaState.sortAsc = !sepaState.sortAsc;
   } else {
-    state.sortCol = column;
-    state.sortAsc = (column === 'ticker' || column === 'name' || column === 'sector');
+    sepaState.sortCol = column;
+    sepaState.sortAsc = (column === 'ticker' || column === 'name' || column === 'sector');
   }
 
   // Update header indicator icons
@@ -139,35 +140,35 @@ function sortTable(column) {
   icons.forEach(ic => ic.textContent = '↕');
   const targetIcon = document.getElementById(`sort-${column}`);
   if (targetIcon) {
-    targetIcon.textContent = state.sortAsc ? '▲' : '▼';
+    targetIcon.textContent = sepaState.sortAsc ? '▲' : '▼';
   }
 
   applyFilters();
 }
 
 function applyFilters() {
-  let list = [...state.allResults];
+  let list = [...sepaState.allResults];
 
   // 1. Min Score Filter
-  list = list.filter(item => item.total_score >= state.minScore);
+  list = list.filter(item => item.total_score >= sepaState.minScore);
 
   // 2. Tab Filter
-  if (state.tabFilter === 'CONFIRMED') {
+  if (sepaState.tabFilter === 'CONFIRMED') {
     list = list.filter(item => item.status === 'CONFIRMED');
-  } else if (state.tabFilter === 'WATCHLIST') {
+  } else if (sepaState.tabFilter === 'WATCHLIST') {
     list = list.filter(item => item.status === 'WATCHLIST');
-  } else if (state.tabFilter === 'VCP_READY') {
+  } else if (sepaState.tabFilter === 'VCP_READY') {
     list = list.filter(item => item.is_sepa_vcp_ready);
   }
 
   // 3. Sector Filter
-  if (state.sectorFilter !== 'ALL') {
-    list = list.filter(item => item.sector === state.sectorFilter);
+  if (sepaState.sectorFilter !== 'ALL') {
+    list = list.filter(item => item.sector === sepaState.sectorFilter);
   }
 
   // Update Reset button visibility
   const resetBtn = document.getElementById('sepa-reset-btn');
-  const isCustomFiltered = (state.minScore !== 6 || state.sectorFilter !== 'ALL' || state.tabFilter !== 'ALL');
+  const isCustomFiltered = (sepaState.minScore !== 6 || sepaState.sectorFilter !== 'ALL' || sepaState.tabFilter !== 'ALL');
   if (resetBtn) {
     resetBtn.classList.toggle('hidden', !isCustomFiltered);
   }
@@ -179,21 +180,21 @@ function applyFilters() {
   }
 
   // 3. Search Query Filter
-  if (state.searchQuery) {
+  if (sepaState.searchQuery) {
     list = list.filter(item => 
-      item.ticker.toLowerCase().includes(state.searchQuery) ||
-      item.name.toLowerCase().includes(state.searchQuery) ||
-      item.sector.toLowerCase().includes(state.searchQuery)
+      item.ticker.toLowerCase().includes(sepaState.searchQuery) ||
+      item.name.toLowerCase().includes(sepaState.searchQuery) ||
+      item.sector.toLowerCase().includes(sepaState.searchQuery)
     );
   }
 
   // 4. Sorting
   list.sort((a, b) => {
-    let valA = a[state.sortCol];
-    let valB = b[state.sortCol];
+    let valA = a[sepaState.sortCol];
+    let valB = b[sepaState.sortCol];
 
     if (typeof valA === 'string') {
-      return state.sortAsc 
+      return sepaState.sortAsc 
         ? valA.localeCompare(valB) 
         : valB.localeCompare(valA);
     }
@@ -201,10 +202,10 @@ function applyFilters() {
     valA = valA !== undefined ? valA : 0;
     valB = valB !== undefined ? valB : 0;
 
-    return state.sortAsc ? valA - valB : valB - valA;
+    return sepaState.sortAsc ? valA - valB : valB - valA;
   });
 
-  state.filteredResults = list;
+  sepaState.filteredResults = list;
   renderTable(list);
 }
 
@@ -375,7 +376,7 @@ function renderTable(data) {
 }
 
 function openCriteriaModal(ticker) {
-  const stock = state.allResults.find(s => s.ticker === ticker);
+  const stock = sepaState.allResults.find(s => s.ticker === ticker);
   if (!stock) return;
 
   const modal = document.getElementById('criteria-modal');
@@ -451,25 +452,4 @@ function closeModalOnBackdrop(event) {
   if (event.target.id === 'criteria-modal') {
     closeModal();
   }
-}
-
-function resetSepaFilters() {
-  state.minScore = 6;
-  state.searchQuery = '';
-  state.tabFilter = 'ALL';
-
-  const slider = document.getElementById('score-slider');
-  if (slider) slider.value = 6;
-  const sliderVal = document.getElementById('score-slider-val');
-  if (sliderVal) sliderVal.textContent = '≥ 6';
-
-  ['tab-all', 'tab-confirmed', 'tab-watchlist'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('active');
-  });
-  const allTab = document.getElementById('tab-all');
-  if (allTab) allTab.classList.add('active');
-
-  applyFilters();
-  showToast('Filter SEPA telah direset ke default.');
 }

@@ -10,7 +10,7 @@
   background: rgba(15, 23, 42, 0.72);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  z-index: 9999;
+  z-index: var(--z-backdrop, 300);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,6 +31,7 @@
   width: 100%;
   max-width: 920px;
   max-height: 90vh;
+  max-height: 90dvh;
   background: #ffffff;
   border: 1px solid var(--border-subtle);
   border-radius: 16px;

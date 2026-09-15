@@ -64,7 +64,6 @@ function updateIDXMarketStatusUI(serverStatus = null) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initSliderVisuals();
   updateIDXMarketStatusUI();
   // Keep market status real-time every 30 seconds
   setInterval(updateIDXMarketStatusUI, 30000);
@@ -286,21 +285,6 @@ function handleCopyAllRsDistribution() {
 
   if (typeof copyToClipboard === 'function') {
     copyToClipboard(text, '📋 7 Titik Distribusi RS Score IDX berhasil disalin!');
-  }
-}
-
-function initSliderVisuals() {
-  const slider = document.getElementById('score-slider');
-  if (slider) {
-    updateSliderBackground(slider.value);
-  }
-}
-
-function updateSliderBackground(val) {
-  const pct = ((val - 1) / 7) * 100;
-  const slider = document.getElementById('score-slider');
-  if (slider) {
-    slider.style.background = `linear-gradient(to right, var(--brand-lime) 0%, var(--brand-lime) ${pct}%, var(--bg-tertiary) ${pct}%, var(--bg-tertiary) 100%)`;
   }
 }
 

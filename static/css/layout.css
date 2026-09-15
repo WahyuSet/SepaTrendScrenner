@@ -128,6 +128,7 @@
 .app-layout {
   display: flex;
   min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--bg-primary);
 }
 
@@ -842,19 +843,28 @@
   justify-content: center;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
   font-size: 14px;
   flex-shrink: 0;
   transition: transform 0.2s ease;
 }
 
+.stat-icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
 .stat-card.confirmed .stat-icon {
   background: #f0fdf4;
   border-color: #bbf7d0;
+  color: #16a34a;
 }
 
 .stat-card.watchlist .stat-icon {
   background: #fffbeb;
   border-color: #fde68a;
+  color: #d97706;
 }
 
 .stat-card:hover .stat-icon {

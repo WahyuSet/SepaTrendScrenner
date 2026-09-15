@@ -29,7 +29,9 @@
     <div class="stat-card">
       <div class="stat-card-header">
         <span class="stat-label">Total Sinyal Bullish</span>
-        <span class="stat-icon">📈</span>
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+        </span>
       </div>
       <div id="rsi-stat-total" class="stat-value">0</div>
       <div id="rsi-stat-meta-recency" class="stat-meta">≤ 5 Hari Terakhir</div>
@@ -38,7 +40,9 @@
     <div class="stat-card confirmed">
       <div class="stat-card-header">
         <span class="stat-label">Regular Bullish</span>
-        <span class="stat-icon">🔄</span>
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        </span>
       </div>
       <div id="rsi-stat-reg-bull" class="stat-value lime">0</div>
       <div class="stat-meta">Sinyal Reversal (Price LL, RSI HL)</div>
@@ -47,7 +51,9 @@
     <div class="stat-card watchlist">
       <div class="stat-card-header">
         <span class="stat-label">Hidden Bullish</span>
-        <span class="stat-icon">🚀</span>
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+        </span>
       </div>
       <div id="rsi-stat-hid-bull" class="stat-value amber">0</div>
       <div class="stat-meta">Sinyal Continuation (Price HL, RSI LL)</div>
@@ -56,7 +62,9 @@
     <div class="stat-card">
       <div class="stat-card-header">
         <span class="stat-label">Setting Indikator</span>
-        <span class="stat-icon">⚙️</span>
+        <span class="stat-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+        </span>
       </div>
       <div id="rsi-stat-setting-display" class="stat-value text-sm">RSI 14 (P: 5/5) · 1D</div>
       <div id="rsi-stat-last-time" class="stat-meta">{{ last_scan_time or 'Belum pernah scan' }}</div>

@@ -8,12 +8,13 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background: rgba(15, 23, 42, 0.45);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: var(--z-backdrop, 300);
   padding: 20px;
   animation: fadeInModal 0.2s ease-out;
 }
@@ -36,6 +37,7 @@
   width: 660px;
   max-width: 95vw;
   max-height: 90vh;
+  max-height: 90dvh;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   display: flex;
