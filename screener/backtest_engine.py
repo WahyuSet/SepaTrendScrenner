@@ -11,7 +11,7 @@ import yfinance as yf
 
 from screener.data_fetcher import DataFetcher
 from screener.pre_breakout import PreBreakoutCalculator
-from screener.quality_screener import compute_trade_setup
+from screener.quality_screener import evaluate_ticker_quality
 
 logger = logging.getLogger(__name__)
 
@@ -174,7 +174,7 @@ class SignalBacktestEngine:
 
             # 2. Slice strictly up to bar i (No lookahead bias)
             slice_df = df.iloc[:i+1]
-            signal = self._detect_signal_at_bar(slice_df)
+            signal = self._detect_signal_at_bar(ticker, slice_df)
 
             if not signal:
                 i += 1
@@ -198,8 +198,6 @@ class SignalBacktestEngine:
             setup_type = signal["setup_type"]
             max_horizon = signal["max_horizon"]
             stop_loss = signal["stop_loss"]
-            target_1 = signal["target_1"]
-            target_2 = signal["target_2"]
 
             # Safeguard: SL must be strictly below entry
             if stop_loss >= entry_price:
@@ -237,82 +235,40 @@ class SignalBacktestEngine:
 
         return trades
 
-    def _detect_signal_at_bar(self, df: pd.DataFrame) -> Optional[Dict]:
+    def _detect_signal_at_bar(self, ticker: str, slice_df: pd.DataFrame) -> Optional[Dict]:
         """
-        Evaluate if bar T satisfies:
-        1. Momentum Breakout (5-7D): 50D high breakout with RVOL >= 1.3x
-        2. Pullback / RBS (10-12D): Test of rising EMA20/MA50 with RSI bounce
-        3. Base Building / VCP (15-20D): Tight consolidation with volume contraction
+        Evaluate bar T using the REAL production screeners (no proxy re-implementation):
+        1. PRE_BREAKOUT_READY (Horizon: 7D): PreBreakoutCalculator.evaluate_stock() with is_ready=True
+           (all 7 K-criteria met, matches "READY TO BREAKOUT" badge in the actual screener).
+        2. QUALITY_PULLBACK (Horizon: 12D): evaluate_ticker_quality() primary_scenario == 'pullback'
+           (score >= 70 already enforced inside evaluate_ticker_quality).
+        3. QUALITY_BREAKOUT (Horizon: 10D): evaluate_ticker_quality() primary_scenario == 'breakout'.
+        Only stop_loss from the signal is used — target_1/target_2 are always re-derived from the
+        actual T+1 entry price with fixed 1.5x/2.5x risk multiples in _simulate_trades_on_df().
         """
-        close = df['Close']
-        high = df['High'] if 'High' in df else close
-        low = df['Low'] if 'Low' in df else close
-        volume = df['Volume'] if 'Volume' in df else pd.Series([1]*len(df), index=df.index)
-
-        curr_close = float(close.iloc[-1])
-        curr_vol = float(volume.iloc[-1])
-        vol_ma20 = float(volume.iloc[-20:].mean()) if len(volume) >= 20 else curr_vol
-        rvol = (curr_vol / vol_ma20) if vol_ma20 > 0 else 1.0
-
-        ema20 = float(close.ewm(span=20, adjust=False).mean().iloc[-1])
-        ema50 = float(close.ewm(span=50, adjust=False).mean().iloc[-1])
-        high_50d = float(high.iloc[-50:].max()) if len(high) >= 50 else float(high.max())
-        low_10d = float(low.iloc[-10:].min()) if len(low) >= 10 else float(low.min())
-
-        # Stop loss based on swing low or max -7%
-        max_risk_price = round(curr_close * 0.93, 0)
-        stop_loss = round(max(low_10d, max_risk_price), 0)
-
-        # -------------------------------------------------------------
-        # 1. MOMENTUM BREAKOUT (Horizon: 7 Days)
-        # -------------------------------------------------------------
-        # Price is within 1.5% of 50D high or breaking out, RVOL >= 1.3, close > EMA20 > EMA50
-        is_breakout = (curr_close >= high_50d * 0.985) and (rvol >= 1.3) and (curr_close > ema20 > ema50)
-        if is_breakout:
-            risk = curr_close - stop_loss
+        pb_result = self.prebreakout_calc.evaluate_stock(ticker, slice_df)
+        if pb_result and pb_result.get("is_ready"):
             return {
-                "setup_type": "MOMENTUM_BREAKOUT",
+                "setup_type": "PRE_BREAKOUT_READY",
                 "max_horizon": 7,
-                "stop_loss": stop_loss,
-                "target_1": round(curr_close + 1.5 * risk, 0),
-                "target_2": round(curr_close + 2.5 * risk, 0)
+                "stop_loss": float(pb_result["stop_loss"]),
             }
 
-        # -------------------------------------------------------------
-        # 2. PULLBACK / RBS (Horizon: 12 Days)
-        # -------------------------------------------------------------
-        # Uptrend (EMA20 > EMA50), price pulling back within 2.5% of EMA20, volume normal/low
-        dist_ema20 = abs(curr_close - ema20) / curr_close
-        is_pullback = (ema20 > ema50) and (dist_ema20 <= 0.025) and (curr_close >= ema20 * 0.98) and (rvol <= 1.2)
-        if is_pullback:
-            sl_pullback = round(min(stop_loss, ema50 * 0.98), 0)
-            risk = curr_close - sl_pullback
-            return {
-                "setup_type": "PULLBACK_RBS",
-                "max_horizon": 12,
-                "stop_loss": sl_pullback,
-                "target_1": round(curr_close + 1.5 * risk, 0),
-                "target_2": round(curr_close + 2.5 * risk, 0)
-            }
-
-        # -------------------------------------------------------------
-        # 3. BASE BUILDING / VCP (Horizon: 20 Days)
-        # -------------------------------------------------------------
-        # Low volatility consolidation: base width <= 10%, volume dry-up (RVOL < 0.85), close > EMA50
-        if len(close) >= 20:
-            rolling_high = high.iloc[-15:].max()
-            rolling_low = low.iloc[-15:].min()
-            base_width_pct = ((rolling_high - rolling_low) / rolling_low) * 100.0 if rolling_low > 0 else 99
-            is_base = (base_width_pct <= 10.0) and (rvol <= 0.85) and (curr_close > ema50)
-            if is_base:
-                sl_base = round(rolling_low * 0.97, 0)
-                risk = curr_close - sl_base
+        meta = self.data_fetcher.get_ticker_meta(ticker)
+        qs_result = evaluate_ticker_quality(ticker, meta, slice_df)
+        if qs_result:
+            scenario = qs_result.get("primary_scenario")
+            if scenario == "pullback":
                 return {
-                    "setup_type": "BASE_BUILDING",
-                    "max_horizon": 20,
-                    "stop_loss": sl_base,
-                    "target_1": round(curr_close + 1.5 * risk, 0),
-                    "target_2": round(curr_close + 2.5 * risk, 0)
+                    "setup_type": "QUALITY_PULLBACK",
+                    "max_horizon": 12,
+                    "stop_loss": float(qs_result["stop_loss"]),
+                }
+            if scenario == "breakout":
+                return {
+                    "setup_type": "QUALITY_BREAKOUT",
+                    "max_horizon": 10,
+                    "stop_loss": float(qs_result["stop_loss"]),
                 }
 
         return None
@@ -524,7 +480,7 @@ class SignalBacktestEngine:
 
         # Breakdown by setup type
         by_setup = {}
-        for s_type in ["MOMENTUM_BREAKOUT", "PULLBACK_RBS", "BASE_BUILDING"]:
+        for s_type in ["PRE_BREAKOUT_READY", "QUALITY_PULLBACK", "QUALITY_BREAKOUT"]:
             sub_trades = [t for t in trades if t['setup_type'] == s_type]
             s_tot = len(sub_trades)
             s_win = len([t for t in sub_trades if t['is_win'] == 1])
@@ -564,9 +520,9 @@ class SignalBacktestEngine:
             "avg_holding_days": 0.0,
             "max_drawdown": 0.0,
             "breakdown": {
-                "MOMENTUM_BREAKOUT": {"total": 0, "wins": 0, "win_rate": 0.0, "avg_net_return": 0.0},
-                "PULLBACK_RBS": {"total": 0, "wins": 0, "win_rate": 0.0, "avg_net_return": 0.0},
-                "BASE_BUILDING": {"total": 0, "wins": 0, "win_rate": 0.0, "avg_net_return": 0.0}
+                "PRE_BREAKOUT_READY": {"total": 0, "wins": 0, "win_rate": 0.0, "avg_net_return": 0.0},
+                "QUALITY_PULLBACK": {"total": 0, "wins": 0, "win_rate": 0.0, "avg_net_return": 0.0},
+                "QUALITY_BREAKOUT": {"total": 0, "wins": 0, "win_rate": 0.0, "avg_net_return": 0.0}
             }
         }
 

@@ -31,6 +31,9 @@ CACHE_FILE = os.path.join("data", "cache", "quality_setup_result.json")
 MASTER_TICKERS_FILE = os.path.join("data", "idx_master_tickers.json")
 FETCH_PERIOD = "2y"   # Consistent with main scan pipeline; ensures 200+ bars for EMA200
 
+SL_MIN_RISK_PCT = 0.015   # 1.5% — prevent stop from sitting too close (noise-prone)
+SL_MAX_RISK_PCT = 0.05    # 5.0% — cap risk so high-ATR stocks don't get an oversized stop
+
 # In-memory scan status tracking
 _scan_state = {
     "is_scanning": False,
@@ -64,6 +67,7 @@ def compute_stock_score(indicators: Dict, change_pct_rank: Optional[float] = Non
     """
     close = indicators.get("close")
     open_price = indicators.get("open")
+    prev_close = indicators.get("prev_close")
     if not close or not open_price or close <= 0:
         return None
 
@@ -108,7 +112,7 @@ def compute_stock_score(indicators: Dict, change_pct_rank: Optional[float] = Non
             signals.append(f"RSI {rsi:.0f} slightly elevated")
         elif 75 < rsi <= 78:
             rsi_pts = 2
-            penalties.append(f"RSI {rsi:.0f} approaching overbought zone (-gap penalty)")
+            penalties.append(f"RSI {rsi:.0f} approaching overbought zone (-{10 - rsi_pts} pts vs optimal)")
         elif 45 <= rsi < 50:
             rsi_pts = 3
     breakdown["rsi"] = rsi_pts
@@ -244,7 +248,7 @@ def compute_stock_score(indicators: Dict, change_pct_rank: Optional[float] = Non
 
     # ── Bonuses / Penalties ───────────────────────────────────────────────
     bonus = 0
-    change_pct = ((close - open_price) / open_price) * 100 if open_price else 0.0
+    change_pct = ((close - prev_close) / prev_close) * 100 if prev_close else 0.0
 
     if vol_ratio and vol_ratio >= 1.5 and change_pct > 2.0:
         bonus += 3
@@ -353,7 +357,7 @@ def compute_stock_score(indicators: Dict, change_pct_rank: Optional[float] = Non
 def compute_trade_setup(indicators: Dict, recent_highs: List[float], recent_lows: List[float], fib_levels: Optional[Dict] = None) -> Optional[Dict]:
     """
     Generate actionable trade setups (Pullback vs Breakout),
-    anchoring Entry, Adaptive Stop Loss (1.5x - 2.0x ATR, min -3% floor),
+    anchoring Entry, Adaptive Stop Loss (1.5x-2.0x ATR, clamped to 1.5%-5% risk band),
     Resistance-driven Target 1/2, and dynamic Risk/Reward ratio.
     """
     close = indicators.get("close")
@@ -463,10 +467,13 @@ def compute_trade_setup(indicators: Dict, recent_highs: List[float], recent_lows
             sl_cand.append(sups_under[0] - 0.5 * atr)
         stop = max(sl_cand)
 
-        # Floor: SL minimum -3% di bawah entry (tidak boleh lebih dangkal dari -3%)
-        sl_floor = entry_price * 0.97
+        # Clamp risk to a sane band: not too tight (noise-prone) and not too wide (excess risk)
+        sl_floor = entry_price * (1 - SL_MIN_RISK_PCT)   # stop can't be shallower than 1.5%
+        sl_cap = entry_price * (1 - SL_MAX_RISK_PCT)     # stop can't be deeper than 5%
         if stop > sl_floor:
             stop = sl_floor
+        elif stop < sl_cap:
+            stop = sl_cap
 
         if stop >= entry_price or (entry_price - stop) <= 0:
             stop = entry_price - atr_mult * atr
@@ -656,6 +663,8 @@ def evaluate_ticker_quality(
         if n < 50:
             return None
 
+        prev_close = closes[-2] if n >= 2 else closes[-1]
+
         # 1. Indicator arrays
         ema20_arr = calc_ema(closes, 20)
         ema50_arr = calc_ema(closes, 50)
@@ -684,6 +693,7 @@ def evaluate_ticker_quality(
         curr_ind = {
             "close": closes[-1],
             "open": opens[-1],
+            "prev_close": prev_close,
             "high": highs[-1],
             "low": lows[-1],
             "volume": volumes[-1],

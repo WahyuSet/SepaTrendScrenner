@@ -42,27 +42,27 @@
   <!-- Divider -->
   <div class="regime-rs-divider"></div>
 
-  <!-- Bottom Row: IDX RS Score Distribution (7 Percentiles vs IHSG) -->
+  <!-- Bottom Row: IDX RS Ratio Distribution (7 Percentiles vs IHSG) -->
   <div class="regime-rs-row" id="regime-rs-row">
     <div class="regime-rs-header">
       <div class="regime-rs-title-wrap">
         <span class="rs-dist-icon">📊</span>
-        <span class="rs-dist-title">Distribusi RS Score IDX</span>
+        <span class="rs-dist-title">Distribusi RS Ratio IDX</span>
         <span class="rs-dist-bench-pill">vs IHSG</span>
-        <span class="rs-dist-hint" title="Distribusi Relative Strength (RS) score seluruh saham IDX dengan bobot IBD (40% 3M, 20% 6M, 20% 9M, 20% 12M) terhadap IHSG. Nilai > 100 menandakan outperform IHSG.">ℹ️</span>
+        <span class="rs-dist-hint" title="Distribusi rasio Relative Strength (RS) seluruh saham IDX dengan bobot IBD (40% 3M, 20% 6M, 20% 9M, 20% 12M) terhadap IHSG. Nilai > 100 menandakan outperform IHSG. Catatan: skala rasio (100 = setara IHSG) — BUKAN skala RS Rating 1-99 yang dipakai di tabel saham individual.">ℹ️</span>
       </div>
       <div class="regime-rs-meta">
         <span class="rs-meta-item">Semesta: <strong id="rs-dist-total-stocks">--</strong> Saham</span>
         <span class="rs-meta-sep">•</span>
         <span class="rs-meta-item">Tanggal: <strong id="rs-dist-date">--</strong></span>
-        <button id="btn-copy-all-rs" class="btn-action-ghost" title="Salin seluruh nilai 7 persentil RS Score ke clipboard">
+        <button id="btn-copy-all-rs" class="btn-action-ghost" title="Salin seluruh nilai 7 persentil RS Ratio ke clipboard">
           <svg class="action-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
           </svg>
           <span id="copy-all-rs-label">Salin Semua</span>
         </button>
-        <button id="btn-refresh-rs-dist" class="btn-refresh-rs" title="Hitung ulang distribusi RS Score sekarang">
+        <button id="btn-refresh-rs-dist" class="btn-refresh-rs" title="Hitung ulang distribusi RS Ratio sekarang">
           <svg class="rs-refresh-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="23 4 23 10 17 10"></polyline>
             <polyline points="1 20 1 14 7 14"></polyline>

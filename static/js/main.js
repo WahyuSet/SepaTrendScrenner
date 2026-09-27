@@ -213,7 +213,7 @@ async function handleRefreshRsDistribution() {
   if (label) label.textContent = 'Menghitung...';
 
   if (typeof showToast === 'function') {
-    showToast('info', 'Memulai kalkulasi distribusi RS Score seluruh IDX...', 4000);
+    showToast('info', 'Memulai kalkulasi distribusi RS Ratio seluruh IDX...', 4000);
   }
 
   try {
@@ -255,7 +255,7 @@ function initRsChipsCopyEvents() {
       setTimeout(() => chip.classList.remove('copied'), 400);
 
       if (typeof copyToClipboard === 'function') {
-        copyToClipboard(val, `📋 RS Score ${pct}: ${val} tersalin ke clipboard!`);
+        copyToClipboard(val, `📋 RS Ratio ${pct}: ${val} tersalin ke clipboard!`);
       }
     });
   });
@@ -274,7 +274,7 @@ function handleCopyAllRsDistribution() {
 
   const totalStocks = document.getElementById('rs-dist-total-stocks')?.textContent || '--';
   const dateStr = document.getElementById('rs-dist-date')?.textContent || '--';
-  const text = `Distribusi RS Score IDX (vs IHSG) - ${dateStr} (Semesta: ${totalStocks} Saham)\n` + lines.join(' | ');
+  const text = `Distribusi RS Ratio IDX (vs IHSG) - ${dateStr} (Semesta: ${totalStocks} Saham)\n` + lines.join(' | ');
 
   const btn = document.getElementById('btn-copy-all-rs');
   const label = document.getElementById('copy-all-rs-label');
@@ -284,7 +284,7 @@ function handleCopyAllRsDistribution() {
   }, 1500);
 
   if (typeof copyToClipboard === 'function') {
-    copyToClipboard(text, '📋 7 Titik Distribusi RS Score IDX berhasil disalin!');
+    copyToClipboard(text, '📋 7 Titik Distribusi RS Ratio IDX berhasil disalin!');
   }
 }
 

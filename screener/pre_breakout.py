@@ -5,6 +5,10 @@ from .data_fetcher import DataFetcher
 
 logger = logging.getLogger(__name__)
 
+SL_MIN_RISK_PCT = 0.015   # 1.5% — prevent stop from sitting too close (noise-prone)
+SL_MAX_RISK_PCT = 0.07    # 7.0% — cap max risk (existing behavior, promoted to a named constant)
+
+
 class PreBreakoutCalculator:
     """
     Screener for Pre-Breakout / Early Stage Bullish Momentum Setups.
@@ -228,13 +232,18 @@ class PreBreakoutCalculator:
         tick_size = self.get_idx_tick(high_50d)
         pivot_buy = round(high_50d + tick_size, 0)
 
-        # Stop Loss: Dynamic following lowest swing low of last 10 days, capped at -7% max
-        max_risk_price = round(pivot_buy * 0.93, 0)  # Max -7% risk
+        # Stop Loss: Dynamic following lowest swing low of last 10 days, clamped to 1.5%-7% risk band
+        min_risk_price = round(pivot_buy * (1 - SL_MIN_RISK_PCT), 0)  # stop can't be shallower than 1.5%
+        max_risk_price = round(pivot_buy * (1 - SL_MAX_RISK_PCT), 0)  # stop can't be deeper than 7%
         if len(low) >= 10:
             base_swing_low = float(low.iloc[-10:].min())
             stop_loss = round(max(base_swing_low, max_risk_price), 0)
         else:
             stop_loss = max_risk_price
+
+        # Clamp: prevent an overly tight stop from a nearby noise-prone swing low
+        if stop_loss > min_risk_price:
+            stop_loss = min_risk_price
 
         # Fallback safeguard: Stop loss must strictly be below pivot_buy
         if stop_loss >= pivot_buy:

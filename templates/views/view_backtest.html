@@ -144,11 +144,11 @@
 
       <!-- Strategy Horizon Breakdown Cards -->
       <div class="strategy-horizon-strip">
-        <div class="horizon-card" onclick="setBacktestStrategyFilter('MOMENTUM_BREAKOUT')" title="Filter ke Momentum Breakout">
+        <div class="horizon-card" onclick="setBacktestStrategyFilter('PRE_BREAKOUT_READY')" title="Filter ke Pre-Breakout Ready">
           <div class="h-icon-box">⚡</div>
           <div class="h-details">
             <div class="h-title-row">
-              <span class="h-name">Momentum Breakout</span>
+              <span class="h-name">Pre-Breakout Ready</span>
               <span class="h-horizon-tag">5–7 Hari</span>
             </div>
             <div class="h-metric-row">
@@ -160,11 +160,11 @@
           </div>
         </div>
 
-        <div class="horizon-card" onclick="setBacktestStrategyFilter('PULLBACK_RBS')" title="Filter ke Buy on Pullback / RBS">
+        <div class="horizon-card" onclick="setBacktestStrategyFilter('QUALITY_PULLBACK')" title="Filter ke Quality Pullback">
           <div class="h-icon-box">🔄</div>
           <div class="h-details">
             <div class="h-title-row">
-              <span class="h-name">Buy on Pullback / RBS</span>
+              <span class="h-name">Quality Pullback</span>
               <span class="h-horizon-tag">10–12 Hari</span>
             </div>
             <div class="h-metric-row">
@@ -176,12 +176,12 @@
           </div>
         </div>
 
-        <div class="horizon-card" onclick="setBacktestStrategyFilter('BASE_BUILDING')" title="Filter ke Base Building / VCP">
-          <div class="h-icon-box">💎</div>
+        <div class="horizon-card" onclick="setBacktestStrategyFilter('QUALITY_BREAKOUT')" title="Filter ke Quality Breakout">
+          <div class="h-icon-box">🚀</div>
           <div class="h-details">
             <div class="h-title-row">
-              <span class="h-name">Base Building / VCP</span>
-              <span class="h-horizon-tag">15–20 Hari</span>
+              <span class="h-name">Quality Breakout</span>
+              <span class="h-horizon-tag">7–10 Hari</span>
             </div>
             <div class="h-metric-row">
               <span class="h-wr mono" id="strat-bb-wr">0.0% WR</span>
@@ -210,14 +210,14 @@
           <button class="segmented-tab-btn active" data-strategy="ALL" onclick="setBacktestStrategyFilter('ALL')">
             🌐 Semua Setup <span id="cnt-bt-all" class="tab-counter">0</span>
           </button>
-          <button class="segmented-tab-btn" data-strategy="MOMENTUM_BREAKOUT" onclick="setBacktestStrategyFilter('MOMENTUM_BREAKOUT')">
-            ⚡ Momentum (5–7D) <span id="cnt-bt-mb" class="tab-counter">0</span>
+          <button class="segmented-tab-btn" data-strategy="PRE_BREAKOUT_READY" onclick="setBacktestStrategyFilter('PRE_BREAKOUT_READY')">
+            ⚡ Pre-Breakout (7D) <span id="cnt-bt-mb" class="tab-counter">0</span>
           </button>
-          <button class="segmented-tab-btn" data-strategy="PULLBACK_RBS" onclick="setBacktestStrategyFilter('PULLBACK_RBS')">
-            🔄 Pullback (10–12D) <span id="cnt-bt-pb" class="tab-counter">0</span>
+          <button class="segmented-tab-btn" data-strategy="QUALITY_PULLBACK" onclick="setBacktestStrategyFilter('QUALITY_PULLBACK')">
+            🔄 Quality Pullback (12D) <span id="cnt-bt-pb" class="tab-counter">0</span>
           </button>
-          <button class="segmented-tab-btn" data-strategy="BASE_BUILDING" onclick="setBacktestStrategyFilter('BASE_BUILDING')">
-            💎 Base (15–20D) <span id="cnt-bt-bb" class="tab-counter">0</span>
+          <button class="segmented-tab-btn" data-strategy="QUALITY_BREAKOUT" onclick="setBacktestStrategyFilter('QUALITY_BREAKOUT')">
+            🚀 Quality Breakout (10D) <span id="cnt-bt-bb" class="tab-counter">0</span>
           </button>
         </div>
       </div>

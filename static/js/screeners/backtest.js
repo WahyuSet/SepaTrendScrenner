@@ -103,8 +103,8 @@ function renderBacktestKPIs(data) {
 function renderStrategyComparison(breakdown) {
   if (!breakdown) return;
 
-  // 1. Momentum Breakout
-  const mb = breakdown['MOMENTUM_BREAKOUT'] || { total: 0, wins: 0, win_rate: 0.0, avg_net_return: 0.0 };
+  // 1. Pre-Breakout Ready
+  const mb = breakdown['PRE_BREAKOUT_READY'] || { total: 0, wins: 0, win_rate: 0.0, avg_net_return: 0.0 };
   const elMbWr = document.getElementById('strat-mb-wr');
   const elMbRet = document.getElementById('strat-mb-ret');
   const elMbTot = document.getElementById('strat-mb-total-badge');
@@ -119,8 +119,8 @@ function renderStrategyComparison(breakdown) {
   if (elMbTot) elMbTot.textContent = `(${mb.total} trade)`;
   if (cntMb) cntMb.textContent = mb.total;
 
-  // 2. Pullback / RBS
-  const pb = breakdown['PULLBACK_RBS'] || { total: 0, wins: 0, win_rate: 0.0, avg_net_return: 0.0 };
+  // 2. Quality Pullback
+  const pb = breakdown['QUALITY_PULLBACK'] || { total: 0, wins: 0, win_rate: 0.0, avg_net_return: 0.0 };
   const elPbWr = document.getElementById('strat-pb-wr');
   const elPbRet = document.getElementById('strat-pb-ret');
   const elPbTot = document.getElementById('strat-pb-total-badge');
@@ -135,8 +135,8 @@ function renderStrategyComparison(breakdown) {
   if (elPbTot) elPbTot.textContent = `(${pb.total} trade)`;
   if (cntPb) cntPb.textContent = pb.total;
 
-  // 3. Base Building / VCP
-  const bb = breakdown['BASE_BUILDING'] || { total: 0, wins: 0, win_rate: 0.0, avg_net_return: 0.0 };
+  // 3. Quality Breakout
+  const bb = breakdown['QUALITY_BREAKOUT'] || { total: 0, wins: 0, win_rate: 0.0, avg_net_return: 0.0 };
   const elBbWr = document.getElementById('strat-bb-wr');
   const elBbRet = document.getElementById('strat-bb-ret');
   const elBbTot = document.getElementById('strat-bb-total-badge');
@@ -439,12 +439,12 @@ function renderBacktestTableRows() {
 
     // Setup Badge
     let setupBadge = '';
-    if (t.setup_type === 'MOMENTUM_BREAKOUT') {
-      setupBadge = `<span class="badge-setup-type breakout">⚡ Breakout (7D)</span>`;
-    } else if (t.setup_type === 'PULLBACK_RBS') {
-      setupBadge = `<span class="badge-setup-type pullback">🔄 Pullback (12D)</span>`;
+    if (t.setup_type === 'PRE_BREAKOUT_READY') {
+      setupBadge = `<span class="badge-setup-type breakout">⚡ Pre-Breakout (7D)</span>`;
+    } else if (t.setup_type === 'QUALITY_PULLBACK') {
+      setupBadge = `<span class="badge-setup-type pullback">🔄 Quality Pullback (12D)</span>`;
     } else {
-      setupBadge = `<span class="badge-setup-type base">💎 Base (20D)</span>`;
+      setupBadge = `<span class="badge-setup-type base">🚀 Quality Breakout (10D)</span>`;
     }
 
     // Status Badge
