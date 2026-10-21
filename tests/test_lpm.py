@@ -270,6 +270,17 @@ class TestScenarios(unittest.TestCase):
         self.assertEqual(len(out["series"]), 15)
         self.assertGreater(out["series"][-1]["lpm"], 0)
 
+    def test_few_stored_days_inside_long_calendar_is_data_kurang(self):
+        # Found in the real BBCA smoke test: 10 stored days out of 80 passed the half-window rule
+        days = build_days(80, accumulation_day, flat_close)
+        for d in days[:70]:
+            d["brokers"] = None
+        out = build_lpm(days)
+        self.assertEqual(out["trend"]["status"], "DATA_KURANG")
+        self.assertIsNone(out["divergence"]["status"])
+        self.assertEqual(out["divergence"]["markers"], [])
+        self.assertEqual(out["phase"]["id"], "DATA_KURANG")
+
     def test_twenty_days_is_enough_for_trend(self):
         out = build_lpm(build_days(20, accumulation_day, flat_close))
         self.assertNotEqual(out["trend"]["status"], "DATA_KURANG")

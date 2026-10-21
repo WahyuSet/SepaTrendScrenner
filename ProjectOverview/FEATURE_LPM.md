@@ -147,7 +147,7 @@ slope_n(t) = rata-rata (100 × pressure) selama n hari terakhir     # poin per h
 | `TURNING_DOWN` | `slope_5 < −θ_5` tapi `slope_20 ≥ 0` |
 | `FLAT` | selain di atas |
 
-Kalau histori kurang dari 20 hari bursa, tampilkan status `DATA_KURANG` dan jangan klasifikasikan tren (garis tetap digambar).
+Kalau hari yang **benar-benar tersimpan** (bukan gap) kurang dari 20, tampilkan status `DATA_KURANG` dan jangan klasifikasikan tren maupun divergensi (garis tetap digambar). Panjang kalender tidak dihitung: 10 hari tersimpan di dalam kalender 80 hari tetap `DATA_KURANG` (bug ini ditemukan saat smoke test BBCA, 2026-10-21).
 
 ### 4.6 Divergensi
 Jendela `W = 20` hari bursa:
@@ -220,6 +220,8 @@ Tambahan matriks kombinasi (tampil sebagai catatan kedua, bila cocok). "Intensit
 |---|---|
 | `screener/lpm.py` | Fungsi murni (tanpa I/O): `compute_daily_metrics(brokers)`, `compute_lpm(daily_rows, closes)`, `classify_trend`, `detect_divergence`, `compute_intensity`, `compute_vol_rotation`, `classify_phase`, dan `LPM_PARAMS`. Input/output berupa list/dict biasa supaya mudah dites. |
 | `tests/test_lpm.py` | Unit test `unittest` (tidak perlu dependency baru) dengan data sintetis (bagian 8). |
+| `screener/lpm_service.py` | Orkestrasi (tahap 3): kalender hari bursa dari yfinance (cache 10 menit per proses), sinkron hari terbaru, thread backfill. Route di `app.py` hanya menerjemahkan ke HTTP. |
+| `tests/test_broker_daily.py`, `tests/test_lpm_service.py` | Test penyimpanan, backfill, status job, dan ketiga route dengan HTTP dan yfinance palsu. |
 | `static/js/core/lpm_panel.js` | Render tab LPM: chart, badge, tabel ringkas. |
 | `static/css/components/lpm_panel.css` | Style tab LPM memakai token di `.agent/Design.md`. |
 
@@ -240,22 +242,36 @@ CREATE TABLE IF NOT EXISTS broker_daily (
     date       TEXT,            -- YYYY-MM-DD
     data       TEXT,            -- JSON list broker mentah (broker_code, broker_name, bval, sval, bvol, svol, bfrq, sfrq, nval, nvol); lihat bagian 12
     status     TEXT,            -- 'ok' | 'empty' | 'error'
-    fetched_at TEXT,
+    fetched_at TEXT,            -- ISO, WIB
+    attempts   INTEGER DEFAULT 0,  -- jumlah request untuk tanggal ini
+    note       TEXT,            -- alasan error (mis. 'HTTP 500', tanggal respons tidak cocok)
     PRIMARY KEY (ticker, date)
 );
 ```
 - `status='empty'`: API sukses tapi tidak ada broker (misalnya saham disuspensi). Jangan di-fetch ulang.
-- `status='error'`: boleh dicoba ulang di backfill berikutnya.
+- `status='error'`: dicoba ulang di backfill berikutnya, maksimal `LPM_PARAMS["max_fetch_attempts"]` = 3 kali per tanggal, supaya tanggal yang selalu gagal tidak menghabiskan kuota. Sesudah itu tanggal tersebut tampil sebagai gap.
+- Di `data` hanya disimpan field di `BROKER_DAILY_FIELDS` (`screener/idx_api_client.py`), bukan respons mentah.
+
+**Method di `IDXApiClient`** (tahap 2, selesai 2026-10-21):
+| Method | Isi |
+|---|---|
+| `is_day_final(date)` | Tanggal lampau, atau hari ini setelah 17:00 WIB |
+| `load_broker_daily(ticker, dates=None)` | Baca baris tersimpan. Tanpa request |
+| `missing_broker_days(ticker, dates)` | Tanggal yang masih perlu request (belum ada, atau error di bawah batas coba), terbaru dulu |
+| `get_broker_daily(ticker, date)` | Dari tabel kalau ada, kalau tidak 1 request + validasi + simpan. `None` untuk hari yang belum final |
+| `backfill_broker_daily(ticker, dates, max_requests, on_progress, delay)` | Ambil tanggal yang hilang, terbaru dulu. `stopped_reason`: `done` / `max_requests` / `quota_reserve` / `quota_exhausted` |
+| `_request_with_status(endpoint, params)` | Seperti `_make_request` tapi juga mengembalikan status HTTP. `_make_request` sekarang memanggil ini dan perilakunya tidak berubah |
 - Hari ini (`date == today` WIB) **diabaikan sama sekali** sampai pukul 17:00 WIB: tidak diminta ke API, tidak disimpan, tidak masuk garis (keputusan 2026-10-21, pertanyaan 7). Ini menghemat kuota di jam bursa dan mencegah garis berubah-ubah karena data setengah hari. Semua perbandingan waktu memakai WIB (`timezone(timedelta(hours=7))`, pola `get_idx_market_status`), bukan jam server.
 - Sebelum disimpan, respons divalidasi: `broker_start_date == broker_end_date == tanggal yang diminta` (bagian 12).
 
 ### 5.4 Strategi kuota
 - Histori default: **80 hari bursa** (`LPM_PARAMS["history_days"]`): 60 hari tampilan + 20 hari warm-up untuk Intensity dan Vol Rotation (keputusan 2026-10-21, pertanyaan 5).
 - Backfill pertama 1 saham ≈ 80 request. Setelah itu cukup **1 request per hari**.
-- **Cadangan kuota**: backfill berhenti otomatis kalau sisa kuota < 200, supaya fitur lain (broker summary, financials, analysis) tetap jalan.
+- **Cadangan kuota**: backfill tidak pernah membuat request yang membuat sisa kuota turun di bawah 200 (`LPM_PARAMS["quota_reserve"]`), supaya fitur lain (broker summary, financials, analysis) tetap jalan. Sisa kuota saat berhenti = tepat 200.
 - Backfill berjalan di **thread background** (pola sama dengan `background_scan_worker` di `app.py`), mulai dari tanggal terbaru ke terlama, sehingga garis langsung bisa digambar dari data yang sudah ada.
 - Beri jeda ±0,3 detik antar request.
-- Satu saham hanya boleh punya satu backfill aktif (simpan status di dict `lpm_backfill_jobs` yang dilindungi `threading.Lock`).
+- Satu saham hanya boleh punya satu backfill aktif. Status job disimpan di **tabel SQLite `lpm_jobs`**, bukan di dict proses, karena Gunicorn berjalan dengan 3 worker (`deploy/tirexxz.service`) dan polling `/status` bisa jatuh ke worker lain. Klaim job memakai `BEGIN IMMEDIATE` supaya dua worker tidak bisa sama-sama memulai. Thread memperbarui `updated_at` setiap request; job `running` tanpa kabar lebih dari 120 detik dianggap mati (dilaporkan `error`) dan boleh dimulai ulang.
+- Bar yfinance dengan volume 0 (suspensi, tidak ada transaksi) tidak diminta ke API dan tampil sebagai gap.
 
 ---
 
@@ -263,6 +279,13 @@ CREATE TABLE IF NOT EXISTS broker_daily (
 
 ### `GET /api/idx/lpm/<ticker>`
 Menghitung dari data yang **sudah tersimpan**. Kalau ada hari bursa terbaru yang belum tersimpan, maksimal **5 hari** (`LPM_PARAMS["max_sync_fetch_days"]`) diambil langsung saat request ini (keputusan 2026-10-21, pertanyaan 8). Kekurangan yang lebih banyak ditandai di `coverage` dan dilengkapi lewat backfill.
+
+Aturan sinkron (tahap 3):
+- Hanya tanggal yang **lebih baru dari hari terakhir yang tersimpan**. Lubang lama diisi lewat backfill.
+- Saham tanpa histori sama sekali: **0 request**. User memulai backfill sendiri dari tombol.
+- Saat backfill saham itu sedang berjalan: 0 request (thread backfill sudah mengambilnya).
+
+Field `coverage` yang sebenarnya: `requested_days`, `available_days`, `gap_days`, `missing_days`, `synced_days`, `complete`, `has_history`. Respons juga memuat `ticker`, `backfill` (isi sama dengan `/status`), dan setiap baris `series` membawa `open`/`high`/`low`/`close` untuk candlestick serta `low_liquidity`.
 
 ```json
 {
@@ -298,10 +321,14 @@ Menghitung dari data yang **sudah tersimpan**. Kalau ada hari bursa terbaru yang
 - `coverage.complete = false` → UI menampilkan tombol "Lengkapi histori".
 
 ### `POST /api/idx/lpm/<ticker>/backfill`
-Body opsional: `{ "days": 60 }`. Memulai thread backfill, lalu langsung mengembalikan `{ "status": "started", "missing_days": 42, "estimated_requests": 42 }`. Kalau sudah berjalan, kembalikan `"status": "running"`. Kalau kuota tidak cukup, kembalikan `409` dengan pesan Bahasa Indonesia.
+Body opsional: `{ "days": 80 }` (dibatasi 20–250). Memulai thread backfill, lalu langsung mengembalikan `{ "status": "started", "missing_days": 42, "estimated_requests": 42, "quota": {...} }`. `estimated_requests` = `min(missing_days, sisa kuota − 200)`.
+- Sudah berjalan → `"status": "running"`.
+- Tidak ada yang hilang → `"status": "complete"`.
+- Sisa kuota tidak cukup di atas cadangan → `409` dengan `"code": "QUOTA_RESERVE"` dan pesan Bahasa Indonesia.
+- `days` bukan angka → `400`. Data harga tidak ada → `404`.
 
 ### `GET /api/idx/lpm/<ticker>/status`
-`{ "state": "running|done|stopped_quota|error", "done": 30, "total": 42, "last_error": null }`. Frontend mem-polling endpoint ini setiap 2 detik selama backfill berjalan.
+`{ "state": "idle|running|done|stopped_quota|error", "done": 30, "total": 42, "requested": 30, "last_error": null, "started_at": "...", "updated_at": "...", "quota": {...} }`. Frontend mem-polling endpoint ini setiap 2 detik selama backfill berjalan.
 
 ---
 
@@ -350,6 +377,12 @@ Ikuti `.agent/Design.md` (Enterprise Clear White, token CSS, font yang sudah ada
 | Fixture nyata | `scratch/lpm_fixtures/` dari Langkah 0 (dilewati kalau folder tidak ada) | BBCA 20 Okt `pressure ≈ +0,159`; ASRM `F_d = 70` |
 
 Selain skenario di atas, `tests/test_lpm.py` juga menguji tabel tren, θ adaptif, slope dengan gap, `hh_W` 5 hari, debounce marker, warna VR, aturan seri warna dominan, setiap revisi fase, dan catatan sekunder (37 test).
+
+`tests/test_broker_daily.py` (tahap 2, 13 test) menguji penyimpanan dan backfill dengan HTTP palsu dan database sementara, jadi tidak memakai kuota: data ok tidak diambil dua kali, `empty` tidak diambil ulang, batas 3 kali coba untuk `error`, respons untuk tanggal lain ditolak, hari ini diabaikan sampai 17:00 WIB, urutan terbaru dulu, batas `max_requests`, berhenti tepat di cadangan kuota, dan data tersimpan bisa langsung dipakai `build_lpm`. `tests/test_lpm_service.py` (tahap 3, 23 test) menguji service, status job, dan ketiga route lewat Flask test client: tanpa histori = 0 request, sinkron maksimal 5 hari terbaru, tidak sinkron saat backfill berjalan, hari volume 0 dilewati, klaim job eksklusif, job mati terdeteksi, berhenti di cadangan kuota, 401/404/400/409.
+
+Jalankan semua test (74 test): `python -m unittest discover -s tests -t .`
+
+**Smoke test nyata tahap 3 (2026-10-21, `scratch/smoke_lpm_backfill.py`):** backfill BBCA dengan `max_requests=10` → 10 request, 10 hari `ok` (7–20 Okt), berhenti `max_requests`. Kuota 5 → 15, dan `get_lpm` sesudahnya 0 request. Pressure harian BBCA berkisar −0,07 sampai +0,40 (±4 sampai 40 poin), sehingga θ adaptif = 8,3 (5H) dan 4,1 (20H). Hari turun tajam 16 Okt (−15%) justru bertekanan beli +0,35.
 
 Uji manual setelah backend jadi: buka modal untuk 1 saham likuid (BBCA) dan 1 saham kurang likuid, cek angka `pressure` 2–3 hari secara manual dari JSON broker mentah.
 

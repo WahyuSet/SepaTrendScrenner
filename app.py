@@ -32,6 +32,7 @@ from screener.journal_db import (
     restore_from_json
 )
 from screener.idx_api_client import IDXApiClient
+from screener.lpm_service import LPMService, LPMDataError, LPMQuotaError
 from screener.backtest_engine import SignalBacktestEngine
 from screener.auth import (
     get_secret_key,
@@ -51,6 +52,7 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 
 idx_client = IDXApiClient()
+lpm_service = LPMService(idx_client)
 backtest_engine = SignalBacktestEngine()
 
 CACHE_DIR = os.path.join(os.path.dirname(__file__), "data", "cache")
@@ -870,6 +872,73 @@ def get_idx_analysis(ticker):
         return jsonify({"status": "success", "data": data, "quota": quota})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+
+# =========================================================================
+# LPM (LIQUIDITY PRESSURE MODEL) API ENDPOINTS
+# =========================================================================
+
+@app.route("/api/idx/lpm/<ticker>", methods=["GET"])
+@admin_required
+def get_idx_lpm(ticker):
+    """LPM line, lenses and phase from stored broker history (fetches at most the newest 5 missing days)."""
+    clean_ticker = ticker.strip().upper().replace(".JK", "")
+    if not is_valid_idx_ticker(clean_ticker):
+        return jsonify({
+            "status": "error",
+            "message": f"Ticker '{clean_ticker}' tidak terdaftar di Bursa Efek Indonesia (IDX)"
+        }), 404
+
+    try:
+        data = lpm_service.get_lpm(clean_ticker)
+        return jsonify({"status": "success", "data": data, "quota": idx_client.get_quota_status()})
+    except LPMDataError as e:
+        return jsonify({"status": "error", "message": str(e)}), 404
+    except Exception as e:
+        return jsonify({"status": "error", "message": f"Gagal menghitung LPM: {e}"}), 500
+
+@app.route("/api/idx/lpm/<ticker>/backfill", methods=["POST"])
+@admin_required
+def start_idx_lpm_backfill(ticker):
+    """Start a background backfill of missing broker days for a ticker."""
+    clean_ticker = ticker.strip().upper().replace(".JK", "")
+    if not is_valid_idx_ticker(clean_ticker):
+        return jsonify({
+            "status": "error",
+            "message": f"Ticker '{clean_ticker}' tidak terdaftar di Bursa Efek Indonesia (IDX)"
+        }), 404
+
+    body = request.get_json(silent=True) or {}
+    try:
+        days = int(body["days"]) if body.get("days") is not None else None
+    except (TypeError, ValueError):
+        return jsonify({"status": "error", "message": "Parameter 'days' harus berupa angka"}), 400
+
+    try:
+        result = lpm_service.start_backfill(clean_ticker, days)
+        result["quota"] = idx_client.get_quota_status()
+        return jsonify(result)
+    except LPMQuotaError as e:
+        return jsonify({"status": "error", "code": "QUOTA_RESERVE", "message": str(e),
+                        "quota": idx_client.get_quota_status()}), 409
+    except LPMDataError as e:
+        return jsonify({"status": "error", "message": str(e)}), 404
+    except Exception as e:
+        return jsonify({"status": "error", "message": f"Gagal memulai backfill: {e}"}), 500
+
+@app.route("/api/idx/lpm/<ticker>/status", methods=["GET"])
+@admin_required
+def get_idx_lpm_status(ticker):
+    """Backfill job progress for a ticker (polled by the UI while running)."""
+    clean_ticker = ticker.strip().upper().replace(".JK", "")
+    if not is_valid_idx_ticker(clean_ticker):
+        return jsonify({
+            "status": "error",
+            "message": f"Ticker '{clean_ticker}' tidak terdaftar di Bursa Efek Indonesia (IDX)"
+        }), 404
+
+    job = idx_client.get_lpm_job(clean_ticker)
+    job["quota"] = idx_client.get_quota_status()
+    return jsonify(job)
 
 # =========================================================================
 # WATCHLIST & TRADE JOURNAL API ENDPOINTS (SQLITE BACKED)

@@ -14,9 +14,13 @@ LPM_PARAMS = {
     # Smart-money weight: ramp from R0 to R1 times the day's average trade value
     "R0": 1.5,
     "R1": 4.0,
-    # Storage / fetch horizon (used by the client and routes, not by the math here)
+    # Storage / fetch policy (used by the client and routes, not by the math here)
     "history_days": 80,
     "max_sync_fetch_days": 5,
+    "quota_reserve": 200,
+    "request_delay_sec": 0.3,
+    "max_fetch_attempts": 3,
+    "day_final_hour_wib": 17,
     # Slopes and adaptive threshold: theta_n = max(floor, k * sigma / sqrt(n))
     "slope_fast": 5,
     "slope_slow": 20,
@@ -391,14 +395,19 @@ def build_lpm(days, params=LPM_PARAMS):
     intensity, intensity_levels = compute_intensity([m["top5_share"] if m else None for m in metrics], params)
     vr_pct, vr_colors = compute_vol_rotation([m["vr_efficiency"] if m else None for m in metrics], params)
 
+    # Fewer stored days than the structural window: draw the line, but do not read trend or divergence
+    enough_history = sum(1 for p in pressures if p is not None) >= n_slow
+
     div_statuses = []
     for i in range(len(days)):
         status, _, _ = detect_divergence(closes, i, slope_slow[i], theta_slow[i], params)
-        div_statuses.append(status)
+        div_statuses.append(status if enough_history else None)
 
     last = len(days) - 1
-    trend = classify_trend(slope_fast[last], slope_slow[last], theta_fast[last])
+    trend = classify_trend(slope_fast[last], slope_slow[last], theta_fast[last]) if enough_history else "DATA_KURANG"
     div_status, price_chg, new_high = detect_divergence(closes, last, slope_slow[last], theta_slow[last], params)
+    if not enough_history:
+        div_status = None
     spike_window = intensity_levels[-params["spike_repeat_window"]:]
     spike_count = sum(1 for lvl in spike_window if lvl in SPIKE_LEVELS)
     vr_color = dominant_vr_color(vr_colors[-params["vr_dominant_window"]:])
