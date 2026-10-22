@@ -2,20 +2,19 @@
    MARKET REGIME BANNER & ADVANCED SCREENER BADGES (CLEAN WHITE THEME)
    ========================================================================== */
 
-/* 1. Market Regime Banner Container */
+/* 1. Market Regime Banner Container (Enterprise Clear - Design.md §6.2) */
 .market-regime-card {
   display: flex;
   flex-direction: column;
   gap: 14px;
   background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle, var(--border-subtle));
-  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
   padding: 16px 20px;
   margin-bottom: 20px;
-  transition: all 0.25s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: none;
 }
 
 .regime-top-row {
@@ -26,43 +25,27 @@
   width: 100%;
 }
 
-.market-regime-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 100%;
-  background: var(--border-strong, var(--border-strong));
-  transition: background 0.3s ease;
+.regime-top-row.hidden {
+  display: none !important;
 }
 
-/* Regime Variants - High Contrast Light Theme */
-.market-regime-card.regime-green {
-  background: var(--status-confirmed-bg);
-  border-color: var(--status-confirmed-border);
-  box-shadow: 0 2px 10px rgba(22, 163, 74, 0.08);
-}
-.market-regime-card.regime-green::before {
-  background: var(--status-confirmed-text);
-}
-
-.market-regime-card.regime-yellow {
-  background: var(--status-watchlist-bg);
-  border-color: var(--status-watchlist-border);
-  box-shadow: 0 2px 10px rgba(217, 119, 6, 0.08);
-}
-.market-regime-card.regime-yellow::before {
-  background: var(--status-watchlist-text);
-}
-
-.market-regime-card.regime-red {
+/* Error State Box */
+.regime-error-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
   background: var(--status-fail-bg);
-  border-color: var(--status-fail-border);
-  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.08);
+  border: 1px solid var(--status-fail-border);
+  border-radius: var(--radius-md);
+  color: var(--status-fail-text);
+  font-size: var(--text-sm);
+  font-weight: 500;
 }
-.market-regime-card.regime-red::before {
-  background: var(--status-fail-text);
+
+.regime-error-box.hidden {
+  display: none !important;
 }
 
 /* Regime Left Section */
@@ -77,28 +60,16 @@
 }
 
 .regime-icon {
-  font-size: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  background: var(--bg-primary);
+  width: 36px;
+  height: 36px;
+  background: var(--bg-tertiary);
   border: 1px solid var(--border-subtle);
-  border-radius: 10px;
-}
-
-.regime-green .regime-icon {
-  background: var(--status-confirmed-bg);
-  border-color: var(--status-confirmed-border);
-}
-.regime-yellow .regime-icon {
-  background: var(--status-watchlist-bg);
-  border-color: var(--status-watchlist-border);
-}
-.regime-red .regime-icon {
-  background: var(--status-fail-bg);
-  border-color: var(--status-fail-border);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  flex-shrink: 0;
 }
 
 .regime-header-title {
@@ -613,18 +584,18 @@
   padding: 3px 8px;
   font-size: 11px;
   font-weight: 600;
-  color: var(--status-info-text);
-  background: var(--status-info-bg);
-  border: 1px solid var(--status-info-border);
+  color: var(--text-secondary);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-strong);
   border-radius: 5px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
 .btn-refresh-rs:hover {
-  background: var(--status-info-bg);
-  border-color: var(--status-info-border);
-  color: var(--status-info-text);
+  background: var(--bg-tertiary);
+  border-color: var(--border-control);
+  color: var(--text-primary);
 }
 
 .btn-refresh-rs.spinning .rs-refresh-icon {
@@ -654,17 +625,16 @@
   background: var(--bg-primary);
   cursor: pointer;
   position: relative;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: background-color 150ms ease, border-color 150ms ease;
   user-select: none;
 }
 
 .rs-chip:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.09);
+  border-color: var(--border-strong);
 }
 
 .rs-chip:active {
-  transform: translateY(0);
+  background: var(--bg-tertiary);
 }
 
 .rs-chip.copied {

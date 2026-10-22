@@ -2,11 +2,19 @@
 <!-- MARKET REGIME BANNER (IHSG HEALTH & RS DISTRIBUTION) -->
 <!-- ======================================================== -->
 <div id="market-regime-banner" class="market-regime-card regime-loading">
+  <!-- Error State -->
+  <div id="regime-error-state" class="regime-error-box hidden" role="alert">
+    <span class="regime-error-text">Gagal memuat kondisi IHSG.</span>
+    <button type="button" class="btn-action-ghost" onclick="loadMarketRegime()">Coba lagi</button>
+  </div>
+
   <!-- Top Row: IHSG Market Health & Capital Allocation -->
   <div class="regime-top-row">
     <div class="regime-left">
       <div class="regime-status-wrap">
-        <span class="regime-icon">🏛️</span>
+        <span class="regime-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+        </span>
         <div>
           <div class="regime-header-title">
             <span class="regime-title">Kondisi Pasar Modal (IHSG)</span>
@@ -46,10 +54,14 @@
   <div class="regime-rs-row" id="regime-rs-row">
     <div class="regime-rs-header">
       <div class="regime-rs-title-wrap">
-        <span class="rs-dist-icon">📊</span>
+        <span class="rs-dist-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        </span>
         <span class="rs-dist-title">Distribusi RS Score IDX</span>
         <span class="rs-dist-bench-pill">vs IHSG</span>
-        <span class="rs-dist-hint" title="Distribusi Relative Strength (RS) score seluruh saham IDX dengan bobot IBD (40% 3M, 20% 6M, 20% 9M, 20% 12M) terhadap IHSG. Nilai > 100 menandakan outperform IHSG.">ℹ️</span>
+        <span class="rs-dist-hint" title="Distribusi Relative Strength (RS) score seluruh saham IDX dengan bobot IBD (40% 3M, 20% 6M, 20% 9M, 20% 12M) terhadap IHSG. Nilai > 100 menandakan outperform IHSG." aria-label="Informasi bobot RS">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        </span>
       </div>
       <div class="regime-rs-meta">
         <span class="rs-meta-item">Semesta: <strong id="rs-dist-total-stocks">--</strong> Saham</span>

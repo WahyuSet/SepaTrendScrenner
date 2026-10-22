@@ -43,7 +43,6 @@
 .rsi-tf-pill:hover:not(.active) {
   color: var(--text-primary);
   background: var(--bg-secondary);
-  transform: translateY(-1px);
 }
 
 .rsi-tf-pill.active {
@@ -327,4 +326,10 @@
   font-size: 12px;
   line-height: 1.5;
   color: var(--text-secondary);
+}
+
+.trend-context-sub {
+  display: block;
+  font-size: 10px;
+  color: var(--text-muted);
 }

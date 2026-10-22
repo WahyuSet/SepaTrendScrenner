@@ -2,6 +2,8 @@
 // QUALITY SETUP SCREENER MODULE (static/js/screeners/quality_setup.js)
 // ============================================================================
 
+let isFirstQualityRender = true;
+
 const qualityState = {
   allResults: [],
   filteredResults: [],
@@ -23,6 +25,7 @@ async function loadQualityResults() {
     if (json.status === 'success' && json.data) {
       const { scan_time, total_scanned, passed_count, elite_count, strong_count, breakout_count, pullback_count, avg_rr, data } = json.data;
       qualityState.allResults = data || [];
+      isFirstQualityRender = true;
       renderQualityStatsCards(json.data);
       populateQualitySectorDropdown(qualityState.allResults);
       updateQualityTabCounters();
@@ -66,7 +69,7 @@ function renderQualityStatsCards(stats) {
   if (staleWarning) {
     if (expiresAt && now > expiresAt) {
       staleWarning.classList.remove('hidden');
-      staleWarning.textContent = '⚠️ Data sudah lebih dari 24 jam — klik "Scan Quality" untuk refresh data terbaru';
+      staleWarning.textContent = 'Data sudah lebih dari 24 jam: klik "Scan Quality" untuk refresh data terbaru';
     } else {
       staleWarning.classList.add('hidden');
     }
@@ -243,10 +246,10 @@ function sortQualityTable(col) {
     if (icon) {
       if (c === col) {
         icon.textContent = qualityState.sortAsc ? '▲' : '▼';
-        icon.style.opacity = '1';
+        icon.classList.add('active');
       } else {
         icon.textContent = '↕';
-        icon.style.opacity = '0.4';
+        icon.classList.remove('active');
       }
     }
   });
@@ -272,18 +275,19 @@ function renderQualityTable() {
 
   if (emptyState) emptyState.classList.add('hidden');
 
+  const useFade = isFirstQualityRender;
   let rowsHtml = '';
   qualityState.filteredResults.forEach((item, idx) => {
     const isElite = item.grade === 'Elite';
     const gradeBadge = isElite
-      ? `<span class="qs-grade-badge elite">👑 Elite</span>`
-      : `<span class="qs-grade-badge strong">🟢 Strong</span>`;
+      ? `<span class="qs-grade-badge elite">Elite</span>`
+      : `<span class="qs-grade-badge strong">Strong</span>`;
 
     const isBreakoutJauh = (item.setup_type || '').includes('Jauh');
     const isBreakout = (item.setup_type || '').includes('Breakout');
     const setupBadge = isBreakout
-      ? `<span class="qs-setup-badge ${isBreakoutJauh ? 'breakout-jauh' : 'breakout'}">${isBreakoutJauh ? '⚠️' : '🚀'} ${item.setup_type}</span>`
-      : `<span class="qs-setup-badge pullback">⚡ ${item.setup_type}</span>`;
+      ? `<span class="qs-setup-badge ${isBreakoutJauh ? 'breakout-jauh' : 'breakout'}">${item.setup_type}</span>`
+      : `<span class="qs-setup-badge pullback">${item.setup_type}</span>`;
 
     const isBullish = item.supertrend === 'BULLISH';
     const stBadge = isBullish
@@ -300,9 +304,11 @@ function renderQualityTable() {
     const t1Formatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(item.target_1);
 
     const delay = Math.min(idx * 20, 400);
+    const fadeClass = useFade ? 'row-fade-in' : '';
+    const animStyle = useFade ? `style="animation-delay: ${delay}ms"` : '';
 
     rowsHtml += `
-      <tr style="animation-delay: ${delay}ms" onclick="openQualityModal('${item.ticker}')">
+      <tr class="${fadeClass}" ${animStyle} tabindex="0" role="button" aria-label="Buka detail bento ${item.ticker}" onclick="openQualityModal('${item.ticker}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQualityModal('${item.ticker}');}">
         <!-- 1. Ticker & Nama -->
         <td>
           <div class="ticker-cell-wrapper">
@@ -368,12 +374,14 @@ function renderQualityTable() {
         <!-- 9. Aksi Detail Bento -->
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-detail-bento" onclick="openQualityModal('${item.ticker}')" title="Buka Detail Bento Quality Setup">
-            <span>💎</span> Detail
+            Detail
           </button>
         </td>
       </tr>
     `;
   });
+
+  isFirstQualityRender = false;
 
   tbody.innerHTML = rowsHtml;
 }
@@ -401,7 +409,7 @@ function openQualityModal(ticker) {
   // Badges
   const isElite = stock.grade === 'Elite';
   const gradeBadgeEl = document.getElementById('qs-modal-grade-badge');
-  gradeBadgeEl.textContent = isElite ? '👑 ELITE' : '🟢 STRONG';
+  gradeBadgeEl.textContent = isElite ? 'ELITE' : 'STRONG';
   gradeBadgeEl.className = `badge-status ${isElite ? 'ready' : 'forming'}`;
 
   const isBreakoutJauh = (stock.setup_type || '').includes('Jauh');
@@ -441,14 +449,14 @@ function openQualityModal(ticker) {
   // Fibonacci Levels (Bento 3)
   const fib = stock.fibonacci || {};
   document.getElementById('qs-modal-fib-trend').textContent = (fib.trend || 'UPTREND').toUpperCase();
-  document.getElementById('qs-fib-236').textContent = fib.fib_236 ? `Rp ${fib.fib_236.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-fib-382').textContent = fib.fib_382 ? `Rp ${fib.fib_382.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-fib-500').textContent = fib.fib_500 ? `Rp ${fib.fib_500.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-fib-618').textContent = fib.golden_pocket ? `Rp ${fib.golden_pocket.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-fib-786').textContent = fib.fib_786 ? `Rp ${fib.fib_786.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-ext-1272').textContent = fib.ext_1272 ? `Rp ${fib.ext_1272.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-ext-1618').textContent = fib.ext_1618 ? `Rp ${fib.ext_1618.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-ext-2618').textContent = fib.ext_2618 ? `Rp ${fib.ext_2618.toLocaleString('id-ID')}` : '—';
+  document.getElementById('qs-fib-236').textContent = fib.fib_236 ? `Rp ${fib.fib_236.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-fib-382').textContent = fib.fib_382 ? `Rp ${fib.fib_382.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-fib-500').textContent = fib.fib_500 ? `Rp ${fib.fib_500.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-fib-618').textContent = fib.golden_pocket ? `Rp ${fib.golden_pocket.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-fib-786').textContent = fib.fib_786 ? `Rp ${fib.fib_786.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-ext-1272').textContent = fib.ext_1272 ? `Rp ${fib.ext_1272.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-ext-1618').textContent = fib.ext_1618 ? `Rp ${fib.ext_1618.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-ext-2618').textContent = fib.ext_2618 ? `Rp ${fib.ext_2618.toLocaleString('id-ID')}` : '--';
 
   // Candle & Supertrend (Bento 4)
   const isStBull = stock.supertrend === 'BULLISH';

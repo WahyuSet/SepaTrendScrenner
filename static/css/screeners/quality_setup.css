@@ -138,7 +138,6 @@
   background: var(--bg-tertiary);
   border-color: var(--brand-lime);
   color: var(--brand-lime-hover);
-  transform: translateY(-1px);
 }
 
 .score-cell-wrap {

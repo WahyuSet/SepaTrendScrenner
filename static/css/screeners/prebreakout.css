@@ -63,3 +63,9 @@
 .dist-res-badge.normal {
   color: var(--text-secondary);
 }
+
+.dist-h50-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}

@@ -2,6 +2,8 @@
 // PRE-BREAKOUT SETUP SCREENER MODULE
 // ============================================================================
 
+let isFirstPbRender = true;
+
 const prebreakoutState = {
   allResults: [],
   filteredResults: [],
@@ -23,6 +25,7 @@ async function loadPreBreakoutResults() {
     if (json.status === 'success' && json.data) {
       const { timestamp, stats, results } = json.data;
       prebreakoutState.allResults = results || [];
+      isFirstPbRender = true;
       renderPreBreakoutStatsCards(stats, timestamp);
       populatePbSectorDropdown(prebreakoutState.allResults);
       updatePbTabCounters(prebreakoutState.allResults);
@@ -281,11 +284,12 @@ function renderPreBreakoutTable(data) {
 
   if (emptyState) emptyState.classList.add('hidden');
 
+  const useFade = isFirstPbRender;
   let rowsHtml = '';
   data.forEach((stock, idx) => {
     const isReady = stock.status === 'READY';
     const statusClass = isReady ? 'ready' : 'forming';
-    const statusIcon = isReady ? '⚡' : '⭐';
+    const statusIcon = isReady ? '✓' : '•';
 
     const scoreClass = stock.total_score === 7 ? 'score-8' : 'score-6-7';
     const scorePct = Math.round((stock.total_score / 7) * 100);
@@ -300,6 +304,8 @@ function renderPreBreakoutTable(data) {
     const volumeFormatted = new Intl.NumberFormat('id-ID').format(stock.volume);
 
     const delay = Math.min(idx * 25, 500);
+    const fadeClass = useFade ? 'row-fade-in' : '';
+    const animStyle = useFade ? `style="animation-delay: ${delay}ms"` : '';
 
     // Mini pills for K1-K7
     let critPillsHtml = '<div class="crit-pills-wrap">';
@@ -312,9 +318,10 @@ function renderPreBreakoutTable(data) {
         const title = crit ? crit.title : `Kriteria ${num}`;
         const val = crit ? crit.val : '';
         const statusText = isPass ? 'PASS' : 'FAIL';
-        const tooltip = `K${num}: ${title} (${val}) — ${statusText}`;
+        const tooltip = `K${num}: ${title} (${val}) - ${statusText}`;
         const pillClass = isPass ? 'pass' : 'fail';
-        critPillsHtml += `<span class="crit-pill ${pillClass}" title="${tooltip}">${num}</span>`;
+        const ariaLabel = `K${num} ${isPass ? 'lolos' : 'gagal'}`;
+        critPillsHtml += `<span class="crit-pill ${pillClass}" title="${tooltip}" aria-label="${ariaLabel}">${num}</span>`;
       });
     }
     critPillsHtml += '</div>';
@@ -322,9 +329,7 @@ function renderPreBreakoutTable(data) {
     const isSurge = stock.vol_type === 'SURGE' || stock.rvol >= 1.2;
     const isDryUp = stock.vol_type === 'DRY_UP' || stock.rvol <= 0.75;
     const rvolClass = isSurge ? 'surge' : (isDryUp ? 'dryup' : 'normal');
-    const rvolBadgeText = isSurge 
-      ? `${stock.rvol.toFixed(2)}x ⚡` 
-      : (isDryUp ? `${stock.rvol.toFixed(2)}x 💧` : `${stock.rvol.toFixed(2)}x`);
+    const rvolBadgeText = `${stock.rvol.toFixed(2)}x`;
     const rvolTooltip = isSurge 
       ? 'Demand Surge (RVOL >= 1.2x)' 
       : (isDryUp ? 'Supply Dry-Up / VCP (RVOL <= 0.75x)' : 'Normal Volume');
@@ -332,7 +337,7 @@ function renderPreBreakoutTable(data) {
     const distClass = stock.dist_res_pct < 3.0 ? 'close' : 'normal';
 
     rowsHtml += `
-      <tr style="animation-delay: ${delay}ms" onclick="openPreBreakoutModal('${stock.ticker}')">
+      <tr class="${fadeClass}" ${animStyle} tabindex="0" role="button" aria-label="Buka detail setup ${stock.ticker}" onclick="openPreBreakoutModal('${stock.ticker}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPreBreakoutModal('${stock.ticker}');}">
         <td>
           <div class="ticker-cell-wrapper">
             <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'pinned' : ''}" data-ticker="${stock.ticker}" onclick="togglePinStock('${stock.ticker}', '${(stock.name || '').replace(/'/g, "\\'")}', '${stock.sector}', 'Pre-Breakout', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}">★</button>
@@ -378,7 +383,7 @@ function renderPreBreakoutTable(data) {
         </td>
         <td class="text-right">
           <span class="dist-res-badge ${distClass}">-${stock.dist_res_pct}%</span>
-          <div style="font-size: 10px; color: var(--text-muted); font-family: var(--font-mono);">H50: ${stock.high_50d.toLocaleString('id-ID')}</div>
+          <div class="dist-h50-sub">H50: ${stock.high_50d.toLocaleString('id-ID')}</div>
         </td>
         <td class="text-center">
           <span class="rvol-badge ${rvolClass}" title="${rvolTooltip}">${rvolBadgeText}</span>
@@ -388,18 +393,19 @@ function renderPreBreakoutTable(data) {
         </td>
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-cek-bandar" onclick="checkBandarInline('${stock.ticker}', this, event)" title="Ambil status akumulasi broker dari IDX Edge PRO API">
-            🔍 Cek Bandar
+            Cek Bandar
           </button>
         </td>
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-table-detail" onclick="openStockDetailModal('${stock.ticker}', {name: '${stock.name}', sector: '${stock.sector}', price: ${stock.price}})" title="Buka Detail Analisis Komprehensif">
-            📊 Detail
+            Detail
           </button>
         </td>
       </tr>
     `;
   });
 
+  isFirstPbRender = false;
   tbody.innerHTML = rowsHtml;
 }
 
@@ -416,13 +422,13 @@ function openPreBreakoutModal(ticker) {
   const tvLink = document.getElementById('pb-modal-tv-link');
   const container = document.getElementById('pb-modal-criteria-container');
 
-  if (title) title.textContent = `${stock.ticker} — ${stock.name}`;
+  if (title) title.textContent = `${stock.ticker} : ${stock.name}`;
   if (subtitle) subtitle.textContent = `Setup Pre-Breakout (${stock.sector})`;
   if (price) price.textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(stock.price);
   if (score) score.textContent = `${stock.total_score} / 7 Kriteria`;
   if (status) {
     status.textContent = stock.status_label;
-    status.style.color = stock.status === 'READY' ? 'var(--status-confirmed-text)' : 'var(--status-watchlist-text)';
+    status.className = `modal-status-badge ${stock.status === 'READY' ? 'status-confirmed' : 'status-watchlist'}`;
   }
   const h50Str = (stock.high_50d || 0).toLocaleString('id-ID');
   if (dist) dist.textContent = `-${stock.dist_res_pct}% (50D High: Rp ${h50Str})`;

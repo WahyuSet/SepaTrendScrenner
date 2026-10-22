@@ -2,6 +2,8 @@
 // SEPA TREND SCREENER MODULE (Mark Minervini 8-Criteria Stage 2)
 // ============================================================================
 
+let isFirstSepaRender = true;
+
 const sepaState = {
   allResults: [],
   filteredResults: [],
@@ -22,6 +24,7 @@ async function loadCachedResults() {
     if (json.status === 'success' && json.data) {
       const { timestamp, stats, results } = json.data;
       sepaState.allResults = results || [];
+      isFirstSepaRender = true;
       renderStatsCards(stats, timestamp);
       populateSectorDropdown(sepaState.allResults);
       updateTabCounters(sepaState.allResults);
@@ -282,15 +285,16 @@ function renderTable(data) {
 
   if (emptyState) emptyState.classList.add('hidden');
 
+  const useFade = isFirstSepaRender;
   let rowsHtml = '';
   data.forEach((stock, idx) => {
     const scoreClass = stock.total_score === 8 ? 'score-8' : (stock.total_score >= 6 ? 'score-6-7' : 'score-low');
     const scorePct = Math.round((stock.total_score / 8) * 100);
 
     const statusClass = stock.status === 'CONFIRMED' ? 'confirmed' : 'watchlist';
-    const statusIcon = stock.status === 'CONFIRMED' ? '✓' : '⭐';
+    const statusIcon = stock.status === 'CONFIRMED' ? '✓' : '•';
 
-    const rsClass = stock.rs_score >= 90 ? 'rs-high' : (stock.rs_score >= 70 ? 'rs-high' : (stock.rs_score >= 50 ? 'rs-mid' : 'rs-low'));
+    const rsClass = stock.rs_score >= 90 ? 'rs-elite' : (stock.rs_score >= 70 ? 'rs-high' : (stock.rs_score >= 50 ? 'rs-mid' : 'rs-low'));
 
     const changeClass = stock.pct_change_1d >= 0 ? 'pos' : 'neg';
     const changeSign = stock.pct_change_1d >= 0 ? '+' : '';
@@ -300,6 +304,8 @@ function renderTable(data) {
 
     const priceFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(stock.price);
     const delay = Math.min(idx * 25, 500);
+    const fadeClass = useFade ? 'row-fade-in' : '';
+    const animStyle = useFade ? `style="animation-delay: ${delay}ms"` : '';
 
     let critPillsHtml = '<div class="crit-pills-wrap">';
     if (stock.criteria) {
@@ -311,21 +317,25 @@ function renderTable(data) {
         const title = crit ? crit.title : `Kriteria ${num}`;
         const val = crit ? crit.val : '';
         const statusText = isPass ? 'PASS' : 'FAIL';
-        const tooltip = `C${num}: ${title} (${val}) — ${statusText}`;
+        const tooltip = `C${num}: ${title} (${val}) - ${statusText}`;
         const pillClass = isPass ? 'pass' : 'fail';
-        critPillsHtml += `<span class="crit-pill ${pillClass}" title="${tooltip}">${num}</span>`;
+        const ariaLabel = `C${num} ${isPass ? 'lolos' : 'gagal'}`;
+        critPillsHtml += `<span class="crit-pill ${pillClass}" title="${tooltip}" aria-label="${ariaLabel}">${num}</span>`;
       });
     }
     critPillsHtml += '</div>';
 
+    const distLowClass = stock.dist_low_pct >= 25 ? 'dist-pass' : 'dist-neutral';
+    const distHighClass = stock.dist_high_pct <= 25 ? 'dist-pass' : 'dist-fail';
+
     rowsHtml += `
-      <tr style="animation-delay: ${delay}ms" onclick="openCriteriaModal('${stock.ticker}')">
+      <tr class="${fadeClass}" ${animStyle} tabindex="0" role="button" aria-label="Buka detail kriteria ${stock.ticker}" onclick="openCriteriaModal('${stock.ticker}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCriteriaModal('${stock.ticker}');}">
         <td>
           <div class="ticker-cell-wrapper">
             <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'pinned' : ''}" data-ticker="${stock.ticker}" onclick="togglePinStock('${stock.ticker}', '${(stock.name || '').replace(/'/g, "\\'")}', '${stock.sector}', 'SEPA Trend', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}">★</button>
             <div class="ticker-info-stack">
               <span class="ticker-cell">${stock.ticker}</span>
-              ${stock.is_sepa_vcp_ready ? `<span class="badge-sepa-vcp" title="Setup Emas: SEPA Confirmed & VCP Ready to Breakout!">⭐ VCP READY</span>` : ''}
+              ${stock.is_sepa_vcp_ready ? `<span class="badge-sepa-vcp" title="Setup Emas: SEPA Confirmed & VCP Ready to Breakout!">VCP READY</span>` : ''}
             </div>
           </div>
         </td>
@@ -349,28 +359,30 @@ function renderTable(data) {
         <td class="text-center" onclick="event.stopPropagation()">
           ${critPillsHtml}
         </td>
-        <td class="text-center" onclick="event.stopPropagation(); copyToClipboard('${stock.rs_score.toFixed(0)}', '📋 RS Rating ${stock.ticker}: ${stock.rs_score.toFixed(0)} tersalin!')" title="Klik untuk salin RS Rating ${stock.ticker}">
-          <span class="rs-badge ${rsClass}" style="cursor: pointer;">${stock.rs_score.toFixed(0)}</span>
+        <td class="text-center" onclick="event.stopPropagation(); copyToClipboard('${stock.rs_score.toFixed(0)}', 'RS Rating ${stock.ticker}: ${stock.rs_score.toFixed(0)} tersalin!')" title="Klik untuk salin RS Rating ${stock.ticker}">
+          <span class="rs-badge ${rsClass}">${stock.rs_score.toFixed(0)}</span>
         </td>
-        <td class="text-right" style="color: ${stock.dist_low_pct >= 25 ? 'var(--status-confirmed-text)' : 'var(--text-secondary)'}; font-family: var(--font-mono); font-weight: 700;">
+        <td class="text-right dist-cell ${distLowClass}">
           +${stock.dist_low_pct.toFixed(1)}%
         </td>
-        <td class="text-right" style="color: ${stock.dist_high_pct <= 25 ? 'var(--status-confirmed-text)' : 'var(--status-fail-text)'}; font-family: var(--font-mono); font-weight: 700;">
+        <td class="text-right dist-cell ${distHighClass}">
           -${stock.dist_high_pct.toFixed(1)}%
         </td>
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-cek-bandar" onclick="checkBandarInline('${stock.ticker}', this, event)" title="Ambil status akumulasi broker dari IDX Edge PRO API">
-            🔍 Cek Bandar
+            Cek Bandar
           </button>
         </td>
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-table-detail" onclick="openStockDetailModal('${stock.ticker}', {name: '${(stock.name || '').replace(/'/g, "\\'")}', sector: '${stock.sector}', price: ${stock.price}})" title="Buka Detail Analisis Komprehensif">
-            📊 Detail
+            Detail
           </button>
         </td>
       </tr>
     `;
   });
+
+  isFirstSepaRender = false;
 
   tbody.innerHTML = rowsHtml;
 }
@@ -392,12 +404,12 @@ function openCriteriaModal(ticker) {
 
   if (tickerEl) tickerEl.textContent = stock.ticker;
   if (nameEl) nameEl.textContent = stock.name;
-  if (title) title.textContent = `${stock.ticker} — ${stock.name}`;
+  if (title) title.textContent = `${stock.ticker} : ${stock.name}`;
   if (price) price.textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(stock.price);
   if (score) score.textContent = `${stock.total_score} / 8 Kriteria`;
   if (status) {
     status.textContent = stock.status;
-    status.style.color = stock.status === 'CONFIRMED' ? 'var(--status-confirmed-text)' : 'var(--status-watchlist-text)';
+    status.className = `modal-status-badge ${stock.status === 'CONFIRMED' ? 'status-confirmed' : 'status-watchlist'}`;
   }
   if (rs) {
     const perfSign = (stock.stock_perf || 0) >= 0 ? '+' : '';
@@ -445,7 +457,7 @@ function copyModalRSValue() {
   if (!rsEl) return;
   const raw = rsEl.textContent.trim();
   const ticker = tickerEl ? tickerEl.textContent.trim() : '';
-  copyToClipboard(raw, `📋 RS Rating ${ticker} (${raw}) tersalin ke clipboard!`);
+  copyToClipboard(raw, `RS Rating ${ticker} (${raw}) tersalin ke clipboard!`);
 }
 
 function closeModalOnBackdrop(event) {

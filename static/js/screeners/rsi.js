@@ -2,6 +2,8 @@
 // RSI DIVERGENCE SCREENER MODULE
 // ============================================================================
 
+let isFirstRsiRender = true;
+
 const rsiState = {
   activeTf: '1D', // '1D' | '4H'
   data1D: { results: [], stats: null, timestamp: null },
@@ -45,6 +47,7 @@ async function loadRsiResults() {
       rsiState.data4H = { results: [], stats: null, timestamp: null };
     }
 
+    isFirstRsiRender = true;
     switchRsiTimeframe(rsiState.activeTf || '1D', false);
   } catch (err) {
     console.error('Failed to load RSI results:', err);
@@ -65,6 +68,7 @@ function switchRsiTimeframe(tf, resetFilters = false) {
   // Select active dataset
   const currentDataset = tf === '4H' ? rsiState.data4H : rsiState.data1D;
   rsiState.allResults = currentDataset.results || [];
+  isFirstRsiRender = true;
 
   // Update card recency label (1D: "≤ 5 Hari Terakhir", 4H: "≤ 5 Bar Terakhir (4H)")
   const metaRecency = document.getElementById('rsi-stat-meta-recency');
@@ -152,7 +156,7 @@ function resetRsiFilters() {
   const riskBtn = document.getElementById('rsi-toggle-highrisk');
   if (riskBtn) {
     riskBtn.classList.remove('active-filter');
-    riskBtn.innerHTML = '⚠️ Sembunyikan Grade C';
+    riskBtn.textContent = 'Sembunyikan Grade C';
   }
 
   ['rsi-tab-all', 'rsi-tab-reg', 'rsi-tab-hid', 'rsi-tab-gradea'].forEach(id => {
@@ -210,10 +214,10 @@ function toggleRsiHighRisk() {
   if (btn) {
     if (rsiState.hideHighRisk) {
       btn.classList.add('active-filter');
-      btn.innerHTML = '🛡️ Grade C Disembunyikan (Aktif)';
+      btn.textContent = 'Grade C Disembunyikan (Aktif)';
     } else {
       btn.classList.remove('active-filter');
-      btn.innerHTML = '⚠️ Sembunyikan Grade C';
+      btn.textContent = 'Sembunyikan Grade C';
     }
   }
   applyRsiFilters();
@@ -347,11 +351,11 @@ function renderRsiTable(data) {
 
   if (emptyState) emptyState.classList.add('hidden');
 
+  const useFade = isFirstRsiRender;
   let rowsHtml = '';
   data.forEach((stock, idx) => {
     const isReg = stock.divergence_type === 'REGULAR_BULL';
     const typeBadgeClass = isReg ? 'reg-bull' : 'hid-bull';
-    const typeIcon = isReg ? '🔄' : '🚀';
 
     // RSI class
     const rsiClass = stock.rsi <= 30 ? 'oversold' : (stock.rsi >= 70 ? 'overbought' : 'neutral');
@@ -367,6 +371,8 @@ function renderRsiTable(data) {
 
     // Stagger animation delay
     const delay = Math.min(idx * 25, 500);
+    const fadeClass = useFade ? 'row-fade-in' : '';
+    const animStyle = useFade ? `style="animation-delay: ${delay}ms"` : '';
 
     // Pivot comparison display
     const lowCompare = isReg ? `L: ${stock.pivot_low} < ${stock.prev_pivot_low}` : `L: ${stock.pivot_low} > ${stock.prev_pivot_low}`;
@@ -375,10 +381,10 @@ function renderRsiTable(data) {
     // Trend Context
     const isAbove200 = stock.price > (stock.ma200 || 0);
     const trendClass = isAbove200 ? 'trend-above' : 'trend-below';
-    const trendText = isAbove200 ? 'Above MA200 ✓' : 'Below MA200 ⚠️';
+    const trendText = isAbove200 ? 'Above MA200' : 'Below MA200';
 
     rowsHtml += `
-      <tr style="animation-delay: ${delay}ms" onclick="openRsiModal('${stock.ticker}')">
+      <tr class="${fadeClass}" ${animStyle} tabindex="0" role="button" aria-label="Buka detail divergensi ${stock.ticker}" onclick="openRsiModal('${stock.ticker}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRsiModal('${stock.ticker}');}">
         <td>
           <div class="ticker-cell-wrapper">
             <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'pinned' : ''}" data-ticker="${stock.ticker}" onclick="togglePinStock('${stock.ticker}', '${(stock.name || '').replace(/'/g, "\\'")}', '${stock.sector}', 'RSI Divergence', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}">★</button>
@@ -399,7 +405,7 @@ function renderRsiTable(data) {
           </span>
         </td>
         <td class="text-center">
-          <span class="badge-div-type ${typeBadgeClass}">${typeIcon} ${stock.divergence_label}</span>
+          <span class="badge-div-type ${typeBadgeClass}">${stock.divergence_label}</span>
         </td>
         <td class="text-center">
           <span class="rsi-pill ${rsiClass}">${stock.rsi.toFixed(1)}</span>
@@ -407,7 +413,7 @@ function renderRsiTable(data) {
         <td class="text-center">
           <div class="trend-context-pill ${trendClass}">
             <span>${trendText}</span>
-            <small style="display: block; font-size: 10px; color: var(--text-muted);">MA200: ${(stock.ma200 || 0).toLocaleString('id-ID')}</small>
+            <small class="trend-context-sub">MA200: ${(stock.ma200 || 0).toLocaleString('id-ID')}</small>
           </div>
         </td>
         <td class="text-center">
@@ -433,6 +439,8 @@ function renderRsiTable(data) {
       </tr>
     `;
   });
+
+  isFirstRsiRender = false;
 
   tbody.innerHTML = rowsHtml;
 }
@@ -461,12 +469,12 @@ function openRsiModal(ticker) {
   const isReg = stock.divergence_type === 'REGULAR_BULL';
   const tfLabel = stock.timeframe || rsiState.activeTf || '1D';
 
-  if (title) title.textContent = `${stock.ticker} — ${stock.name}`;
+  if (title) title.textContent = `${stock.ticker} : ${stock.name}`;
   if (subtitle) subtitle.textContent = `Inspeksi Sinyal ${stock.divergence_label} • TF ${tfLabel} (IDX:${stock.ticker})`;
   if (price) price.textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(stock.price);
   if (type) {
     type.textContent = stock.divergence_label;
-    type.style.color = isReg ? 'var(--status-div-reg-text)' : 'var(--status-div-hid-text)';
+    type.className = `modal-div-type ${isReg ? 'badge-reg-bull' : 'badge-hid-bull'}`;
   }
   if (rsiVal) rsiVal.textContent = stock.rsi.toFixed(1);
   if (recency) recency.textContent = stock.recency_text;
@@ -520,7 +528,7 @@ function resetRsiFilters() {
   const riskBtn = document.getElementById('rsi-toggle-highrisk');
   if (riskBtn) {
     riskBtn.classList.remove('active-filter');
-    riskBtn.innerHTML = '⚠️ Sembunyikan Grade C';
+    riskBtn.textContent = 'Sembunyikan Grade C';
   }
 
   ['rsi-tab-all', 'rsi-tab-reg', 'rsi-tab-hid', 'rsi-tab-gradea'].forEach(id => {

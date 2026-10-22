@@ -96,16 +96,25 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadMarketRegime() {
   const banner = document.getElementById('market-regime-banner');
   if (!banner) return;
+  const errBox = document.getElementById('regime-error-state');
+  const topRow = banner.querySelector('.regime-top-row');
 
   try {
     const res = await fetch('/api/market-regime');
     if (res.status === 401) return;
     const json = await res.json();
     if (json.status === 'success' && json.data) {
+      if (errBox) errBox.classList.add('hidden');
+      if (topRow) topRow.classList.remove('hidden');
       renderMarketRegime(json.data);
+    } else {
+      throw new Error((json && json.message) || 'Gagal memuat status pasar');
     }
   } catch (err) {
     console.error('Failed to load market regime:', err);
+    banner.classList.remove('regime-loading');
+    if (errBox) errBox.classList.remove('hidden');
+    if (topRow) topRow.classList.add('hidden');
   }
 }
 

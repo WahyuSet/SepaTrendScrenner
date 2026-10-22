@@ -384,20 +384,22 @@ Input cari, filter, sort, dan export di atas tabel. Tinggi kontrol 36px di deskt
 
 ### 6.5 Data Table
 
-Kolom per screener mengikuti data yang ada di kode. Contoh acuan SEPA (diverifikasi ulang terhadap kode di Fase 3 rencana):
+Kolom per screener mengikuti data yang ada di kode. Hasil verifikasi kode SEPA di Fase 3 (12 kolom):
 
 | Kolom | Rata | Catatan |
 |---|---|---|
-| Ticker | Kiri | Mono tebal, sticky kiri di mobile |
-| Nama Perusahaan | Kiri | Terpotong dengan ellipsis, nama lengkap di `title` |
+| Ticker | Kiri | Mono tebal, pin watchlist, badge VCP Ready jika aktif |
+| Nama Emiten | Kiri | Terpotong dengan ellipsis, nama lengkap di `title` |
 | Sektor | Kiri | `--text-secondary` |
-| Harga | Kanan | `Rp 9.800`, tabular |
-| SEPA Score | Tengah | Bar mini + `x/8` (§3.4) |
-| Status | Tengah | Badge status |
-| Kriteria C1-C8 | Tengah | 8 badge mini (§3.4) |
-| RS Rating | Tengah | Warna sesuai §3.4 |
-| % dari 52W Low / High | Kanan | Tabular, bertanda +/- |
-| Chart | Tengah | Tombol ikon ke TradingView, `aria-label` berisi ticker |
+| Harga Terakhir | Kiri | Format rupiah, subtext perubahan 1D (+/- %) |
+| SEPA Score | Tengah | Bar mini proporsional + teks `x/8` (§3.4) |
+| Status Stage 2 | Tengah | Badge status Confirmed / Watchlist |
+| Kriteria C1-C8 | Tengah | 8 badge mini terisi vs outline dengan tooltip & aria-label (§3.4) |
+| RS Rating | Tengah | Badge warna sesuai threshold §3.4, klik untuk salin nilai |
+| % Dari 52W Low | Kanan | Tabular mono, bertanda `+x%`, warna hijau bila lolos kriteria (≥25%) |
+| % Dari 52W High | Kanan | Tabular mono, bertanda `-x%`, warna hijau bila dalam batas kriteria (≤25%) |
+| Bandar Flow | Tengah | Tombol aksi inline Cek Bandar |
+| Aksi / Detail | Tengah | Tombol Detail membuka modal Minervini kriteria |
 
 ```css
 .data-table thead th {
