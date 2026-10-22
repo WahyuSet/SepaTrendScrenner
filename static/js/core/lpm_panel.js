@@ -1,7 +1,8 @@
 /**
  * ============================================================================
- * LPM (LIQUIDITY PRESSURE MODEL) TAB — STOCK DETAIL MODAL
- * Data: GET /api/idx/lpm/<ticker>, backfill: POST .../backfill + polling .../status
+ * LPM (LIQUIDITY PRESSURE MODEL) & SMART MONEY VIEW (templates/views/view_lpm.html)
+ * Data: GET /api/idx/lpm (stored tickers), GET /api/idx/lpm/<ticker>,
+ *       backfill: POST .../backfill + polling .../status
  * Chart: lightweight-charts 5.x with three native panes (price, LPM, daily lens)
  * Spec: ProjectOverview/FEATURE_LPM.md sections 6–7
  * ============================================================================
@@ -12,7 +13,10 @@ const LPM_REFRESH_EVERY_POLLS = 5; // redraw the line every ~10s while a backfil
 const LPM_QUOTA_RESERVE = 200;
 const LPM_MIN_DAYS = 20;
 
+const LPM_LAST_TICKER_KEY = "lpm:lastTicker";
+
 const lpmCache = {}; // ticker -> { data, quota }
+let lpmTickerOptionsReady = false;
 const lpmState = {
   ticker: null,
   data: null,
@@ -96,8 +100,158 @@ function lpmTimeKey(time) {
   return null;
 }
 
+function lpmStorageGet() {
+  try {
+    return localStorage.getItem(LPM_LAST_TICKER_KEY);
+  } catch (e) {
+    return null;
+  }
+}
+
+function lpmStorageSet(ticker) {
+  try {
+    localStorage.setItem(LPM_LAST_TICKER_KEY, ticker);
+  } catch (e) {
+    // Remembering the last stock is a convenience only
+  }
+}
+
 // ----------------------------------------------------------------------------
-// 1. Entry points (called from stock_detail_modal.js)
+// 0. Page: picker, stored-history list, navigation from other screens
+// ----------------------------------------------------------------------------
+
+function initLpmPage() {
+  if (!lpmTickerOptionsReady) lpmTickerOptionsReady = fillLpmTickerOptions();
+  loadLpmStoredList();
+  if (!lpmState.ticker) {
+    const last = lpmStorageGet();
+    if (last) selectLpmTicker(last);
+  }
+}
+
+/** Open the LPM page for a ticker from anywhere (e.g. the stock detail modal). */
+function openLpmPage(ticker) {
+  const clean = (ticker || "").trim().toUpperCase().replace(".JK", "");
+  if (!clean) return;
+  if (typeof closeStockDetailModal === "function") closeStockDetailModal();
+  lpmStorageSet(clean);
+  switchScreener("lpm");
+  if (lpmState.ticker !== clean) selectLpmTicker(clean);
+}
+
+function fillLpmTickerOptions() {
+  const map = window.idxMasterTickersMap || {};
+  const tickers = Object.keys(map);
+  if (!tickers.length) return false; // master list still loading; retried on next visit
+  const frag = document.createDocumentFragment();
+  tickers.sort().forEach((t) => {
+    const opt = document.createElement("option");
+    opt.value = t;
+    opt.label = map[t].name || "";
+    frag.appendChild(opt);
+  });
+  lpmEl("lpm-ticker-options").replaceChildren(frag);
+  return true;
+}
+
+function submitLpmTicker(event) {
+  event.preventDefault();
+  const input = lpmEl("lpm-ticker-input");
+  const clean = input.value.trim().toUpperCase().replace(".JK", "");
+  const error = lpmEl("lpm-picker-error");
+  const map = window.idxMasterTickersMap || {};
+
+  let message = "";
+  if (!/^[A-Z]{4}$/.test(clean)) {
+    message = "Kode saham terdiri dari 4 huruf, misalnya BBCA.";
+  } else if (Object.keys(map).length && !map[clean]) {
+    message = `Kode ${clean} tidak terdaftar di Bursa Efek Indonesia.`;
+  }
+  error.textContent = message;
+  error.classList.toggle("hidden", !message);
+  input.setAttribute("aria-invalid", message ? "true" : "false");
+  if (!message) selectLpmTicker(clean);
+}
+
+function selectLpmTicker(ticker) {
+  lpmEl("lpm-picker-error").classList.add("hidden");
+  lpmEl("lpm-ticker-input").value = ticker;
+  lpmEl("lpm-intro").classList.add("hidden");
+  lpmEl("lpm-panel").classList.remove("hidden");
+  lpmEl("lpm-panel-ticker").textContent = ticker;
+  const meta = (window.idxMasterTickersMap || {})[ticker];
+  lpmEl("lpm-panel-name").textContent = meta && meta.name ? meta.name : "";
+  lpmStorageSet(ticker);
+  markActiveStoredChip(ticker);
+  loadLpmPanel(ticker);
+}
+
+function refreshLpmPage() {
+  if (lpmState.ticker) loadLpmPanel(lpmState.ticker, true);
+  loadLpmStoredList();
+}
+
+async function loadLpmStoredList() {
+  const container = lpmEl("lpm-stored-list");
+  try {
+    const body = await fetch("/api/idx/lpm").then((r) => r.json());
+    if (body.status !== "success") throw new Error(body.message || "respons tidak valid");
+    const badge = document.getElementById("badge-lpm");
+    if (badge) badge.textContent = String(body.data.length);
+    if (!container) return;
+
+    container.replaceChildren();
+    if (!body.data.length) {
+      const empty = document.createElement("span");
+      empty.className = "lpm-stored-empty";
+      empty.textContent = "Belum ada. Saham yang historinya sudah diambil akan muncul di sini.";
+      container.appendChild(empty);
+      return;
+    }
+    body.data.forEach((row) => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "lpm-stored-chip";
+      chip.dataset.ticker = row.ticker;
+      chip.title = `Data terakhir ${row.last_date}`;
+      const code = document.createElement("span");
+      code.className = "lpm-stored-code";
+      code.textContent = row.ticker;
+      const days = document.createElement("span");
+      days.className = "lpm-stored-days";
+      days.textContent = `${row.days} hari`;
+      chip.append(code, days);
+      chip.addEventListener("click", () => selectLpmTicker(row.ticker));
+      container.appendChild(chip);
+    });
+    markActiveStoredChip(lpmState.ticker);
+  } catch (err) {
+    console.error("LPM stored list error:", err);
+    if (container) container.textContent = "Daftar histori tersimpan tidak bisa dimuat. Kode saham tetap bisa diketik di atas.";
+  }
+}
+
+function markActiveStoredChip(ticker) {
+  document.querySelectorAll(".lpm-stored-chip").forEach((chip) => {
+    const active = chip.dataset.ticker === ticker;
+    chip.classList.toggle("active", active);
+    chip.setAttribute("aria-pressed", active ? "true" : "false");
+  });
+}
+
+// Sidebar badge = number of stocks with stored history (no quota used)
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("/api/idx/lpm")
+    .then((r) => r.json())
+    .then((body) => {
+      const badge = document.getElementById("badge-lpm");
+      if (badge && body.status === "success") badge.textContent = String(body.data.length);
+    })
+    .catch(() => {});
+});
+
+// ----------------------------------------------------------------------------
+// 1. Panel loading
 // ----------------------------------------------------------------------------
 
 async function loadLpmPanel(ticker, force = false, silent = false) {
@@ -226,7 +380,7 @@ function renderLpmEmpty(data, quota, job) {
   if (job.state === "running") {
     showLpmState(
       `Mengambil histori broker ${data.ticker}`,
-      `Proses berjalan di latar belakang. Garis LPM mulai bisa dibaca setelah ${LPM_MIN_DAYS} hari bursa terisi; tab ini memperbarui diri otomatis.`,
+      `Proses berjalan di latar belakang. Garis LPM mulai bisa dibaca setelah ${LPM_MIN_DAYS} hari bursa terisi; halaman ini memperbarui diri otomatis.`,
       null,
       null
     );
@@ -416,7 +570,7 @@ function ensureLpmChart() {
 
   chart.subscribeCrosshairMove((param) => renderLpmLegend(lpmTimeKey(param.time)));
 
-  // The modal may still be laying out when the chart is created; fitting at that width squeezes
+  // The page may still be laying out when the chart is created; fitting at that width squeezes
   // all bars into the right edge, so fit again whenever the container settles on a new width
   let lastWidth = 0;
   lpmState.resizeObserver = new ResizeObserver((entries) => {
@@ -461,6 +615,8 @@ function renderLpmChart(data) {
 
   applyLensData(rows);
   lpmState.chart.timeScale().fitContent();
+  // The price axis takes its width only after the first draw; fit once more against the final plot width
+  requestAnimationFrame(() => lpmState.chart && lpmState.chart.timeScale().fitContent());
   renderLpmLegend(null);
 }
 
@@ -597,6 +753,7 @@ async function pollLpmStatus(ticker) {
       stopLpmPolling();
       delete lpmCache[ticker];
       loadLpmPanel(ticker, true);
+      loadLpmStoredList();
       return;
     }
 

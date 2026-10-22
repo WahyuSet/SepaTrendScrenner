@@ -182,6 +182,15 @@ class TestLpmRoutes(LPMServiceTestCase):
         self.assertEqual(anon.post("/api/idx/lpm/BBCA/backfill").status_code, 401)
         self.assertEqual(anon.get("/api/idx/lpm/BBCA/status").status_code, 401)
 
+    def test_list_stored_tickers(self):
+        self.assertEqual(self.http.get("/api/idx/lpm").get_json()["data"], [])
+        self.run_backfill("BBCA", days=30)
+        self.client.backfill_broker_daily("TLKM", self.dates[-20:], delay=0)
+        body = self.http.get("/api/idx/lpm").get_json()
+        self.assertEqual([(r["ticker"], r["days"]) for r in body["data"]], [("BBCA", 30), ("TLKM", 20)])
+        self.assertEqual(body["data"][0]["last_date"], self.dates[-1])
+        self.assertIn("remaining", body["quota"])
+
     def test_unknown_ticker(self):
         for resp in (self.http.get("/api/idx/lpm/ZZZZ"), self.http.post("/api/idx/lpm/ZZZZ/backfill"),
                      self.http.get("/api/idx/lpm/ZZZZ/status")):

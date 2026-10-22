@@ -877,6 +877,16 @@ def get_idx_analysis(ticker):
 # LPM (LIQUIDITY PRESSURE MODEL) API ENDPOINTS
 # =========================================================================
 
+@app.route("/api/idx/lpm", methods=["GET"])
+@admin_required
+def list_idx_lpm_tickers():
+    """Tickers that already have stored LPM broker history (no API quota used)."""
+    return jsonify({
+        "status": "success",
+        "data": idx_client.list_broker_daily_tickers(),
+        "quota": idx_client.get_quota_status()
+    })
+
 @app.route("/api/idx/lpm/<ticker>", methods=["GET"])
 @admin_required
 def get_idx_lpm(ticker):

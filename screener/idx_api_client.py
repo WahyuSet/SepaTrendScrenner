@@ -679,6 +679,18 @@ class IDXApiClient:
             }
         return result
 
+    def list_broker_daily_tickers(self):
+        """Tickers with stored LPM history: [{"ticker", "days", "last_date"}], most days first. No API call."""
+        with self._get_connection() as conn:
+            rows = conn.execute("""
+                SELECT ticker, SUM(CASE WHEN status = 'ok' THEN 1 ELSE 0 END) AS days, MAX(date) AS last_date
+                FROM broker_daily
+                GROUP BY ticker
+                HAVING days > 0
+                ORDER BY days DESC, ticker
+            """).fetchall()
+        return [{"ticker": r["ticker"], "days": r["days"], "last_date": r["last_date"]} for r in rows]
+
     def missing_broker_days(self, ticker, dates):
         """
         Dates that still need an API call, newest first: no stored row, or an 'error' row

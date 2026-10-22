@@ -67,7 +67,7 @@ Aplikasi ini menggabungkan:
     * Panduan Posisi (*Jika belum punya*, *Jika sudah punya*).
     * Target 1, Target 2, dan Stop Loss dinamis.
     * Daily Pivots Level (*R2, R1, P, S1, S2*).
-  * **Tab 4: LPM & Smart Money** (spesifikasi lengkap: [ProjectOverview/FEATURE_LPM.md](file:///d:/Learning/SepaTrend/ProjectOverview/FEATURE_LPM.md)):
+* **Menu LPM & Smart Money** (halaman sendiri di sidebar; dari modal detail saham lewat tombol "Buka LPM"; spesifikasi lengkap: [ProjectOverview/FEATURE_LPM.md](file:///d:/Learning/SepaTrend/ProjectOverview/FEATURE_LPM.md)):
     * Liquidity Pressure Model: tekanan harian smart money (broker dengan nilai per transaksi ≥ 1,5–4× rata-rata saham itu), dinormalisasi ke turnover dan dijumlahkan jadi garis.
     * Tren LPM (θ adaptif), divergensi harga vs LPM, lensa Intensity (z-score) dan Vol Rotation (persentil), serta pembacaan fase (Senyap, Persiapan, Markup, Panas, Distribusi, Markdown).
     * Chart 3 panel (lightweight-charts 5.2.1): candlestick + marker divergensi, garis LPM, histogram lensa.
@@ -140,7 +140,8 @@ SepaTrend/
 │   ├── views/
 │   │   ├── view_sepa.html          # Tampilan tabel SEPA Trend
 │   │   ├── view_rsi.html           # Tampilan tabel RSI Divergence
-│   │   └── view_prebreakout.html   # Tampilan tabel Pre-Breakout
+│   │   ├── view_prebreakout.html   # Tampilan tabel Pre-Breakout
+│   │   └── view_lpm.html           # Halaman LPM & Smart Money (pemilih saham + chart)
 │   └── modals/
 │       ├── modal_stock_detail.html # Modal 3 Tab (Bandarmologi, Financials, AI Analysis)
 │       ├── modal_sepa.html         # Modal detail kriteria SEPA per emiten
@@ -158,14 +159,14 @@ SepaTrend/
 │   │   ├── command-palette.css     # Styling omnibar Ctrl+K
 │   │   └── components/
 │   │       ├── stock_modal.css     # Styling Bento Grid modal saham, tab, badge, & button 28px
-│   │       └── lpm_panel.css       # Styling tab LPM (hanya token base.css)
+│   │       └── lpm_panel.css       # Styling halaman LPM (hanya token base.css)
 │   └── js/
 │       ├── main.js                 # Initializer & router frontend
 │       ├── login.js                # Form controller login AJAX & validasi
 │       ├── core/
 │       │   ├── scanner.js          # Polling status scan & trigger scanner
 │       │   ├── stock_detail_modal.js # Controller tab modal detail & inline bandar checker
-│       │   ├── lpm_panel.js        # Tab LPM: chart 3 panel, state, backfill & polling
+│       │   ├── lpm_panel.js        # Halaman LPM: pemilih saham, chart 3 panel, state, backfill & polling
 │       │   ├── utils.js            # Format rupiah, angka lot, format tanggal
 │       │   └── export.js           # Export tabel ke CSV / Excel
 │       ├── screeners/
@@ -228,7 +229,7 @@ SepaTrend/
 3. **Manajemen Kuota 1.000 Req/Hari**:
    * *Rule*: Jangan pernah melakukan loop batch ke endpoint IDX Edge PRO di dalam background scanner. Biarkan background scanner fokus menggunakan data gratisan Yahoo Finance untuk menyaring 205 saham menjadi ~30 saham potensial. Data IDX Edge PRO hanya dipanggil secara **On-Demand** ketika user mengklik tombol *"Cek Bandar"* atau membuka Modal Detail.
 
-   * *Pengecualian terkendali (LPM)*: backfill histori broker LPM memang memanggil API berulang (1 request per saham per hari bursa), tetapi hanya dimulai user dari tombol "Lengkapi histori", berjalan untuk satu saham, dan tidak pernah membuat sisa kuota turun di bawah **200** (`LPM_PARAMS["quota_reserve"]`). Membuka tab LPM untuk saham tanpa histori = 0 request; untuk saham yang sudah punya histori = maksimal 5 request untuk hari bursa baru.
+   * *Pengecualian terkendali (LPM)*: backfill histori broker LPM memang memanggil API berulang (1 request per saham per hari bursa), tetapi hanya dimulai user dari tombol "Lengkapi histori", berjalan untuk satu saham, dan tidak pernah membuat sisa kuota turun di bawah **200** (`LPM_PARAMS["quota_reserve"]`). Membuka halaman LPM untuk saham tanpa histori = 0 request; untuk saham yang sudah punya histori = maksimal 5 request untuk hari bursa baru.
 
 4. **Dynamic `.env` Loading**:
    * Modul `screener/auth.py` telah dikonfigurasi untuk membaca file `.env` secara real-time saat login dilakukan. Mengubah kredensial di `.env` tidak memerlukan restart server Flask.
@@ -252,6 +253,6 @@ Jika Anda adalah agen yang melanjutkan pengembangan proyek ini, berikut adalah d
 - [x] **Fase 4**: Paket Konfigurasi Deployment VPS (Gunicorn, Nginx, Systemd, Cron Jam 18:00 WIB).
 - [ ] **Fase 5 (Next)**: Eksekusi deploy ke server VPS pengguna ketika VPS sudah aktif dan IP/akses SSH diberikan.
 - [ ] **Fase 6 (Opsional Masa Depan)**: Notifikasi otomatis sinyal breakout ke Telegram Bot / Discord Webhook pada saat Cron Scan selesai jam 18:00 WIB.
-- [x] **LPM Fase A**: Tab LPM on-demand di modal detail (Oktober 2026).
+- [x] **LPM Fase A**: Halaman LPM on-demand per saham, menu sendiri di sidebar (Oktober 2026).
 - [ ] **LPM kalibrasi**: Atasi bias positif yang ditemukan di uji tahap 5 dan validasi daya prediksi sebelum hasil LPM dipakai (FEATURE_LPM.md bagian 11).
 - [ ] **LPM Fase B & C**: View "LPM Radar" untuk kandidat dari 4 screener, lalu badge konfluensi di tabel screener (FEATURE_LPM.md bagian 13). Dimulai hanya setelah kalibrasi.

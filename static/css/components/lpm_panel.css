@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LPM (LIQUIDITY PRESSURE MODEL) TAB — STOCK DETAIL MODAL
+   LPM (LIQUIDITY PRESSURE MODEL) & SMART MONEY VIEW (templates/views/view_lpm.html)
    Colors come only from the tokens in base.css (.agent/Design.md).
    ========================================================================== */
 
@@ -12,6 +12,7 @@
 
 .lpm-content.hidden,
 .lpm-coverage.hidden,
+.lpm-panel.hidden,
 .lpm-loading.hidden,
 .lpm-state.hidden {
   display: none;
@@ -22,6 +23,189 @@
 .lpm-tone-neg { color: var(--status-fail-text); }
 .lpm-tone-warn { color: var(--status-watchlist-text); }
 .lpm-tone-neutral { color: var(--text-primary); }
+
+/* 0. Page: picker, stored-history chips, panel header */
+.lpm-picker {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: 20px;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+}
+
+.lpm-picker-form,
+.lpm-stored {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.lpm-picker-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.lpm-picker-row {
+  display: flex;
+  gap: 8px;
+}
+
+.lpm-ticker-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 36px;
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+}
+
+.lpm-ticker-input::placeholder {
+  text-transform: none;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.lpm-ticker-input:focus-visible {
+  outline: 2px solid var(--brand-lime);
+  outline-offset: 1px;
+}
+
+.lpm-ticker-input[aria-invalid="true"] {
+  border-color: var(--status-fail-text);
+}
+
+.lpm-picker-error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--status-fail-text);
+}
+
+.lpm-picker-error.hidden {
+  display: none;
+}
+
+.lpm-stored-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lpm-stored-empty {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.lpm-stored-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  min-height: 32px;
+  padding: 6px 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+
+.lpm-stored-chip:hover {
+  background: var(--bg-tertiary);
+}
+
+.lpm-stored-chip.active {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.lpm-stored-chip:focus-visible {
+  outline: 2px solid var(--brand-lime);
+  outline-offset: 2px;
+}
+
+.lpm-stored-code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.lpm-stored-days {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.lpm-stored-chip.active .lpm-stored-code,
+.lpm-stored-chip.active .lpm-stored-days {
+  color: var(--text-inverse);
+}
+
+.lpm-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lpm-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lpm-panel-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.lpm-panel-ticker {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.lpm-panel-name {
+  font-size: 13px;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lpm-panel-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Chart gets the width; brokers sit beside it only when there is room for both */
+.lpm-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 1440px) {
+  .lpm-main-grid {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    align-items: start;
+  }
+}
 
 /* 1. Summary cards */
 .lpm-summary-grid {
@@ -175,7 +359,7 @@
 }
 
 .lpm-chart {
-  height: 460px;
+  height: 520px;
   width: 100%;
 }
 
@@ -364,7 +548,7 @@
 }
 
 .lpm-skeleton-cards { height: 84px; }
-.lpm-skeleton-chart { height: 460px; }
+.lpm-skeleton-chart { height: 520px; }
 
 @media (prefers-reduced-motion: reduce) {
   .lpm-skeleton { animation: none; }
@@ -390,7 +574,8 @@
   color: var(--text-secondary);
 }
 
-/* 9. Narrow screens: four tabs scroll instead of overflowing the modal */
+/* 9. Narrow screens. The stock modal rules stay from when LPM lived in it: they fix the
+      modal's own phone layout (tab bar scroll, padding), independent of LPM. */
 @media (max-width: 768px) {
   .stock-modal-tabs {
     overflow-x: auto;
@@ -407,9 +592,14 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .lpm-picker {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
   .lpm-chart,
   .lpm-skeleton-chart {
-    height: 380px;
+    height: 400px;
   }
 }
 

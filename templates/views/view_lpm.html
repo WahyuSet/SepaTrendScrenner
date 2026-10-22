@@ -1,0 +1,151 @@
+<!-- ==========================================================================
+     LPM (LIQUIDITY PRESSURE MODEL) & SMART MONEY VIEW (templates/views/view_lpm.html)
+     One stock at a time: picker, then the full-width LPM panel (static/js/core/lpm_panel.js)
+     Spec: ProjectOverview/FEATURE_LPM.md
+     ========================================================================== -->
+<div id="view-lpm" class="screener-view hidden">
+  <div class="view-header">
+    <div class="view-header-left">
+      <h1>LPM & Smart Money</h1>
+      <p>Arah tekanan smart money per saham dari broker summary harian IDX Edge PRO: garis LPM, divergensi dengan harga, dan pembacaan fase.</p>
+    </div>
+  </div>
+
+  <p class="lpm-experimental" role="note">
+    <strong>Eksperimental.</strong> Rumus LPM masih dikalibrasi. Uji awal pada BBCA, PTBA, dan ASRM (80 hari) menemukan tekanan cenderung positif dan paling tinggi di hari harga turun, dan belum terbukti mendahului harga. Jangan jadikan dasar keputusan beli/jual.
+  </p>
+
+  <!-- 1. STOCK PICKER -->
+  <section class="lpm-picker" aria-label="Pilih saham untuk LPM">
+    <form class="lpm-picker-form" onsubmit="submitLpmTicker(event)" novalidate>
+      <label for="lpm-ticker-input" class="lpm-picker-label">Kode saham</label>
+      <div class="lpm-picker-row">
+        <input id="lpm-ticker-input" class="lpm-ticker-input" list="lpm-ticker-options" maxlength="7"
+               autocomplete="off" spellcheck="false" placeholder="Contoh: BBCA" aria-describedby="lpm-picker-error">
+        <datalist id="lpm-ticker-options"></datalist>
+        <button type="submit" class="lpm-btn-primary">Tampilkan</button>
+      </div>
+      <p id="lpm-picker-error" class="lpm-picker-error hidden" role="alert"></p>
+    </form>
+    <div class="lpm-stored">
+      <span class="lpm-picker-label">Sudah punya histori (dibuka tanpa memakai kuota)</span>
+      <div id="lpm-stored-list" class="lpm-stored-list">
+        <span class="lpm-stored-empty">Memuat daftar...</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. INTRO (no stock chosen yet) -->
+  <div id="lpm-intro" class="lpm-state">
+    <h2 class="lpm-state-title">Pilih saham untuk melihat LPM</h2>
+    <p class="lpm-state-desc">
+      Ketik kode saham di atas, atau pilih saham yang sudah punya histori. Saham yang belum pernah dibuka perlu mengambil
+      broker summary harian dulu (sekitar 80 request dari kuota harian); prosesnya dimulai dari tombol di halaman saham itu.
+    </p>
+  </div>
+
+  <!-- 3. LPM PANEL FOR THE CHOSEN STOCK -->
+  <section id="lpm-panel" class="lpm-panel hidden" aria-labelledby="lpm-panel-ticker">
+    <div class="lpm-panel-header">
+      <div class="lpm-panel-title">
+        <h2 id="lpm-panel-ticker" class="lpm-panel-ticker"></h2>
+        <span id="lpm-panel-name" class="lpm-panel-name"></span>
+      </div>
+      <div class="lpm-panel-actions">
+        <button type="button" class="lpm-btn-secondary" onclick="refreshLpmPage()" title="Hitung ulang dari histori tersimpan dan ambil hari bursa baru (maksimal 5)">Muat ulang</button>
+        <button type="button" class="lpm-btn-secondary" onclick="openStockDetailModal(lpmState.ticker)">Detail saham</button>
+      </div>
+    </div>
+
+    <div id="lpm-loading" class="lpm-loading hidden" aria-live="polite">
+      <span class="lpm-loading-text">Menghitung LPM dari histori broker tersimpan...</span>
+      <div class="lpm-skeleton lpm-skeleton-cards"></div>
+      <div class="lpm-skeleton lpm-skeleton-chart"></div>
+    </div>
+
+    <!-- Empty / error state: names the cause and the one next action -->
+    <div id="lpm-state" class="lpm-state hidden" role="status">
+      <h3 id="lpm-state-title" class="lpm-state-title"></h3>
+      <p id="lpm-state-desc" class="lpm-state-desc"></p>
+      <button id="lpm-state-action" class="lpm-btn-primary" type="button"></button>
+    </div>
+
+    <div id="lpm-content" class="lpm-content hidden">
+      <div class="lpm-summary-grid">
+        <div class="lpm-card">
+          <span class="lpm-card-label">Tren LPM</span>
+          <span id="lpm-trend" class="lpm-card-value">—</span>
+          <span id="lpm-trend-sub" class="lpm-card-sub"></span>
+        </div>
+        <div class="lpm-card">
+          <span class="lpm-card-label">Divergensi 20 hari</span>
+          <span id="lpm-divergence" class="lpm-card-value">—</span>
+          <span id="lpm-divergence-sub" class="lpm-card-sub"></span>
+        </div>
+        <div class="lpm-card">
+          <span class="lpm-card-label">Fase</span>
+          <span id="lpm-phase" class="lpm-card-value">—</span>
+          <span id="lpm-phase-sub" class="lpm-card-sub"></span>
+        </div>
+        <div class="lpm-card">
+          <span class="lpm-card-label">Kemiringan 5H / 20H</span>
+          <span id="lpm-slopes" class="lpm-card-value mono">—</span>
+          <span id="lpm-slopes-sub" class="lpm-card-sub mono"></span>
+        </div>
+      </div>
+
+      <div class="lpm-reading">
+        <p id="lpm-reading" class="lpm-reading-main"></p>
+        <p id="lpm-secondary" class="lpm-reading-secondary hidden"></p>
+      </div>
+
+      <div class="lpm-main-grid">
+        <section class="lpm-chart-card" aria-labelledby="lpm-chart-title">
+          <div class="lpm-chart-header">
+            <div>
+              <h3 id="lpm-chart-title" class="lpm-chart-title">Apakah smart money bergerak mendahului harga?</h3>
+              <p class="lpm-chart-caption">Atas: harga harian dan tanda divergensi. Tengah: garis LPM kumulatif. Bawah: lensa harian.</p>
+            </div>
+            <div class="lpm-toggle" role="group" aria-label="Pilih lensa panel bawah">
+              <button type="button" class="lpm-toggle-btn active" data-lens="intensity" aria-pressed="true" onclick="setLpmLens('intensity')">Intensity</button>
+              <button type="button" class="lpm-toggle-btn" data-lens="vr" aria-pressed="false" onclick="setLpmLens('vr')">Vol Rotation</button>
+            </div>
+          </div>
+          <div id="lpm-legend" class="lpm-legend mono" aria-live="off"></div>
+          <div id="lpm-chart" class="lpm-chart"></div>
+          <p id="lpm-lens-note" class="lpm-lens-note"></p>
+        </section>
+
+        <section class="lpm-brokers-card" aria-labelledby="lpm-brokers-title">
+          <h3 id="lpm-brokers-title" class="lpm-section-title">Broker di balik LPM (20 hari terakhir)</h3>
+          <table class="lpm-brokers-table">
+            <thead>
+              <tr>
+                <th scope="col">Broker</th>
+                <th scope="col" class="text-right">Nilai smart bersih</th>
+                <th scope="col" class="text-right">Hari aktif</th>
+              </tr>
+            </thead>
+            <tbody id="lpm-brokers-body"></tbody>
+          </table>
+        </section>
+      </div>
+    </div>
+
+    <div id="lpm-coverage" class="lpm-coverage hidden">
+      <div class="lpm-coverage-row">
+        <span id="lpm-coverage-text" class="lpm-coverage-text"></span>
+        <button id="lpm-backfill-btn" class="lpm-btn-secondary hidden" type="button" onclick="startLpmBackfill()">Lengkapi histori</button>
+      </div>
+      <div id="lpm-progress" class="lpm-progress hidden" role="progressbar" aria-label="Progres pengambilan histori" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div id="lpm-progress-bar" class="lpm-progress-bar"></div>
+      </div>
+      <p id="lpm-coverage-note" class="lpm-coverage-note hidden"></p>
+    </div>
+  </section>
+
+  <p class="lpm-limits">
+    Catatan: LPM lebih andal untuk horizon beberapa minggu dibanding harian. Ukuran transaksi dibaca dari frekuensi, yaitu jumlah transaksi (match), bukan jumlah order.
+    Cakupan pasar reguler/negosiasi mengikuti data broker summary dan belum bisa dipastikan. Pembacaan perilaku dan probabilitas, bukan ramalan dan bukan rekomendasi beli/jual.
+  </p>
+</div>

@@ -222,16 +222,17 @@ Tambahan matriks kombinasi (tampil sebagai catatan kedua, bila cocok). "Intensit
 | `tests/test_lpm.py` | Unit test `unittest` (tidak perlu dependency baru) dengan data sintetis (bagian 8). |
 | `screener/lpm_service.py` | Orkestrasi (tahap 3): kalender hari bursa dari yfinance (cache 10 menit per proses), sinkron hari terbaru, thread backfill. Route di `app.py` hanya menerjemahkan ke HTTP. |
 | `tests/test_broker_daily.py`, `tests/test_lpm_service.py` | Test penyimpanan, backfill, status job, dan ketiga route dengan HTTP dan yfinance palsu. |
-| `static/js/core/lpm_panel.js` | Render tab LPM: chart, badge, tabel ringkas. |
-| `static/css/components/lpm_panel.css` | Style tab LPM memakai token di `.agent/Design.md`. |
+| `static/js/core/lpm_panel.js` | Halaman LPM: pemilih saham, daftar histori tersimpan, chart, kartu, tabel, backfill & polling. |
+| `static/css/components/lpm_panel.css` | Style halaman LPM memakai token di `.agent/Design.md`. |
+| `templates/views/view_lpm.html` | Halaman menu "LPM & Smart Money" (pindah dari modal, 2026-10-22). |
 
 ### 5.2 File yang diubah
 | File | Perubahan |
 |---|---|
 | `screener/idx_api_client.py` | Tabel baru `broker_daily` + method `get_broker_daily(ticker, date)` dan `backfill_broker_daily(ticker, dates, max_requests)`. |
 | `app.py` | Route `GET /api/idx/lpm/<ticker>`, `POST /api/idx/lpm/<ticker>/backfill`, `GET /api/idx/lpm/<ticker>/status`. Semua dengan `@admin_required` dan `is_valid_idx_ticker`. |
-| `templates/modals/modal_stock_detail.html` | Tab ke-4: `📈 LPM & Smart Money`. |
-| `static/js/core/stock_detail_modal.js` | `switchStockModalTab('lpm')` memanggil `lpm_panel.js`. |
+| `templates/modals/modal_stock_detail.html` | Tombol "Buka LPM" di footer modal → `openLpmPage(ticker)`. (Awalnya tab ke-4; dipindah ke menu sendiri 2026-10-22.) |
+| `templates/components/sidebar.html`, `static/js/main.js` | Item menu `nav-lpm` (badge = jumlah saham dengan histori) dan view `view-lpm` di `switchScreener('lpm')`. |
 | `templates/index.html` | Muat `lightweight-charts@5.2.1`, `lpm_panel.js`, dan `lpm_panel.css`. |
 
 ### 5.3 Penyimpanan — tabel `broker_daily`
@@ -332,13 +333,17 @@ Body opsional: `{ "days": 80 }` (dibatasi 20–250). Memulai thread backfill, la
 
 ---
 
-## 7. UI — Tab "📈 LPM & Smart Money"
+## 7. UI — Halaman "LPM & Smart Money" (awalnya tab modal, lihat catatan "Dipindah ke menu sendiri")
 
 Ikuti `.agent/Design.md` (Enterprise Clear White, token CSS, font yang sudah ada). Tidak ada warna atau ukuran hard-coded di luar token.
 
 **Library chart:** `lightweight-charts@5.2.1` dari CDN (`https://unpkg.com/lightweight-charts@5.2.1/dist/lightweight-charts.standalone.production.js`, rilis 2026-08-12). Versi wajib dikunci persis, tidak boleh `@latest`. Dipilih v5 (pertanyaan 10) karena punya **native pane**: tiga panel berbagi satu sumbu waktu dan crosshair tanpa kode sinkronisasi manual (`addSeries(..., paneIndex)`, `pane.setStretchFactor(55/25/20)`, `createSeriesMarkers`). Chart dibuat ulang setiap modal dibuka dan dihancurkan (`chart.remove()`) saat modal ditutup. Warna chart dibaca dari token CSS lewat `getComputedStyle`. Kalau CDN gagal, area chart menampilkan pesan dan kartu ringkasan tetap berlaku.
 
-**Implementasi (tahap 4, 2026-10-22):** `static/js/core/lpm_panel.js`, `static/css/components/lpm_panel.css`, tab ke-4 di `templates/modals/modal_stock_detail.html`. Detail yang ditetapkan saat implementasi:
+**Implementasi (tahap 4, 2026-10-22):** `static/js/core/lpm_panel.js`, `static/css/components/lpm_panel.css`, awalnya sebagai tab ke-4 di modal detail saham.
+
+**Dipindah ke menu sendiri (2026-10-22, permintaan user):** chart LPM butuh ruang lebar, jadi LPM sekarang halaman penuh `templates/views/view_lpm.html` dari item sidebar "LPM & Smart Money" (bagian Portofolio & Tools). Isinya: pemilih kode saham (datalist 941 emiten, validasi 4 huruf dan terdaftar di BEI), chip saham yang sudah punya histori (`GET /api/idx/lpm`, tanpa kuota), lalu panel yang sama seperti di bawah dengan chart 520px; di layar ≥ 1440px tabel broker berdampingan dengan chart. Saham terakhir diingat di `localStorage` (`lpm:lastTicker`). Modal detail saham kembali 3 tab dan mendapat tombol "Buka LPM" yang menutup modal dan membuka halaman ini untuk saham tersebut; halaman LPM punya tombol "Detail saham" untuk arah sebaliknya.
+
+Detail yang ditetapkan saat implementasi:
 - Hari gap: garis LPM berwarna abu-abu (`--text-muted`) dan batang lensa kosong.
 - Intensity memakai token biru yang sudah ada (`--status-div-hid-text`) dengan tiga tingkat kepekatan (pertanyaan 11), plus garis putus-putus di ambang spike 1,5. Vol Rotation memakai token status hijau/kuning/merah.
 - Legend di atas chart menampilkan nilai di posisi crosshair (tanggal, close, LPM, pressure, lensa aktif).
@@ -570,7 +575,7 @@ State job disimpan di SQLite, bukan di dict proses, karena Gunicorn berjalan den
 **UI:**
 - Menu baru di sidebar + `templates/views/view_lpm_radar.html` + `static/js/screeners/lpm_radar.js`.
 - Kolom: Ticker, Sumber (badge screener asal), Tren LPM, Slope 20H, Divergensi, Fase, Histori (`25/25`).
-- Klik baris membuka modal detail langsung di tab LPM.
+- Klik baris membuka halaman LPM untuk saham itu (`openLpmPage(ticker)`).
 
 **Perubahan aturan proyek:** `PROJECT_OVERVIEW.md` bagian 5 poin 3 saat ini melarang batch call ke IDX Edge PRO di background. Saat Fase B selesai, aturan itu diperbarui menjadi: *batch ke IDX Edge PRO hanya boleh lewat job LPM Radar, dengan anggaran harian tetap. Screener lain tetap hanya memakai Yahoo Finance.*
 
@@ -602,7 +607,7 @@ State job disimpan di SQLite, bukan di dict proses, karena Gunicorn berjalan den
 - [ ] Job Radar tidak pernah melewati `radar_daily_budget` dan berhenti saat sisa kuota < 200.
 - [ ] Backfill yang terpotong anggaran dilanjutkan otomatis di hari berikutnya.
 - [ ] `GET /api/lpm-radar` dan badge konfluensi tidak memakai kuota.
-- [ ] Klik baris Radar membuka modal di tab LPM.
+- [ ] Klik baris Radar membuka halaman LPM untuk saham itu.
 - [ ] `PROJECT_OVERVIEW.md` diperbarui (aturan batch + fitur baru).
 
 ---
