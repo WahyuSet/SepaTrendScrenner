@@ -109,19 +109,10 @@
   height: 7px;
   border-radius: 50%;
   background: var(--status-confirmed-text);
-  box-shadow: 0 0 5px rgba(22, 163, 74, 0.6);
-  animation: pulseScopeDot 2s infinite;
 }
 
 .deck-scope-pill.ticker-active .scope-live-dot {
   background: var(--status-info-text);
-  box-shadow: 0 0 5px rgba(37, 99, 235, 0.6);
-}
-
-@keyframes pulseScopeDot {
-  0% { transform: scale(0.95); opacity: 0.8; }
-  50% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.8; }
 }
 
 /* Deck Search & Quick Chips */
@@ -166,8 +157,12 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
-  outline: none;
   text-transform: uppercase;
+}
+
+.deck-input-wrapper input:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
 }
 
 .deck-input-wrapper input::placeholder {
@@ -196,7 +191,6 @@
 
 .btn-deck-run:hover {
   background: var(--btn-primary-hover);
-  transform: translateY(-1px);
 }
 
 .deck-quick-chips {
@@ -232,7 +226,20 @@
   background: var(--bg-tertiary);
   border-color: var(--status-info-text);
   color: var(--status-info-text);
-  transform: translateY(-1px);
+}
+
+.chip-btn.active {
+  background: var(--btn-primary-bg);
+  border-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+
+.ticker-text.ticker-link {
+  cursor: pointer;
+  color: var(--status-info-text);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 13px;
 }
 
 .chip-btn.reset {
@@ -274,7 +281,6 @@
 .horizon-card:hover {
   background: var(--bg-secondary);
   border-color: var(--border-strong);
-  transform: translateY(-1px);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
 }
 

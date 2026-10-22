@@ -79,7 +79,6 @@
   background: var(--bg-tertiary);
   border-color: var(--status-info-text);
   color: var(--status-info-text);
-  transform: translateY(-1px);
 }
 
 .btn-table-action.primary {
@@ -177,11 +176,11 @@
    -------------------------------------------------------------------------- */
 .modal-dialog.position-calc-dialog,
 .modal-dialog.journal-modal-dialog {
-  background: var(--bg-secondary) !important;
-  border: 1px solid var(--border-subtle) !important;
-  border-radius: 14px !important;
-  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25) !important;
-  color: var(--text-primary) !important;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  color: var(--text-primary);
   max-height: 90vh;
   overflow: hidden;
   display: flex;
@@ -189,12 +188,12 @@
 }
 
 .modal-dialog.position-calc-dialog {
-  width: 960px !important;
+  width: 960px;
   max-width: 95vw;
 }
 
 .modal-dialog.journal-modal-dialog {
-  width: 760px !important;
+  width: 760px;
   max-width: 94vw;
 }
 
@@ -275,13 +274,13 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  padding: 20px !important;
+  padding: 20px;
   overflow-y: auto;
   background: var(--bg-secondary);
 }
 
 .journal-modal-body {
-  padding: 20px 24px !important;
+  padding: 20px 24px;
   overflow-y: auto;
   flex: 1;
   min-height: 0;
@@ -358,9 +357,17 @@
   background: var(--bg-secondary);
   border: 1px solid var(--border-strong);
   border-radius: 6px;
-  outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
   box-sizing: border-box;
+}
+
+.form-group input:focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible,
+.calc-field-group input:focus-visible,
+.calc-field-group select:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
 }
 
 .form-group input:focus,
@@ -386,21 +393,23 @@
   resize: vertical;
 }
 
+input.form-input-mono,
 .form-input-mono {
-  font-family: var(--font-mono) !important;
+  font-family: var(--font-mono);
   font-feature-settings: "tnum" 1;
   letter-spacing: 0.02em;
 }
 
 .font-bold {
-  font-weight: 700 !important;
+  font-weight: 700;
 }
 
 .mono {
-  font-family: var(--font-mono) !important;
+  font-family: var(--font-mono);
   font-feature-settings: "tnum" 1;
 }
 
+select.form-select-custom,
 .form-select-custom {
   appearance: none;
   -webkit-appearance: none;
@@ -408,7 +417,7 @@
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 14px;
-  padding-right: 30px !important;
+  padding-right: 30px;
   cursor: pointer;
 }
 
@@ -540,7 +549,6 @@
 
 .btn-journal-save.primary:hover {
   background: var(--btn-primary-hover);
-  transform: translateY(-1px);
 }
 
 .btn-journal-save.success {
@@ -550,7 +558,6 @@
 
 .btn-journal-save.success:hover {
   background: var(--status-confirmed-text);
-  transform: translateY(-1px);
 }
 
 /* Close Trade Overview & Bento */
@@ -635,15 +642,15 @@
 }
 
 .pnl-card-val.pos {
-  color: var(--status-confirmed-text) !important;
+  color: var(--status-confirmed-text);
 }
 
 .pnl-card-val.neg {
-  color: var(--status-fail-text) !important;
+  color: var(--status-fail-text);
 }
 
 .pnl-card-val.neu {
-  color: var(--text-muted) !important;
+  color: var(--text-muted);
 }
 
 /* Settings Mode Intro */
@@ -751,13 +758,14 @@
   color: var(--text-inverse);
 }
 
+input.calc-custom-risk-input,
 .calc-custom-risk-input {
-  width: 52px !important;
-  padding: 4px 6px !important;
-  font-size: 12px !important;
+  width: 52px;
+  padding: 4px 6px;
+  font-size: 12px;
   font-family: var(--font-mono);
   text-align: center;
-  border-radius: 5px !important;
+  border-radius: 5px;
 }
 
 .custom-pct-sym {
@@ -825,7 +833,7 @@
 }
 
 .switch-label input[type="checkbox"] {
-  width: auto !important;
+  width: auto;
 }
 
 .fee-subinputs {
@@ -836,10 +844,11 @@
   align-items: center;
 }
 
+.fee-subinputs input[type="number"],
 .fee-subinputs input {
-  width: 50px !important;
-  padding: 2px 4px !important;
-  font-size: 11px !important;
+  width: 50px;
+  padding: 2px 4px;
+  font-size: 11px;
   font-family: var(--font-mono);
   text-align: center;
   display: inline-block;

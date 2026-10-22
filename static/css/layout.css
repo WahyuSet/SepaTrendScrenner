@@ -742,6 +742,26 @@
   font-size: 14px;
 }
 
+.summary-sub {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  margin-left: 2px;
+}
+
+.summary-sub.mono {
+  font-family: var(--font-mono);
+}
+
+.summary-bar-lg .summary-value {
+  font-size: var(--text-lg);
+}
+
+.summary-bar-lg .summary-label {
+  font-size: var(--text-xs);
+}
+
 @media (max-width: 480px) {
   .summary-bar {
     display: grid;

@@ -78,8 +78,8 @@ function renderBacktestKPIs(data) {
     elPf.className = `stat-value mono ${(data.profit_factor >= 1.5) ? 'text-gain' : ((data.profit_factor < 1.0) ? 'text-danger' : '')}`;
   }
   if (elPfSub) {
-    elPfSub.textContent = (data.profit_factor >= 2.0) ? '🌟 Kategori Sangat Unggul (> 2.0)' :
-                          (data.profit_factor >= 1.5) ? '✅ Kategori Sehat & Profitabel' : '⚠️ Perlu Optimasi Ketat';
+    elPfSub.textContent = (data.profit_factor >= 2.0) ? 'Kategori Sangat Unggul (> 2.0)' :
+                          (data.profit_factor >= 1.5) ? 'Kategori Sehat & Profitabel' : 'Perlu Optimasi Ketat';
   }
 
   // Payoff Ratio
@@ -171,13 +171,9 @@ async function runOnDemandTickerBacktest(targetSymbol = null) {
   // Highlight active chip
   document.querySelectorAll('.chip-btn').forEach(btn => {
     if (btn.textContent.trim() === ticker) {
-      btn.style.background = '#0284c7';
-      btn.style.color = '#ffffff';
-      btn.style.borderColor = '#0284c7';
+      btn.classList.add('active');
     } else if (!btn.classList.contains('reset')) {
-      btn.style.background = '';
-      btn.style.color = '';
-      btn.style.borderColor = '';
+      btn.classList.remove('active');
     }
   });
 
@@ -189,7 +185,6 @@ async function runOnDemandTickerBacktest(targetSymbol = null) {
     tbody.innerHTML = `
       <tr>
         <td colspan="14" class="empty-state">
-          <div class="empty-state-icon">⏳</div>
           <h3>Menjalankan simulasi point-in-time untuk ${ticker}...</h3>
           <p>Mengevaluasi sinyal Quality Setup & VCP selama ${years} tahun terakhir...</p>
         </td>
@@ -272,7 +267,7 @@ function updateBacktestScopeUI(ticker, count = 0) {
     if (scopeBadge) scopeBadge.className = 'deck-scope-pill ticker-active';
     if (scopeText) scopeText.textContent = `SIMULASI: ${ticker} (${count} TRADES)`;
     if (resetBtn) resetBtn.classList.remove('hidden');
-    if (tableTitle) tableTitle.textContent = `Histori Transaksi Sinyal — ${ticker}`;
+    if (tableTitle) tableTitle.textContent = `Histori Transaksi Sinyal : ${ticker}`;
   } else {
     if (scopeBadge) scopeBadge.className = 'deck-scope-pill';
     if (scopeText) scopeText.textContent = `BENCHMARK UNIVERSE (${backtestState.trades.length} TRADES)`;
@@ -411,7 +406,6 @@ function renderBacktestTableRows() {
     tbody.innerHTML = `
       <tr>
         <td colspan="14" class="empty-state">
-          <div class="empty-state-icon">📂</div>
           <h3>Tidak ada transaksi yang cocok dengan filter</h3>
           <p>Coba ubah filter setup atau status keluar pada toolbar di atas.</p>
         </td>
@@ -440,23 +434,23 @@ function renderBacktestTableRows() {
     // Setup Badge
     let setupBadge = '';
     if (t.setup_type === 'MOMENTUM_BREAKOUT') {
-      setupBadge = `<span class="badge-setup-type breakout">⚡ Breakout (7D)</span>`;
+      setupBadge = `<span class="badge-setup-type breakout">Breakout (7D)</span>`;
     } else if (t.setup_type === 'PULLBACK_RBS') {
-      setupBadge = `<span class="badge-setup-type pullback">🔄 Pullback (12D)</span>`;
+      setupBadge = `<span class="badge-setup-type pullback">Pullback (12D)</span>`;
     } else {
-      setupBadge = `<span class="badge-setup-type base">💎 Base (20D)</span>`;
+      setupBadge = `<span class="badge-setup-type base">Base (20D)</span>`;
     }
 
     // Status Badge
     let statusBadge = '';
     if (t.status === 'TP2_HIT') {
-      statusBadge = `<span class="badge-bt-status tp2">🚀 Runner (TP2)</span>`;
+      statusBadge = `<span class="badge-bt-status tp2">Runner (TP2)</span>`;
     } else if (t.status === 'TP1_HIT') {
-      statusBadge = `<span class="badge-bt-status tp1">🎯 Target 1 Hit</span>`;
+      statusBadge = `<span class="badge-bt-status tp1">Target 1 Hit</span>`;
     } else if (t.status === 'SL_HIT') {
-      statusBadge = `<span class="badge-bt-status sl">🛑 Cut Loss (SL)</span>`;
+      statusBadge = `<span class="badge-bt-status sl">Cut Loss (SL)</span>`;
     } else {
-      statusBadge = `<span class="badge-bt-status expired">⏱️ Expired Exit</span>`;
+      statusBadge = `<span class="badge-bt-status expired">Expired Exit</span>`;
     }
 
     // Return formatting
@@ -464,14 +458,14 @@ function renderBacktestTableRows() {
     const retClass = t.net_return_pct >= 0 ? 'text-gain' : 'text-danger';
 
     html += `
-      <tr>
+      <tr tabindex="0" role="button" aria-label="Buka detail saham ${t.ticker}" onclick="openStockDetailModal('${t.ticker}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openStockDetailModal('${t.ticker}');}">
         <td class="text-center text-muted" style="font-size: 11px;">${rowNum}</td>
         <td>
           <div class="ticker-cell-wrapper">
             <button class="btn-star-pin ${starClass}" onclick="event.stopPropagation(); toggleWatchlistPin('${t.ticker}', '${t.ticker}', 'IDX', 'BACKTEST')" title="Pin ke Watchlist Pribadi">
               ★
             </button>
-            <span class="ticker-text font-bold" onclick="showStockDetail('${t.ticker}')" style="cursor: pointer; color: var(--status-info-text); font-family: var(--font-mono); font-weight: 700; font-size: 13px;">
+            <span class="ticker-text ticker-link font-bold">
               ${t.ticker}
             </span>
           </div>
@@ -493,10 +487,10 @@ function renderBacktestTableRows() {
             <span class="mfe">+${t.mfe_pct.toFixed(1)}%</span> / <span class="mae">${t.mae_pct.toFixed(1)}%</span>
           </span>
         </td>
-        <td class="text-center">
+        <td class="text-center" onclick="event.stopPropagation()">
           <div class="row-actions-group">
-            <button class="btn-table-action" onclick="event.stopPropagation(); openPositionCalculator('${t.ticker}', ${t.entry_price}, ${t.stop_loss}, ${t.target_1}, ${t.target_2 || t.target_1})" title="Hitung Position Sizing Minervini">
-              🧮
+            <button class="btn-table-action" onclick="openPositionCalculator('${t.ticker}', ${t.entry_price}, ${t.stop_loss}, ${t.target_1}, ${t.target_2 || t.target_1})" title="Hitung Position Sizing Minervini">
+              Sizing
             </button>
           </div>
         </td>
@@ -522,7 +516,7 @@ function renderBacktestPagination(total) {
   html += `
     <button class="btn-page ${backtestState.currentPage === 1 ? 'disabled' : ''}" 
       onclick="changeBacktestPage(${backtestState.currentPage - 1})" ${backtestState.currentPage === 1 ? 'disabled' : ''}>
-      ◀ Prev
+      Prev
     </button>
   `;
 
@@ -531,7 +525,7 @@ function renderBacktestPagination(total) {
   html += `
     <button class="btn-page ${backtestState.currentPage === totalPages ? 'disabled' : ''}" 
       onclick="changeBacktestPage(${backtestState.currentPage + 1})" ${backtestState.currentPage === totalPages ? 'disabled' : ''}>
-      Next ▶
+      Next
     </button>
   `;
 
