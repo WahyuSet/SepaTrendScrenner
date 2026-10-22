@@ -337,7 +337,7 @@ Body opsional: `{ "days": 80 }` (dibatasi 20–250). Memulai thread backfill, la
 
 Ikuti `.agent/Design.md` (Enterprise Clear White, token CSS, font yang sudah ada). Tidak ada warna atau ukuran hard-coded di luar token.
 
-**Library chart:** `lightweight-charts@5.2.1` dari CDN (`https://unpkg.com/lightweight-charts@5.2.1/dist/lightweight-charts.standalone.production.js`, rilis 2026-08-12). Versi wajib dikunci persis, tidak boleh `@latest`. Dipilih v5 (pertanyaan 10) karena punya **native pane**: tiga panel berbagi satu sumbu waktu dan crosshair tanpa kode sinkronisasi manual (`addSeries(..., paneIndex)`, `pane.setStretchFactor(55/25/20)`, `createSeriesMarkers`). Chart dibuat ulang setiap modal dibuka dan dihancurkan (`chart.remove()`) saat modal ditutup. Warna chart dibaca dari token CSS lewat `getComputedStyle`. Kalau CDN gagal, area chart menampilkan pesan dan kartu ringkasan tetap berlaku.
+**Library chart:** `lightweight-charts@5.2.1` dari CDN (`https://unpkg.com/lightweight-charts@5.2.1/dist/lightweight-charts.standalone.production.js`, rilis 2026-08-12). Versi wajib dikunci persis, tidak boleh `@latest`. Dipilih v5 (pertanyaan 10) karena punya **native pane**: panel-panel berbagi satu sumbu waktu dan crosshair tanpa kode sinkronisasi manual (`addSeries(..., paneIndex)`, `pane.setStretchFactor(75/25)`, `createSeriesMarkers`). Chart dihancurkan (`chart.remove()`) saat ganti saham. Warna chart dibaca dari token CSS lewat `getComputedStyle`. Kalau CDN gagal, area chart menampilkan pesan dan kartu ringkasan tetap berlaku.
 
 **Implementasi (tahap 4, 2026-10-22):** `static/js/core/lpm_panel.js`, `static/css/components/lpm_panel.css`, awalnya sebagai tab ke-4 di modal detail saham.
 
@@ -354,10 +354,9 @@ Detail yang ditetapkan saat implementasi:
 **Susunan dari atas ke bawah:**
 1. **Kartu ringkasan (4 kotak):** Tren LPM (badge + panah), Divergensi, Fase, Kemiringan 5H/20H (angka mono).
 2. **Kalimat pembacaan fase** + catatan sekunder bila ada.
-3. **Chart 3 panel dengan sumbu waktu yang disinkronkan:**
-   - Panel atas (±55%): candlestick harga, ditambah marker segitiga di tanggal divergensi (hijau = positif, merah = negatif).
-   - Panel tengah (±25%): garis LPM.
-   - Panel bawah (±20%): histogram Intensity (ungu, makin pekat saat spike) **atau** Vol Rotation (hijau/kuning/merah), dipilih lewat toggle kecil.
+3. **Chart 2 panel dengan sumbu waktu yang disinkronkan** (awalnya 3 panel; garis LPM digabung ke panel harga atas permintaan user, 2026-10-22):
+   - Panel atas (±75%): candlestick harga (sumbu kanan, Rupiah) **dan** garis LPM kumulatif (sumbu kiri, poin, warna gelap `--text-primary` supaya tidak tertukar dengan candle hijau), ditambah marker panah di tanggal divergensi (hijau = positif, merah = negatif). Keterangan chart menegaskan bahwa titik silang garis dan candle tidak bermakna karena satuannya berbeda; yang dibaca adalah arah keduanya.
+   - Panel bawah (±25%): histogram Intensity **atau** Vol Rotation (hijau/kuning/merah), dipilih lewat toggle kecil.
    - Hari `gap` ditampilkan putus-putus/abu-abu, bukan disembunyikan.
 4. **Tabel "Broker di balik LPM"**: 5 baris `top_smart_brokers`.
 5. **Baris coverage:** "58 dari 60 hari bursa tersedia · sisa kuota 688". Ada tombol **Lengkapi histori** dengan progress bar saat backfill berjalan.
@@ -421,7 +420,7 @@ Urutan di atas adalah **Fase A**. Fase B (LPM Radar) dan Fase C (konfluensi) ada
 - [x] Semua test `tests/test_lpm.py` lulus (37 test, 2026-10-21).
 - [x] Membuka tab LPM untuk saham yang historinya sudah lengkap **tidak memakai kuota** (kecuali hari baru). Terverifikasi di browser: BBCA 1 request (sinkron 21 Okt), TLKM tanpa histori 0 request.
 - [x] Backfill berhenti saat sisa kuota menyentuh 200 (test) dan pesannya terlihat di UI (state kuota rendah diuji di browser dengan kuota disimulasikan).
-- [x] Chart 3 panel tersinkron (native pane), toggle Intensity/Vol Rotation berfungsi. Marker divergensi belum terlihat dengan data nyata karena BBCA baru 11 hari (`DATA_KURANG` tidak memunculkan marker); jalurnya diuji di test Python.
+- [x] Chart tersinkron (native pane; sekarang 2 panel: harga + LPM, lalu lensa), toggle Intensity/Vol Rotation berfungsi. Marker divergensi belum terlihat dengan data nyata karena BBCA baru 11 hari (`DATA_KURANG` tidak memunculkan marker); jalurnya diuji di test Python.
 - [x] Semua state (loading, kosong, data kurang, kuota habis, error, progress backfill) tampil benar di desktop dan 375px.
 - [x] Semua teks UI berbahasa Indonesia; disclaimer & keterbatasan selalu tampil.
 - [x] Tidak ada API key baru yang di-hard-code.

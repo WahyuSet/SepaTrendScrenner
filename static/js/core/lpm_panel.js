@@ -544,6 +544,8 @@ function ensureLpmChart() {
     },
     grid: { vertLines: { color: gridColor }, horzLines: { color: gridColor } },
     rightPriceScale: { borderColor: border },
+    // LPM shares the price pane on its own left axis (points), price stays on the right (Rupiah)
+    leftPriceScale: { visible: true, borderColor: border },
     timeScale: { borderColor: border, rightOffset: 2 },
     localization: { locale: "id-ID" },
   });
@@ -555,18 +557,20 @@ function ensureLpmChart() {
     borderVisible: false, priceLineVisible: false,
     priceFormat: { type: "price", precision: 0, minMove: 1 },
   }, 0);
+  // Neutral dark line: a green LPM line would blend into the up candles on the same pane
   const line = chart.addSeries(LC.LineSeries, {
-    color: lpmToken("--brand-lime"), lineWidth: 2, priceLineVisible: false,
+    color: lpmToken("--text-primary"), lineWidth: 2, priceLineVisible: false,
+    priceScaleId: "left",
     priceFormat: { type: "price", precision: 1, minMove: 0.1 },
-  }, 1);
+  }, 0);
   const lens = chart.addSeries(LC.HistogramSeries, {
     priceLineVisible: false, lastValueVisible: false,
     priceFormat: { type: "price", precision: 2, minMove: 0.01 },
-  }, 2);
+  }, 1);
   const markers = LC.createSeriesMarkers(candle, []);
 
   const panes = chart.panes();
-  [55, 25, 20].forEach((factor, i) => panes[i] && panes[i].setStretchFactor(factor));
+  [75, 25].forEach((factor, i) => panes[i] && panes[i].setStretchFactor(factor));
 
   chart.subscribeCrosshairMove((param) => renderLpmLegend(lpmTimeKey(param.time)));
 

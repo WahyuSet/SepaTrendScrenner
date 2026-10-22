@@ -70,7 +70,7 @@ Aplikasi ini menggabungkan:
 * **Menu LPM & Smart Money** (halaman sendiri di sidebar; dari modal detail saham lewat tombol "Buka LPM"; spesifikasi lengkap: [ProjectOverview/FEATURE_LPM.md](file:///d:/Learning/SepaTrend/ProjectOverview/FEATURE_LPM.md)):
     * Liquidity Pressure Model: tekanan harian smart money (broker dengan nilai per transaksi ≥ 1,5–4× rata-rata saham itu), dinormalisasi ke turnover dan dijumlahkan jadi garis.
     * Tren LPM (θ adaptif), divergensi harga vs LPM, lensa Intensity (z-score) dan Vol Rotation (persentil), serta pembacaan fase (Senyap, Persiapan, Markup, Panas, Distribusi, Markdown).
-    * Chart 3 panel (lightweight-charts 5.2.1): candlestick + marker divergensi, garis LPM, histogram lensa.
+    * Chart 2 panel (lightweight-charts 5.2.1): candlestick + garis LPM (sumbu kiri) + marker divergensi, lalu histogram lensa.
     * Histori broker harian disimpan permanen di tabel `broker_daily`; backfill 80 hari bursa di thread background dengan cadangan kuota 200.
     * **Status: eksperimental.** Uji bias tahap 5 (BBCA, PTBA, ASRM) menemukan pressure cenderung positif dan tinggi di hari harga turun, dan belum terbukti mendahului harga. Lihat FEATURE_LPM.md bagian 11 sebelum memakai hasilnya untuk keputusan.
 
@@ -166,7 +166,7 @@ SepaTrend/
 │       ├── core/
 │       │   ├── scanner.js          # Polling status scan & trigger scanner
 │       │   ├── stock_detail_modal.js # Controller tab modal detail & inline bandar checker
-│       │   ├── lpm_panel.js        # Halaman LPM: pemilih saham, chart 3 panel, state, backfill & polling
+│       │   ├── lpm_panel.js        # Halaman LPM: pemilih saham, chart harga+LPM & lensa, state, backfill & polling
 │       │   ├── utils.js            # Format rupiah, angka lot, format tanggal
 │       │   └── export.js           # Export tabel ke CSV / Excel
 │       ├── screeners/
