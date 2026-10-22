@@ -31,7 +31,7 @@
 
 .modal-dialog,
 .modal-card {
-  background: #ffffff;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-strong);
   border-radius: 12px;
   width: 660px;
@@ -56,7 +56,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  background: #ffffff;
+  background: var(--bg-secondary);
 }
 
 .modal-title-group h3 {
@@ -100,7 +100,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background: #ffffff;
+  background: var(--bg-secondary);
   max-height: calc(90vh - 130px);
 }
 
@@ -108,7 +108,7 @@
 .modal-summary-bar {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  background: #f8fafc;
+  background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   overflow: hidden;
@@ -153,7 +153,7 @@
 }
 
 .stat-item-copyable:hover {
-  background: #f1f5f9;
+  background: var(--bg-tertiary);
 }
 
 .m-stat-header-row {
@@ -201,19 +201,19 @@
   justify-content: space-between;
   padding: 10px 14px;
   border-radius: 6px;
-  background: #f8fafc;
+  background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
   font-size: 12px;
 }
 
 .criteria-item.pass {
   border-left: 3px solid var(--status-confirmed-text);
-  background: #f0fdf4;
+  background: var(--status-confirmed-bg);
 }
 
 .criteria-item.fail {
   border-left: 3px solid var(--status-fail-text);
-  background: #fef2f2;
+  background: var(--status-fail-bg);
 }
 
 .crit-left {
@@ -231,12 +231,12 @@
 }
 
 .crit-icon.pass {
-  background: #dcfce7;
+  background: var(--status-confirmed-bg);
   color: var(--status-confirmed-text);
 }
 
 .crit-icon.fail {
-  background: #fee2e2;
+  background: var(--status-fail-bg);
   color: var(--status-fail-text);
 }
 
@@ -256,7 +256,7 @@
 .modal-footer {
   padding: 12px 20px;
   border-top: 1px solid var(--border-subtle);
-  background: #f8fafc;
+  background: var(--bg-primary);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -264,8 +264,8 @@
 
 .btn-tv-large,
 .btn-tv-link {
-  color: #ffffff;
-  background: #2563eb;
+  color: var(--text-inverse);
+  background: var(--status-info-text);
   padding: 8px 14px;
   border-radius: 6px;
   text-decoration: none;
@@ -279,6 +279,7 @@
 
 .btn-tv-large:hover,
 .btn-tv-link:hover {
-  background: #1d4ed8;
-  color: #ffffff;
+  background: var(--status-info-text);
+  opacity: 0.9;
+  color: var(--text-inverse);
 }

@@ -1,71 +1,11 @@
 /* ==========================================================================
-   BASE & DESIGN TOKENS (Apple San Francisco Typography & Palette)
+   BASE: reset, body, focus, scrollbars, utilities, toast
+   Tokens live in tokens.css (loaded first).
    ========================================================================== */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-:root {
-  /* Color Palette - Financial Terminal Theme (Clean White & Slate) */
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #f1f5f9;
-  
-  --border-subtle: #e2e8f0;
-  --border-strong: #cbd5e1;
-  
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --text-inverse: #ffffff;
-  
-  /* Accent Brands */
-  --brand-lime: #4d7c0f;
-  --brand-lime-hover: #3f6212;
-  --brand-lime-bright: #65a30d;
-  --brand-lime-dim: rgba(101, 163, 13, 0.12);
-  --brand-lime-border: rgba(101, 163, 13, 0.35);
-
-  /* Status Colors */
-  --status-confirmed-bg: #f0fdf4;
-  --status-confirmed-text: #166534;
-  --status-confirmed-border: #bbf7d0;
-
-  --status-watchlist-bg: #fffbeb;
-  --status-watchlist-text: #b45309;
-  --status-watchlist-border: #fde68a;
-
-  --status-fail-bg: #fef2f2;
-  --status-fail-text: #991b1b;
-  --status-fail-border: #fecaca;
-
-  --status-div-reg-bg: #ecfdf5;
-  --status-div-reg-text: #047857;
-  --status-div-reg-border: #a7f3d0;
-
-  --status-div-hid-bg: #eff6ff;
-  --status-div-hid-text: #1d4ed8;
-  --status-div-hid-border: #bfdbfe;
-
-  /* Typography - Plus Jakarta Sans & JetBrains Mono Stack */
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: 'JetBrains Mono', "SF Mono", Monaco, Menlo, Consolas, "Liberation Mono", monospace;
-
-  /* Shadows */
-  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
-  --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  --shadow-lime: 0 4px 14px 0 rgba(77, 124, 15, 0.39);
-
-  /* Z-Index Design Tokens */
-  --z-base: 1;
-  --z-sticky: 100;
-  --z-dropdown: 200;
-  --z-drawer: 250;
-  --z-backdrop: 300;
-  --z-modal: 400;
-  --z-toast: 500;
 }
 
 body {
@@ -82,14 +22,14 @@ body {
 
 /* Accessibility Focus States */
 :focus-visible {
-  outline: 2px solid var(--brand-lime);
+  outline: 2px solid var(--border-focus);
   outline-offset: 2px;
 }
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--brand-lime);
+  outline: 2px solid var(--border-focus);
   outline-offset: 2px;
 }
 
@@ -143,21 +83,31 @@ select:focus-visible {
 }
 
 .toast {
-  background: #0f172a;
-  color: #ffffff;
+  background: var(--text-primary);
+  color: var(--text-inverse);
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   font-size: 13px;
   font-weight: 600;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-overlay);
   display: flex;
   align-items: center;
   gap: 8px;
-  animation: slideInToast 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideInToast 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: auto;
 }
 
 @keyframes slideInToast {
-  from { opacity: 0; transform: translateY(12px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Motion off for users who ask for it (Design.md §8) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

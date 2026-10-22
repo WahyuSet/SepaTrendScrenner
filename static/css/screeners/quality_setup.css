@@ -16,17 +16,15 @@
 }
 
 .qs-grade-badge.elite {
-  background: linear-gradient(135deg, #fef08a 0%, #facc15 100%);
-  color: #713f12;
-  border: 1px solid #eab308;
-  box-shadow: 0 1px 6px rgba(234, 179, 8, 0.3);
+  background: var(--status-confirmed-text);
+  color: var(--text-inverse);
+  border: 1px solid var(--status-confirmed-text);
 }
 
 .qs-grade-badge.strong {
-  background: linear-gradient(135deg, #dcfce7 0%, #86efac 100%);
-  color: #14532d;
-  border: 1px solid #4ade80;
-  box-shadow: 0 1px 6px rgba(74, 222, 128, 0.25);
+  background: var(--status-confirmed-bg);
+  color: var(--status-confirmed-text);
+  border: 1px solid var(--status-confirmed-border);
 }
 
 .qs-setup-badge {
@@ -41,21 +39,21 @@
 }
 
 .qs-setup-badge.breakout {
-  background: #e0f2fe;
-  color: #0369a1;
-  border: 1px solid #7dd3fc;
+  background: var(--status-info-bg);
+  color: var(--status-info-text);
+  border: 1px solid var(--status-info-border);
 }
 
 .qs-setup-badge.breakout-jauh {
-  background: #fff7ed;
-  color: #c2410c;
-  border: 1px solid #fed7aa;
+  background: var(--status-watchlist-bg);
+  color: var(--status-watchlist-text);
+  border: 1px solid var(--status-watchlist-border);
 }
 
 .qs-setup-badge.pullback {
-  background: #f3e8ff;
-  color: #6b21a8;
-  border: 1px solid #d8b4fe;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-strong);
 }
 
 .st-badge {
@@ -70,15 +68,15 @@
 }
 
 .st-badge.bullish {
-  background: #ecfdf5;
-  color: #047857;
-  border: 1px solid #a7f3d0;
+  background: var(--status-confirmed-bg);
+  color: var(--status-confirmed-text);
+  border: 1px solid var(--status-confirmed-border);
 }
 
 .st-badge.bearish {
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
+  background: var(--status-fail-bg);
+  color: var(--status-fail-text);
+  border: 1px solid var(--status-fail-border);
 }
 
 /* 2. TABLE CELL SPECIAL FORMATTERS */
@@ -89,7 +87,7 @@
   font-size: 11px;
   font-family: var(--font-mono);
   text-align: left;
-  background: #f8fafc;
+  background: var(--bg-primary);
   padding: 6px 10px;
   border-radius: 6px;
   border: 1px solid var(--border-subtle);
@@ -124,7 +122,7 @@
   align-items: center;
   gap: 5px;
   padding: 5px 11px;
-  background: #ffffff;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   border-radius: 6px;
   font-family: var(--font-sans);
@@ -153,17 +151,17 @@
 .score-bar-track {
   flex: 1;
   height: 6px;
-  background: #e2e8f0;
+  background: var(--border-subtle);
   border-radius: 9999px;
   overflow: hidden;
 }
 
 .score-bar-fill.elite {
-  background: linear-gradient(90deg, #eab308, #ca8a04);
+  background: var(--status-confirmed-text);
 }
 
 .score-bar-fill.strong {
-  background: linear-gradient(90deg, #10b981, #059669);
+  background: var(--status-confirmed-text);
 }
 
 /* 3. BENTO MODAL DIALOG */
@@ -206,7 +204,7 @@
 }
 
 .qs-bento-card {
-  background: #f8fafc;
+  background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
   padding: 14px 16px;
@@ -245,13 +243,13 @@
 }
 
 .rr-badge-pill {
-  background: #dcfce7;
-  color: #15803d;
+  background: var(--status-confirmed-bg);
+  color: var(--status-confirmed-text);
   font-weight: 700;
   font-size: 11px;
   padding: 3px 8px;
   border-radius: 9999px;
-  border: 1px solid #86efac;
+  border: 1px solid var(--status-confirmed-border);
 }
 
 /* 4. TRADE PLAN METRICS GRID IN MODAL */
@@ -262,7 +260,7 @@
 }
 
 .plan-metric-box {
-  background: #ffffff;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   padding: 10px 12px;
@@ -272,15 +270,15 @@
 }
 
 .plan-metric-box.entry-box {
-  border-left: 3px solid #3b82f6;
+  border-left: 3px solid var(--status-info-text);
 }
 
 .plan-metric-box.sl-box {
-  border-left: 3px solid #ef4444;
+  border-left: 3px solid var(--status-fail-text);
 }
 
 .plan-metric-box.target-box {
-  border-left: 3px solid #10b981;
+  border-left: 3px solid var(--status-confirmed-text);
 }
 
 .plan-metric-label {
@@ -305,7 +303,7 @@
 .score-circle-pill {
   display: flex;
   align-items: baseline;
-  background: #ffffff;
+  background: var(--bg-secondary);
   padding: 2px 8px;
   border-radius: 9999px;
   border: 1px solid var(--border-subtle);
@@ -333,9 +331,9 @@
   align-items: center;
   font-size: 11.5px;
   padding: 5px 8px;
-  background: #ffffff;
+  background: var(--bg-secondary);
   border-radius: 6px;
-  border: 1px solid #f1f5f9;
+  border: 1px solid var(--bg-tertiary);
 }
 
 .pillar-name {
@@ -343,8 +341,8 @@
 }
 
 .score-signals-box {
-  background: #ffffff;
-  border: 1px solid #f1f5f9;
+  background: var(--bg-secondary);
+  border: 1px solid var(--bg-tertiary);
   border-radius: 6px;
   padding: 8px 10px;
   font-size: 11px;
@@ -359,7 +357,7 @@
 .signals-list {
   margin: 0;
   padding-left: 16px;
-  color: #15803d;
+  color: var(--status-confirmed-text);
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -400,22 +398,22 @@
   justify-content: space-between;
   align-items: center;
   padding: 4px 7px;
-  background: #ffffff;
+  background: var(--bg-secondary);
   border-radius: 5px;
-  border: 1px solid #f1f5f9;
+  border: 1px solid var(--bg-tertiary);
   font-size: 11.5px;
 }
 
 .fib-row.golden-pocket-row {
-  background: #fefce8;
-  border: 1px solid #fef08a;
-  border-left: 3px solid #eab308;
+  background: var(--status-watchlist-bg);
+  border: 1px solid var(--status-watchlist-border);
+  border-left: 3px solid var(--status-watchlist-text);
 }
 
 .fib-row.golden-ext-row {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  border-left: 3px solid #22c55e;
+  background: var(--status-confirmed-bg);
+  border: 1px solid var(--status-confirmed-border);
+  border-left: 3px solid var(--status-confirmed-text);
 }
 
 .fib-level-lbl {
@@ -435,9 +433,9 @@
   align-items: center;
   font-size: 11.5px;
   padding: 5px 8px;
-  background: #ffffff;
+  background: var(--bg-secondary);
   border-radius: 5px;
-  border: 1px solid #f1f5f9;
+  border: 1px solid var(--bg-tertiary);
 }
 
 .struct-label {
@@ -451,7 +449,7 @@
 /* 8. MODAL FOOTER */
 .quality-modal-footer {
   padding: 12px 20px;
-  background: #f8fafc;
+  background: var(--bg-primary);
   border-top: 1px solid var(--border-subtle);
   border-radius: 0 0 12px 12px;
   display: flex;
@@ -463,7 +461,7 @@
   font-size: 11px;
   padding: 3px 8px;
   border-radius: 4px;
-  background: #ffffff;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
   font-weight: 500;
@@ -488,10 +486,10 @@
 
 /* Stale Data Warning Banner */
 .stale-warning-banner {
-  background: #fef3c7;
-  color: #92400e;
-  border: 1px solid #fde68a;
-  border-left: 4px solid #f59e0b;
+  background: var(--status-watchlist-bg);
+  color: var(--status-watchlist-text);
+  border: 1px solid var(--status-watchlist-border);
+  border-left: 4px solid var(--status-watchlist-text);
   border-radius: 8px;
   padding: 10px 16px;
   font-size: 13px;

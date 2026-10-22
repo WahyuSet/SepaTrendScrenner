@@ -37,9 +37,9 @@
 }
 
 .rvol-badge.dryup {
-  background: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
+  background: var(--status-info-bg);
+  color: var(--status-info-text);
+  border: 1px solid var(--status-info-border);
 }
 
 .rvol-badge.normal {

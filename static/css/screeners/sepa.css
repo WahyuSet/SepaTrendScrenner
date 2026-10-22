@@ -13,7 +13,7 @@
 .score-bar-track {
   width: 44px;
   height: 5px;
-  background: #e2e8f0;
+  background: var(--border-subtle);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -24,7 +24,7 @@
 }
 
 .score-bar-fill.score-8 {
-  background: var(--brand-lime-bright);
+  background: var(--status-confirmed-text);
 }
 
 .score-bar-fill.score-6-7 {

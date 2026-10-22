@@ -471,7 +471,7 @@ function renderBacktestTableRows() {
             <button class="btn-star-pin ${starClass}" onclick="event.stopPropagation(); toggleWatchlistPin('${t.ticker}', '${t.ticker}', 'IDX', 'BACKTEST')" title="Pin ke Watchlist Pribadi">
               ★
             </button>
-            <span class="ticker-text font-bold" onclick="showStockDetail('${t.ticker}')" style="cursor: pointer; color: #0284c7; font-family: var(--font-mono); font-weight: 700; font-size: 13px;">
+            <span class="ticker-text font-bold" onclick="showStockDetail('${t.ticker}')" style="cursor: pointer; color: var(--status-info-text); font-family: var(--font-mono); font-weight: 700; font-size: 13px;">
               ${t.ticker}
             </span>
           </div>

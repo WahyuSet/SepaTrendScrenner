@@ -12,9 +12,19 @@
   <!-- Typography: Plus Jakarta Sans & JetBrains Mono (Google Fonts CDN) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Theme before first paint: saved choice, else light (Design.md §3.6) -->
+  <script>
+    (function () {
+      var theme = 'light';
+      try { if (localStorage.getItem('theme') === 'dark') theme = 'dark'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
   <!-- Font Stack & Stylesheet -->
+  <link rel="stylesheet" href="/static/css/tokens.css">
   <link rel="stylesheet" href="/static/css/base.css">
   <link rel="stylesheet" href="/static/css/login.css">
 </head>

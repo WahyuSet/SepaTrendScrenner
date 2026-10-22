@@ -11,14 +11,33 @@
   <!-- Typography: Plus Jakarta Sans & JetBrains Mono (Google Fonts CDN) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Custom Stylesheet (Modular Architecture) -->
-  <link rel="stylesheet" href="/static/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Theme before first paint: saved choice, else light (Design.md §3.6) -->
+  <script>
+    (function () {
+      var theme = 'light';
+      try { if (localStorage.getItem('theme') === 'dark') theme = 'dark'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <!-- Stylesheets: tokens first, then base, layout, components, screeners -->
+  <link rel="stylesheet" href="/static/css/tokens.css">
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/layout.css">
+  <link rel="stylesheet" href="/static/css/table.css">
+  <link rel="stylesheet" href="/static/css/modals.css">
+  <link rel="stylesheet" href="/static/css/command-palette.css">
+  <link rel="stylesheet" href="/static/css/screeners/sepa.css">
+  <link rel="stylesheet" href="/static/css/screeners/rsi.css">
+  <link rel="stylesheet" href="/static/css/screeners/prebreakout.css">
   <link rel="stylesheet" href="/static/css/components/stock_modal.css">
+  <link rel="stylesheet" href="/static/css/components/market_regime.css">
+  <link rel="stylesheet" href="/static/css/screeners/quality_setup.css">
   <link rel="stylesheet" href="/static/css/components/lpm_panel.css">
-  <link rel="stylesheet" href="/static/css/screeners/watchlist.css?v=2.2">
-  <link rel="stylesheet" href="/static/css/screeners/backtest.css?v=1.0">
+  <link rel="stylesheet" href="/static/css/screeners/watchlist.css">
+  <link rel="stylesheet" href="/static/css/screeners/backtest.css">
 </head>
 <body>
 
