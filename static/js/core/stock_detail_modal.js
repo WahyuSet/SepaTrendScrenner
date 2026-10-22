@@ -67,7 +67,7 @@ function openStockDetailModal(ticker, meta = {}) {
   if (meta.price) {
     priceEl.textContent = `Rp ${new Intl.NumberFormat("id-ID").format(meta.price)}`;
   } else {
-    priceEl.textContent = "—";
+    priceEl.textContent = "--";
   }
 
   // Initial Badge States
@@ -83,16 +83,20 @@ function openStockDetailModal(ticker, meta = {}) {
   if (pinBtn) {
     if (typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(ticker)) {
       pinBtn.classList.add('pinned');
-      pinBtn.innerHTML = '<span>★</span> Pinned';
+      pinBtn.textContent = 'Pinned';
     } else {
       pinBtn.classList.remove('pinned');
-      pinBtn.innerHTML = '<span>☆</span> Pin';
+      pinBtn.textContent = 'Pin';
     }
   }
 
   // Show Modal Backdrop
-  const modal = document.getElementById("stock-detail-modal");
-  modal.classList.remove("hidden");
+  if (typeof openModal === 'function') {
+    openModal('stock-detail-modal');
+  } else {
+    const modal = document.getElementById("stock-detail-modal");
+    if (modal) modal.classList.remove("hidden");
+  }
 
   // Activate Default Tab
   switchStockModalTab(activeStockTab || "bandar");
@@ -119,18 +123,22 @@ function togglePinFromDetailModal() {
     if (pinBtn && typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers) {
       if (watchlistState.pinnedTickers.has(currentStockTicker)) {
         pinBtn.classList.add('pinned');
-        pinBtn.innerHTML = '<span>★</span> Pinned';
+        pinBtn.textContent = 'Pinned';
       } else {
         pinBtn.classList.remove('pinned');
-        pinBtn.innerHTML = '<span>☆</span> Pin';
+        pinBtn.textContent = 'Pin';
       }
     }
   }
 }
 
 function closeStockDetailModal() {
-  const modal = document.getElementById("stock-detail-modal");
-  if (modal) modal.classList.add("hidden");
+  if (typeof closeModal === 'function') {
+    closeModal('stock-detail-modal');
+  } else {
+    const modal = document.getElementById("stock-detail-modal");
+    if (modal) modal.classList.add("hidden");
+  }
 }
 
 function handleStockModalBackdrop(event) {
@@ -293,13 +301,13 @@ function renderBandarData(data) {
   if (a) {
     if (a.trend === "UPTREND_ACCUM") {
       trendBadge.className = "trend-badge uptrend";
-      trendBadge.textContent = a.trend_label || "📈 Accumulation Uptrend";
+      trendBadge.textContent = a.trend_label || "Accumulation Uptrend";
     } else if (a.trend === "DOWNTREND_DIST") {
       trendBadge.className = "trend-badge downtrend";
-      trendBadge.textContent = a.trend_label || "📉 Distribution Downtrend";
+      trendBadge.textContent = a.trend_label || "Distribution Downtrend";
     } else {
       trendBadge.className = "trend-badge neutral";
-      trendBadge.textContent = a.trend_label || "→ Neutral Trend";
+      trendBadge.textContent = a.trend_label || "Neutral Trend";
     }
 
     let pillsHtml = "";
@@ -322,7 +330,7 @@ function renderBandarData(data) {
     seriesContainer.innerHTML = pillsHtml || `<span class="text-muted text-sm">Data time-series tidak tersedia</span>`;
   } else {
     trendBadge.className = "trend-badge neutral";
-    trendBadge.textContent = "—";
+    trendBadge.textContent = "--";
     seriesContainer.innerHTML = `<span class="text-muted text-sm">Data time-series tidak tersedia</span>`;
   }
 }
@@ -369,8 +377,8 @@ function renderFinancialsData(data) {
 
   if (data.sepa_certified) {
     sepaVerdictEl.className = "bento-value success";
-    sepaVerdictEl.textContent = "👑 SEPA Certified";
-    sepaDescEl.textContent = `Pertumbuhan laba akseleratif (EPS YoY ≥ 20%)`;
+    sepaVerdictEl.textContent = "SEPA Certified";
+    sepaDescEl.textContent = `Pertumbuhan laba akseleratif (EPS YoY >= 20%)`;
     sepaBadge.classList.remove("hidden");
   } else if (data.yoy_eps_growth !== null) {
     sepaVerdictEl.className = "bento-value neutral";
@@ -386,7 +394,7 @@ function renderFinancialsData(data) {
     epsGrowthEl.className = `bento-value mono ${isPos ? "success" : "danger"}`;
     epsGrowthEl.textContent = `${isPos ? "+" : ""}${data.yoy_eps_growth}%`;
   } else {
-    epsGrowthEl.textContent = "—";
+    epsGrowthEl.textContent = "--";
   }
 
   latestProfitEl.textContent = formatRupiahShort(data.latest_net_profit);
@@ -403,10 +411,10 @@ function renderFinancialsData(data) {
         <tr>
           <td class="font-bold">${it.label}</td>
           <td class="text-right mono ${isProfitable ? "text-success" : "text-danger"}">${formatRupiahShort(it.net_profit)}</td>
-          <td class="text-right mono font-bold">${it.eps !== null ? `Rp ${it.eps}` : "—"}</td>
+          <td class="text-right mono font-bold">${it.eps !== null ? `Rp ${it.eps}` : "--"}</td>
           <td class="text-center">
             <span class="stock-status-pill ${isProfitable ? "success" : "danger"}">
-              ${isProfitable ? "Laba ✅" : "Rugi ⚠️"}
+              ${isProfitable ? "Laba" : "Rugi"}
             </span>
           </td>
         </tr>
@@ -451,11 +459,11 @@ async function fetchAnalysisData(ticker, force = false) {
 
 function renderAnalysisData(data) {
   const p = data.pivots || {};
-  document.getElementById("pivot-s2").textContent = p.s2 || "—";
-  document.getElementById("pivot-s1").textContent = p.s1 || "—";
-  document.getElementById("pivot-p").textContent = p.p || "—";
-  document.getElementById("pivot-r1").textContent = p.r1 || "—";
-  document.getElementById("pivot-r2").textContent = p.r2 || "—";
+  document.getElementById("pivot-s2").textContent = p.s2 || "--";
+  document.getElementById("pivot-s1").textContent = p.s1 || "--";
+  document.getElementById("pivot-p").textContent = p.p || "--";
+  document.getElementById("pivot-r1").textContent = p.r1 || "--";
+  document.getElementById("pivot-r2").textContent = p.r2 || "--";
 
   const plan = data.trading_plan || {};
   
@@ -481,18 +489,18 @@ function renderAnalysisData(data) {
   }
 
   const entryEl = document.getElementById("plan-entry");
-  if (entryEl) entryEl.textContent = plan.jika_belum_punya || "—";
+  if (entryEl) entryEl.textContent = plan.jika_belum_punya || "--";
 
   const holdEl = document.getElementById("plan-hold");
-  if (holdEl) holdEl.textContent = plan.jika_punya || "—";
+  if (holdEl) holdEl.textContent = plan.jika_punya || "--";
 
   const targetEl = document.getElementById("plan-target");
   if (targetEl) {
-    targetEl.textContent = `${plan.target1 || p.r1 || "—"} / ${plan.target2 || p.r2 || "—"}`;
+    targetEl.textContent = `${plan.target1 || p.r1 || "--"} / ${plan.target2 || p.r2 || "--"}`;
   }
 
   const stopLossEl = document.getElementById("plan-stoploss");
-  if (stopLossEl) stopLossEl.textContent = plan.stop_loss || p.s2 || p.s1 || "—";
+  if (stopLossEl) stopLossEl.textContent = plan.stop_loss || p.s2 || p.s1 || "--";
 
   document.getElementById("analysis-raw-text").textContent = data.raw_output || "Tidak ada narasi analisa";
 }
@@ -506,18 +514,17 @@ async function checkBandarInline(ticker, btnElement, event) {
   if (!ticker || !btnElement) return;
 
   btnElement.disabled = true;
-  btnElement.innerHTML = `<span>⏳</span> Cek...`;
+  btnElement.textContent = "Memuat...";
 
   try {
     const resp = await fetch(`/api/idx/broker-summary/${ticker}`).then((r) => r.json());
     if (resp.status === "success" && resp.data) {
       const d = resp.data;
       const badgeClass = d.status_class === "success" ? "big-accum" : (d.status_class === "danger" ? "big-dist" : (d.status_class === "warning" ? "normal-dist" : (d.status_class === "accent" ? "normal-accum" : "neutral")));
-      const badgeIcon = d.status === "BIG_ACCUM" ? "🟢" : (d.status === "BIG_DIST" ? "🔴" : (d.status === "NORMAL_ACCUM" ? "🔵" : "⚪"));
 
       const newHtml = `
         <span class="bandar-cell-badge ${badgeClass}" onclick="openStockDetailModal('${ticker}');" title="Klik untuk lihat detail Top Broker">
-          ${badgeIcon} ${d.status_label || d.status} (${d.top3_buy_ratio}%)
+          ${d.status_label || d.status} (${d.top3_buy_ratio}%)
         </span>
       `;
       btnElement.outerHTML = newHtml;
@@ -525,11 +532,11 @@ async function checkBandarInline(ticker, btnElement, event) {
       if (resp.quota) updateSidebarQuota(resp.quota);
     } else {
       btnElement.disabled = false;
-      btnElement.innerHTML = `<span>⚠️</span> Retry`;
+      btnElement.textContent = "Coba Lagi";
     }
   } catch (err) {
     btnElement.disabled = false;
-    btnElement.innerHTML = `<span>⚠️</span> Error`;
+    btnElement.textContent = "Gagal";
     console.error("Inline bandar check failed:", err);
   }
 }

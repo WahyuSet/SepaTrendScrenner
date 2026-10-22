@@ -476,13 +476,21 @@ function openPreBreakoutModal(ticker) {
     container.innerHTML = listHtml;
   }
 
-  const modal = document.getElementById('prebreakout-modal');
-  if (modal) modal.classList.remove('hidden');
+  if (typeof openModal === 'function') {
+    openModal('prebreakout-modal');
+  } else {
+    const modal = document.getElementById('prebreakout-modal');
+    if (modal) modal.classList.remove('hidden');
+  }
 }
 
 function closePreBreakoutModal() {
-  const modal = document.getElementById('prebreakout-modal');
-  if (modal) modal.classList.add('hidden');
+  if (typeof closeModal === 'function') {
+    closeModal('prebreakout-modal');
+  } else {
+    const modal = document.getElementById('prebreakout-modal');
+    if (modal) modal.classList.add('hidden');
+  }
 }
 
 function closePreBreakoutModalOnBackdrop(event) {

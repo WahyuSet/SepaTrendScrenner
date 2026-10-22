@@ -8,7 +8,14 @@ dialog.cmd-dialog {
   max-width: 640px;
   width: 90vw;
   margin: auto;
+}
+
+dialog.cmd-dialog:focus {
   outline: none;
+}
+
+dialog.cmd-dialog:focus-visible {
+  outline: 2px solid var(--border-focus);
 }
 
 dialog.cmd-dialog::backdrop {
@@ -30,8 +37,8 @@ dialog.cmd-dialog::backdrop {
 }
 
 @keyframes scaleInCmd {
-  from { opacity: 0; transform: scale(0.97) translateY(-8px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes fadeInBackdrop {
@@ -47,12 +54,20 @@ dialog.cmd-dialog::backdrop {
   padding: 14px 18px;
   border-bottom: 1px solid var(--border-subtle);
   background: var(--bg-secondary);
+  transition: border-color 0.15s ease;
+}
+
+.cmd-input-wrap:focus-within {
+  border-bottom-color: var(--border-focus);
 }
 
 .cmd-input-icon,
 .cmd-search-icon {
   font-size: 16px;
   color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cmd-input {
@@ -62,6 +77,9 @@ dialog.cmd-dialog::backdrop {
   font-family: var(--font-sans);
   font-size: 14px;
   color: var(--text-primary);
+}
+
+.cmd-input:focus-visible {
   outline: none;
 }
 
@@ -103,8 +121,14 @@ dialog.cmd-dialog::backdrop {
   user-select: none;
 }
 
-.cmd-item:hover, .cmd-item.selected {
+.cmd-item:hover,
+.cmd-item.selected {
   background: var(--bg-tertiary);
+}
+
+.cmd-item:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: -2px;
 }
 
 .cmd-item-left {

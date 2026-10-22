@@ -443,12 +443,13 @@ function openCriteriaModal(ticker) {
     container.innerHTML = listHtml;
   }
 
-  if (modal) modal.classList.remove('hidden');
-}
-
-function closeModal() {
-  const modal = document.getElementById('criteria-modal');
-  if (modal) modal.classList.add('hidden');
+  if (modal) {
+    if (typeof openModal === 'function') {
+      openModal('criteria-modal');
+    } else {
+      modal.classList.remove('hidden');
+    }
+  }
 }
 
 function copyModalRSValue() {
@@ -462,6 +463,11 @@ function copyModalRSValue() {
 
 function closeModalOnBackdrop(event) {
   if (event.target.id === 'criteria-modal') {
-    closeModal();
+    if (typeof closeModal === 'function') {
+      closeModal('criteria-modal');
+    } else {
+      const modal = document.getElementById('criteria-modal');
+      if (modal) modal.classList.add('hidden');
+    }
   }
 }

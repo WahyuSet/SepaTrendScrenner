@@ -500,13 +500,21 @@ function openRsiModal(ticker) {
       : `Sinyal Hidden Bullish Trend Continuation: Harga saham membentuk swing low yang lebih tinggi (Rp ${stock.pivot_low} > Rp ${stock.prev_pivot_low}), namun indikator RSI justru jatuh ke titik yang lebih rendah (${stock.pivot_rsi} < ${stock.prev_pivot_rsi}). Ini mengindikasikan bahwa tren naik utama (uptrend) masih sangat kuat dan penurunan sebelumnya hanyalah koreksi teknikal sementara yang sehat.`;
   }
 
-  const modal = document.getElementById('rsi-modal');
-  if (modal) modal.classList.remove('hidden');
+  if (typeof openModal === 'function') {
+    openModal('rsi-modal');
+  } else {
+    const modal = document.getElementById('rsi-modal');
+    if (modal) modal.classList.remove('hidden');
+  }
 }
 
 function closeRsiModal() {
-  const modal = document.getElementById('rsi-modal');
-  if (modal) modal.classList.add('hidden');
+  if (typeof closeModal === 'function') {
+    closeModal('rsi-modal');
+  } else {
+    const modal = document.getElementById('rsi-modal');
+    if (modal) modal.classList.add('hidden');
+  }
 }
 
 function closeRsiModalOnBackdrop(event) {

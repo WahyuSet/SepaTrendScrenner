@@ -1,12 +1,12 @@
 <!-- RSI DIVERGENCE DETAIL MODAL -->
-<div id="rsi-modal" class="modal hidden" onclick="closeRsiModalOnBackdrop(event)">
+<div id="rsi-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="rsi-modal-title" aria-hidden="true" onclick="closeRsiModalOnBackdrop(event)">
   <div class="modal-dialog">
     <div class="modal-header">
       <div class="modal-title-group">
-        <h3 id="rsi-modal-title">BBCA — Bank Central Asia</h3>
+        <h3 id="rsi-modal-title">BBCA: Bank Central Asia</h3>
         <p id="rsi-modal-subtitle">Inspeksi Sinyal RSI Divergence</p>
       </div>
-      <button class="modal-close" onclick="closeRsiModal()">✕</button>
+      <button class="modal-close" onclick="closeRsiModal()" aria-label="Tutup dialog">✕</button>
     </div>
 
     <div class="modal-body">
@@ -17,7 +17,7 @@
         </div>
         <div class="modal-stat-item">
           <span class="m-stat-label">Tipe Divergence</span>
-          <span id="rsi-modal-type" class="m-stat-val lime">—</span>
+          <span id="rsi-modal-type" class="m-stat-val lime">--</span>
         </div>
         <div class="modal-stat-item">
           <span class="m-stat-label">RSI 14 Saat Ini</span>
@@ -25,7 +25,7 @@
         </div>
         <div class="modal-stat-item">
           <span class="m-stat-label">Waktu Deteksi</span>
-          <span id="rsi-modal-recency" class="m-stat-val">—</span>
+          <span id="rsi-modal-recency" class="m-stat-val">--</span>
         </div>
       </div>
 
@@ -69,7 +69,6 @@
         </div>
 
         <div class="rsi-tech-interpretation">
-          <span class="tech-icon">💡</span>
           <div class="tech-desc">
             <strong>Interpretasi Teknikal:</strong>
             <p id="rsi-tech-text">Penjelasan sinyal divergensi...</p>

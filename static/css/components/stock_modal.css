@@ -8,8 +8,6 @@
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.72);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   z-index: var(--z-backdrop, 300);
   display: flex;
   align-items: center;
@@ -43,8 +41,8 @@
 }
 
 @keyframes modalSlideUp {
-  from { transform: translateY(16px) scale(0.98); opacity: 0; }
-  to { transform: translateY(0) scale(1); opacity: 1; }
+  from { transform: scale(0.98); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 /* 2. Header */
@@ -209,7 +207,6 @@
 .btn-stock-refresh:hover {
   background: var(--bg-tertiary);
   color: var(--text-primary);
-  transform: translateY(-1px);
 }
 
 .btn-stock-close {
@@ -312,9 +309,7 @@
 }
 
 .bandar-card:hover {
-  background: var(--bg-secondary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-  transform: translateY(-2px);
+  background: var(--bg-tertiary);
 }
 
 .bandar-card.highlight {
@@ -841,8 +836,6 @@
   background: var(--status-info-bg);
   border-color: var(--status-info-text);
   color: var(--status-info-text);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.2);
 }
 
 .btn-cek-bandar:active {
@@ -865,8 +858,7 @@
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   height: 28px;
   box-sizing: border-box;
 }
@@ -875,8 +867,6 @@
   background: var(--status-info-text);
   border-color: var(--status-info-text);
   color: var(--text-inverse);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
 }
 
 .btn-table-detail:active {
@@ -894,7 +884,7 @@
   font-size: 11px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: filter 0.15s ease;
   white-space: nowrap;
   height: 28px;
   box-sizing: border-box;
@@ -902,7 +892,6 @@
 
 .bandar-cell-badge:hover {
   filter: brightness(0.96);
-  transform: translateY(-1px);
 }
 
 .bandar-cell-badge.big-accum {

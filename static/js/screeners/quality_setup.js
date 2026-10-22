@@ -470,13 +470,21 @@ function openQualityModal(ticker) {
   document.getElementById('qs-struct-upper-wick').textContent = `${str.upper_wick_pct || 0}% wick`;
   document.getElementById('qs-struct-lower-wick').textContent = `${str.lower_wick_pct || 0}% rejection`;
 
-  // Display standard modal with backdrop blur
-  modal.classList.remove('hidden');
+  // Display standard modal
+  if (typeof openModal === 'function') {
+    openModal('modal-quality-setup');
+  } else {
+    modal.classList.remove('hidden');
+  }
 }
 
 function closeQualityModal() {
-  const modal = document.getElementById('modal-quality-setup');
-  if (modal) modal.classList.add('hidden');
+  if (typeof closeModal === 'function') {
+    closeModal('modal-quality-setup');
+  } else {
+    const modal = document.getElementById('modal-quality-setup');
+    if (modal) modal.classList.add('hidden');
+  }
 }
 
 function closeQualityModalOnBackdrop(event) {
@@ -559,7 +567,7 @@ function pollQualityScanStatus() {
       const data = await res.json();
       if (!data.is_scanning) {
         clearInterval(interval);
-        if (typeof showToast === 'function') showToast('✅ Quality Setup scan selesai!', 'success');
+        if (typeof showToast === 'function') showToast('Quality Setup scan selesai!', 'success');
         loadQualityResults();
       }
     } catch (e) {

@@ -1,8 +1,8 @@
 <!-- ==========================================================================
      ENTERPRISE TABBED STOCK DETAIL MODAL (IDX EDGE PRO INTEGRATION)
      ========================================================================== -->
-<div id="stock-detail-modal" class="stock-modal-backdrop hidden" onclick="handleStockModalBackdrop(event)">
-  <div class="stock-modal-card" role="dialog" aria-modal="true" aria-labelledby="stock-modal-ticker">
+<div id="stock-detail-modal" class="stock-modal-backdrop hidden" onclick="handleStockModalBackdrop(event)" role="dialog" aria-modal="true" aria-labelledby="stock-modal-name" aria-hidden="true">
+  <div class="stock-modal-card">
     
     <!-- MODAL HEADER -->
     <div class="stock-modal-header">
@@ -11,44 +11,40 @@
           <span id="stock-modal-ticker" class="stock-modal-ticker">BBCA</span>
           <span id="stock-modal-sector" class="stock-modal-sector">Financials</span>
           <span id="stock-modal-flow-badge" class="stock-status-pill neutral">Checking Flow...</span>
-          <span id="stock-modal-sepa-badge" class="stock-status-pill sepa hidden">👑 SEPA High Growth</span>
+          <span id="stock-modal-sepa-badge" class="stock-status-pill sepa hidden">SEPA High Growth</span>
         </div>
         <div class="stock-name-row">
           <h2 id="stock-modal-name" class="stock-modal-name">Bank Central Asia Tbk.</h2>
           <div class="stock-modal-price-wrap">
             <span id="stock-modal-price" class="stock-modal-price">Rp 0</span>
-            <span id="stock-modal-change" class="stock-modal-change neutral">—</span>
+            <span id="stock-modal-change" class="stock-modal-change neutral">--</span>
           </div>
         </div>
       </div>
       
       <div class="stock-modal-header-actions">
         <button class="btn-stock-util" onclick="openSizingFromDetailModal()" title="Hitung Sizing & Risiko">
-          <span>🧮</span> Sizing
+          Sizing
         </button>
         <button id="detail-modal-pin-btn" class="btn-stock-util" onclick="togglePinFromDetailModal()" title="Pin ke Watchlist">
-          <span>⭐</span> Pin
+          Pin
         </button>
         <button class="btn-stock-refresh" onclick="refreshCurrentStockTab()" title="Paksa segarkan data dari API (Bypass Cache)">
-          <span class="refresh-icon">🔄</span>
           <span class="refresh-text">Refresh</span>
         </button>
-        <button class="btn-stock-close" onclick="closeStockDetailModal()" title="Tutup Modal (Esc)">✕</button>
+        <button class="btn-stock-close" onclick="closeStockDetailModal()" title="Tutup Modal (Esc)" aria-label="Tutup modal">✕</button>
       </div>
     </div>
 
     <!-- MODAL TABS NAVIGATION -->
     <div class="stock-modal-tabs">
       <button class="stock-tab-btn active" id="tab-btn-bandar" onclick="switchStockModalTab('bandar')">
-        <span class="tab-icon">🏦</span>
         <span class="tab-label">Bandarmologi & Flow</span>
       </button>
       <button class="stock-tab-btn" id="tab-btn-financials" onclick="switchStockModalTab('financials')">
-        <span class="tab-icon">📑</span>
         <span class="tab-label">Laporan Keuangan</span>
       </button>
       <button class="stock-tab-btn" id="tab-btn-analysis" onclick="switchStockModalTab('analysis')">
-        <span class="tab-icon">🤖</span>
         <span class="tab-label">Analisis Komprehensif</span>
       </button>
       <div class="tab-active-indicator" id="tab-indicator"></div>
@@ -73,7 +69,7 @@
         <div class="bandar-bento-grid">
           <div class="bandar-card highlight">
             <div class="bento-label">Status Akumulasi</div>
-            <div id="bandar-status-title" class="bento-value neutral">—</div>
+            <div id="bandar-status-title" class="bento-value neutral">--</div>
             <div id="bandar-status-desc" class="bento-sub">Menunggu data...</div>
           </div>
           
@@ -137,10 +133,9 @@
         <div class="bandar-accum-trend-card" id="bandar-accum-card">
           <div class="trend-card-header">
             <div class="trend-header-left">
-              <span class="trend-icon">📈</span>
               <span class="trend-title">Tren Akumulasi Bandar (Top 3 Series)</span>
             </div>
-            <span id="bandar-trend-badge" class="trend-badge neutral">—</span>
+            <span id="bandar-trend-badge" class="trend-badge neutral">--</span>
           </div>
           <div class="accum-series-summary" id="accum-series-container">
             <span class="text-muted">Memuat data time-series...</span>
@@ -153,13 +148,13 @@
         <div class="fin-bento-grid">
           <div class="bandar-card highlight" id="fin-sepa-card">
             <div class="bento-label">Pilar Fundamental SEPA</div>
-            <div id="fin-sepa-verdict" class="bento-value neutral">—</div>
+            <div id="fin-sepa-verdict" class="bento-value neutral">--</div>
             <div id="fin-sepa-desc" class="bento-sub">Berdasarkan kriteria EPS Minervini</div>
           </div>
 
           <div class="bandar-card">
             <div class="bento-label">YoY EPS Growth (Laba/Saham)</div>
-            <div id="fin-eps-growth" class="bento-value mono">—%</div>
+            <div id="fin-eps-growth" class="bento-value mono">--%</div>
             <div class="bento-sub">Kuartal terakhir vs kuartal tahun lalu</div>
           </div>
 
@@ -195,23 +190,23 @@
         <div class="pivot-cards-grid">
           <div class="pivot-card s2">
             <span class="pivot-label">Support 2 (S2)</span>
-            <span id="pivot-s2" class="pivot-val mono">—</span>
+            <span id="pivot-s2" class="pivot-val mono">--</span>
           </div>
           <div class="pivot-card s1">
             <span class="pivot-label">Support 1 (S1)</span>
-            <span id="pivot-s1" class="pivot-val mono">—</span>
+            <span id="pivot-s1" class="pivot-val mono">--</span>
           </div>
           <div class="pivot-card pivot-main">
             <span class="pivot-label">Daily Pivot (P)</span>
-            <span id="pivot-p" class="pivot-val mono">—</span>
+            <span id="pivot-p" class="pivot-val mono">--</span>
           </div>
           <div class="pivot-card r1">
             <span class="pivot-label">Resistance 1 (R1)</span>
-            <span id="pivot-r1" class="pivot-val mono">—</span>
+            <span id="pivot-r1" class="pivot-val mono">--</span>
           </div>
           <div class="pivot-card r2">
             <span class="pivot-label">Resistance 2 (R2)</span>
-            <span id="pivot-r2" class="pivot-val mono">—</span>
+            <span id="pivot-r2" class="pivot-val mono">--</span>
           </div>
         </div>
 
@@ -219,30 +214,29 @@
         <div class="trading-plan-card">
           <div class="trading-plan-header">
             <div class="trend-header-left">
-              <span class="plan-icon">🎯</span>
               <span class="plan-title">Trading Plan & Rekomendasi AI</span>
             </div>
             <div class="plan-header-right">
-              <span id="plan-score-badge" class="plan-score-badge">Score: —</span>
-              <span id="plan-action-badge" class="plan-action-badge neutral">—</span>
+              <span id="plan-score-badge" class="plan-score-badge">Score: --</span>
+              <span id="plan-action-badge" class="plan-action-badge neutral">--</span>
             </div>
           </div>
           <div class="trading-plan-grid">
             <div class="plan-item">
               <span class="plan-label">Panduan Beli (Entry / Belum Punya):</span>
-              <span id="plan-entry" class="plan-val text-sm font-semibold">—</span>
+              <span id="plan-entry" class="plan-val text-sm font-semibold">--</span>
             </div>
             <div class="plan-item">
               <span class="plan-label">Panduan Hold (Jika Sudah Punya):</span>
-              <span id="plan-hold" class="plan-val text-sm font-semibold">—</span>
+              <span id="plan-hold" class="plan-val text-sm font-semibold">--</span>
             </div>
             <div class="plan-item">
               <span class="plan-label">Target Resistance (R1 / R2):</span>
-              <span id="plan-target" class="plan-val mono success font-bold">—</span>
+              <span id="plan-target" class="plan-val mono success font-bold">--</span>
             </div>
             <div class="plan-item">
               <span class="plan-label">Stop Loss Disiplin:</span>
-              <span id="plan-stoploss" class="plan-val mono danger font-bold">—</span>
+              <span id="plan-stoploss" class="plan-val mono danger font-bold">--</span>
             </div>
           </div>
         </div>

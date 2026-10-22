@@ -1,13 +1,13 @@
 <!-- ======================================================== -->
 <!-- TRADE JOURNAL ENTRY & CLOSE POSITION MODAL -->
 <!-- ======================================================== -->
-<div id="modal-trade-journal" class="modal hidden" onclick="closeTradeJournalOnBackdrop(event)">
+<div id="modal-trade-journal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="journal-modal-title" aria-hidden="true" onclick="closeTradeJournalOnBackdrop(event)">
   <div class="modal-dialog journal-modal-dialog" onclick="event.stopPropagation()">
     <!-- MODAL HEADER -->
     <div class="modal-header">
       <div class="modal-title-group">
         <div class="journal-title-row">
-          <span id="journal-modal-icon" class="journal-icon-badge">📝</span>
+          <span id="journal-modal-icon" class="journal-icon-badge"></span>
           <h2 id="journal-modal-title">Catat Transaksi Beli Baru</h2>
           <span id="journal-modal-mode-badge" class="journal-mode-pill open">POSISI BARU</span>
         </div>
@@ -15,7 +15,7 @@
           <span id="journal-modal-subtitle" class="text-secondary">Dokumentasikan rencana beli, lot, toleransi risiko, dan alasan transaksi</span>
         </div>
       </div>
-      <button class="modal-close" onclick="closeTradeJournalModal()" title="Tutup Form (Esc)">✕</button>
+      <button class="modal-close" onclick="closeTradeJournalModal()" title="Tutup Form (Esc)" aria-label="Tutup form">✕</button>
     </div>
 
     <!-- MODAL BODY: FORM TABS / CONTENT -->
@@ -93,12 +93,12 @@
           <div class="form-group">
             <label for="entry-setup">Strategi / Setup Masuk</label>
             <select id="entry-setup" class="form-select-custom">
-              <option value="Quality Setup">💎 Quality Setup (100-pt Score)</option>
-              <option value="Pre-Breakout Ready">🎯 Pre-Breakout (VCP / Tight Base)</option>
-              <option value="SEPA Stage 2">📈 SEPA Stage 2 Confirmed</option>
-              <option value="RSI Divergence">📉 RSI Bullish Divergence</option>
-              <option value="Pullback Reversal">🔄 Pullback Reversal / MA Support</option>
-              <option value="Discretionary / News">📰 Berita / Fundamental / Lainnya</option>
+              <option value="Quality Setup">Quality Setup (100-pt Score)</option>
+              <option value="Pre-Breakout Ready">Pre-Breakout (VCP / Tight Base)</option>
+              <option value="SEPA Stage 2">SEPA Stage 2 Confirmed</option>
+              <option value="RSI Divergence">RSI Bullish Divergence</option>
+              <option value="Pullback Reversal">Pullback Reversal / MA Support</option>
+              <option value="Discretionary / News">Berita / Fundamental / Lainnya</option>
             </select>
           </div>
           <div class="form-group">
@@ -117,7 +117,7 @@
         <div class="modal-footer-actions">
           <button type="button" class="btn-journal-cancel" onclick="closeTradeJournalModal()">Batal</button>
           <button type="submit" class="btn-journal-save primary">
-            <span>💾</span> Simpan Posisi ke Jurnal
+            Simpan Posisi ke Jurnal
           </button>
         </div>
       </form>
@@ -152,12 +152,12 @@
           <div class="form-group">
             <label for="close-exit-reason">Alasan Tutup Posisi <span class="req">*</span></label>
             <select id="close-exit-reason" required class="form-select-custom">
-              <option value="TARGET_1">🎯 Target 1 Tercapai (Take Profit)</option>
-              <option value="TARGET_2">🚀 Target 2 Tercapai (Runner Profit)</option>
-              <option value="TRAILING_STOP">📈 Trailing Stop Terpukul</option>
-              <option value="STOP_LOSS">🛑 Stop Loss Terkena (Disiplin Proteksi)</option>
-              <option value="BREAK_EVEN">⚖️ Keluar di Break Even Point (BEP)</option>
-              <option value="MANUAL_DISCRETION">✋ Keputusan Manual / Ganti Emiten</option>
+              <option value="TARGET_1">Target 1 Tercapai (Take Profit)</option>
+              <option value="TARGET_2">Target 2 Tercapai (Runner Profit)</option>
+              <option value="TRAILING_STOP">Trailing Stop Terpukul</option>
+              <option value="STOP_LOSS">Stop Loss Terkena (Disiplin Proteksi)</option>
+              <option value="BREAK_EVEN">Keluar di Break Even Point (BEP)</option>
+              <option value="MANUAL_DISCRETION">Keputusan Manual / Ganti Emiten</option>
             </select>
           </div>
         </div>
@@ -192,7 +192,7 @@
         <div class="modal-footer-actions">
           <button type="button" class="btn-journal-cancel" onclick="closeTradeJournalModal()">Batal</button>
           <button type="submit" class="btn-journal-save success">
-            <span>✅</span> Selesaikan & Tutup Posisi
+            Selesaikan & Tutup Posisi
           </button>
         </div>
       </form>
@@ -200,10 +200,9 @@
       <!-- 3. MODE SETTINGS: PENGATURAN PORTOFOLIO & FEE BROKER -->
       <form id="form-journal-settings" class="hidden" onsubmit="submitJournalSettings(event)">
         <div class="settings-modal-intro">
-          <span style="font-size: 1.4rem;">⚙️</span>
           <div>
             <strong>Pengaturan Parameter Portofolio</strong>
-            <p style="margin: 2px 0 0 0; font-size: 12px; color: #475569;">Atur ukuran modal dasar, toleransi risiko Minervini, dan tarif komisi broker Anda.</p>
+            <p style="margin: 2px 0 0 0; font-size: 12px; color: var(--text-secondary);">Atur ukuran modal dasar, toleransi risiko Minervini, dan tarif komisi broker Anda.</p>
           </div>
         </div>
 
@@ -236,7 +235,7 @@
         <div class="modal-footer-actions">
           <button type="button" class="btn-journal-cancel" onclick="closeTradeJournalModal()">Batal</button>
           <button type="submit" class="btn-journal-save primary">
-            <span>💾</span> Simpan Preferensi
+            Simpan Preferensi
           </button>
         </div>
       </form>

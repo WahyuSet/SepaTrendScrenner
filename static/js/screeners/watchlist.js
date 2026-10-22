@@ -486,7 +486,11 @@ function openNewTradeEntryModal(preset = {}) {
   if (elNotes) elNotes.value = preset.notes || '';
 
   calcJournalEntrySummary();
-  modal.classList.remove('hidden');
+  if (typeof openModal === 'function') {
+    openModal('modal-trade-journal');
+  } else {
+    modal.classList.remove('hidden');
+  }
 }
 
 function openCloseTradeModal(tradeId) {
@@ -525,12 +529,20 @@ function openCloseTradeModal(tradeId) {
   document.getElementById('close-notes').value = '';
 
   recomputeClosePnlPreview();
-  modal.classList.remove('hidden');
+  if (typeof openModal === 'function') {
+    openModal('modal-trade-journal');
+  } else {
+    modal.classList.remove('hidden');
+  }
 }
 
 function closeTradeJournalModal() {
-  const modal = document.getElementById('modal-trade-journal');
-  if (modal) modal.classList.add('hidden');
+  if (typeof closeModal === 'function') {
+    closeModal('modal-trade-journal');
+  } else {
+    const modal = document.getElementById('modal-trade-journal');
+    if (modal) modal.classList.add('hidden');
+  }
 }
 
 function closeTradeJournalOnBackdrop(e) {
@@ -787,7 +799,11 @@ function openPortfolioSettingsModal() {
       }
     });
 
-  modal.classList.remove('hidden');
+  if (typeof openModal === 'function') {
+    openModal('modal-trade-journal');
+  } else {
+    modal.classList.remove('hidden');
+  }
 }
 
 async function submitJournalSettings(e) {
