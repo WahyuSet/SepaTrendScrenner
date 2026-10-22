@@ -5,12 +5,19 @@
 let isGlobalScanning = false;
 let scanPollTimer = null;
 
+// Sidebar and mobile topbar scan buttons share one state
+function setScanButtonsDisabled(disabled) {
+  ['btn-scan', 'btn-scan-mobile'].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.disabled = disabled;
+  });
+}
+
 async function triggerScan() {
-  const btnScan = document.getElementById('btn-scan');
   const btnText = document.getElementById('btn-scan-text');
 
   try {
-    if (btnScan) btnScan.disabled = true;
+    setScanButtonsDisabled(true);
     if (btnText) btnText.textContent = 'Memulai Scan...';
 
     const res = await fetch('/api/scan', { method: 'POST' });
@@ -23,13 +30,13 @@ async function triggerScan() {
       if (typeof renderPbSkeleton === 'function') renderPbSkeleton(6);
     } else {
       showToast('Gagal memulai scan: ' + (json.message || 'Error server'));
-      if (btnScan) btnScan.disabled = false;
+      setScanButtonsDisabled(false);
       if (btnText) btnText.textContent = 'Scan IDX Sekarang';
     }
   } catch (err) {
     console.error('Error triggering scan:', err);
     showToast('Terjadi kesalahan koneksi saat memulai scan.');
-    if (btnScan) btnScan.disabled = false;
+    setScanButtonsDisabled(false);
     if (btnText) btnText.textContent = 'Scan IDX Sekarang';
   }
 }
@@ -39,9 +46,8 @@ function startStatusPolling() {
   const progressBox = document.getElementById('scan-progress-box');
   if (progressBox) progressBox.classList.remove('hidden');
 
-  const btnScan = document.getElementById('btn-scan');
   const btnText = document.getElementById('btn-scan-text');
-  if (btnScan) btnScan.disabled = true;
+  setScanButtonsDisabled(true);
   if (btnText) btnText.textContent = 'Sedang Scanning...';
 
   if (scanPollTimer) clearInterval(scanPollTimer);
@@ -59,7 +65,7 @@ function startStatusPolling() {
         isGlobalScanning = false;
 
         if (progressBox) progressBox.classList.add('hidden');
-        if (btnScan) btnScan.disabled = false;
+        setScanButtonsDisabled(false);
         if (btnText) btnText.textContent = 'Scan IDX Sekarang';
 
         if (data.last_scan_time && typeof updateSidebarLastScan === 'function') {

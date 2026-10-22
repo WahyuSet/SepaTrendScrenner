@@ -225,7 +225,7 @@ function renderStatsCards(stats, timestamp) {
       badgeSepa.textContent = qualified > 0 ? qualified : '0';
     }
   } else {
-    if (badgeSepa) badgeSepa.textContent = '—';
+    if (badgeSepa) badgeSepa.textContent = '--';
   }
 
   const timeText = timestamp || 'Belum pernah scan';

@@ -57,7 +57,7 @@ function renderQualityStatsCards(stats) {
 
   const timeText = (stats && stats.scan_time) ? stats.scan_time : 'Belum pernah scan';
   if (statTime) statTime.textContent = timeText;
-  if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '—');
+  if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '--');
 
   // Stale data warning (>24 hours)
   const expiresAt = stats && stats.expires_at_iso ? new Date(stats.expires_at_iso) : null;

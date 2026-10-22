@@ -301,7 +301,10 @@ function switchScreener(screenerId) {
   // Remove active from all nav items / tabs
   ['nav-sepa', 'nav-rsi-div', 'nav-prebreakout', 'nav-quality', 'nav-watchlist', 'nav-backtest', 'nav-lpm'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.classList.remove('active');
+    if (el) {
+      el.classList.remove('active');
+      el.removeAttribute('aria-current');
+    }
   });
 
   if (screenerId === 'sepa') {
@@ -341,6 +344,8 @@ function switchScreener(screenerId) {
     }
   }
 
+  document.querySelector('.nav-item.active')?.setAttribute('aria-current', 'page');
+
   // Auto-close mobile drawer after navigating on phone
   if (window.innerWidth <= 768) {
     closeMobileSidebar();
@@ -361,6 +366,33 @@ function refreshActiveScreener() {
     showToast('✓ Data berhasil dimuat ulang dari server!');
   });
 }
+
+// ============================================================================
+// THEME TOGGLE (the initial theme is set by the inline script in <head>)
+// ============================================================================
+
+function syncThemeToggle() {
+  const btn = document.getElementById('btn-theme-toggle');
+  if (btn) btn.setAttribute('aria-pressed', String(document.documentElement.dataset.theme === 'dark'));
+}
+
+function toggleTheme() {
+  const root = document.documentElement;
+  const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+
+  // Swap colors at once instead of letting every transition animate:
+  // the forced reflow commits the new colors while transitions are off
+  root.classList.add('theme-switching');
+  root.dataset.theme = next;
+  void document.body.offsetHeight;
+  root.classList.remove('theme-switching');
+
+  try { localStorage.setItem('theme', next); } catch (e) {}
+  syncThemeToggle();
+  document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: next } }));
+}
+
+document.addEventListener('DOMContentLoaded', syncThemeToggle);
 
 // ============================================================================
 // MOBILE NAVIGATION & DRAWER CONTROLLER

@@ -1,119 +1,157 @@
 <!-- ==========================================================================
-     ERGONOMIC ENTERPRISE SIDEBAR COMPONENT (250px)
+     SIDEBAR (Design.md §6.1)
      ========================================================================== -->
-<aside class="sidebar">
+<aside class="sidebar" id="app-sidebar" aria-label="Navigasi utama">
   <div class="sidebar-top">
     <!-- 1. BRAND HEADER -->
     <div class="sidebar-header">
       <div class="brand">
-        <div class="brand-dino-badge" title="Tirexxz Screnner">
+        <!-- Temporary logo until the owner supplies an SVG (Design.md D-8) -->
+        <div class="brand-dino-badge" aria-hidden="true">
           <span class="dino-emoji">🦖</span>
         </div>
         <div class="brand-title">
           <h2>Tirexxz <span>Screnner</span></h2>
         </div>
       </div>
-      <button class="btn-sidebar-close" id="btn-sidebar-close" onclick="closeMobileSidebar()" aria-label="Tutup Menu">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <button type="button" class="btn-sidebar-close" id="btn-sidebar-close" onclick="closeMobileSidebar()" aria-label="Tutup menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
     </div>
 
-    <!-- 2. TOP OMNIBAR SEARCH TRIGGER (LINEAR / RAYCAST STYLE) -->
+    <!-- 2. SEARCH TRIGGER (opens command palette) -->
     <div class="sidebar-search-area">
-      <button class="sidebar-search-trigger" onclick="openCommandPalette()" title="Cari emiten atau perintah (Ctrl + K)">
-        <div class="search-trigger-left">
-          <span class="search-icon">🔍</span>
+      <button type="button" class="sidebar-search-trigger" onclick="openCommandPalette()" aria-label="Cari emiten atau aksi (Ctrl K)">
+        <span class="search-trigger-left">
+          <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
           <span class="search-placeholder">Cari emiten, aksi...</span>
-        </div>
+        </span>
         <kbd class="search-kbd">Ctrl K</kbd>
       </button>
     </div>
 
-    <!-- 3. ZONE 1: SCREENER NAVIGATION -->
-    <div class="sidebar-section">
-      <div class="nav-section-label">Screeners</div>
-      <button class="nav-item active" id="nav-sepa" onclick="switchScreener('sepa')">
-        <div class="nav-item-left">
-          <span class="nav-item-icon">📈</span>
+    <!-- 3. SCREENER NAVIGATION -->
+    <nav class="sidebar-section" aria-labelledby="nav-label-screeners">
+      <div class="nav-section-label" id="nav-label-screeners">Screeners</div>
+      <button type="button" class="nav-item active" id="nav-sepa" onclick="switchScreener('sepa')" aria-current="page">
+        <span class="nav-item-left">
+          <svg class="nav-item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>
           <span class="nav-item-text">SEPA Trend</span>
-        </div>
-        <span class="nav-item-badge" id="badge-sepa">—</span>
+        </span>
+        <span class="nav-item-badge" id="badge-sepa">--</span>
       </button>
 
-      <button class="nav-item" id="nav-rsi-div" onclick="switchScreener('rsi-div')">
-        <div class="nav-item-left">
-          <span class="nav-item-icon">📉</span>
+      <button type="button" class="nav-item" id="nav-rsi-div" onclick="switchScreener('rsi-div')">
+        <span class="nav-item-left">
+          <svg class="nav-item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
           <span class="nav-item-text">RSI Divergence</span>
-        </div>
-        <span class="nav-item-badge" id="badge-rsi-div">—</span>
+        </span>
+        <span class="nav-item-badge" id="badge-rsi-div">--</span>
       </button>
 
-      <button class="nav-item" id="nav-prebreakout" onclick="switchScreener('prebreakout')">
-        <div class="nav-item-left">
-          <span class="nav-item-icon">🎯</span>
+      <button type="button" class="nav-item" id="nav-prebreakout" onclick="switchScreener('prebreakout')">
+        <span class="nav-item-left">
+          <svg class="nav-item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="22" y1="12" x2="18" y2="12"></line>
+            <line x1="6" y1="12" x2="2" y2="12"></line>
+            <line x1="12" y1="6" x2="12" y2="2"></line>
+            <line x1="12" y1="22" x2="12" y2="18"></line>
+          </svg>
           <span class="nav-item-text">Pre-Breakout</span>
-        </div>
-        <span class="nav-item-badge" id="badge-prebreakout">—</span>
+        </span>
+        <span class="nav-item-badge" id="badge-prebreakout">--</span>
       </button>
 
-      <button class="nav-item" id="nav-quality" onclick="switchScreener('quality')">
-        <div class="nav-item-left">
-          <span class="nav-item-icon">💎</span>
+      <button type="button" class="nav-item" id="nav-quality" onclick="switchScreener('quality')">
+        <span class="nav-item-left">
+          <svg class="nav-item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <polyline points="9 12 11 14 15 10"></polyline>
+          </svg>
           <span class="nav-item-text">Quality Setup</span>
-        </div>
-        <span class="nav-item-badge" id="badge-quality">—</span>
+        </span>
+        <span class="nav-item-badge" id="badge-quality">--</span>
       </button>
-    </div>
+    </nav>
 
-    <!-- ZONE 1.5: PORTFOLIO & TOOLS -->
-    <div class="sidebar-section">
-      <div class="nav-section-label">Portofolio & Tools</div>
-      <button class="nav-item" id="nav-watchlist" onclick="switchScreener('watchlist')">
-        <div class="nav-item-left">
-          <span class="nav-item-icon">⭐</span>
+    <!-- 4. PORTFOLIO & TOOLS -->
+    <nav class="sidebar-section" aria-labelledby="nav-label-tools">
+      <div class="nav-section-label" id="nav-label-tools">Portofolio & Tools</div>
+      <button type="button" class="nav-item" id="nav-watchlist" onclick="switchScreener('watchlist')">
+        <span class="nav-item-left">
+          <svg class="nav-item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+          </svg>
           <span class="nav-item-text">Watchlist & Journal</span>
-        </div>
+        </span>
         <span class="nav-item-badge" id="badge-watchlist">0</span>
       </button>
 
-      <button class="nav-item" id="nav-lpm" onclick="switchScreener('lpm')">
-        <div class="nav-item-left">
-          <span class="nav-item-icon">🏦</span>
+      <button type="button" class="nav-item" id="nav-lpm" onclick="switchScreener('lpm')">
+        <span class="nav-item-left">
+          <svg class="nav-item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
           <span class="nav-item-text">LPM & Smart Money</span>
-        </div>
-        <span class="nav-item-badge" id="badge-lpm">—</span>
+        </span>
+        <span class="nav-item-badge" id="badge-lpm">--</span>
       </button>
 
-      <button class="nav-item" id="nav-position-sizing" onclick="openPositionCalculator()">
-        <div class="nav-item-left">
-          <span class="nav-item-icon">🧮</span>
+      <button type="button" class="nav-item" id="nav-position-sizing" onclick="openPositionCalculator()">
+        <span class="nav-item-left">
+          <svg class="nav-item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+          </svg>
           <span class="nav-item-text">Position Sizing</span>
-        </div>
-        <span class="nav-item-badge hot">CALC</span>
+        </span>
       </button>
 
-      <button class="nav-item" id="nav-backtest" onclick="switchScreener('backtest')">
-        <div class="nav-item-left">
-          <span class="nav-item-icon">🧪</span>
+      <button type="button" class="nav-item" id="nav-backtest" onclick="switchScreener('backtest')">
+        <span class="nav-item-left">
+          <svg class="nav-item-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+            <polyline points="12 7 12 12 15 14"></polyline>
+          </svg>
           <span class="nav-item-text">Signal Backtest Lab</span>
-        </div>
-        <span class="nav-item-badge new">LAB</span>
+        </span>
       </button>
-    </div>
+    </nav>
 
-    <!-- 4. ZONE 2: SCANNER ENGINE -->
+    <!-- 5. SCANNER -->
     <div class="sidebar-section">
       <div class="nav-section-label">Engine & Scanning</div>
-      <button id="btn-scan" class="btn-sidebar-scan" onclick="triggerScan()" title="Scan seluruh universe saham IDX">
-        <span class="btn-scan-icon">⚡</span>
+      <button type="button" id="btn-scan" class="btn-sidebar-scan" onclick="triggerScan()">
+        <svg class="btn-scan-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
         <span id="btn-scan-text">Scan IDX Sekarang</span>
       </button>
 
-      <!-- REAL-TIME SCAN PROGRESS CARD -->
-      <div id="scan-progress-box" class="sidebar-scan-progress hidden">
+      <!-- Scan progress -->
+      <div id="scan-progress-box" class="sidebar-scan-progress hidden" aria-live="polite">
         <div class="scan-progress-meta">
           <span id="scan-current-ticker" class="scan-current-ticker">Memulai scan...</span>
           <span id="scan-progress-count" class="scan-count-mini">0/0</span>
@@ -125,16 +163,16 @@
     </div>
   </div>
 
-  <!-- 5. ZONE 3: SYSTEM STATUS & FOOTER -->
+  <!-- 6. SYSTEM STATUS & FOOTER -->
   <div class="sidebar-bottom">
     <div class="system-status-card">
       <div class="system-status-header">
         <div class="system-status-pill {{ market_status.status if market_status else 'closed' }}" id="sidebar-market-pill" title="{{ market_status.detail if market_status else 'Status Pasar Bursa Efek Indonesia' }}">
-          <span class="status-live-dot" id="sidebar-market-dot"></span>
+          <span class="status-live-dot" id="sidebar-market-dot" aria-hidden="true"></span>
           <span class="status-text" id="sidebar-market-text">{{ market_status.label if market_status else 'IDX Closed' }}</span>
         </div>
-        <button class="btn-sidebar-refresh" onclick="refreshActiveScreener()" title="Muat ulang status pasar & cache hasil scan" aria-label="Refresh status">
-          <svg class="refresh-icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <button type="button" class="btn-sidebar-refresh" onclick="refreshActiveScreener()" title="Muat ulang status pasar dan hasil scan" aria-label="Muat ulang data">
+          <svg class="refresh-icon-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="23 4 23 10 17 10"></polyline>
             <polyline points="1 20 1 14 7 14"></polyline>
             <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
@@ -145,27 +183,24 @@
         <span class="time-label">Update:</span>
         <span id="sidebar-last-scan" class="time-val">{{ last_scan_time or 'Belum pernah scan' }}</span>
       </div>
-      <!-- LIVE API QUOTA TRACKER -->
-      <div class="system-status-quota" id="sidebar-quota-box" title="Kuota Request Harian IDX Edge API">
+      <!-- IDX Edge API daily quota -->
+      <div class="system-status-quota" id="sidebar-quota-box" title="Kuota request harian IDX Edge API">
         <div class="quota-meta">
           <span class="quota-label">API Quota</span>
-          <span id="sidebar-quota-text" class="quota-text">... / 1000</span>
+          <span id="sidebar-quota-text" class="quota-text">-- / 1000</span>
         </div>
         <div class="quota-progress-track">
           <div id="sidebar-quota-bar" class="quota-progress-fill" style="width: 0%;"></div>
         </div>
       </div>
-      <!-- ADMIN SESSION & LOGOUT BAR -->
+      <!-- Admin session -->
       <div class="sidebar-user-card">
         <div class="user-meta">
-          <div class="user-avatar-badge">A</div>
-          <div class="user-info">
-            <span class="user-name">Administrator</span>
-            <span class="user-status-label"><span class="user-live-dot"></span>Online</span>
-          </div>
+          <div class="user-avatar-badge" aria-hidden="true">A</div>
+          <span class="user-name">Administrator</span>
         </div>
-        <a href="/logout" class="btn-sidebar-logout" title="Keluar dari sesi Admin" onclick="return confirm('Apakah Anda yakin ingin keluar dari sesi Admin?')" aria-label="Logout">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <a href="/logout" class="btn-sidebar-logout" title="Keluar dari sesi admin" onclick="return confirm('Keluar dari sesi admin?')" aria-label="Keluar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
             <polyline points="16 17 21 12 16 7"></polyline>
             <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -173,6 +208,13 @@
         </a>
       </div>
     </div>
+
+    <button type="button" class="btn-theme-toggle" id="btn-theme-toggle" onclick="toggleTheme()" aria-pressed="false">
+      <svg class="theme-icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+      <span>Mode gelap</span>
+    </button>
 
     <div class="sidebar-footer">
       <span>Tirexxz Screnner</span>

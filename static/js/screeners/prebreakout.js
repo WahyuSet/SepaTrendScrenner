@@ -54,7 +54,7 @@ function renderPreBreakoutStatsCards(stats, timestamp) {
 
   const timeText = timestamp || 'Belum pernah scan';
   if (statTime) statTime.textContent = timeText;
-  if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '—');
+  if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '--');
   if (typeof updateSidebarLastScan === 'function') {
     updateSidebarLastScan(timeText);
   }

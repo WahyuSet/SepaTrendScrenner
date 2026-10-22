@@ -31,7 +31,7 @@
   min-height: 100vh;
   background-color: var(--login-canvas-bg);
   color: var(--login-text-body);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,40 +67,12 @@
   margin-bottom: 24px;
 }
 
-.brand-badge-clean {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-subtle);
-  padding: 5px 12px;
-  border-radius: 20px;
-  margin-bottom: 14px;
-}
-
-.brand-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--brand-lime);
-}
-
-.brand-dot.pulse {
-  box-shadow: 0 0 0 0 rgba(101, 163, 13, 0.5);
-  animation: pulseGlow 2.5s infinite;
-}
-
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 0 0 rgba(101, 163, 13, 0.6); }
-  70% { box-shadow: 0 0 0 6px rgba(101, 163, 13, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(101, 163, 13, 0); }
-}
-
 .brand-name-title {
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.01em;
+  margin: 0 0 12px 0;
 }
 
 .brand-name-title span {
@@ -109,7 +81,7 @@
 
 .login-headline {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--login-text-headline);
   margin: 0 0 6px 0;
@@ -184,10 +156,13 @@
   align-items: center;
 }
 
+.alert-icon {
+  flex-shrink: 0;
+}
+
 .input-icon {
   position: absolute;
   left: 11px;
-  font-size: 13px;
   color: var(--text-muted);
   pointer-events: none;
 }
@@ -223,13 +198,14 @@
   color: var(--text-muted);
   cursor: pointer;
   padding: 4px;
-  font-size: 13px;
-  opacity: 0.6;
-  transition: opacity 0.15s ease;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  transition: color 150ms ease;
 }
 
 .btn-toggle-password:hover {
-  opacity: 1;
+  color: var(--text-primary);
 }
 
 /* Options & Checkbox */
@@ -287,7 +263,7 @@
   top: 1.5px;
   width: 3.5px;
   height: 7px;
-  border: solid white;
+  border: solid var(--btn-primary-text);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
@@ -316,33 +292,27 @@
   justify-content: center;
   gap: 8px;
   box-shadow: var(--login-btn-shadow);
-  transition: all 0.15s ease;
+  transition: background-color 150ms ease;
   margin-top: 4px;
 }
 
-.btn-login-submit:hover:not(:disabled) {
-  background: var(--login-btn-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(77, 124, 15, 0.35);
-}
-
+.btn-login-submit:hover:not(:disabled),
 .btn-login-submit:active:not(:disabled) {
-  background: var(--login-btn-active);
-  transform: scale(0.98);
+  background: var(--login-btn-hover);
 }
 
 .btn-login-submit:disabled {
   opacity: 0.7;
   cursor: not-allowed;
-  transform: none;
 }
 
 /* Spinner Loader */
 .btn-spinner {
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid transparent;
   border-top-color: var(--btn-primary-text);
+  border-right-color: var(--btn-primary-text);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
   display: inline-block;
@@ -371,4 +341,11 @@
   font-size: 11px;
   color: var(--text-muted);
   text-align: center;
+}
+
+.login-page-footer {
+  margin: 20px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
 }

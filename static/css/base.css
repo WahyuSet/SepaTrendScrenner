@@ -102,6 +102,13 @@ select:focus-visible {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Theme swap happens in one frame (set by toggleTheme in main.js) */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
+}
+
 /* Motion off for users who ask for it (Design.md §8) */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
