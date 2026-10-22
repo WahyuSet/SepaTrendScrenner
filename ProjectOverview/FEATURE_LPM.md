@@ -446,7 +446,26 @@ Urutan di atas adalah **Fase A**. Fase B (LPM Radar) dan Fase C (konfluensi) ada
   5. **Koreksi kandidat perbaikan sebelumnya:** "hitung `A_d` per sisi" tidak akan berpengaruh. Karena Σ`bval` = Σ`sval` dan Σ`bfrq` = Σ`sfrq` (bagian 12), rata-rata per sisi selalu sama dengan `A_d`.
   6. **ASRM:** 38 dari 80 hari kena `low_liquidity` (`F_d` < 50), dan nilai smart broker hanya ratusan ribu sampai jutaan Rupiah. Untuk saham setipis ini, LPM terutama mencerminkan beberapa transaksi per hari.
 
-  **Pilihan langkah berikut (belum diputuskan user):** (a) tandai tab LPM sebagai "eksperimental" di UI sampai tervalidasi; (b) uji varian rumus pada data yang sudah tersimpan (tanpa request): detrend terhadap rata-rata 60 hari, atau pressure yang dinetralkan dari return hari yang sama; (c) perluas validasi ke lebih banyak saham dan histori lebih panjang (data tersedia sejak 2020, ±80 request per saham per 80 hari) sebelum Fase B.
+  **Tindak lanjut (2026-10-22):** (a) tab LPM diberi pemberitahuan "Eksperimental" di atas panel (selalu tampil); (b) uji varian di bawah; (c) validasi lebih luas belum dikerjakan.
+
+- **Uji varian rumus (2026-10-22, `scratch/lpm_variants.py`, 0 request).** Semua koreksi out-of-sample: hari t hanya memakai 60 hari sebelumnya (minimal 20), sehingga yang dievaluasi 59 hari per saham (29 Jul – 21 Okt). `c_*` = korelasi Pearson; `slope5` = rata-rata pressure 5 hari (nilai yang dipakai klasifikasi tren).
+
+| Varian | Rumus hari t | Hari positif (3 saham) | Korelasi vs return hari sama | vs return 5H ke depan | slope5 vs return 5H | slope5 vs return 10H |
+|---|---|---|---|---|---|---|
+| V0 raw | `p_t` | 106/177 (60%) | −0,37 | −0,14 | −0,21 | −0,06 |
+| V1 detrend | `p_t − mean(p, 60H sebelumnya)` | 91/177 (51%) | −0,36 | −0,13 | −0,21 | −0,07 |
+| V2 netral | `p_t − b·ret_t` | 125/177 (71%) | **+0,36** | −0,14 | −0,09 | −0,06 |
+| V3 keduanya | `p_t − (a + b·ret_t)` | 90/177 (51%) | **+0,36** | −0,14 | −0,09 | −0,05 |
+
+  Per saham, rata-rata pressure V0 → V1: BBCA +9,53 → +2,94, PTBA +1,81 → −0,85, ASRM +3,46 → +3,12. Status akhir V1: BBCA RISING/POSITIVE, PTBA FLAT/NONE, ASRM FLAT/POSITIVE (V0: ketiganya POSITIVE).
+
+  Kesimpulan:
+  1. **Detrend (V1) menghilangkan sebagian besar bias level** (hari positif 60% → 51%, BBCA dan PTBA turun mendekati 0), tanpa mengubah korelasi. Ia tidak merusak apa pun, tetapi juga tidak menambah daya prediksi. Kekurangannya: akumulasi yang konsisten selama berbulan-bulan ikut terhapus, padahal itu justru yang ingin ditangkap konsep LPM.
+  2. **Netralisasi return (V2/V3) mengoreksi berlebihan.** Korelasi hari sama berbalik dari −0,37 ke +0,36, artinya koefisien `b` dari 60 hari sebelumnya tidak stabil saat diterapkan ke hari berikutnya. Dengan histori sependek ini, varian ini tidak bisa dipercaya.
+  3. **Tidak ada varian yang menunjukkan daya prediksi.** Korelasi dengan return ke depan berkisar −0,21 sampai −0,05 di semua varian. Dengan 59 hari per saham dan jendela return yang tumpang tindih, angka sebesar ini masih dalam batas noise. Data ini tidak membuktikan LPM berguna, tetapi juga tidak membuktikan sebaliknya.
+  4. **Rumus produksi belum diubah.** Mengganti rumus berdasarkan 3 saham × 59 hari berisiko mengejar noise.
+
+  **Rekomendasi berikutnya:** tambah sampel sebelum mengubah rumus, misalnya 8–10 saham likuid dari sektor berbeda dengan histori 240 hari (±240 request per saham, total ±2.000–2.400 request, sekitar 3 hari kuota dengan cadangan 200). Ulangi tabel ini dengan uji yang tidak tumpang tindih (return 5 hari ke depan per blok 5 hari), lalu baru putuskan antara V0 dan V1.
 - **Tuning parameter.** `R0`, `R1`, `θ` adalah titik awal. Setelah fitur jalan, bandingkan garis LPM dengan pergerakan harga 20–60 hari ke depan di beberapa saham sebelum mengubahnya, dan catat perubahannya di sini.
 - **Keamanan (di luar cakupan, tapi perlu ditangani):** API key IDX Edge PRO saat ini tertulis langsung di `screener/idx_api_client.py` dan `ProjectOverview/APISpecs.md`, dan keduanya ter-commit ke git. Sebaiknya dipindah ke `.env` (`IDX_EDGE_API_KEY`) dan key-nya diganti, sebagai tugas terpisah. Fitur LPM cukup memakai `IDXApiClient` yang sudah ada.
 

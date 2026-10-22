@@ -21,6 +21,7 @@ const lpmState = {
   chart: null,
   series: null,
   lensPriceLine: null,
+  resizeObserver: null,
   pollTimer: null,
   pollCount: 0,
   requestSeq: 0,
@@ -138,6 +139,10 @@ async function loadLpmPanel(ticker, force = false, silent = false) {
 
 function destroyLpmPanel() {
   stopLpmPolling();
+  if (lpmState.resizeObserver) {
+    lpmState.resizeObserver.disconnect();
+    lpmState.resizeObserver = null;
+  }
   if (lpmState.chart) {
     lpmState.chart.remove();
   }
@@ -410,6 +415,18 @@ function ensureLpmChart() {
   [55, 25, 20].forEach((factor, i) => panes[i] && panes[i].setStretchFactor(factor));
 
   chart.subscribeCrosshairMove((param) => renderLpmLegend(lpmTimeKey(param.time)));
+
+  // The modal may still be laying out when the chart is created; fitting at that width squeezes
+  // all bars into the right edge, so fit again whenever the container settles on a new width
+  let lastWidth = 0;
+  lpmState.resizeObserver = new ResizeObserver((entries) => {
+    const width = Math.round(entries[0].contentRect.width);
+    if (width > 0 && width !== lastWidth) {
+      lastWidth = width;
+      chart.timeScale().fitContent();
+    }
+  });
+  lpmState.resizeObserver.observe(container);
 
   lpmState.chart = chart;
   lpmState.series = { candle, line, lens, markers };

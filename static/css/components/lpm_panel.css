@@ -371,7 +371,18 @@
   .lpm-progress-bar { transition: none; }
 }
 
-/* 8. Limitations note (always visible) */
+/* 8. Experimental notice (real status: formula not validated yet) and limitations note */
+.lpm-experimental {
+  margin: 0;
+  padding: 10px 14px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--status-watchlist-text);
+  background: var(--status-watchlist-bg);
+  border: 1px solid var(--status-watchlist-border);
+  border-radius: 8px;
+}
+
 .lpm-limits {
   margin: 0;
   font-size: 11px;
