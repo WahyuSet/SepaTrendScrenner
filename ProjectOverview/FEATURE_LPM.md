@@ -429,7 +429,24 @@ Urutan di atas adalah **Fase A**. Fase B (LPM Radar) dan Fase C (konfluensi) ada
 - **Histori API mungkin terbatas.** Kalau API hanya menyimpan beberapa bulan, `history_days` disesuaikan dan dicatat.
 - **Pasar negosiasi (NG).** Kalau API tidak bisa memisahkan board RG/NG, LPM membaca semua board. Tulis keterbatasan ini apa adanya di UI.
 - **Saham sangat tidak likuid.** `F_d` kecil membuat `A_d` tidak stabil. Kalau `F_d < 50`, tandai hari itu `low_liquidity: true` dan kalikan `pressure` dengan `F_d / 50` supaya satu order tidak mendominasi garis.
-- **Temuan kalibrasi pertama (BBCA, 80 hari s/d 2026-10-21):** pressure positif di 57 dari 80 hari, rata-rata +8,9 poin/hari (min −12,5, maks +39,9), sehingga LPM naik terus ke ±715 sementara harga turun 5.550 → 5.275. Hasilnya: tren `RISING`, divergensi `POSITIVE`, fase `SENYAP`. Broker teratas MG, KZ, AK, ZP, YU. Ini bisa sinyal akumulasi nyata, tetapi juga bisa **bias struktural**: broker institusi selalu punya nilai per transaksi di atas rata-rata, jadi sisi belinya lebih sering mendapat bobot daripada sisi jual yang dipecah kecil. Sebelum garis dipercaya, bandingkan beberapa saham (termasuk yang jelas sedang distribusi) dan cek apakah rata-rata pressure jangka panjang memang mendekati 0. Kalau bias terbukti, kandidat perbaikan: kurangi pressure dengan rata-rata bergulirnya (detrend), atau hitung `A_d` per sisi.
+- **Temuan kalibrasi pertama (BBCA, 80 hari s/d 2026-10-21):** pressure positif di 57 dari 80 hari, rata-rata +8,9 poin/hari (min −12,5, maks +39,9), sehingga LPM naik terus ke ±715 sementara harga turun 5.550 → 5.275. Hasilnya: tren `RISING`, divergensi `POSITIVE`, fase `SENYAP`. Broker teratas MG, KZ, AK, ZP, YU.
+- **Uji bias tahap 5 (2026-10-22, `scratch/calibrate_lpm.py`, 160 request):** backfill 80 hari untuk PTBA (saham naik, +35,8% dalam 80 hari) dan ASRM (tidak likuid, ±Rp20 juta/hari), lalu dibandingkan dengan BBCA. Semua 80/80 hari, tanpa gap.
+
+| Saham | Harga 80H | Rata-rata pressure (poin) | Hari positif | Porsi smart beli / jual | Korelasi vs return hari sama | Korelasi vs return 5H ke depan | Tren / divergensi / fase |
+|---|---|---|---|---|---|---|---|
+| BBCA | −5,0% | +8,93 | 57/80 | 0,160 / 0,071 | −0,57 | −0,01 | RISING / POSITIVE / Senyap |
+| PTBA | +35,8% | +2,24 | 51/80 | 0,078 / 0,056 | −0,34 | −0,15 | RISING / POSITIVE / Senyap |
+| ASRM | −1,6% | +1,92 (median +0,22) | 41/80 | 0,122 / 0,084 | −0,24 | −0,05 | FLAT / POSITIVE / Senyap |
+
+  Kesimpulan sementara (3 saham × 80 hari, semuanya di pasar yang sedang turun, jadi sampelnya kecil):
+  1. **Bias positif konsisten.** Rata-rata pressure positif di ketiga saham, dan porsi smart beli selalu lebih besar dari porsi smart jual. Ketiganya berakhir di fase Senyap.
+  2. **Pressure tinggi muncul di hari harga turun** (korelasi hari sama −0,24 sampai −0,57), konsisten di semua saham.
+  3. **Belum ada daya prediksi** dalam sampel ini: korelasi dengan return 5 hari ke depan −0,15 sampai −0,01.
+  4. **Mekanisme yang paling mungkin:** setiap transaksi dicatat dengan nilai yang sama di sisi beli dan sisi jual, jadi rata-rata per transaksi seorang broker hanya berbeda dari rata-rata pasar kalau transaksi besarnya **terkonsentrasi** di broker itu sementara lawannya **tersebar** di banyak broker. Di hari turun, penjual ritel tersebar dan pembeli besar terkonsentrasi, sehingga pressure positif. Artinya rumus sekarang lebih tepat dibaca sebagai **pendeteksi penyerapan (absorption)** daripada arah smart money murni. Itu informasi yang sah, tetapi belum terbukti mendahului harga.
+  5. **Koreksi kandidat perbaikan sebelumnya:** "hitung `A_d` per sisi" tidak akan berpengaruh. Karena Σ`bval` = Σ`sval` dan Σ`bfrq` = Σ`sfrq` (bagian 12), rata-rata per sisi selalu sama dengan `A_d`.
+  6. **ASRM:** 38 dari 80 hari kena `low_liquidity` (`F_d` < 50), dan nilai smart broker hanya ratusan ribu sampai jutaan Rupiah. Untuk saham setipis ini, LPM terutama mencerminkan beberapa transaksi per hari.
+
+  **Pilihan langkah berikut (belum diputuskan user):** (a) tandai tab LPM sebagai "eksperimental" di UI sampai tervalidasi; (b) uji varian rumus pada data yang sudah tersimpan (tanpa request): detrend terhadap rata-rata 60 hari, atau pressure yang dinetralkan dari return hari yang sama; (c) perluas validasi ke lebih banyak saham dan histori lebih panjang (data tersedia sejak 2020, ±80 request per saham per 80 hari) sebelum Fase B.
 - **Tuning parameter.** `R0`, `R1`, `θ` adalah titik awal. Setelah fitur jalan, bandingkan garis LPM dengan pergerakan harga 20–60 hari ke depan di beberapa saham sebelum mengubahnya, dan catat perubahannya di sini.
 - **Keamanan (di luar cakupan, tapi perlu ditangani):** API key IDX Edge PRO saat ini tertulis langsung di `screener/idx_api_client.py` dan `ProjectOverview/APISpecs.md`, dan keduanya ter-commit ke git. Sebaiknya dipindah ke `.env` (`IDX_EDGE_API_KEY`) dan key-nya diganti, sebagai tugas terpisah. Fitur LPM cukup memakai `IDXApiClient` yang sudah ada.
 

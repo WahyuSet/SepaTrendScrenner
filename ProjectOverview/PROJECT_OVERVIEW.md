@@ -1,6 +1,6 @@
 # 📌 TIREXXZ SCRENNER — DOKUMENTASI LENGKAP & STATUS PROYEK
 > **Handover Notes untuk Developer & Agent Masa Depan**  
-> **Terakhir Diperbarui**: September 2026  
+> **Terakhir Diperbarui**: 22 Oktober 2026 (fitur LPM)  
 > **Status**: ✅ **Production-Ready (Feature-Complete, Tested & Ready to Deploy VPS)**
 
 ---
@@ -67,6 +67,12 @@ Aplikasi ini menggabungkan:
     * Panduan Posisi (*Jika belum punya*, *Jika sudah punya*).
     * Target 1, Target 2, dan Stop Loss dinamis.
     * Daily Pivots Level (*R2, R1, P, S1, S2*).
+  * **Tab 4: LPM & Smart Money** (spesifikasi lengkap: [ProjectOverview/FEATURE_LPM.md](file:///d:/Learning/SepaTrend/ProjectOverview/FEATURE_LPM.md)):
+    * Liquidity Pressure Model: tekanan harian smart money (broker dengan nilai per transaksi ≥ 1,5–4× rata-rata saham itu), dinormalisasi ke turnover dan dijumlahkan jadi garis.
+    * Tren LPM (θ adaptif), divergensi harga vs LPM, lensa Intensity (z-score) dan Vol Rotation (persentil), serta pembacaan fase (Senyap, Persiapan, Markup, Panas, Distribusi, Markdown).
+    * Chart 3 panel (lightweight-charts 5.2.1): candlestick + marker divergensi, garis LPM, histogram lensa.
+    * Histori broker harian disimpan permanen di tabel `broker_daily`; backfill 80 hari bursa di thread background dengan cadangan kuota 200.
+    * **Status: eksperimental.** Uji bias tahap 5 (BBCA, PTBA, ASRM) menemukan pressure cenderung positif dan tinggi di hari harga turun, dan belum terbukti mendahului harga. Lihat FEATURE_LPM.md bagian 11 sebelum memakai hasilnya untuk keputusan.
 
 ---
 
@@ -117,7 +123,14 @@ SepaTrend/
 │   ├── rs_calculator.py            # Perhitungan IBD RS Rating vs IHSG (^JKSE)
 │   ├── pre_breakout.py             # Evaluator Pre-Breakout Setup & VCP
 │   ├── rsi_divergence.py           # Evaluator RSI Bullish Divergence (Regular & Hidden)
-│   └── idx_api_client.py           # Client IDX Edge PRO API + SQLite caching & quota tracker
+│   ├── idx_api_client.py           # Client IDX Edge PRO API + SQLite caching, quota tracker, broker_daily & lpm_jobs
+│   ├── lpm.py                      # Rumus LPM murni (tanpa I/O): pressure, tren, divergensi, lensa, fase
+│   └── lpm_service.py              # Orkestrasi LPM: kalender yfinance, sinkron hari terbaru, thread backfill
+│
+├── tests/                          # Unit test (python -m unittest discover -s tests -t .)
+│   ├── test_lpm.py                 # Rumus LPM dengan data sintetis + fixture Langkah 0
+│   ├── test_broker_daily.py        # Penyimpanan broker_daily & backfill (HTTP palsu)
+│   └── test_lpm_service.py         # Service, status job, dan route /api/idx/lpm
 │
 ├── templates/                      # Template HTML Jinja2
 │   ├── index.html                  # Halaman utama aplikasi (Dashboard Shell)
@@ -144,13 +157,15 @@ SepaTrend/
 │   │   ├── login.css               # Styling halaman login (Enterprise Clear & Green)
 │   │   ├── command-palette.css     # Styling omnibar Ctrl+K
 │   │   └── components/
-│   │       └── stock_modal.css     # Styling Bento Grid modal saham, tab, badge, & button 28px
+│   │       ├── stock_modal.css     # Styling Bento Grid modal saham, tab, badge, & button 28px
+│   │       └── lpm_panel.css       # Styling tab LPM (hanya token base.css)
 │   └── js/
 │       ├── main.js                 # Initializer & router frontend
 │       ├── login.js                # Form controller login AJAX & validasi
 │       ├── core/
 │       │   ├── scanner.js          # Polling status scan & trigger scanner
 │       │   ├── stock_detail_modal.js # Controller tab modal detail & inline bandar checker
+│       │   ├── lpm_panel.js        # Tab LPM: chart 3 panel, state, backfill & polling
 │       │   ├── utils.js            # Format rupiah, angka lot, format tanggal
 │       │   └── export.js           # Export tabel ke CSV / Excel
 │       ├── screeners/
@@ -180,6 +195,7 @@ SepaTrend/
 └── ProjectOverview/                # Dokumentasi Spesifikasi & Panduan Teknis
     ├── PROJECT_OVERVIEW.md         # (File ini) Panduan induk status proyek untuk next agent
     ├── APISpecs.md                 # Dokumentasi spesifikasi API IDX Edge PRO
+    ├── FEATURE_LPM.md              # Spesifikasi, keputusan, hasil verifikasi & kalibrasi fitur LPM
     ├── Indicator Templatate Sepa Trend # Pine Script acuan indikator SEPA TradingView
     ├── RSI Divergence              # Pine Script acuan RSI Divergence
     └── Screnner_SepaTrend          # Catatan formula dasar SEPA
@@ -212,8 +228,18 @@ SepaTrend/
 3. **Manajemen Kuota 1.000 Req/Hari**:
    * *Rule*: Jangan pernah melakukan loop batch ke endpoint IDX Edge PRO di dalam background scanner. Biarkan background scanner fokus menggunakan data gratisan Yahoo Finance untuk menyaring 205 saham menjadi ~30 saham potensial. Data IDX Edge PRO hanya dipanggil secara **On-Demand** ketika user mengklik tombol *"Cek Bandar"* atau membuka Modal Detail.
 
+   * *Pengecualian terkendali (LPM)*: backfill histori broker LPM memang memanggil API berulang (1 request per saham per hari bursa), tetapi hanya dimulai user dari tombol "Lengkapi histori", berjalan untuk satu saham, dan tidak pernah membuat sisa kuota turun di bawah **200** (`LPM_PARAMS["quota_reserve"]`). Membuka tab LPM untuk saham tanpa histori = 0 request; untuk saham yang sudah punya histori = maksimal 5 request untuk hari bursa baru.
+
 4. **Dynamic `.env` Loading**:
    * Modul `screener/auth.py` telah dikonfigurasi untuk membaca file `.env` secara real-time saat login dilakukan. Mengubah kredensial di `.env` tidak memerlukan restart server Flask.
+
+5. **Broker Summary per Hari (LPM)**:
+   * *Gotcha*: `start_date = end_date` mengembalikan data satu hari; rentang beberapa hari mengembalikan **agregat**, bukan rincian per hari. Nama field tanggal di respons adalah `broker_start_date` / `broker_end_date` (bukan `latest_date`). Volume dalam lembar. `bfrq`/`sfrq` menghitung **transaksi (match)**, bukan order.
+   * *Rule*: Hari ini diabaikan sampai 17:00 WIB. Data hari yang sudah lewat disimpan permanen di `broker_daily` dan tidak diambil ulang.
+
+6. **Gunicorn Multi-Worker & State Background**:
+   * *Gotcha*: Service produksi berjalan dengan 3 worker Gunicorn. Dict di memori (seperti `scan_state`) tidak dibagi antar worker.
+   * *Rule*: State yang di-polling UI disimpan di SQLite. Contohnya status backfill LPM di tabel `lpm_jobs`, dengan klaim atomik dan heartbeat.
 
 ---
 
@@ -226,3 +252,6 @@ Jika Anda adalah agen yang melanjutkan pengembangan proyek ini, berikut adalah d
 - [x] **Fase 4**: Paket Konfigurasi Deployment VPS (Gunicorn, Nginx, Systemd, Cron Jam 18:00 WIB).
 - [ ] **Fase 5 (Next)**: Eksekusi deploy ke server VPS pengguna ketika VPS sudah aktif dan IP/akses SSH diberikan.
 - [ ] **Fase 6 (Opsional Masa Depan)**: Notifikasi otomatis sinyal breakout ke Telegram Bot / Discord Webhook pada saat Cron Scan selesai jam 18:00 WIB.
+- [x] **LPM Fase A**: Tab LPM on-demand di modal detail (Oktober 2026).
+- [ ] **LPM kalibrasi**: Atasi bias positif yang ditemukan di uji tahap 5 dan validasi daya prediksi sebelum hasil LPM dipakai (FEATURE_LPM.md bagian 11).
+- [ ] **LPM Fase B & C**: View "LPM Radar" untuk kandidat dari 4 screener, lalu badge konfluensi di tabel screener (FEATURE_LPM.md bagian 13). Dimulai hanya setelah kalibrasi.
