@@ -131,6 +131,7 @@ function togglePinFromDetailModal() {
 function closeStockDetailModal() {
   const modal = document.getElementById("stock-detail-modal");
   if (modal) modal.classList.add("hidden");
+  if (typeof destroyLpmPanel === "function") destroyLpmPanel();
 }
 
 function handleStockModalBackdrop(event) {
@@ -183,6 +184,8 @@ function loadCurrentTabData(force = false) {
     fetchFinancialsData(currentStockTicker, force);
   } else if (activeStockTab === "analysis") {
     fetchAnalysisData(currentStockTicker, force);
+  } else if (activeStockTab === "lpm") {
+    loadLpmPanel(currentStockTicker, force);
   }
 }
 

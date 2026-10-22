@@ -211,6 +211,9 @@ class IDXApiClient:
         if not raw or "brokers" not in raw:
             return None
 
+        if flow == "all":
+            self._store_latest_broker_day(ticker, raw)
+
         # Analyze Bandarmologi
         analyzed = self._analyze_broker_summary(ticker, raw, flow)
 
@@ -725,6 +728,27 @@ class IDXApiClient:
             conn.commit()
 
         return {"date": date, "status": status, "brokers": brokers, "fetched": True}
+
+    def _store_latest_broker_day(self, ticker, raw):
+        """
+        Reuse a Bandarmologi-tab response (all brokers, latest day) as LPM history, so opening
+        both tabs costs one request instead of two. Only a single, final day not stored yet is saved.
+        """
+        date = raw.get("broker_start_date")
+        if not date or raw.get("broker_end_date") != date or not self.is_day_final(date):
+            return
+        existing = self.load_broker_daily(ticker, [date]).get(date)
+        if existing and existing["status"] in ("ok", "empty"):
+            return
+        status, brokers, note = self._parse_broker_daily(date, 200, raw)
+        if status == "error":
+            return
+        with self._get_connection() as conn:
+            conn.execute("""
+                INSERT OR REPLACE INTO broker_daily (ticker, date, data, status, fetched_at, attempts, note)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (ticker, date, json.dumps(brokers), status, self._now_wib().isoformat(), 1, "dari tab Bandarmologi"))
+            conn.commit()
 
     def _parse_broker_daily(self, date, http_status, raw):
         """Validate one single-day response. Returns (status, brokers or None, note)."""

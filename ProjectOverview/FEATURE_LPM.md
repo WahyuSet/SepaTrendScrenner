@@ -232,7 +232,7 @@ Tambahan matriks kombinasi (tampil sebagai catatan kedua, bila cocok). "Intensit
 | `app.py` | Route `GET /api/idx/lpm/<ticker>`, `POST /api/idx/lpm/<ticker>/backfill`, `GET /api/idx/lpm/<ticker>/status`. Semua dengan `@admin_required` dan `is_valid_idx_ticker`. |
 | `templates/modals/modal_stock_detail.html` | Tab ke-4: `📈 LPM & Smart Money`. |
 | `static/js/core/stock_detail_modal.js` | `switchStockModalTab('lpm')` memanggil `lpm_panel.js`. |
-| `templates/index.html` | Muat `lightweight-charts`, `lpm_panel.js`, dan `lpm_panel.css`. |
+| `templates/index.html` | Muat `lightweight-charts@5.2.1`, `lpm_panel.js`, dan `lpm_panel.css`. |
 
 ### 5.3 Penyimpanan — tabel `broker_daily`
 Data broker hari yang sudah lewat **tidak berubah**, jadi disimpan permanen (beda dengan cache harian yang ada sekarang):
@@ -336,7 +336,15 @@ Body opsional: `{ "days": 80 }` (dibatasi 20–250). Memulai thread backfill, la
 
 Ikuti `.agent/Design.md` (Enterprise Clear White, token CSS, font yang sudah ada). Tidak ada warna atau ukuran hard-coded di luar token.
 
-**Library chart:** `lightweight-charts@4.2.0` dari CDN (`https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js`). Versi wajib dikunci persis, tidak boleh `@latest`. Chart dibuat ulang setiap modal dibuka dan dihancurkan (`chart.remove()`) saat modal ditutup.
+**Library chart:** `lightweight-charts@5.2.1` dari CDN (`https://unpkg.com/lightweight-charts@5.2.1/dist/lightweight-charts.standalone.production.js`, rilis 2026-08-12). Versi wajib dikunci persis, tidak boleh `@latest`. Dipilih v5 (pertanyaan 10) karena punya **native pane**: tiga panel berbagi satu sumbu waktu dan crosshair tanpa kode sinkronisasi manual (`addSeries(..., paneIndex)`, `pane.setStretchFactor(55/25/20)`, `createSeriesMarkers`). Chart dibuat ulang setiap modal dibuka dan dihancurkan (`chart.remove()`) saat modal ditutup. Warna chart dibaca dari token CSS lewat `getComputedStyle`. Kalau CDN gagal, area chart menampilkan pesan dan kartu ringkasan tetap berlaku.
+
+**Implementasi (tahap 4, 2026-10-22):** `static/js/core/lpm_panel.js`, `static/css/components/lpm_panel.css`, tab ke-4 di `templates/modals/modal_stock_detail.html`. Detail yang ditetapkan saat implementasi:
+- Hari gap: garis LPM berwarna abu-abu (`--text-muted`) dan batang lensa kosong.
+- Intensity memakai token biru yang sudah ada (`--status-div-hid-text`) dengan tiga tingkat kepekatan (pertanyaan 11), plus garis putus-putus di ambang spike 1,5. Vol Rotation memakai token status hijau/kuning/merah.
+- Legend di atas chart menampilkan nilai di posisi crosshair (tanggal, close, LPM, pressure, lensa aktif).
+- Tombol Refresh di header modal = ambil ulang GET (hitung ulang dari data tersimpan + sinkron maksimal 5 hari baru), bukan backfill (pertanyaan 12).
+- Selama backfill: progress bar dari polling `/status` tiap 2 detik, dan garis digambar ulang tiap ±10 detik dari data yang sudah masuk.
+- Layar ≤ 768px: bar tab modal bisa digeser horizontal, kartu ringkasan 2 kolom, chart 380px. Layar ≤ 480px: padding modal dikecilkan (berlaku untuk semua tab modal) supaya chart selebar ±290px di ponsel 375px (pertanyaan 14: layout mobile yang sudah ada yang berlaku, bukan "desktop-only" di `.agent/Design.md`).
 
 **Susunan dari atas ke bawah:**
 1. **Kartu ringkasan (4 kotak):** Tren LPM (badge + panah), Divergensi, Fase, Kemiringan 5H/20H (angka mono).
@@ -380,7 +388,7 @@ Selain skenario di atas, `tests/test_lpm.py` juga menguji tabel tren, θ adaptif
 
 `tests/test_broker_daily.py` (tahap 2, 13 test) menguji penyimpanan dan backfill dengan HTTP palsu dan database sementara, jadi tidak memakai kuota: data ok tidak diambil dua kali, `empty` tidak diambil ulang, batas 3 kali coba untuk `error`, respons untuk tanggal lain ditolak, hari ini diabaikan sampai 17:00 WIB, urutan terbaru dulu, batas `max_requests`, berhenti tepat di cadangan kuota, dan data tersimpan bisa langsung dipakai `build_lpm`. `tests/test_lpm_service.py` (tahap 3, 23 test) menguji service, status job, dan ketiga route lewat Flask test client: tanpa histori = 0 request, sinkron maksimal 5 hari terbaru, tidak sinkron saat backfill berjalan, hari volume 0 dilewati, klaim job eksklusif, job mati terdeteksi, berhenti di cadangan kuota, 401/404/400/409.
 
-Jalankan semua test (74 test): `python -m unittest discover -s tests -t .`
+Jalankan semua test (77 test): `python -m unittest discover -s tests -t .`
 
 **Smoke test nyata tahap 3 (2026-10-21, `scratch/smoke_lpm_backfill.py`):** backfill BBCA dengan `max_requests=10` → 10 request, 10 hari `ok` (7–20 Okt), berhenti `max_requests`. Kuota 5 → 15, dan `get_lpm` sesudahnya 0 request. Pressure harian BBCA berkisar −0,07 sampai +0,40 (±4 sampai 40 poin), sehingga θ adaptif = 8,3 (5H) dan 4,1 (20H). Hari turun tajam 16 Okt (−15%) justru bertekanan beli +0,35.
 
@@ -406,12 +414,13 @@ Urutan di atas adalah **Fase A**. Fase B (LPM Radar) dan Fase C (konfluensi) ada
 
 - [x] Langkah 0 terdokumentasi di bagian 12.
 - [x] Semua test `tests/test_lpm.py` lulus (37 test, 2026-10-21).
-- [ ] Membuka tab LPM untuk saham yang historinya sudah lengkap **tidak memakai kuota** (kecuali 1 hari terbaru).
-- [ ] Backfill berhenti saat sisa kuota < 200 dan statusnya terlihat di UI.
-- [ ] Chart 3 panel tersinkron, marker divergensi tampil, toggle Intensity/Vol Rotation berfungsi.
-- [ ] Semua state (loading, kosong, data kurang, kuota habis, error) tampil benar.
-- [ ] Semua teks UI berbahasa Indonesia; disclaimer & keterbatasan selalu tampil.
-- [ ] Tidak ada API key baru yang di-hard-code.
+- [x] Membuka tab LPM untuk saham yang historinya sudah lengkap **tidak memakai kuota** (kecuali hari baru). Terverifikasi di browser: BBCA 1 request (sinkron 21 Okt), TLKM tanpa histori 0 request.
+- [x] Backfill berhenti saat sisa kuota menyentuh 200 (test) dan pesannya terlihat di UI (state kuota rendah diuji di browser dengan kuota disimulasikan).
+- [x] Chart 3 panel tersinkron (native pane), toggle Intensity/Vol Rotation berfungsi. Marker divergensi belum terlihat dengan data nyata karena BBCA baru 11 hari (`DATA_KURANG` tidak memunculkan marker); jalurnya diuji di test Python.
+- [x] Semua state (loading, kosong, data kurang, kuota habis, error, progress backfill) tampil benar di desktop dan 375px.
+- [x] Semua teks UI berbahasa Indonesia; disclaimer & keterbatasan selalu tampil.
+- [x] Tidak ada API key baru yang di-hard-code.
+- [x] Backfill penuh dijalankan dari tombol UI dengan API asli (2026-10-22): BBCA 69 request, 69 `ok`, coverage 80/80 tanpa gap, kuota hari itu 3 → 72. Progress bar dan pembaruan garis di tengah proses berfungsi; tombol tersembunyi selama berjalan dan hilang setelah lengkap. Marker divergensi nyata tampil (POSITIVE 14 Agu, 24 Agu, 10 Sep).
 
 ---
 
@@ -420,6 +429,7 @@ Urutan di atas adalah **Fase A**. Fase B (LPM Radar) dan Fase C (konfluensi) ada
 - **Histori API mungkin terbatas.** Kalau API hanya menyimpan beberapa bulan, `history_days` disesuaikan dan dicatat.
 - **Pasar negosiasi (NG).** Kalau API tidak bisa memisahkan board RG/NG, LPM membaca semua board. Tulis keterbatasan ini apa adanya di UI.
 - **Saham sangat tidak likuid.** `F_d` kecil membuat `A_d` tidak stabil. Kalau `F_d < 50`, tandai hari itu `low_liquidity: true` dan kalikan `pressure` dengan `F_d / 50` supaya satu order tidak mendominasi garis.
+- **Temuan kalibrasi pertama (BBCA, 80 hari s/d 2026-10-21):** pressure positif di 57 dari 80 hari, rata-rata +8,9 poin/hari (min −12,5, maks +39,9), sehingga LPM naik terus ke ±715 sementara harga turun 5.550 → 5.275. Hasilnya: tren `RISING`, divergensi `POSITIVE`, fase `SENYAP`. Broker teratas MG, KZ, AK, ZP, YU. Ini bisa sinyal akumulasi nyata, tetapi juga bisa **bias struktural**: broker institusi selalu punya nilai per transaksi di atas rata-rata, jadi sisi belinya lebih sering mendapat bobot daripada sisi jual yang dipecah kecil. Sebelum garis dipercaya, bandingkan beberapa saham (termasuk yang jelas sedang distribusi) dan cek apakah rata-rata pressure jangka panjang memang mendekati 0. Kalau bias terbukti, kandidat perbaikan: kurangi pressure dengan rata-rata bergulirnya (detrend), atau hitung `A_d` per sisi.
 - **Tuning parameter.** `R0`, `R1`, `θ` adalah titik awal. Setelah fitur jalan, bandingkan garis LPM dengan pergerakan harga 20–60 hari ke depan di beberapa saham sebelum mengubahnya, dan catat perubahannya di sini.
 - **Keamanan (di luar cakupan, tapi perlu ditangani):** API key IDX Edge PRO saat ini tertulis langsung di `screener/idx_api_client.py` dan `ProjectOverview/APISpecs.md`, dan keduanya ter-commit ke git. Sebaiknya dipindah ke `.env` (`IDX_EDGE_API_KEY`) dan key-nya diganti, sebagai tugas terpisah. Fitur LPM cukup memakai `IDXApiClient` yang sudah ada.
 
@@ -579,10 +589,11 @@ Pertanyaan 3–8 dijawab 2026-10-21: semua usulan dipakai.
 7. ~~Data hari ini?~~ **Diabaikan sampai 17:00 WIB** (bagian 5.3).
 8. ~~Berapa hari diambil langsung?~~ **Maksimal 5** (bagian 6).
 
-**Sebelum route & UI**
-9. Data mentah dari tab Bandar ikut ditulis ke `broker_daily` untuk menghemat request?
-10. lightweight-charts v4.2.0 (3 chart disinkronkan manual) atau v5 (native pane)?
-11. Warna Intensity: token ungu baru atau token biru yang sudah ada?
-12. Tombol Refresh di tab LPM: hitung ulang dari data tersimpan, atau ambil ulang hari terbaru?
-13. `top_smart_brokers` menampilkan pembeli dan penjual (berdasarkan |net| beserta tanda)?
-14. Mana yang berlaku: `Design.md` (desktop-only) atau layout mobile yang sudah ada?
+**Sebelum route & UI** — dijawab 2026-10-22: semua rekomendasi dipakai.
+
+9. ~~Tab Bandar ikut menulis `broker_daily`?~~ **Ya.** `get_broker_summary` (flow `all`) menyimpan responsnya sebagai hari LPM kalau `broker_start_date = broker_end_date`, hari itu sudah final, dan belum tersimpan (`_store_latest_broker_day`). Catatan: belum dipastikan apakah respons tanpa tanggal memuat `broker_start_date`; kalau tidak, tidak ada yang disimpan (aman).
+10. ~~v4.2.0 atau v5?~~ **v5.2.1** dengan native pane (bagian 7).
+11. ~~Warna Intensity?~~ **Token biru yang sudah ada** (`--status-div-hid-text`).
+12. ~~Refresh?~~ **Hitung ulang dari data tersimpan** (+ sinkron hari baru sesuai aturan maksimal 5).
+13. ~~Pembeli dan penjual?~~ **Ya**, diurutkan berdasarkan |net|, ditampilkan "Beli"/"Jual".
+14. ~~Desktop-only atau mobile?~~ **Layout mobile yang sudah ada berlaku**; `.agent/Design.md` bagian 12 sudah usang.

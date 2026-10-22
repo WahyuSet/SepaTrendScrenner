@@ -154,6 +154,30 @@ class TestGetBrokerDaily(BrokerDailyTestCase):
         self.assertIn("brokers", ok)
 
 
+class TestBandarTabReuse(BrokerDailyTestCase):
+    def latest_response(self, date):
+        return FakeResponse(200, {"stock_code": "BBCA", "broker_start_date": date, "broker_end_date": date,
+                                  "brokers": broker_rows()})
+
+    def test_bandar_tab_response_is_stored_for_lpm(self):
+        with mock.patch("screener.idx_api_client.requests.get", return_value=self.latest_response("2026-10-20")):
+            self.assertIsNotNone(self.client.get_broker_summary("BBCA", force_refresh=True))
+        row = self.client.load_broker_daily("BBCA")["2026-10-20"]
+        self.assertEqual(row["status"], "ok")
+        self.assertEqual(row["note"], "dari tab Bandarmologi")
+        self.assertEqual(self.client.missing_broker_days("BBCA", ["2026-10-20"]), [])
+
+    def test_unfinished_day_is_not_stored(self):
+        with mock.patch("screener.idx_api_client.requests.get", return_value=self.latest_response("2026-10-21")):
+            self.client.get_broker_summary("BBCA", force_refresh=True)
+        self.assertEqual(self.client.load_broker_daily("BBCA"), {})
+
+    def test_foreign_flow_is_not_stored(self):
+        with mock.patch("screener.idx_api_client.requests.get", return_value=self.latest_response("2026-10-20")):
+            self.client.get_broker_summary("BBCA", flow="F", force_refresh=True)
+        self.assertEqual(self.client.load_broker_daily("BBCA"), {})
+
+
 class TestBackfill(BrokerDailyTestCase):
     def test_newest_first_with_request_cap(self):
         dates = weekdays_before("2026-10-21", 10)
