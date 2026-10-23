@@ -102,17 +102,17 @@
           </div>
 
           <!-- Quick Reset Button -->
-          <button id="pb-reset-btn" class="btn-reset-filters hidden" onclick="resetPbFilters()" title="Reset semua filter ke default">
+          <button id="pb-reset-btn" class="btn-reset-filters hidden" data-action="reset-pb-filters" onclick="resetPbFilters()" title="Reset semua filter ke default">
             Reset
           </button>
         </div>
 
         <!-- Table Utility Actions -->
         <div class="table-actions">
-          <button class="btn-table-util" onclick="copyTradingViewWatchlist('prebreakout')" title="Salin daftar ticker untuk TradingView">
+          <button class="btn-table-util" data-action="copy-tradingview" data-screener="prebreakout" onclick="copyTradingViewWatchlist('prebreakout')" title="Salin daftar ticker untuk TradingView">
             Copy Watchlist
           </button>
-          <button class="btn-table-util" onclick="exportTableToCsv('prebreakout')" title="Download file CSV">
+          <button class="btn-table-util" data-action="export-pb-csv" onclick="exportTableToCsv('prebreakout')" title="Download file CSV">
             Export CSV
           </button>
         </div>
@@ -151,7 +151,7 @@
       <h3 id="pb-empty-title">Tidak Ada Saham Pre-Breakout yang Memenuhi Kriteria</h3>
       <p id="pb-empty-desc">Tidak ada saham yang cocok dengan kriteria filter saat ini.</p>
       <div id="pb-empty-actions" class="empty-actions">
-        <button type="button" class="btn-secondary" onclick="resetPreBreakoutFilters()">Reset Filter</button>
+        <button type="button" class="btn-secondary" data-action="reset-pb-filters" onclick="resetPreBreakoutFilters()">Reset Filter</button>
       </div>
     </div>
   </section>

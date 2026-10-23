@@ -85,17 +85,17 @@
           </div>
 
           <!-- Quick Reset Button -->
-          <button id="sepa-reset-btn" class="btn-reset-filters hidden" onclick="resetSepaFilters()" title="Reset semua filter ke default">
+          <button id="sepa-reset-btn" class="btn-reset-filters hidden" data-action="reset-sepa-filters" onclick="resetSepaFilters()" title="Reset semua filter ke default">
             Reset
           </button>
         </div>
 
         <!-- Table Utility Actions -->
         <div class="table-actions">
-          <button class="btn-table-util" onclick="copyTradingViewWatchlist('sepa')" title="Salin daftar ticker untuk TradingView">
+          <button class="btn-table-util" data-action="copy-tradingview" data-screener="sepa" onclick="copyTradingViewWatchlist('sepa')" title="Salin daftar ticker untuk TradingView">
             Copy Watchlist
           </button>
-          <button class="btn-table-util" onclick="exportTableToCsv('sepa')" title="Download file CSV">
+          <button class="btn-table-util" data-action="export-sepa-csv" onclick="exportTableToCsv('sepa')" title="Download file CSV">
             Export CSV
           </button>
         </div>
@@ -132,7 +132,7 @@
       <h3 id="empty-state-title">Tidak Ada Saham yang Memenuhi Filter</h3>
       <p id="empty-state-desc">Tidak ada saham yang cocok dengan kriteria filter saat ini.</p>
       <div id="empty-state-actions" class="empty-actions">
-        <button type="button" class="btn-secondary" onclick="resetSepaFilters()">Reset Filter</button>
+        <button type="button" class="btn-secondary" data-action="reset-sepa-filters" onclick="resetSepaFilters()">Reset Filter</button>
       </div>
     </div>
   </section>

@@ -41,25 +41,25 @@
 
   <!-- Mobile topbar (visible at <= 768px) -->
   <header class="mobile-topbar" id="mobile-topbar">
-    <button type="button" class="mobile-menu-btn" id="btn-mobile-menu" onclick="toggleMobileSidebar()" aria-label="Buka menu navigasi" aria-controls="app-sidebar" aria-expanded="false">
+    <button type="button" class="mobile-menu-btn" id="btn-mobile-menu" data-action="toggle-mobile-sidebar" onclick="toggleMobileSidebar()" aria-label="Buka menu navigasi" aria-controls="app-sidebar" aria-expanded="false">
       <svg class="hamburger-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="3" y1="6" x2="21" y2="6"></line>
         <line x1="3" y1="12" x2="21" y2="12"></line>
         <line x1="3" y1="18" x2="21" y2="18"></line>
       </svg>
     </button>
-    <button type="button" class="mobile-brand" onclick="switchScreener('sepa')" aria-label="Tirexxz Screnner, buka SEPA Trend">
+    <button type="button" class="mobile-brand" data-action="switch-screener" data-screener="sepa" onclick="switchScreener('sepa')" aria-label="Tirexxz Screnner, buka SEPA Trend">
       <span class="mobile-brand-dino" aria-hidden="true">🦖</span>
       <span class="mobile-brand-title">Tirexxz <span>Screnner</span></span>
     </button>
     <div class="mobile-topbar-actions">
-      <button type="button" class="mobile-action-btn" onclick="openCommandPalette()" aria-label="Cari emiten atau aksi">
+      <button type="button" class="mobile-action-btn" data-action="open-command-palette" onclick="openCommandPalette()" aria-label="Cari emiten atau aksi">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </button>
-      <button type="button" class="mobile-action-btn scan-btn" id="btn-scan-mobile" onclick="triggerScan()" aria-label="Scan IDX sekarang">
+      <button type="button" class="mobile-action-btn scan-btn" id="btn-scan-mobile" data-action="trigger-scan" onclick="triggerScan()" aria-label="Scan IDX sekarang">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polygon points="5 3 19 12 5 21 5 3"></polygon>
         </svg>
@@ -68,7 +68,7 @@
   </header>
 
   <!-- Sidebar Backdrop Overlay for Mobile Drawer -->
-  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+  <div class="sidebar-overlay" id="sidebar-overlay" data-action="close-mobile-sidebar" onclick="closeMobileSidebar()"></div>
 
   <div class="app-layout">
     <!-- Sleek Minimalist Sidebar -->

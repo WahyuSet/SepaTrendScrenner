@@ -100,17 +100,17 @@
           </button>
 
           <!-- Quick Reset Button -->
-          <button id="rsi-reset-btn" class="btn-reset-filters hidden" onclick="resetRsiFilters()" title="Reset semua filter ke default">
+          <button id="rsi-reset-btn" class="btn-reset-filters hidden" data-action="reset-rsi-filters" onclick="resetRsiFilters()" title="Reset semua filter ke default">
             Reset
           </button>
         </div>
 
         <!-- Table Utility Actions -->
         <div class="table-actions">
-          <button class="btn-table-util" onclick="copyTradingViewWatchlist('rsi')" title="Salin daftar ticker untuk TradingView">
+          <button class="btn-table-util" data-action="copy-tradingview" data-screener="rsi" onclick="copyTradingViewWatchlist('rsi')" title="Salin daftar ticker untuk TradingView">
             Copy Watchlist
           </button>
-          <button class="btn-table-util" onclick="exportTableToCsv('rsi')" title="Download file CSV">
+          <button class="btn-table-util" data-action="export-rsi-csv" onclick="exportTableToCsv('rsi')" title="Download file CSV">
             Export CSV
           </button>
         </div>
@@ -146,7 +146,7 @@
       <h3 id="rsi-empty-title">Tidak Ada Saham yang Terdeteksi RSI Divergence</h3>
       <p id="rsi-empty-desc">Tidak ada saham yang cocok dengan kriteria filter saat ini.</p>
       <div id="rsi-empty-actions" class="empty-actions">
-        <button type="button" class="btn-secondary" onclick="resetRsiFilters()">Reset Filter</button>
+        <button type="button" class="btn-secondary" data-action="reset-rsi-filters" onclick="resetRsiFilters()">Reset Filter</button>
       </div>
     </div>
   </section>

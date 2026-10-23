@@ -106,14 +106,14 @@
           </div>
 
           <!-- Quick Reset Button -->
-          <button id="qs-reset-btn" class="btn-reset-filters hidden" onclick="resetQualityFilters()" title="Reset semua filter">
+          <button id="qs-reset-btn" class="btn-reset-filters hidden" data-action="reset-quality-filters" onclick="resetQualityFilters()" title="Reset semua filter">
             Reset
           </button>
         </div>
 
         <!-- Table Action Utilities -->
         <div class="table-actions">
-          <button class="btn-table-util" onclick="exportQualityCSV()" title="Download file CSV">
+          <button class="btn-table-util" data-action="export-quality-csv" onclick="exportQualityCSV()" title="Download file CSV">
             <span class="btn-icon" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></span> Export CSV
           </button>
           <button class="btn-table-util" onclick="triggerQualityScanUI()" title="Scan 941 Saham IDX">
@@ -150,7 +150,7 @@
       <h3 id="qs-empty-title">Tidak Ada Saham Quality Setup yang Memenuhi Filter</h3>
       <p id="qs-empty-desc">Tidak ada saham yang cocok dengan kriteria filter saat ini.</p>
       <div id="qs-empty-actions" class="empty-actions">
-        <button type="button" class="btn-secondary" onclick="resetQualityFilters()">Reset Filter</button>
+        <button type="button" class="btn-secondary" data-action="reset-quality-filters" onclick="resetQualityFilters()">Reset Filter</button>
       </div>
     </div>
   </section>

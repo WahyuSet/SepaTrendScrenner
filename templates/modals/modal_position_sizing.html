@@ -14,7 +14,7 @@
           <span class="text-secondary">Hitung ukuran lot optimal berbasis disiplin risiko Mark Minervini & proteksi over-alokasi modal</span>
         </div>
       </div>
-      <button class="modal-close" onclick="closePositionCalculator()" title="Tutup Kalkulator (Esc)" aria-label="Tutup modal">✕</button>
+      <button class="modal-close" data-action="close-position-calculator" onclick="closePositionCalculator()" title="Tutup Kalkulator (Esc)" aria-label="Tutup modal">✕</button>
     </div>
 
     <!-- MODAL BODY: 2-COLUMN SPLIT -->
@@ -50,10 +50,10 @@
             <span id="calc-max-risk-display" class="calc-val-preview mono risk-val">Maks Loss: Rp 1.000.000 (1.0%)</span>
           </div>
           <div class="risk-presets-row">
-            <button type="button" class="btn-risk-pill" onclick="setRiskPreset(0.5)">0.5%</button>
-            <button type="button" class="btn-risk-pill active" onclick="setRiskPreset(1.0)">1.0%</button>
-            <button type="button" class="btn-risk-pill" onclick="setRiskPreset(1.5)">1.5%</button>
-            <button type="button" class="btn-risk-pill" onclick="setRiskPreset(2.0)">2.0%</button>
+            <button type="button" class="btn-risk-pill" data-action="set-risk-preset" data-risk="0.5" onclick="setRiskPreset(0.5)">0.5%</button>
+            <button type="button" class="btn-risk-pill active" data-action="set-risk-preset" data-risk="1.0" onclick="setRiskPreset(1.0)">1.0%</button>
+            <button type="button" class="btn-risk-pill" data-action="set-risk-preset" data-risk="1.5" onclick="setRiskPreset(1.5)">1.5%</button>
+            <button type="button" class="btn-risk-pill" data-action="set-risk-preset" data-risk="2.0" onclick="setRiskPreset(2.0)">2.0%</button>
             <input type="number" id="calc-risk-pct" value="1.0" min="0.1" max="10" step="0.1" class="calc-custom-risk-input" oninput="recomputePositionSizing()" title="Kustom % Risiko">
             <span class="custom-pct-sym">%</span>
           </div>
@@ -85,7 +85,7 @@
 
         <!-- Cap Alokasi & Broker Fee Accordion -->
         <div class="calc-advanced-box">
-          <button type="button" class="calc-advanced-header" onclick="toggleAdvancedCalcSettings()" aria-expanded="false" aria-controls="adv-calc-body">
+          <button type="button" class="calc-advanced-header" data-action="toggle-advanced-calc" onclick="toggleAdvancedCalcSettings()" aria-expanded="false" aria-controls="adv-calc-body">
             <span>Pengaturan Batas Alokasi & Fee Broker</span>
             <span id="adv-calc-chevron" aria-hidden="true">▼</span>
           </button>
@@ -148,39 +148,39 @@
           </div>
         </div>
 
-        <!-- RISK & REWARD CALCULATION BREAKDOWN LIST -->
-        <div class="calc-results-list calc-bento-grid">
+        <!-- RISK & REWARD CALCULATION BREAKDOWN LIST (Design.md §6.8, UI_REFACTOR_PLAN Fase 9) -->
+        <div class="calc-results-list">
           <!-- ITEM 1: RISK DOWNSIDE -->
-          <div class="calc-result-item bento-stat-card risk-card">
-            <div class="bento-stat-head">
-              <span class="bento-sub-title">Risiko Maksimal (Stop Loss)</span>
+          <div class="calc-result-item risk-card">
+            <div class="calc-result-head">
+              <span class="calc-result-title">Risiko Maksimal (Stop Loss)</span>
             </div>
-            <div id="calc-result-risk-loss" class="bento-stat-val loss mono">-Rp 0</div>
-            <div class="bento-stat-foot">
+            <div id="calc-result-risk-loss" class="calc-result-val loss mono">-Rp 0</div>
+            <div class="calc-result-foot">
               <span id="calc-result-risk-pct" class="foot-pct mono">Jarak: -0.0%</span>
               <span id="calc-result-fee-sub" class="foot-fee mono">Fee: Rp 0</span>
             </div>
           </div>
 
           <!-- ITEM 2: TARGET 1 REWARD -->
-          <div class="calc-result-item bento-stat-card target-card">
-            <div class="bento-stat-head">
-              <span class="bento-sub-title">Potensi Gain Target 1</span>
+          <div class="calc-result-item target-card">
+            <div class="calc-result-head">
+              <span class="calc-result-title">Potensi Gain Target 1</span>
             </div>
-            <div id="calc-result-t1-gain" class="bento-stat-val gain mono">+Rp 0</div>
-            <div class="bento-stat-foot">
+            <div id="calc-result-t1-gain" class="calc-result-val gain mono">+Rp 0</div>
+            <div class="calc-result-foot">
               <span id="calc-result-t1-rr" class="foot-rr mono">R:R 1 : 0.0</span>
               <span id="calc-result-t1-pct" class="foot-pct mono">+0.0%</span>
             </div>
           </div>
 
           <!-- ITEM 3: TARGET 2 REWARD -->
-          <div class="calc-result-item bento-stat-card target-card">
-            <div class="bento-stat-head">
-              <span class="bento-sub-title">Potensi Gain Target 2</span>
+          <div class="calc-result-item target-card">
+            <div class="calc-result-head">
+              <span class="calc-result-title">Potensi Gain Target 2</span>
             </div>
-            <div id="calc-result-t2-gain" class="bento-stat-val gain mono">+Rp 0</div>
-            <div class="bento-stat-foot">
+            <div id="calc-result-t2-gain" class="calc-result-val gain mono">+Rp 0</div>
+            <div class="calc-result-foot">
               <span id="calc-result-t2-rr" class="foot-rr mono">R:R 1 : 0.0</span>
               <span id="calc-result-t2-pct" class="foot-pct mono">+0.0%</span>
             </div>
@@ -189,10 +189,10 @@
 
         <!-- ACTION BUTTONS -->
         <div class="calc-actions-row">
-          <button type="button" class="btn-calc-action secondary" onclick="copyPositionSizingSummary()" title="Salin ringkasan ke clipboard">
+          <button type="button" class="btn-calc-action secondary" data-action="copy-position-sizing" onclick="copyPositionSizingSummary()" title="Salin ringkasan ke clipboard">
             Salin Rencana
           </button>
-          <button type="button" class="btn-calc-action primary" onclick="transferCalcToTradeJournal()" title="Kirim data pembelian ini ke form Jurnal Trading">
+          <button type="button" class="btn-calc-action primary" data-action="transfer-calc-journal" onclick="transferCalcToTradeJournal()" title="Kirim data pembelian ini ke form Jurnal Trading">
             Catat Beli ke Jurnal
           </button>
         </div>

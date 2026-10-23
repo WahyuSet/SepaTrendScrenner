@@ -74,22 +74,22 @@
 
         <!-- Utility Actions -->
         <div class="table-actions" style="margin-left: auto;">
-          <button class="btn-table-util primary" onclick="openNewTradeEntryModal()" title="Catat posisi pembelian saham baru">
+          <button class="btn-table-util primary" data-action="open-new-trade-modal" onclick="openNewTradeEntryModal()" title="Catat posisi pembelian saham baru">
             Catat Beli Baru
           </button>
-          <button class="btn-table-util" onclick="openPositionCalculator()" title="Buka Kalkulator Position Sizing & Money Management">
+          <button class="btn-table-util" data-action="open-position-calculator" onclick="openPositionCalculator()" title="Buka Kalkulator Position Sizing & Money Management">
             Kalkulator Sizing
           </button>
-          <button class="btn-table-util" onclick="exportJournalCSV()" title="Download Jurnal ke format CSV/Excel">
+          <button class="btn-table-util" data-action="export-journal-csv" onclick="exportJournalCSV()" title="Download Jurnal ke format CSV/Excel">
             CSV
           </button>
-          <button class="btn-table-util" onclick="exportJournalBackupJSON()" title="Download Backup JSON lengkap">
+          <button class="btn-table-util" data-action="export-journal-backup" onclick="exportJournalBackupJSON()" title="Download Backup JSON lengkap">
             Backup
           </button>
-          <button class="btn-table-util" onclick="triggerRestoreBackupInput()" title="Pulihkan data dari file Backup JSON">
+          <button class="btn-table-util" data-action="restore-journal-backup" onclick="triggerRestoreBackupInput()" title="Pulihkan data dari file Backup JSON">
             Restore
           </button>
-          <button class="btn-table-util" onclick="openPortfolioSettingsModal()" title="Pengaturan Modal & Biaya Komisi Broker">
+          <button class="btn-table-util" data-action="open-portfolio-settings" onclick="openPortfolioSettingsModal()" title="Pengaturan Modal & Biaya Komisi Broker">
             Pengaturan
           </button>
           <input type="file" id="wl-restore-file-input" accept=".json" class="hidden" onchange="handleRestoreBackupFile(event)">
@@ -122,7 +122,7 @@
         <h3 id="watchlist-empty-title">Watchlist Anda Masih Kosong</h3>
         <p id="watchlist-empty-desc">Klik tombol bintang pada baris saham di screener mana pun untuk menyematkannya ke sini.</p>
         <div id="watchlist-empty-actions" class="empty-actions">
-          <button type="button" class="btn-table-util primary" onclick="switchScreener('quality')">Jelajahi Quality Setup Screener</button>
+          <button type="button" class="btn-table-util primary" data-action="switch-screener" data-screener="quality" onclick="switchScreener('quality')">Jelajahi Quality Setup Screener</button>
         </div>
       </div>
     </div>
@@ -154,7 +154,7 @@
         <h3 id="journal-empty-title">Belum Ada Riwayat Transaksi Jurnal</h3>
         <p id="journal-empty-desc">Mulai catat transaksi beli Anda untuk mendokumentasikan eksekusi dan melatih psikologi trading disiplin.</p>
         <div id="journal-empty-actions" class="empty-actions">
-          <button type="button" class="btn-table-util primary" onclick="openNewTradeEntryModal()">Catat Beli Sekarang</button>
+          <button type="button" class="btn-table-util primary" data-action="open-new-trade-modal" onclick="openNewTradeEntryModal()">Catat Beli Sekarang</button>
         </div>
       </div>
     </div>
