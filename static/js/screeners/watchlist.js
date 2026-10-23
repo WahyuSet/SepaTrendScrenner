@@ -28,6 +28,11 @@ const watchlistState = {
 
 // 1. INITIAL LOADER
 async function loadWatchlistAndJournal() {
+  const wTable = document.getElementById('watchlist-table');
+  const jTable = document.getElementById('journal-table');
+  if (wTable) wTable.setAttribute('aria-busy', 'true');
+  if (jTable) jTable.setAttribute('aria-busy', 'true');
+
   try {
     // Fetch both watchlist and journal in parallel
     const [wRes, jRes] = await Promise.all([
@@ -48,6 +53,9 @@ async function loadWatchlistAndJournal() {
       watchlistState.stats = jJson.stats || null;
     }
 
+    if (wTable) wTable.setAttribute('aria-busy', 'false');
+    if (jTable) jTable.setAttribute('aria-busy', 'false');
+
     updateWatchlistStatsCards();
     updateSidebarWatchlistBadge();
     updateAllPinButtonsOnPage();
@@ -59,6 +67,32 @@ async function loadWatchlistAndJournal() {
     }
   } catch (err) {
     console.error('Error loading watchlist and journal:', err);
+    if (wTable) wTable.setAttribute('aria-busy', 'false');
+    if (jTable) jTable.setAttribute('aria-busy', 'false');
+
+    if (typeof setTableViewState === 'function') {
+      if (watchlistState.activeTab === 'WATCHLIST') {
+        setTableViewState({
+          tableId: 'watchlist-table',
+          tbodyId: 'watchlist-table-body',
+          emptyStateId: 'watchlist-empty-state',
+          state: 'error',
+          viewName: 'Watchlist',
+          errorMsg: err.message || 'Koneksi ke server gagal',
+          retryFn: 'loadWatchlistAndJournal()'
+        });
+      } else {
+        setTableViewState({
+          tableId: 'journal-table',
+          tbodyId: 'journal-table-body',
+          emptyStateId: 'journal-empty-state',
+          state: 'error',
+          viewName: 'Jurnal Transaksi',
+          errorMsg: err.message || 'Koneksi ke server gagal',
+          retryFn: 'loadWatchlistAndJournal()'
+        });
+      }
+    }
   }
 }
 
@@ -132,7 +166,7 @@ function updateWatchlistStatsCards() {
     if (elNetPnl) {
       const sign = netPnl > 0 ? '+' : (netPnl < 0 ? '-' : '');
       elNetPnl.textContent = `${sign}${formatIDR(Math.abs(netPnl))}`;
-      elNetPnl.style.color = netPnl > 0 ? '#4ade80' : (netPnl < 0 ? '#f87171' : 'var(--text-primary)');
+      elNetPnl.className = 'summary-value mono ' + (netPnl > 0 ? 'status-confirmed' : (netPnl < 0 ? 'status-fail' : ''));
     }
     if (elProfitFactor) elProfitFactor.textContent = `Profit Factor: ${stats.profit_factor || 0.0}`;
   }
@@ -169,7 +203,7 @@ async function togglePinStock(ticker, name = '', sector = 'General', source = 'M
         updateSidebarWatchlistBadge();
         updateWatchlistStatsCards();
         if (watchlistState.activeTab === 'WATCHLIST') renderWatchlistTable();
-        if (typeof showToast === 'function') showToast(`⭐ ${clean} dihapus dari Watchlist`, 'info');
+        if (typeof showToast === 'function') showToast(`${clean} dihapus dari Watchlist`, 'info');
       }
     } catch (err) {
       console.error('Failed to unpin:', err);
@@ -192,7 +226,7 @@ async function togglePinStock(ticker, name = '', sector = 'General', source = 'M
         updateSidebarWatchlistBadge();
         updateWatchlistStatsCards();
         if (watchlistState.activeTab === 'WATCHLIST') renderWatchlistTable();
-        if (typeof showToast === 'function') showToast(`⭐ ${clean} disematkan ke Watchlist!`, 'success');
+        if (typeof showToast === 'function') showToast(`${clean} disematkan ke Watchlist!`, 'success');
       }
     } catch (err) {
       console.error('Failed to pin:', err);
@@ -211,27 +245,126 @@ function updateAllPinButtonsOnPage() {
         btn.setAttribute('title', 'Hapus dari Watchlist');
       } else {
         btn.classList.remove('pinned');
-        btn.setAttribute('title', 'Sematkan ke Watchlist (⭐)');
+        btn.setAttribute('title', 'Sematkan ke Watchlist');
       }
     }
   });
 }
 
+function sortWatchlist(col) {
+  if (watchlistState.sortCol === col) {
+    watchlistState.sortAsc = !watchlistState.sortAsc;
+  } else {
+    watchlistState.sortCol = col;
+    watchlistState.sortAsc = (col === 'ticker' || col === 'name');
+  }
+
+  const ths = document.querySelectorAll('#watchlist-table th[role="columnheader"]');
+  ths.forEach(th => {
+    th.setAttribute('aria-sort', 'none');
+    const ic = th.querySelector('.sort-icon');
+    if (ic) ic.classList.remove('active');
+  });
+
+  const targetIcon = document.getElementById(`sort-wl-${col}`);
+  if (targetIcon) {
+    targetIcon.classList.add('active');
+    const parentTh = targetIcon.closest('th');
+    if (parentTh) {
+      parentTh.setAttribute('aria-sort', watchlistState.sortAsc ? 'ascending' : 'descending');
+    }
+  }
+
+  watchlistState.watchlistItems.sort((a, b) => {
+    let valA = a[col] || '';
+    let valB = b[col] || '';
+    if (typeof valA === 'string') {
+      return watchlistState.sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+    }
+    return watchlistState.sortAsc ? valA - valB : valB - valA;
+  });
+
+  renderWatchlistTable();
+}
+
+function sortJournal(col) {
+  if (watchlistState.journalSortCol === col) {
+    watchlistState.journalSortAsc = !watchlistState.journalSortAsc;
+  } else {
+    watchlistState.journalSortCol = col;
+    watchlistState.journalSortAsc = (col === 'ticker' || col === 'buy_date');
+  }
+
+  const ths = document.querySelectorAll('#journal-table th[role="columnheader"]');
+  ths.forEach(th => {
+    th.setAttribute('aria-sort', 'none');
+    const ic = th.querySelector('.sort-icon');
+    if (ic) ic.classList.remove('active');
+  });
+
+  const targetIcon = document.getElementById(`sort-jr-${col}`);
+  if (targetIcon) {
+    targetIcon.classList.add('active');
+    const parentTh = targetIcon.closest('th');
+    if (parentTh) {
+      parentTh.setAttribute('aria-sort', watchlistState.journalSortAsc ? 'ascending' : 'descending');
+    }
+  }
+
+  watchlistState.trades.sort((a, b) => {
+    let valA = a[col] || '';
+    let valB = b[col] || '';
+    if (typeof valA === 'string') {
+      return watchlistState.journalSortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+    }
+    return watchlistState.journalSortAsc ? valA - valB : valB - valA;
+  });
+
+  renderJournalTable();
+}
+
 // 5. RENDER ACTIVE WATCHLIST TABLE
 function renderWatchlistTable() {
   const tbody = document.getElementById('watchlist-table-body');
-  const emptyState = document.getElementById('watchlist-empty-state');
   if (!tbody) return;
 
   const items = watchlistState.watchlistItems;
 
   if (!items || items.length === 0) {
     tbody.innerHTML = '';
-    if (emptyState) emptyState.classList.remove('hidden');
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'watchlist-table',
+        tbodyId: 'watchlist-table-body',
+        emptyStateId: 'watchlist-empty-state',
+        state: 'unscanned',
+        viewName: 'Watchlist',
+        scanFn: "switchScreener('quality')"
+      });
+      const emptyTitle = document.getElementById('watchlist-empty-title');
+      const emptyDesc = document.getElementById('watchlist-empty-desc');
+      const emptyActions = document.getElementById('watchlist-empty-actions');
+      if (emptyTitle) emptyTitle.textContent = 'Watchlist Anda Masih Kosong';
+      if (emptyDesc) emptyDesc.textContent = 'Klik tombol bintang pada baris saham di screener mana pun untuk menyematkannya ke sini.';
+      if (emptyActions) emptyActions.innerHTML = '<button type="button" class="btn-table-util primary" onclick="switchScreener(\'quality\')">Jelajahi Quality Setup Screener</button>';
+    } else {
+      const emptyState = document.getElementById('watchlist-empty-state');
+      if (emptyState) emptyState.classList.remove('hidden');
+    }
     return;
   }
 
-  if (emptyState) emptyState.classList.add('hidden');
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'watchlist-table',
+      tbodyId: 'watchlist-table-body',
+      emptyStateId: 'watchlist-empty-state',
+      state: 'ready'
+    });
+  } else {
+    const emptyState = document.getElementById('watchlist-empty-state');
+    if (emptyState) emptyState.classList.add('hidden');
+  }
 
   let rowsHtml = '';
   items.forEach(item => {
@@ -239,13 +372,13 @@ function renderWatchlistTable() {
     const sourceClass = (item.source_screener || '').toLowerCase().includes('quality') ? 'quality' :
                         ((item.source_screener || '').toLowerCase().includes('breakout') ? 'prebreakout' : 'sepa');
 
-    const pinnedDate = item.pinned_at ? item.pinned_at.split(' ')[0] : '—';
+    const pinnedDate = item.pinned_at ? item.pinned_at.split(' ')[0] : '--';
 
     rowsHtml += `
-      <tr class="table-row-clickable" onclick="openStockDetailModal('${t}', {name: '${escapeQuotes(item.name)}', sector: '${item.sector}'})">
+      <tr class="table-row-clickable" tabindex="0" role="button" aria-label="Buka detail saham ${t}" onclick="openStockDetailModal('${t}', {name: '${escapeQuotes(item.name)}', sector: '${item.sector}'})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openStockDetailModal('${t}', {name: '${escapeQuotes(item.name)}', sector: '${item.sector}'});}">
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-star-pin pinned" data-ticker="${t}" onclick="togglePinStock('${t}', '${escapeQuotes(item.name)}', '${item.sector}', '${item.source_screener}', event)" title="Hapus dari Watchlist">
-            ★
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
           </button>
         </td>
         <td>
@@ -267,13 +400,13 @@ function renderWatchlistTable() {
         <td class="text-center" onclick="event.stopPropagation()">
           <div class="row-actions-group">
             <button class="btn-table-action" onclick="openPositionCalculator({ticker: '${t}', name: '${escapeQuotes(item.name)}', sector: '${item.sector}'})" title="Hitung Sizing & Risiko">
-              🧮 Sizing
+              Sizing
             </button>
             <button class="btn-table-action primary" onclick="openNewTradeEntryModal({ticker: '${t}', name: '${escapeQuotes(item.name)}', sector: '${item.sector}', setup_type: '${item.source_screener}'})" title="Catat Pembelian Riil">
-              📝 Beli
+              Beli
             </button>
             <button class="btn-table-action danger" onclick="togglePinStock('${t}', '', '', '', event)" title="Hapus">
-              ✕
+              Hapus
             </button>
           </div>
         </td>
@@ -309,28 +442,73 @@ function renderJournalTable() {
 
   if (!trades || trades.length === 0) {
     tbody.innerHTML = '';
-    if (emptyState) emptyState.classList.remove('hidden');
+    if (typeof setTableViewState === 'function') {
+      if (watchlistState.trades.length === 0) {
+        setTableViewState({
+          tableId: 'journal-table',
+          tbodyId: 'journal-table-body',
+          emptyStateId: 'journal-empty-state',
+          state: 'unscanned',
+          viewName: 'Jurnal Transaksi',
+          scanFn: 'openNewTradeEntryModal()'
+        });
+        const emptyTitle = document.getElementById('journal-empty-title');
+        const emptyDesc = document.getElementById('journal-empty-desc');
+        const emptyActions = document.getElementById('journal-empty-actions');
+        if (emptyTitle) emptyTitle.textContent = 'Belum Ada Riwayat Transaksi Jurnal';
+        if (emptyDesc) emptyDesc.textContent = 'Mulai catat transaksi beli Anda untuk mendokumentasikan eksekusi dan melatih psikologi trading disiplin.';
+        if (emptyActions) emptyActions.innerHTML = '<button type="button" class="btn-table-util primary" onclick="openNewTradeEntryModal()">Catat Beli Sekarang</button>';
+      } else {
+        setTableViewState({
+          tableId: 'journal-table',
+          tbodyId: 'journal-table-body',
+          emptyStateId: 'journal-empty-state',
+          state: 'filtered',
+          viewName: 'Jurnal Transaksi',
+          resetFn: "filterJournalStatus('ALL')"
+        });
+        const emptyTitle = document.getElementById('journal-empty-title');
+        const emptyDesc = document.getElementById('journal-empty-desc');
+        const emptyActions = document.getElementById('journal-empty-actions');
+        if (emptyTitle) emptyTitle.textContent = 'Tidak Ada Transaksi yang Memenuhi Filter';
+        if (emptyDesc) emptyDesc.textContent = 'Tidak ada catatan transaksi dengan filter status atau pencarian ini.';
+        if (emptyActions) emptyActions.innerHTML = '<button type="button" class="btn-secondary" onclick="filterJournalStatus(\'ALL\')">Tampilkan Semua Transaksi</button>';
+      }
+    } else {
+      const emptyState = document.getElementById('journal-empty-state');
+      if (emptyState) emptyState.classList.remove('hidden');
+    }
     return;
   }
 
-  if (emptyState) emptyState.classList.add('hidden');
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'journal-table',
+      tbodyId: 'journal-table-body',
+      emptyStateId: 'journal-empty-state',
+      state: 'ready'
+    });
+  } else {
+    const emptyState = document.getElementById('journal-empty-state');
+    if (emptyState) emptyState.classList.add('hidden');
+  }
 
   let rowsHtml = '';
   trades.forEach(tr => {
     const statusClass = tr.status === 'CLOSED_WIN' ? 'win' :
                         (tr.status === 'CLOSED_LOSS' ? 'loss' :
                         (tr.status === 'CLOSED_BEP' ? 'bep' : 'open'));
-    const statusLabel = tr.status === 'CLOSED_WIN' ? '🏆 WIN' :
-                        (tr.status === 'CLOSED_LOSS' ? '🛑 LOSS' :
-                        (tr.status === 'CLOSED_BEP' ? '⚖️ BEP' : '💼 OPEN'));
+    const statusLabel = tr.status === 'CLOSED_WIN' ? 'WIN' :
+                        (tr.status === 'CLOSED_LOSS' ? 'LOSS' :
+                        (tr.status === 'CLOSED_BEP' ? 'BEP' : 'OPEN'));
 
-    const buyPrice = tr.buy_price ? `Rp ${tr.buy_price.toLocaleString('id-ID')}` : '—';
+    const buyPrice = tr.buy_price ? `Rp ${tr.buy_price.toLocaleString('id-ID')}` : '--';
     const slPrice = tr.stop_loss ? `SL: ${tr.stop_loss.toLocaleString('id-ID')}` : '';
     const exitPrice = tr.exit_price ? `Rp ${tr.exit_price.toLocaleString('id-ID')}` : '<span class="text-muted">Aktif</span>';
     const exitDate = tr.exit_date ? tr.exit_date : '<span class="text-muted">Berjalan</span>';
 
     // PnL display
-    let pnlHtml = '—';
+    let pnlHtml = '--';
     if (tr.status !== 'OPEN') {
       const net = tr.net_pnl || 0;
       const pct = tr.realized_pnl_pct || 0;
@@ -386,15 +564,15 @@ function renderJournalTable() {
           <div class="row-actions-group">
             ${tr.status === 'OPEN' ? `
               <button class="btn-table-action success" onclick="openCloseTradeModal(${tr.id})" title="Tutup / Selesaikan Posisi Ini">
-                ✅ Tutup
+                Tutup
               </button>
             ` : `
               <button class="btn-table-action secondary" onclick="viewTradeEvaluationModal(${tr.id})" title="Lihat Catatan Evaluasi">
-                👁️ Note
+                Note
               </button>
             `}
             <button class="btn-table-action danger" onclick="deleteJournalTrade(${tr.id})" title="Hapus Transaksi">
-              🗑️
+              Hapus
             </button>
           </div>
         </td>
@@ -451,7 +629,7 @@ function openNewTradeEntryModal(preset = {}) {
   if (formClose) formClose.classList.add('hidden');
   if (formSettings) formSettings.classList.add('hidden');
 
-  document.getElementById('journal-modal-icon').textContent = '📝';
+  document.getElementById('journal-modal-icon').textContent = '';
   document.getElementById('journal-modal-title').textContent = 'Catat Transaksi Beli Baru';
   const badge = document.getElementById('journal-modal-mode-badge');
   if (badge) {
@@ -486,7 +664,11 @@ function openNewTradeEntryModal(preset = {}) {
   if (elNotes) elNotes.value = preset.notes || '';
 
   calcJournalEntrySummary();
-  modal.classList.remove('hidden');
+  if (typeof openModal === 'function') {
+    openModal('modal-trade-journal');
+  } else {
+    modal.classList.remove('hidden');
+  }
 }
 
 function openCloseTradeModal(tradeId) {
@@ -504,7 +686,7 @@ function openCloseTradeModal(tradeId) {
   formClose.classList.remove('hidden');
   if (formSettings) formSettings.classList.add('hidden');
 
-  document.getElementById('journal-modal-icon').textContent = '✅';
+  document.getElementById('journal-modal-icon').textContent = '';
   document.getElementById('journal-modal-title').textContent = `Tutup Posisi: ${trade.ticker}`;
   const badge = document.getElementById('journal-modal-mode-badge');
   if (badge) {
@@ -525,12 +707,20 @@ function openCloseTradeModal(tradeId) {
   document.getElementById('close-notes').value = '';
 
   recomputeClosePnlPreview();
-  modal.classList.remove('hidden');
+  if (typeof openModal === 'function') {
+    openModal('modal-trade-journal');
+  } else {
+    modal.classList.remove('hidden');
+  }
 }
 
 function closeTradeJournalModal() {
-  const modal = document.getElementById('modal-trade-journal');
-  if (modal) modal.classList.add('hidden');
+  if (typeof closeModal === 'function') {
+    closeModal('modal-trade-journal');
+  } else {
+    const modal = document.getElementById('modal-trade-journal');
+    if (modal) modal.classList.add('hidden');
+  }
 }
 
 function closeTradeJournalOnBackdrop(e) {
@@ -766,7 +956,7 @@ function openPortfolioSettingsModal() {
   if (formClose) formClose.classList.add('hidden');
   formSettings.classList.remove('hidden');
 
-  document.getElementById('journal-modal-icon').textContent = '⚙️';
+  document.getElementById('journal-modal-icon').textContent = '';
   document.getElementById('journal-modal-title').textContent = 'Pengaturan Portofolio & Komisi';
   const badge = document.getElementById('journal-modal-mode-badge');
   if (badge) {
@@ -787,7 +977,11 @@ function openPortfolioSettingsModal() {
       }
     });
 
-  modal.classList.remove('hidden');
+  if (typeof openModal === 'function') {
+    openModal('modal-trade-journal');
+  } else {
+    modal.classList.remove('hidden');
+  }
 }
 
 async function submitJournalSettings(e) {
@@ -822,7 +1016,7 @@ async function submitJournalSettings(e) {
 function viewTradeEvaluationModal(tradeId) {
   const trade = watchlistState.trades.find(t => t.id === tradeId);
   if (!trade) return;
-  alert(`📝 EVALUASI TRADING (${trade.ticker}):\n\nStrategi: ${trade.setup_type}\nBeli: Rp ${trade.buy_price.toLocaleString('id-ID')} (${trade.buy_date})\nJual: Rp ${trade.exit_price.toLocaleString('id-ID')} (${trade.exit_date})\nAlasan Exit: ${trade.exit_reason}\nNet P&L: Rp ${trade.net_pnl.toLocaleString('id-ID')} (${trade.realized_pnl_pct}%)\n\nCatatan Evaluasi:\n${trade.notes || 'Tidak ada catatan'}`);
+  alert(`EVALUASI TRADING (${trade.ticker}):\n\nStrategi: ${trade.setup_type}\nBeli: Rp ${trade.buy_price.toLocaleString('id-ID')} (${trade.buy_date})\nJual: Rp ${trade.exit_price.toLocaleString('id-ID')} (${trade.exit_date})\nAlasan Exit: ${trade.exit_reason}\nNet P&L: Rp ${trade.net_pnl.toLocaleString('id-ID')} (${trade.realized_pnl_pct}%)\n\nCatatan Evaluasi:\n${trade.notes || 'Tidak ada catatan'}`);
 }
 
 function escapeQuotes(str) {

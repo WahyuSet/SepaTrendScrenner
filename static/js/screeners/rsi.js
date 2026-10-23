@@ -2,6 +2,8 @@
 // RSI DIVERGENCE SCREENER MODULE
 // ============================================================================
 
+let isFirstRsiRender = true;
+
 const rsiState = {
   activeTf: '1D', // '1D' | '4H'
   data1D: { results: [], stats: null, timestamp: null },
@@ -19,11 +21,24 @@ const rsiState = {
 
 async function loadRsiResults() {
   renderRsiSkeleton(6);
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'rsi-table',
+      tbodyId: 'rsi-table-body',
+      emptyStateId: 'rsi-empty-state',
+      state: 'loading',
+      viewName: 'RSI Divergence'
+    });
+  }
   try {
     const [res1d, res4h] = await Promise.all([
       fetch('/api/rsi-divergence?tf=1D').then(r => r.json()).catch(() => null),
       fetch('/api/rsi-divergence/4h').then(r => r.json()).catch(() => null)
     ]);
+
+    if (!res1d && !res4h) {
+      throw new Error('Gagal menghubungi server untuk data RSI');
+    }
 
     if (res1d && res1d.status === 'success' && res1d.data) {
       rsiState.data1D = {
@@ -45,11 +60,24 @@ async function loadRsiResults() {
       rsiState.data4H = { results: [], stats: null, timestamp: null };
     }
 
+    isFirstRsiRender = true;
     switchRsiTimeframe(rsiState.activeTf || '1D', false);
   } catch (err) {
     console.error('Failed to load RSI results:', err);
     rsiState.allResults = [];
-    applyRsiFilters();
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'rsi-table',
+        tbodyId: 'rsi-table-body',
+        emptyStateId: 'rsi-empty-state',
+        state: 'error',
+        viewName: 'RSI Divergence',
+        errorMsg: err.message || 'Koneksi ke server gagal',
+        retryFn: 'loadRsiResults()'
+      });
+    } else {
+      applyRsiFilters();
+    }
   }
 }
 
@@ -65,6 +93,7 @@ function switchRsiTimeframe(tf, resetFilters = false) {
   // Select active dataset
   const currentDataset = tf === '4H' ? rsiState.data4H : rsiState.data1D;
   rsiState.allResults = currentDataset.results || [];
+  isFirstRsiRender = true;
 
   // Update card recency label (1D: "≤ 5 Hari Terakhir", 4H: "≤ 5 Bar Terakhir (4H)")
   const metaRecency = document.getElementById('rsi-stat-meta-recency');
@@ -140,29 +169,6 @@ function handleRsiSectorFilter(val) {
   applyRsiFilters();
 }
 
-function resetRsiFilters() {
-  rsiState.sectorFilter = 'ALL';
-  rsiState.typeFilter = 'ALL';
-  rsiState.gradeFilter = 'ALL';
-  rsiState.hideHighRisk = false;
-
-  const select = document.getElementById('rsi-sector-filter');
-  if (select) select.value = 'ALL';
-
-  const riskBtn = document.getElementById('rsi-toggle-highrisk');
-  if (riskBtn) {
-    riskBtn.classList.remove('active-filter');
-    riskBtn.innerHTML = '⚠️ Sembunyikan Grade C';
-  }
-
-  ['rsi-tab-all', 'rsi-tab-reg', 'rsi-tab-hid', 'rsi-tab-gradea'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.toggle('active', id === 'rsi-tab-all');
-  });
-
-  applyRsiFilters();
-}
-
 function renderRsiStatsCards(stats, timestamp) {
   const statTotal = document.getElementById('rsi-stat-total');
   const statReg = document.getElementById('rsi-stat-reg-bull');
@@ -177,7 +183,7 @@ function renderRsiStatsCards(stats, timestamp) {
 
   const timeText = timestamp || 'Belum pernah scan';
   if (statTime) statTime.textContent = timeText;
-  if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '—');
+  if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '--');
   if (typeof updateSidebarLastScan === 'function') {
     updateSidebarLastScan(timeText);
   }
@@ -210,10 +216,10 @@ function toggleRsiHighRisk() {
   if (btn) {
     if (rsiState.hideHighRisk) {
       btn.classList.add('active-filter');
-      btn.innerHTML = '🛡️ Grade C Disembunyikan (Aktif)';
+      btn.textContent = 'Grade C Disembunyikan (Aktif)';
     } else {
       btn.classList.remove('active-filter');
-      btn.innerHTML = '⚠️ Sembunyikan Grade C';
+      btn.textContent = 'Sembunyikan Grade C';
     }
   }
   applyRsiFilters();
@@ -227,11 +233,20 @@ function sortRsiTable(col) {
     rsiState.sortAsc = (col === 'ticker' || col === 'name' || col === 'sector' || col === 'bars_ago');
   }
 
-  const icons = document.querySelectorAll('#rsi-table .sort-icon');
-  icons.forEach(ic => ic.textContent = '↕');
+  const ths = document.querySelectorAll('#rsi-table th[role="columnheader"]');
+  ths.forEach(th => {
+    th.setAttribute('aria-sort', 'none');
+    const ic = th.querySelector('.sort-icon');
+    if (ic) ic.classList.remove('active');
+  });
+
   const targetIcon = document.getElementById(`rsi-sort-${col}`);
   if (targetIcon) {
-    targetIcon.textContent = rsiState.sortAsc ? '▲' : '▼';
+    targetIcon.classList.add('active');
+    const parentTh = targetIcon.closest('th');
+    if (parentTh) {
+      parentTh.setAttribute('aria-sort', rsiState.sortAsc ? 'ascending' : 'descending');
+    }
   }
 
   applyRsiFilters();
@@ -302,12 +317,15 @@ function applyRsiFilters() {
 }
 
 function renderRsiSkeleton(rowCount = 6) {
+  const table = document.getElementById('rsi-table');
+  if (table) table.setAttribute('aria-busy', 'true');
+
   const tbody = document.getElementById('rsi-table-body');
   const emptyState = document.getElementById('rsi-empty-state');
   if (emptyState) emptyState.classList.add('hidden');
   if (!tbody) return;
 
-  let html = '';
+  let html = '<tr class="sr-only"><td>Memuat hasil RSI Divergence...</td></tr>';
   for (let i = 0; i < rowCount; i++) {
     html += `
       <tr>
@@ -331,7 +349,6 @@ function renderRsiSkeleton(rowCount = 6) {
 function renderRsiTable(data) {
   const tbody = document.getElementById('rsi-table-body');
   const countBadge = document.getElementById('rsi-table-count-badge');
-  const emptyState = document.getElementById('rsi-empty-state');
 
   if (countBadge) {
     countBadge.textContent = `${data.length} Sinyal Bullish`;
@@ -341,17 +358,53 @@ function renderRsiTable(data) {
 
   if (data.length === 0) {
     tbody.innerHTML = '';
-    if (emptyState) emptyState.classList.remove('hidden');
+    const activeData = getActiveRsiDataset();
+    const hasAnyResults = activeData && activeData.results && activeData.results.length > 0;
+
+    if (typeof setTableViewState === 'function') {
+      if (!hasAnyResults) {
+        setTableViewState({
+          tableId: 'rsi-table',
+          tbodyId: 'rsi-table-body',
+          emptyStateId: 'rsi-empty-state',
+          state: 'unscanned',
+          viewName: 'RSI Divergence',
+          scanFn: 'triggerScan()'
+        });
+      } else {
+        setTableViewState({
+          tableId: 'rsi-table',
+          tbodyId: 'rsi-table-body',
+          emptyStateId: 'rsi-empty-state',
+          state: 'filtered',
+          viewName: 'RSI Divergence',
+          resetFn: 'resetRsiFilters()'
+        });
+      }
+    } else {
+      const emptyState = document.getElementById('rsi-empty-state');
+      if (emptyState) emptyState.classList.remove('hidden');
+    }
     return;
   }
 
-  if (emptyState) emptyState.classList.add('hidden');
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'rsi-table',
+      tbodyId: 'rsi-table-body',
+      emptyStateId: 'rsi-empty-state',
+      state: 'ready'
+    });
+  } else {
+    const emptyState = document.getElementById('rsi-empty-state');
+    if (emptyState) emptyState.classList.add('hidden');
+  }
 
+  const useFade = isFirstRsiRender;
   let rowsHtml = '';
   data.forEach((stock, idx) => {
     const isReg = stock.divergence_type === 'REGULAR_BULL';
     const typeBadgeClass = isReg ? 'reg-bull' : 'hid-bull';
-    const typeIcon = isReg ? '🔄' : '🚀';
 
     // RSI class
     const rsiClass = stock.rsi <= 30 ? 'oversold' : (stock.rsi >= 70 ? 'overbought' : 'neutral');
@@ -367,6 +420,8 @@ function renderRsiTable(data) {
 
     // Stagger animation delay
     const delay = Math.min(idx * 25, 500);
+    const fadeClass = useFade ? 'row-fade-in' : '';
+    const animStyle = useFade ? `style="animation-delay: ${delay}ms"` : '';
 
     // Pivot comparison display
     const lowCompare = isReg ? `L: ${stock.pivot_low} < ${stock.prev_pivot_low}` : `L: ${stock.pivot_low} > ${stock.prev_pivot_low}`;
@@ -375,13 +430,13 @@ function renderRsiTable(data) {
     // Trend Context
     const isAbove200 = stock.price > (stock.ma200 || 0);
     const trendClass = isAbove200 ? 'trend-above' : 'trend-below';
-    const trendText = isAbove200 ? 'Above MA200 ✓' : 'Below MA200 ⚠️';
+    const trendText = isAbove200 ? 'Above MA200' : 'Below MA200';
 
     rowsHtml += `
-      <tr style="animation-delay: ${delay}ms" onclick="openRsiModal('${stock.ticker}')">
+      <tr class="${fadeClass}" ${animStyle} tabindex="0" role="button" aria-label="Buka detail divergensi ${stock.ticker}" onclick="openRsiModal('${stock.ticker}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openRsiModal('${stock.ticker}');}">
         <td>
           <div class="ticker-cell-wrapper">
-            <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'pinned' : ''}" data-ticker="${stock.ticker}" onclick="togglePinStock('${stock.ticker}', '${(stock.name || '').replace(/'/g, "\\'")}', '${stock.sector}', 'RSI Divergence', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}">★</button>
+            <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'pinned' : ''}" data-ticker="${stock.ticker}" onclick="togglePinStock('${stock.ticker}', '${(stock.name || '').replace(/'/g, "\\'")}', '${stock.sector}', 'RSI Divergence', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></button>
             <div class="ticker-info-stack">
               <span class="ticker-cell">${stock.ticker}</span>
             </div>
@@ -399,7 +454,7 @@ function renderRsiTable(data) {
           </span>
         </td>
         <td class="text-center">
-          <span class="badge-div-type ${typeBadgeClass}">${typeIcon} ${stock.divergence_label}</span>
+          <span class="badge-div-type ${typeBadgeClass}">${stock.divergence_label}</span>
         </td>
         <td class="text-center">
           <span class="rsi-pill ${rsiClass}">${stock.rsi.toFixed(1)}</span>
@@ -407,7 +462,7 @@ function renderRsiTable(data) {
         <td class="text-center">
           <div class="trend-context-pill ${trendClass}">
             <span>${trendText}</span>
-            <small style="display: block; font-size: 10px; color: var(--text-muted);">MA200: ${(stock.ma200 || 0).toLocaleString('id-ID')}</small>
+            <small class="trend-context-sub">MA200: ${(stock.ma200 || 0).toLocaleString('id-ID')}</small>
           </div>
         </td>
         <td class="text-center">
@@ -433,6 +488,8 @@ function renderRsiTable(data) {
       </tr>
     `;
   });
+
+  isFirstRsiRender = false;
 
   tbody.innerHTML = rowsHtml;
 }
@@ -461,12 +518,12 @@ function openRsiModal(ticker) {
   const isReg = stock.divergence_type === 'REGULAR_BULL';
   const tfLabel = stock.timeframe || rsiState.activeTf || '1D';
 
-  if (title) title.textContent = `${stock.ticker} — ${stock.name}`;
+  if (title) title.textContent = `${stock.ticker} : ${stock.name}`;
   if (subtitle) subtitle.textContent = `Inspeksi Sinyal ${stock.divergence_label} • TF ${tfLabel} (IDX:${stock.ticker})`;
   if (price) price.textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(stock.price);
   if (type) {
     type.textContent = stock.divergence_label;
-    type.style.color = isReg ? 'var(--status-div-reg-text)' : 'var(--status-div-hid-text)';
+    type.className = `modal-div-type ${isReg ? 'badge-reg-bull' : 'badge-hid-bull'}`;
   }
   if (rsiVal) rsiVal.textContent = stock.rsi.toFixed(1);
   if (recency) recency.textContent = stock.recency_text;
@@ -492,13 +549,21 @@ function openRsiModal(ticker) {
       : `Sinyal Hidden Bullish Trend Continuation: Harga saham membentuk swing low yang lebih tinggi (Rp ${stock.pivot_low} > Rp ${stock.prev_pivot_low}), namun indikator RSI justru jatuh ke titik yang lebih rendah (${stock.pivot_rsi} < ${stock.prev_pivot_rsi}). Ini mengindikasikan bahwa tren naik utama (uptrend) masih sangat kuat dan penurunan sebelumnya hanyalah koreksi teknikal sementara yang sehat.`;
   }
 
-  const modal = document.getElementById('rsi-modal');
-  if (modal) modal.classList.remove('hidden');
+  if (typeof openModal === 'function') {
+    openModal('rsi-modal');
+  } else {
+    const modal = document.getElementById('rsi-modal');
+    if (modal) modal.classList.remove('hidden');
+  }
 }
 
 function closeRsiModal() {
-  const modal = document.getElementById('rsi-modal');
-  if (modal) modal.classList.add('hidden');
+  if (typeof closeModal === 'function') {
+    closeModal('rsi-modal');
+  } else {
+    const modal = document.getElementById('rsi-modal');
+    if (modal) modal.classList.add('hidden');
+  }
 }
 
 function closeRsiModalOnBackdrop(event) {
@@ -520,7 +585,7 @@ function resetRsiFilters() {
   const riskBtn = document.getElementById('rsi-toggle-highrisk');
   if (riskBtn) {
     riskBtn.classList.remove('active-filter');
-    riskBtn.innerHTML = '⚠️ Sembunyikan Grade C';
+    riskBtn.textContent = 'Sembunyikan Grade C';
   }
 
   ['rsi-tab-all', 'rsi-tab-reg', 'rsi-tab-hid', 'rsi-tab-gradea'].forEach(id => {

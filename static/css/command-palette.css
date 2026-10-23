@@ -8,7 +8,14 @@ dialog.cmd-dialog {
   max-width: 640px;
   width: 90vw;
   margin: auto;
-  outline: none;
+}
+
+dialog.cmd-dialog:focus:not(:focus-visible) {
+  outline: 0;
+}
+
+dialog.cmd-dialog:focus-visible {
+  outline: 2px solid var(--border-focus);
 }
 
 dialog.cmd-dialog::backdrop {
@@ -19,7 +26,7 @@ dialog.cmd-dialog::backdrop {
 
 .cmd-container,
 .cmd-box {
-  background: #ffffff;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-strong);
   border-radius: 12px;
   box-shadow: var(--shadow-modal);
@@ -30,8 +37,8 @@ dialog.cmd-dialog::backdrop {
 }
 
 @keyframes scaleInCmd {
-  from { opacity: 0; transform: scale(0.97) translateY(-8px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 @keyframes fadeInBackdrop {
@@ -46,13 +53,21 @@ dialog.cmd-dialog::backdrop {
   gap: 12px;
   padding: 14px 18px;
   border-bottom: 1px solid var(--border-subtle);
-  background: #ffffff;
+  background: var(--bg-secondary);
+  transition: border-color 0.15s ease;
+}
+
+.cmd-input-wrap:focus-within {
+  border-bottom-color: var(--border-focus);
 }
 
 .cmd-input-icon,
 .cmd-search-icon {
   font-size: 16px;
   color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cmd-input {
@@ -62,7 +77,15 @@ dialog.cmd-dialog::backdrop {
   font-family: var(--font-sans);
   font-size: 14px;
   color: var(--text-primary);
-  outline: none;
+}
+
+.cmd-input:focus:not(:focus-visible) {
+  outline: 0;
+}
+
+.cmd-input:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
 }
 
 .cmd-shortcut-hint {
@@ -103,8 +126,14 @@ dialog.cmd-dialog::backdrop {
   user-select: none;
 }
 
-.cmd-item:hover, .cmd-item.selected {
+.cmd-item:hover,
+.cmd-item.selected {
   background: var(--bg-tertiary);
+}
+
+.cmd-item:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: -2px;
 }
 
 .cmd-item-left {
@@ -173,7 +202,7 @@ dialog.cmd-dialog::backdrop {
   justify-content: space-between;
   align-items: center;
   padding: 10px 18px;
-  background: #f8fafc;
+  background: var(--bg-primary);
   border-top: 1px solid var(--border-subtle);
   font-size: 11px;
   color: var(--text-muted);
@@ -192,7 +221,7 @@ dialog.cmd-dialog::backdrop {
   font-size: 10px;
   padding: 1px 5px;
   border-radius: 3px;
-  background: #ffffff;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
 }
 
@@ -214,12 +243,12 @@ dialog.cmd-dialog::backdrop {
 }
 
 .cmd-item-badge.badge-invalid {
-  background: #fef2f2;
-  color: #dc2626;
-  border-color: #fecaca;
+  background: var(--status-fail-bg);
+  color: var(--status-fail-text);
+  border-color: var(--status-fail-border);
   font-weight: 700;
 }
 
 .cmd-item-title.text-amber {
-  color: #dc2626;
+  color: var(--status-fail-text);
 }

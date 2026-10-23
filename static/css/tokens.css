@@ -1,0 +1,152 @@
+/* ==========================================================================
+   DESIGN TOKENS (source: .agent/Design.md §3-§5)
+   The only file allowed to hold raw color values. Components use var(--*).
+   ========================================================================== */
+
+/* --- Theme-independent tokens --- */
+:root {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', "SF Mono", Monaco, Menlo, Consolas, "Liberation Mono", monospace;
+
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-pill: 999px;
+
+  --z-base: 1;
+  --z-sticky: 100;
+  --z-dropdown: 200;
+  --z-drawer: 250;
+  --z-backdrop: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+}
+
+/* --- Light theme (default) --- */
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --bg-row-alt: #fafcfd;
+  --bg-overlay: rgba(15, 23, 42, 0.45);
+
+  --border-subtle: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --border-control: #7b8aa0;
+  --border-focus: #4d7c0f;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #5b6b80;
+  --text-inverse: #ffffff;
+
+  --brand-lime: #4d7c0f;
+  --brand-lime-hover: #3f6212;
+  --brand-lime-dim: #ecfccb;
+  --brand-lime-border: #bef264;
+  --btn-primary-bg: #4d7c0f;
+  --btn-primary-hover: #3f6212;
+  --btn-primary-text: #ffffff;
+
+  --status-confirmed-text: #15803d;
+  --status-confirmed-bg: #f0fdf4;
+  --status-confirmed-border: #bbf7d0;
+  --status-watchlist-text: #b45309;
+  --status-watchlist-bg: #fffbeb;
+  --status-watchlist-border: #fde68a;
+  --status-fail-text: #b91c1c;
+  --status-fail-bg: #fef2f2;
+  --status-fail-border: #fecaca;
+  --status-info-text: #1d4ed8;
+  --status-info-bg: #eff6ff;
+  --status-info-border: #bfdbfe;
+
+  --chart-series-1: #4d7c0f;
+  --chart-series-2: #1d4ed8;
+
+  --shadow-overlay: 0 8px 24px -6px rgba(15, 23, 42, 0.14), 0 2px 6px -2px rgba(15, 23, 42, 0.08);
+  --shadow-modal: 0 20px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.10);
+}
+
+/* --- Dark theme --- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-primary: #0b1220;
+  --bg-secondary: #111a2e;
+  --bg-tertiary: #1c2740;
+  --bg-row-alt: #0e1628;
+  --bg-overlay: rgba(2, 6, 23, 0.65);
+
+  --border-subtle: #1f2a40;
+  --border-strong: #2c3a55;
+  --border-control: #5f6f8a;
+  --border-focus: #a3e635;
+
+  --text-primary: #e2e8f0;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-inverse: #0f172a;
+
+  --brand-lime: #a3e635;
+  --brand-lime-hover: #bef264;
+  --brand-lime-dim: rgba(163, 230, 53, 0.12);
+  --brand-lime-border: rgba(163, 230, 53, 0.35);
+  --btn-primary-bg: #84cc16;
+  --btn-primary-hover: #a3e635;
+  --btn-primary-text: #0f172a;
+
+  --status-confirmed-text: #4ade80;
+  --status-confirmed-bg: rgba(74, 222, 128, 0.12);
+  --status-confirmed-border: rgba(74, 222, 128, 0.35);
+  --status-watchlist-text: #fbbf24;
+  --status-watchlist-bg: rgba(251, 191, 36, 0.12);
+  --status-watchlist-border: rgba(251, 191, 36, 0.35);
+  --status-fail-text: #f87171;
+  --status-fail-bg: rgba(248, 113, 113, 0.12);
+  --status-fail-border: rgba(248, 113, 113, 0.35);
+  --status-info-text: #60a5fa;
+  --status-info-bg: rgba(96, 165, 250, 0.12);
+  --status-info-border: rgba(96, 165, 250, 0.35);
+
+  --chart-series-1: #a3e635;
+  --chart-series-2: #60a5fa;
+
+  --shadow-overlay: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+  --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.55);
+}
+
+/* --- Aliases (derived, follow the active theme) --- */
+:root {
+  --status-div-reg-text: var(--status-confirmed-text);
+  --status-div-reg-bg: var(--status-confirmed-bg);
+  --status-div-reg-border: var(--status-confirmed-border);
+  --status-div-hid-text: var(--status-info-text);
+  --status-div-hid-bg: var(--status-info-bg);
+  --status-div-hid-border: var(--status-info-border);
+
+  --chart-text: var(--text-muted);
+  --chart-grid: var(--border-subtle);
+  --chart-up: var(--status-confirmed-text);
+  --chart-down: var(--status-fail-text);
+}

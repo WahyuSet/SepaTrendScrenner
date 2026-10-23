@@ -3,50 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tirexxz Screnner — SEPA Trend, RSI Divergence & Pre-Breakout</title>
-  
-  <!-- Favicon Tab Browser (Green Tirexxz Dino) -->
+  <title>Tirexxz Screnner: SEPA Trend, RSI Divergence & Pre-Breakout</title>
+
   <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
-  <link rel="alternate icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦖</text></svg>">
   <!-- Typography: Plus Jakarta Sans & JetBrains Mono (Google Fonts CDN) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Custom Stylesheet (Modular Architecture) -->
-  <link rel="stylesheet" href="/static/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Theme before first paint: saved choice, else light (Design.md §3.6) -->
+  <script>
+    (function () {
+      var theme = 'light';
+      try { if (localStorage.getItem('theme') === 'dark') theme = 'dark'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
+  <!-- Stylesheets: tokens first, then base, layout, components, screeners -->
+  <link rel="stylesheet" href="/static/css/tokens.css">
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/layout.css">
+  <link rel="stylesheet" href="/static/css/table.css">
+  <link rel="stylesheet" href="/static/css/modals.css">
+  <link rel="stylesheet" href="/static/css/command-palette.css">
+  <link rel="stylesheet" href="/static/css/screeners/sepa.css">
+  <link rel="stylesheet" href="/static/css/screeners/rsi.css">
+  <link rel="stylesheet" href="/static/css/screeners/prebreakout.css">
   <link rel="stylesheet" href="/static/css/components/stock_modal.css">
+  <link rel="stylesheet" href="/static/css/components/market_regime.css">
+  <link rel="stylesheet" href="/static/css/screeners/quality_setup.css">
   <link rel="stylesheet" href="/static/css/components/lpm_panel.css">
-  <link rel="stylesheet" href="/static/css/screeners/watchlist.css?v=2.2">
-  <link rel="stylesheet" href="/static/css/screeners/backtest.css?v=1.0">
+  <link rel="stylesheet" href="/static/css/screeners/watchlist.css">
+  <link rel="stylesheet" href="/static/css/screeners/backtest.css">
 </head>
 <body>
 
-  <!-- Mobile Sticky Header Bar (Visible only on <= 768px) -->
+  <!-- Mobile topbar (visible at <= 768px) -->
   <header class="mobile-topbar" id="mobile-topbar">
-    <button class="mobile-menu-btn" id="btn-mobile-menu" onclick="toggleMobileSidebar()" aria-label="Buka Menu Navigasi">
-      <svg class="hamburger-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <button type="button" class="mobile-menu-btn" id="btn-mobile-menu" data-action="toggle-mobile-sidebar" onclick="toggleMobileSidebar()" aria-label="Buka menu navigasi" aria-controls="app-sidebar" aria-expanded="false">
+      <svg class="hamburger-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <line x1="3" y1="6" x2="21" y2="6"></line>
         <line x1="3" y1="12" x2="21" y2="12"></line>
         <line x1="3" y1="18" x2="21" y2="18"></line>
       </svg>
     </button>
-    <div class="mobile-brand" onclick="switchScreener('sepa')">
-      <span class="mobile-brand-dino">🦖</span>
+    <button type="button" class="mobile-brand" data-action="switch-screener" data-screener="sepa" onclick="switchScreener('sepa')" aria-label="Tirexxz Screnner, buka SEPA Trend">
+      <span class="mobile-brand-dino" aria-hidden="true">🦖</span>
       <span class="mobile-brand-title">Tirexxz <span>Screnner</span></span>
-    </div>
+    </button>
     <div class="mobile-topbar-actions">
-      <button class="mobile-action-btn" onclick="openCommandPalette()" title="Cari Emiten (Ctrl + K)">
-        🔍
+      <button type="button" class="mobile-action-btn" data-action="open-command-palette" onclick="openCommandPalette()" aria-label="Cari emiten atau aksi">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
       </button>
-      <button class="mobile-action-btn scan-btn" onclick="triggerScan()" title="Scan Universe IDX Sekarang">
-        ⚡
+      <button type="button" class="mobile-action-btn scan-btn" id="btn-scan-mobile" data-action="trigger-scan" onclick="triggerScan()" aria-label="Scan IDX sekarang">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
       </button>
     </div>
   </header>
 
   <!-- Sidebar Backdrop Overlay for Mobile Drawer -->
-  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+  <div class="sidebar-overlay" id="sidebar-overlay" data-action="close-mobile-sidebar" onclick="closeMobileSidebar()"></div>
 
   <div class="app-layout">
     <!-- Sleek Minimalist Sidebar -->
@@ -94,7 +116,7 @@
   {% include 'modals/modal_trade_journal.html' %}
 
   <!-- Toast Notifications Container -->
-  <div id="toast-container" class="toast-container"></div>
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <!-- Application Logic Modules -->
   <script src="/static/js/core/utils.js"></script>

@@ -2,11 +2,19 @@
 <!-- MARKET REGIME BANNER (IHSG HEALTH & RS DISTRIBUTION) -->
 <!-- ======================================================== -->
 <div id="market-regime-banner" class="market-regime-card regime-loading">
+  <!-- Error State -->
+  <div id="regime-error-state" class="regime-error-box hidden" role="alert">
+    <span class="regime-error-text">Gagal memuat kondisi IHSG.</span>
+    <button type="button" class="btn-action-ghost" data-action="refresh-market-regime" onclick="loadMarketRegime()">Coba lagi</button>
+  </div>
+
   <!-- Top Row: IHSG Market Health & Capital Allocation -->
   <div class="regime-top-row">
     <div class="regime-left">
       <div class="regime-status-wrap">
-        <span class="regime-icon">🏛️</span>
+        <span class="regime-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg>
+        </span>
         <div>
           <div class="regime-header-title">
             <span class="regime-title">Kondisi Pasar Modal (IHSG)</span>
@@ -46,23 +54,27 @@
   <div class="regime-rs-row" id="regime-rs-row">
     <div class="regime-rs-header">
       <div class="regime-rs-title-wrap">
-        <span class="rs-dist-icon">📊</span>
+        <span class="rs-dist-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        </span>
         <span class="rs-dist-title">Distribusi RS Ratio IDX</span>
         <span class="rs-dist-bench-pill">vs IHSG</span>
-        <span class="rs-dist-hint" title="Distribusi rasio Relative Strength (RS) seluruh saham IDX dengan bobot IBD (40% 3M, 20% 6M, 20% 9M, 20% 12M) terhadap IHSG. Nilai > 100 menandakan outperform IHSG. Catatan: skala rasio (100 = setara IHSG) — BUKAN skala RS Rating 1-99 yang dipakai di tabel saham individual.">ℹ️</span>
+        <span class="rs-dist-hint" title="Distribusi rasio Relative Strength (RS) seluruh saham IDX dengan bobot IBD (40% 3M, 20% 6M, 20% 9M, 20% 12M) terhadap IHSG. Nilai > 100 menandakan outperform IHSG. Catatan: skala rasio (100 = setara IHSG), bukan skala RS Rating 1-99 yang dipakai di tabel saham individual." aria-label="Informasi bobot RS">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        </span>
       </div>
       <div class="regime-rs-meta">
         <span class="rs-meta-item">Semesta: <strong id="rs-dist-total-stocks">--</strong> Saham</span>
         <span class="rs-meta-sep">•</span>
         <span class="rs-meta-item">Tanggal: <strong id="rs-dist-date">--</strong></span>
-        <button id="btn-copy-all-rs" class="btn-action-ghost" title="Salin seluruh nilai 7 persentil RS Ratio ke clipboard">
+        <button id="btn-copy-all-rs" class="btn-action-ghost" data-action="copy-all-rs-distribution" title="Salin seluruh nilai 7 persentil RS Ratio ke clipboard">
           <svg class="action-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
           </svg>
           <span id="copy-all-rs-label">Salin Semua</span>
         </button>
-        <button id="btn-refresh-rs-dist" class="btn-refresh-rs" title="Hitung ulang distribusi RS Ratio sekarang">
+        <button id="btn-refresh-rs-dist" class="btn-refresh-rs" data-action="refresh-market-regime" onclick="loadMarketRegime()" title="Hitung ulang distribusi RS Ratio sekarang">
           <svg class="rs-refresh-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="23 4 23 10 17 10"></polyline>
             <polyline points="1 20 1 14 7 14"></polyline>

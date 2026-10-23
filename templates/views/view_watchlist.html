@@ -9,56 +9,31 @@
     </div>
   </div>
 
-  <!-- 1. STATS SUMMARY CARDS -->
-  <section class="stats-grid">
-    <!-- Card 1: Total Watchlist -->
-    <div class="stat-card">
-      <div class="stat-card-header">
-        <span class="stat-label">Saham Dipantau</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-        </span>
-      </div>
-      <div id="wl-stat-watchlist-count" class="stat-value amber mono">0</div>
-      <div class="stat-meta">Active Watchlist Radar</div>
+  <!-- 1. STATS SUMMARY BAR -->
+  <div class="summary-bar" role="region" aria-label="Ringkasan Statistik Watchlist dan Jurnal">
+    <div class="summary-item">
+      <span class="summary-label">Dipantau</span>
+      <span id="wl-stat-watchlist-count" class="summary-value status-watchlist mono">0</span>
     </div>
-
-    <!-- Card 2: Open Trades Capital -->
-    <div class="stat-card">
-      <div class="stat-card-header">
-        <span class="stat-label">Posisi Aktif (Open)</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-        </span>
-      </div>
-      <div id="wl-stat-open-trades" class="stat-value mono">0</div>
-      <div id="wl-stat-open-capital" class="stat-meta mono">Modal: Rp 0</div>
+    <span class="summary-sep" aria-hidden="true">·</span>
+    <div class="summary-item">
+      <span class="summary-label">Posisi Aktif</span>
+      <span id="wl-stat-open-trades" class="summary-value mono">0</span>
+      <span id="wl-stat-open-capital" class="summary-sub mono">Modal: Rp 0</span>
     </div>
-
-    <!-- Card 3: Win Rate -->
-    <div class="stat-card confirmed">
-      <div class="stat-card-header">
-        <span class="stat-label">Win Rate Historis</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><path d="M15.48 13.91l2.52 7.09-6-3-6 3 2.52-7.09"></path></svg>
-        </span>
-      </div>
-      <div id="wl-stat-win-rate" class="stat-value lime mono">0.0%</div>
-      <div id="wl-stat-win-loss-meta" class="stat-meta mono">0 Menang / 0 Kalah</div>
+    <span class="summary-sep" aria-hidden="true">·</span>
+    <div class="summary-item">
+      <span class="summary-label">Win Rate</span>
+      <span id="wl-stat-win-rate" class="summary-value status-confirmed mono">0.0%</span>
+      <span id="wl-stat-win-loss-meta" class="summary-sub mono">0 Menang / 0 Kalah</span>
     </div>
-
-    <!-- Card 4: Net Realized P&L -->
-    <div class="stat-card">
-      <div class="stat-card-header">
-        <span class="stat-label">Total Realized Net P&L</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-        </span>
-      </div>
-      <div id="wl-stat-net-pnl" class="stat-value mono">Rp 0</div>
-      <div id="wl-stat-profit-factor" class="stat-meta mono">Profit Factor: 0.0</div>
+    <span class="summary-sep" aria-hidden="true">·</span>
+    <div class="summary-item">
+      <span class="summary-label">Net Realized P&L</span>
+      <span id="wl-stat-net-pnl" class="summary-value mono">Rp 0</span>
+      <span id="wl-stat-profit-factor" class="summary-sub mono">Profit Factor: 0.0</span>
     </div>
-  </section>
+  </div>
 
   <!-- 2. DATA TABLE CONTAINER IN MASTER TABLE-CARD -->
   <section class="table-card">
@@ -73,10 +48,10 @@
         <!-- Segmented Status Tabs with Live Counters -->
         <div class="segmented-tabs">
           <button id="tab-wl-watchlist" class="segmented-tab-btn active" onclick="switchWatchlistTab('WATCHLIST')">
-            ⭐ Active Watchlist <span id="cnt-wl-watchlist" class="tab-counter">0</span>
+            Active Watchlist <span id="cnt-wl-watchlist" class="tab-counter">0</span>
           </button>
           <button id="tab-wl-journal" class="segmented-tab-btn" onclick="switchWatchlistTab('JOURNAL')">
-            📓 Trade Journal <span id="cnt-wl-journal" class="tab-counter">0</span>
+            Trade Journal <span id="cnt-wl-journal" class="tab-counter">0</span>
           </button>
         </div>
       </div>
@@ -99,23 +74,23 @@
 
         <!-- Utility Actions -->
         <div class="table-actions" style="margin-left: auto;">
-          <button class="btn-table-util primary" onclick="openNewTradeEntryModal()" title="Catat posisi pembelian saham baru">
-            <span>➕</span> Catat Beli Baru
+          <button class="btn-table-util primary" data-action="open-new-trade-modal" onclick="openNewTradeEntryModal()" title="Catat posisi pembelian saham baru">
+            Catat Beli Baru
           </button>
-          <button class="btn-table-util" onclick="openPositionCalculator()" title="Buka Kalkulator Position Sizing & Money Management">
-            <span>🧮</span> Kalkulator Sizing
+          <button class="btn-table-util" data-action="open-position-calculator" onclick="openPositionCalculator()" title="Buka Kalkulator Position Sizing & Money Management">
+            Kalkulator Sizing
           </button>
-          <button class="btn-table-util" onclick="exportJournalCSV()" title="Download Jurnal ke format CSV/Excel">
-            <span>📥</span> CSV
+          <button class="btn-table-util" data-action="export-journal-csv" onclick="exportJournalCSV()" title="Download Jurnal ke format CSV/Excel">
+            CSV
           </button>
-          <button class="btn-table-util" onclick="exportJournalBackupJSON()" title="Download Backup JSON lengkap">
-            <span>💾</span> Backup
+          <button class="btn-table-util" data-action="export-journal-backup" onclick="exportJournalBackupJSON()" title="Download Backup JSON lengkap">
+            Backup
           </button>
-          <button class="btn-table-util" onclick="triggerRestoreBackupInput()" title="Pulihkan data dari file Backup JSON">
-            <span>📤</span> Restore
+          <button class="btn-table-util" data-action="restore-journal-backup" onclick="triggerRestoreBackupInput()" title="Pulihkan data dari file Backup JSON">
+            Restore
           </button>
-          <button class="btn-table-util" onclick="openPortfolioSettingsModal()" title="Pengaturan Modal & Biaya Komisi Broker">
-            <span>⚙️</span> Pengaturan
+          <button class="btn-table-util" data-action="open-portfolio-settings" onclick="openPortfolioSettingsModal()" title="Pengaturan Modal & Biaya Komisi Broker">
+            Pengaturan
           </button>
           <input type="file" id="wl-restore-file-input" accept=".json" class="hidden" onchange="handleRestoreBackupFile(event)">
         </div>
@@ -124,16 +99,16 @@
 
     <!-- 3. CONTENT AREA 1: ACTIVE WATCHLIST TABLE -->
     <div id="section-active-watchlist" class="table-container">
-      <table class="data-table" id="watchlist-table">
+      <table class="data-table" id="watchlist-table" aria-busy="false">
         <thead>
           <tr>
             <th class="text-center" style="width: 50px;">Pin</th>
-            <th onclick="sortWatchlist('ticker')">Ticker <span class="sort-icon" id="sort-wl-ticker">↕</span></th>
-            <th onclick="sortWatchlist('name')">Nama Perusahaan</th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortWatchlist('ticker')">Ticker <span class="sort-icon" id="sort-wl-ticker">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortWatchlist('name')">Nama Perusahaan</th>
             <th>Sektor</th>
             <th>Sumber Screener</th>
             <th>Catatan Rencana</th>
-            <th onclick="sortWatchlist('pinned_at')">Ditambahkan <span class="sort-icon" id="sort-wl-date">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortWatchlist('pinned_at')">Ditambahkan <span class="sort-icon" id="sort-wl-date">↕</span></th>
             <th class="text-center" style="width: 220px;">Aksi</th>
           </tr>
         </thead>
@@ -143,28 +118,29 @@
       </table>
 
       <!-- Empty State Watchlist -->
-      <div id="watchlist-empty-state" class="empty-state hidden">
-        <div class="empty-state-icon">⭐</div>
-        <h3>Watchlist Anda Masih Kosong</h3>
-        <p>Klik tombol bintang (⭐) pada baris saham di screener mana pun untuk menyematkannya ke sini.</p>
-        <button class="btn-table-util primary" onclick="switchScreener('quality')">Jelajahi Quality Setup Screener</button>
+      <div id="watchlist-empty-state" class="empty-state hidden" role="status">
+        <h3 id="watchlist-empty-title">Watchlist Anda Masih Kosong</h3>
+        <p id="watchlist-empty-desc">Klik tombol bintang pada baris saham di screener mana pun untuk menyematkannya ke sini.</p>
+        <div id="watchlist-empty-actions" class="empty-actions">
+          <button type="button" class="btn-table-util primary" data-action="switch-screener" data-screener="quality" onclick="switchScreener('quality')">Jelajahi Quality Setup Screener</button>
+        </div>
       </div>
     </div>
 
     <!-- 4. CONTENT AREA 2: TRADE JOURNAL TABLE -->
     <div id="section-trade-journal" class="table-container hidden">
-      <table class="data-table" id="journal-table">
+      <table class="data-table" id="journal-table" aria-busy="false">
         <thead>
           <tr>
             <th class="text-center" style="width: 110px;">Status</th>
-            <th onclick="sortJournal('ticker')">Ticker <span class="sort-icon" id="sort-jr-ticker">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortJournal('ticker')">Ticker <span class="sort-icon" id="sort-jr-ticker">↕</span></th>
             <th>Strategi / Setup</th>
-            <th onclick="sortJournal('buy_date')">Tgl Beli <span class="sort-icon" id="sort-jr-date">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortJournal('buy_date')">Tgl Beli <span class="sort-icon" id="sort-jr-date">↕</span></th>
             <th class="text-right">Beli / SL</th>
             <th class="text-right">Jumlah (Lot)</th>
             <th class="text-right">Modal Terpakai</th>
             <th class="text-right">Harga Jual / Exit</th>
-            <th class="text-right" onclick="sortJournal('realized_pnl')">Net P&L (IDR / %) <span class="sort-icon" id="sort-jr-pnl">↕</span></th>
+            <th class="text-right" tabindex="0" role="columnheader" aria-sort="none" onclick="sortJournal('realized_pnl')">Net P&L (IDR / %) <span class="sort-icon" id="sort-jr-pnl">↕</span></th>
             <th class="text-center" style="width: 160px;">Aksi</th>
           </tr>
         </thead>
@@ -174,11 +150,12 @@
       </table>
 
       <!-- Empty State Journal -->
-      <div id="journal-empty-state" class="empty-state hidden">
-        <div class="empty-state-icon">📓</div>
-        <h3>Belum Ada Riwayat Transaksi Jurnal</h3>
-        <p>Mulai catat transaksi beli Anda untuk mendokumentasikan eksekusi dan melatih psikologi trading disiplin.</p>
-        <button class="btn-table-util primary" onclick="openNewTradeEntryModal()">➕ Catat Beli Sekarang</button>
+      <div id="journal-empty-state" class="empty-state hidden" role="status">
+        <h3 id="journal-empty-title">Belum Ada Riwayat Transaksi Jurnal</h3>
+        <p id="journal-empty-desc">Mulai catat transaksi beli Anda untuk mendokumentasikan eksekusi dan melatih psikologi trading disiplin.</p>
+        <div id="journal-empty-actions" class="empty-actions">
+          <button type="button" class="btn-table-util primary" data-action="open-new-trade-modal" onclick="openNewTradeEntryModal()">Catat Beli Sekarang</button>
+        </div>
       </div>
     </div>
   </section>

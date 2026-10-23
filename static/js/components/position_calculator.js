@@ -31,9 +31,19 @@ const calcState = {
 };
 
 // 1. OPEN & CLOSE MODAL
-function openPositionCalculator(params = {}) {
+function openPositionCalculator(params = {}, triggerEl) {
   const modal = document.getElementById('modal-position-sizing');
   if (!modal) return;
+
+  function showAndFocus() {
+    populateCalcForm(params);
+    recomputePositionSizing();
+    if (typeof openModal === 'function') {
+      openModal('modal-position-sizing', triggerEl);
+    } else {
+      modal.classList.remove('hidden');
+    }
+  }
 
   // Load saved settings if available
   fetch('/api/settings/money-management')
@@ -47,20 +57,20 @@ function openPositionCalculator(params = {}) {
         calcState.sellFeePct = json.data.broker_fee_sell_pct || 0.25;
         calcState.feeEnabled = json.data.broker_fee_enabled !== false;
       }
-      populateCalcForm(params);
-      recomputePositionSizing();
-      modal.classList.remove('hidden');
+      showAndFocus();
     })
     .catch(() => {
-      populateCalcForm(params);
-      recomputePositionSizing();
-      modal.classList.remove('hidden');
+      showAndFocus();
     });
 }
 
 function closePositionCalculator() {
-  const modal = document.getElementById('modal-position-sizing');
-  if (modal) modal.classList.add('hidden');
+  if (typeof closeModal === 'function') {
+    closeModal('modal-position-sizing');
+  } else {
+    const modal = document.getElementById('modal-position-sizing');
+    if (modal) modal.classList.add('hidden');
+  }
 }
 
 function closePositionCalcOnBackdrop(e) {
@@ -227,13 +237,13 @@ function recomputePositionSizing() {
   if (isCapped) {
     if (elBadge) {
       elBadge.className = 'hero-badge warn';
-      elBadge.textContent = `⚠️ DIBATASI CAP ${maxCap}%`;
+      elBadge.textContent = `DIBATASI CAP ${maxCap}%`;
     }
     if (elCapWarn) elCapWarn.classList.remove('hidden');
   } else {
     if (elBadge) {
       elBadge.className = 'hero-badge safe';
-      elBadge.textContent = '✅ AMAN TERKONTROL';
+      elBadge.textContent = 'AMAN TERKONTROL';
     }
     if (elCapWarn) elCapWarn.classList.add('hidden');
   }
@@ -252,16 +262,16 @@ function recomputePositionSizing() {
   const elT1RR = document.getElementById('calc-result-t1-rr');
   const elT1Pct = document.getElementById('calc-result-t1-pct');
 
-  if (elT1Gain) elT1Gain.textContent = t1 ? `+${formatIDR(t1GainNet)}` : '—';
-  if (elT1RR) elT1RR.textContent = t1 ? `R:R 1 : ${t1RR.toFixed(1)}` : 'R:R —';
+  if (elT1Gain) elT1Gain.textContent = t1 ? `+${formatIDR(t1GainNet)}` : '--';
+  if (elT1RR) elT1RR.textContent = t1 ? `R:R 1 : ${t1RR.toFixed(1)}` : 'R:R --';
   if (elT1Pct) elT1Pct.textContent = t1 ? `+${t1GainPct.toFixed(1)}%` : '';
 
   const elT2Gain = document.getElementById('calc-result-t2-gain');
   const elT2RR = document.getElementById('calc-result-t2-rr');
   const elT2Pct = document.getElementById('calc-result-t2-pct');
 
-  if (elT2Gain) elT2Gain.textContent = t2 ? `+${formatIDR(t2GainNet)}` : '—';
-  if (elT2RR) elT2RR.textContent = t2 ? `R:R 1 : ${t2RR.toFixed(1)}` : 'R:R —';
+  if (elT2Gain) elT2Gain.textContent = t2 ? `+${formatIDR(t2GainNet)}` : '--';
+  if (elT2RR) elT2RR.textContent = t2 ? `R:R 1 : ${t2RR.toFixed(1)}` : 'R:R --';
   if (elT2Pct) elT2Pct.textContent = t2 ? `+${t2GainPct.toFixed(1)}%` : '';
 }
 
@@ -283,11 +293,14 @@ function renderInvalidCalcState(entry, sl) {
   if (sl >= entry && entry > 0) {
     if (elBadge) {
       elBadge.className = 'hero-badge warn';
-      elBadge.textContent = '❌ SL HARUS < ENTRY';
+      elBadge.textContent = 'SL HARUS < ENTRY';
     }
   } else {
     if (elBadge) {
       elBadge.className = 'hero-badge safe';
+      elBadge.textContent = 'MASUKKAN HARGA';
+    }
+  }
       elBadge.textContent = 'MASUKKAN HARGA';
     }
   }
@@ -317,14 +330,17 @@ function updateRiskPresetPills(val) {
 function toggleAdvancedCalcSettings() {
   const content = document.getElementById('adv-calc-body');
   const chevron = document.getElementById('adv-calc-chevron');
+  const triggerBtn = document.querySelector('.calc-advanced-header');
   if (!content) return;
   const isHidden = content.classList.contains('hidden');
   if (isHidden) {
     content.classList.remove('hidden');
     if (chevron) chevron.textContent = '▲';
+    if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'true');
   } else {
     content.classList.add('hidden');
     if (chevron) chevron.textContent = '▼';
+    if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'false');
   }
 }
 
@@ -370,8 +386,8 @@ function transferCalcToTradeJournal() {
 function copyPositionSizingSummary() {
   const elLots = document.getElementById('calc-result-lots');
   const lots = elLots ? elLots.textContent : '0';
-  const text = `🎯 PLAN POSITION SIZING IDX:
-Saham: ${calcState.ticker || '—'}
+  const text = `PLAN POSITION SIZING IDX:
+Saham: ${calcState.ticker || '--'}
 Entry: Rp ${calcState.entryPrice.toLocaleString('id-ID')}
 Stop Loss: Rp ${calcState.stopLoss.toLocaleString('id-ID')} (Jarak: -${(((calcState.entryPrice - calcState.stopLoss) / calcState.entryPrice) * 100).toFixed(1)}%)
 Target 1: Rp ${(calcState.target1 || 0).toLocaleString('id-ID')}

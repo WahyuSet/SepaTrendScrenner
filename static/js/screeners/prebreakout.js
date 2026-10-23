@@ -2,6 +2,8 @@
 // PRE-BREAKOUT SETUP SCREENER MODULE
 // ============================================================================
 
+let isFirstPbRender = true;
+
 const prebreakoutState = {
   allResults: [],
   filteredResults: [],
@@ -16,6 +18,15 @@ const prebreakoutState = {
 
 async function loadPreBreakoutResults() {
   renderPreBreakoutSkeleton(6);
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'pb-table',
+      tbodyId: 'pb-table-body',
+      emptyStateId: 'pb-empty-state',
+      state: 'loading',
+      viewName: 'Pre-Breakout'
+    });
+  }
   try {
     const res = await fetch('/api/pre-breakout');
     const json = await res.json();
@@ -23,6 +34,7 @@ async function loadPreBreakoutResults() {
     if (json.status === 'success' && json.data) {
       const { timestamp, stats, results } = json.data;
       prebreakoutState.allResults = results || [];
+      isFirstPbRender = true;
       renderPreBreakoutStatsCards(stats, timestamp);
       populatePbSectorDropdown(prebreakoutState.allResults);
       updatePbTabCounters(prebreakoutState.allResults);
@@ -30,12 +42,35 @@ async function loadPreBreakoutResults() {
     } else {
       renderPreBreakoutStatsCards(null, null);
       prebreakoutState.allResults = [];
-      applyPreBreakoutFilters();
+      if (typeof setTableViewState === 'function') {
+        setTableViewState({
+          tableId: 'pb-table',
+          tbodyId: 'pb-table-body',
+          emptyStateId: 'pb-empty-state',
+          state: 'unscanned',
+          viewName: 'Pre-Breakout',
+          scanFn: 'triggerScan()'
+        });
+      } else {
+        applyPreBreakoutFilters();
+      }
     }
   } catch (err) {
     console.error('Failed to load Pre-Breakout results:', err);
     prebreakoutState.allResults = [];
-    applyPreBreakoutFilters();
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'pb-table',
+        tbodyId: 'pb-table-body',
+        emptyStateId: 'pb-empty-state',
+        state: 'error',
+        viewName: 'Pre-Breakout',
+        errorMsg: err.message || 'Koneksi ke server gagal',
+        retryFn: 'loadPreBreakoutResults()'
+      });
+    } else {
+      applyPreBreakoutFilters();
+    }
   }
 }
 
@@ -54,17 +89,23 @@ function renderPreBreakoutStatsCards(stats, timestamp) {
 
   const timeText = timestamp || 'Belum pernah scan';
   if (statTime) statTime.textContent = timeText;
-  if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '—');
+  if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '--');
   if (typeof updateSidebarLastScan === 'function') {
     updateSidebarLastScan(timeText);
   }
 }
 
 function renderPreBreakoutSkeleton(count = 6) {
+  const table = document.getElementById('pb-table');
+  if (table) table.setAttribute('aria-busy', 'true');
+
+  const emptyState = document.getElementById('pb-empty-state');
+  if (emptyState) emptyState.classList.add('hidden');
+
   const tbody = document.getElementById('pb-table-body');
   if (!tbody) return;
 
-  let skeletonHtml = '';
+  let skeletonHtml = '<tr class="sr-only"><td>Memuat hasil Pre-Breakout...</td></tr>';
   for (let i = 0; i < count; i++) {
     skeletonHtml += `
       <tr>
@@ -86,6 +127,8 @@ function renderPreBreakoutSkeleton(count = 6) {
   }
   tbody.innerHTML = skeletonHtml;
 }
+
+const renderPbSkeleton = renderPreBreakoutSkeleton;
 
 function populatePbSectorDropdown(data) {
   const select = document.getElementById('pb-sector-filter');
@@ -188,11 +231,20 @@ function sortPbTable(col) {
     prebreakoutState.sortAsc = (col === 'ticker' || col === 'name' || col === 'sector' || col === 'dist_res_pct');
   }
 
-  const icons = document.querySelectorAll('#pb-table .sort-icon');
-  icons.forEach(ic => ic.textContent = '↕');
+  const ths = document.querySelectorAll('#pb-table th[role="columnheader"]');
+  ths.forEach(th => {
+    th.setAttribute('aria-sort', 'none');
+    const ic = th.querySelector('.sort-icon');
+    if (ic) ic.classList.remove('active');
+  });
+
   const targetIcon = document.getElementById(`pb-sort-${col}`);
   if (targetIcon) {
-    targetIcon.textContent = prebreakoutState.sortAsc ? '▲' : '▼';
+    targetIcon.classList.add('active');
+    const parentTh = targetIcon.closest('th');
+    if (parentTh) {
+      parentTh.setAttribute('aria-sort', prebreakoutState.sortAsc ? 'ascending' : 'descending');
+    }
   }
 
   applyPreBreakoutFilters();
@@ -265,7 +317,6 @@ function applyPreBreakoutFilters() {
 function renderPreBreakoutTable(data) {
   const tbody = document.getElementById('pb-table-body');
   const countBadge = document.getElementById('pb-table-count-badge');
-  const emptyState = document.getElementById('pb-empty-state');
 
   if (countBadge) {
     countBadge.textContent = `${data.length} Setup Terkualifikasi`;
@@ -275,17 +326,51 @@ function renderPreBreakoutTable(data) {
 
   if (data.length === 0) {
     tbody.innerHTML = '';
-    if (emptyState) emptyState.classList.remove('hidden');
+    if (typeof setTableViewState === 'function') {
+      if (prebreakoutState.allResults.length === 0) {
+        setTableViewState({
+          tableId: 'pb-table',
+          tbodyId: 'pb-table-body',
+          emptyStateId: 'pb-empty-state',
+          state: 'unscanned',
+          viewName: 'Pre-Breakout',
+          scanFn: 'triggerScan()'
+        });
+      } else {
+        setTableViewState({
+          tableId: 'pb-table',
+          tbodyId: 'pb-table-body',
+          emptyStateId: 'pb-empty-state',
+          state: 'filtered',
+          viewName: 'Pre-Breakout',
+          resetFn: 'resetPreBreakoutFilters()'
+        });
+      }
+    } else {
+      const emptyState = document.getElementById('pb-empty-state');
+      if (emptyState) emptyState.classList.remove('hidden');
+    }
     return;
   }
 
-  if (emptyState) emptyState.classList.add('hidden');
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'pb-table',
+      tbodyId: 'pb-table-body',
+      emptyStateId: 'pb-empty-state',
+      state: 'ready'
+    });
+  } else {
+    const emptyState = document.getElementById('pb-empty-state');
+    if (emptyState) emptyState.classList.add('hidden');
+  }
 
+  const useFade = isFirstPbRender;
   let rowsHtml = '';
   data.forEach((stock, idx) => {
     const isReady = stock.status === 'READY';
     const statusClass = isReady ? 'ready' : 'forming';
-    const statusIcon = isReady ? '⚡' : '⭐';
+    const statusIcon = isReady ? '✓' : '•';
 
     const scoreClass = stock.total_score === 7 ? 'score-8' : 'score-6-7';
     const scorePct = Math.round((stock.total_score / 7) * 100);
@@ -300,6 +385,8 @@ function renderPreBreakoutTable(data) {
     const volumeFormatted = new Intl.NumberFormat('id-ID').format(stock.volume);
 
     const delay = Math.min(idx * 25, 500);
+    const fadeClass = useFade ? 'row-fade-in' : '';
+    const animStyle = useFade ? `style="animation-delay: ${delay}ms"` : '';
 
     // Mini pills for K1-K7
     let critPillsHtml = '<div class="crit-pills-wrap">';
@@ -312,9 +399,10 @@ function renderPreBreakoutTable(data) {
         const title = crit ? crit.title : `Kriteria ${num}`;
         const val = crit ? crit.val : '';
         const statusText = isPass ? 'PASS' : 'FAIL';
-        const tooltip = `K${num}: ${title} (${val}) — ${statusText}`;
+        const tooltip = `K${num}: ${title} (${val}) - ${statusText}`;
         const pillClass = isPass ? 'pass' : 'fail';
-        critPillsHtml += `<span class="crit-pill ${pillClass}" title="${tooltip}">${num}</span>`;
+        const ariaLabel = `K${num} ${isPass ? 'lolos' : 'gagal'}`;
+        critPillsHtml += `<span class="crit-pill ${pillClass}" title="${tooltip}" aria-label="${ariaLabel}">${num}</span>`;
       });
     }
     critPillsHtml += '</div>';
@@ -322,9 +410,7 @@ function renderPreBreakoutTable(data) {
     const isSurge = stock.vol_type === 'SURGE' || stock.rvol >= 1.2;
     const isDryUp = stock.vol_type === 'DRY_UP' || stock.rvol <= 0.75;
     const rvolClass = isSurge ? 'surge' : (isDryUp ? 'dryup' : 'normal');
-    const rvolBadgeText = isSurge 
-      ? `${stock.rvol.toFixed(2)}x ⚡` 
-      : (isDryUp ? `${stock.rvol.toFixed(2)}x 💧` : `${stock.rvol.toFixed(2)}x`);
+    const rvolBadgeText = `${stock.rvol.toFixed(2)}x`;
     const rvolTooltip = isSurge 
       ? 'Demand Surge (RVOL >= 1.2x)' 
       : (isDryUp ? 'Supply Dry-Up / VCP (RVOL <= 0.75x)' : 'Normal Volume');
@@ -332,10 +418,10 @@ function renderPreBreakoutTable(data) {
     const distClass = stock.dist_res_pct < 3.0 ? 'close' : 'normal';
 
     rowsHtml += `
-      <tr style="animation-delay: ${delay}ms" onclick="openPreBreakoutModal('${stock.ticker}')">
+      <tr class="${fadeClass}" ${animStyle} tabindex="0" role="button" aria-label="Buka detail setup ${stock.ticker}" onclick="openPreBreakoutModal('${stock.ticker}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openPreBreakoutModal('${stock.ticker}');}">
         <td>
           <div class="ticker-cell-wrapper">
-            <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'pinned' : ''}" data-ticker="${stock.ticker}" onclick="togglePinStock('${stock.ticker}', '${(stock.name || '').replace(/'/g, "\\'")}', '${stock.sector}', 'Pre-Breakout', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}">★</button>
+            <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'pinned' : ''}" data-ticker="${stock.ticker}" onclick="togglePinStock('${stock.ticker}', '${(stock.name || '').replace(/'/g, "\\'")}', '${stock.sector}', 'Pre-Breakout', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(stock.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></button>
             <div class="ticker-info-stack">
               <span class="ticker-cell">${stock.ticker}</span>
             </div>
@@ -378,7 +464,7 @@ function renderPreBreakoutTable(data) {
         </td>
         <td class="text-right">
           <span class="dist-res-badge ${distClass}">-${stock.dist_res_pct}%</span>
-          <div style="font-size: 10px; color: var(--text-muted); font-family: var(--font-mono);">H50: ${stock.high_50d.toLocaleString('id-ID')}</div>
+          <div class="dist-h50-sub">H50: ${stock.high_50d.toLocaleString('id-ID')}</div>
         </td>
         <td class="text-center">
           <span class="rvol-badge ${rvolClass}" title="${rvolTooltip}">${rvolBadgeText}</span>
@@ -388,18 +474,19 @@ function renderPreBreakoutTable(data) {
         </td>
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-cek-bandar" onclick="checkBandarInline('${stock.ticker}', this, event)" title="Ambil status akumulasi broker dari IDX Edge PRO API">
-            🔍 Cek Bandar
+            Cek Bandar
           </button>
         </td>
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-table-detail" onclick="openStockDetailModal('${stock.ticker}', {name: '${stock.name}', sector: '${stock.sector}', price: ${stock.price}})" title="Buka Detail Analisis Komprehensif">
-            📊 Detail
+            Detail
           </button>
         </td>
       </tr>
     `;
   });
 
+  isFirstPbRender = false;
   tbody.innerHTML = rowsHtml;
 }
 
@@ -416,13 +503,13 @@ function openPreBreakoutModal(ticker) {
   const tvLink = document.getElementById('pb-modal-tv-link');
   const container = document.getElementById('pb-modal-criteria-container');
 
-  if (title) title.textContent = `${stock.ticker} — ${stock.name}`;
+  if (title) title.textContent = `${stock.ticker} : ${stock.name}`;
   if (subtitle) subtitle.textContent = `Setup Pre-Breakout (${stock.sector})`;
   if (price) price.textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(stock.price);
   if (score) score.textContent = `${stock.total_score} / 7 Kriteria`;
   if (status) {
     status.textContent = stock.status_label;
-    status.style.color = stock.status === 'READY' ? 'var(--status-confirmed-text)' : 'var(--status-watchlist-text)';
+    status.className = `modal-status-badge ${stock.status === 'READY' ? 'status-confirmed' : 'status-watchlist'}`;
   }
   const h50Str = (stock.high_50d || 0).toLocaleString('id-ID');
   if (dist) dist.textContent = `-${stock.dist_res_pct}% (50D High: Rp ${h50Str})`;
@@ -470,13 +557,21 @@ function openPreBreakoutModal(ticker) {
     container.innerHTML = listHtml;
   }
 
-  const modal = document.getElementById('prebreakout-modal');
-  if (modal) modal.classList.remove('hidden');
+  if (typeof openModal === 'function') {
+    openModal('prebreakout-modal');
+  } else {
+    const modal = document.getElementById('prebreakout-modal');
+    if (modal) modal.classList.remove('hidden');
+  }
 }
 
 function closePreBreakoutModal() {
-  const modal = document.getElementById('prebreakout-modal');
-  if (modal) modal.classList.add('hidden');
+  if (typeof closeModal === 'function') {
+    closeModal('prebreakout-modal');
+  } else {
+    const modal = document.getElementById('prebreakout-modal');
+    if (modal) modal.classList.add('hidden');
+  }
 }
 
 function closePreBreakoutModalOnBackdrop(event) {

@@ -13,7 +13,7 @@
 .score-bar-track {
   width: 44px;
   height: 5px;
-  background: #e2e8f0;
+  background: var(--border-subtle);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -24,7 +24,7 @@
 }
 
 .score-bar-fill.score-8 {
-  background: var(--brand-lime-bright);
+  background: var(--status-confirmed-text);
 }
 
 .score-bar-fill.score-6-7 {
@@ -95,8 +95,7 @@
 }
 
 .crit-pill:hover {
-  transform: translateY(-1px) scale(1.15);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  border-color: var(--border-control);
   z-index: 5;
 }
 
@@ -107,19 +106,48 @@
 }
 
 .crit-pill.fail {
-  background: var(--status-fail-bg);
+  background: transparent;
   color: var(--status-fail-text);
   border: 1px solid var(--status-fail-border);
-  opacity: 1;
 }
 
-/* RS Rating Color Code */
+/* RS Rating Color Code (Design.md §3.4) */
 .rs-badge {
   font-family: var(--font-mono);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 12px;
   font-feature-settings: "tnum" 1;
+  cursor: pointer;
 }
-.rs-badge.rs-high { color: var(--status-confirmed-text); }
-.rs-badge.rs-mid { color: var(--status-watchlist-text); }
-.rs-badge.rs-low { color: var(--text-muted); }
+.rs-badge.rs-elite {
+  color: var(--status-confirmed-text);
+  font-weight: 700;
+}
+.rs-badge.rs-high {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.rs-badge.rs-mid {
+  color: var(--status-watchlist-text);
+  font-weight: 600;
+}
+.rs-badge.rs-low {
+  color: var(--status-fail-text);
+  font-weight: 600;
+}
+
+/* Distance to 52W High / Low */
+.dist-cell {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-feature-settings: "tnum" 1;
+}
+.dist-cell.dist-pass {
+  color: var(--status-confirmed-text);
+}
+.dist-cell.dist-fail {
+  color: var(--status-fail-text);
+}
+.dist-cell.dist-neutral {
+  color: var(--text-secondary);
+}

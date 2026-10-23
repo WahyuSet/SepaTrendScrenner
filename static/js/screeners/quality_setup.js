@@ -2,6 +2,8 @@
 // QUALITY SETUP SCREENER MODULE (static/js/screeners/quality_setup.js)
 // ============================================================================
 
+let isFirstQualityRender = true;
+
 const qualityState = {
   allResults: [],
   filteredResults: [],
@@ -16,6 +18,15 @@ const qualityState = {
 // 1. DATA LOADER
 async function loadQualityResults() {
   renderQualitySkeleton(8);
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'quality-table',
+      tbodyId: 'quality-table-body',
+      emptyStateId: 'qs-empty-state',
+      state: 'loading',
+      viewName: 'Quality Setup'
+    });
+  }
   try {
     const res = await fetch('/api/quality-setup');
     const json = await res.json();
@@ -23,6 +34,7 @@ async function loadQualityResults() {
     if (json.status === 'success' && json.data) {
       const { scan_time, total_scanned, passed_count, elite_count, strong_count, breakout_count, pullback_count, avg_rr, data } = json.data;
       qualityState.allResults = data || [];
+      isFirstQualityRender = true;
       renderQualityStatsCards(json.data);
       populateQualitySectorDropdown(qualityState.allResults);
       updateQualityTabCounters();
@@ -30,12 +42,35 @@ async function loadQualityResults() {
     } else {
       renderQualityStatsCards(null);
       qualityState.allResults = [];
-      applyQualityFilters();
+      if (typeof setTableViewState === 'function') {
+        setTableViewState({
+          tableId: 'quality-table',
+          tbodyId: 'quality-table-body',
+          emptyStateId: 'qs-empty-state',
+          state: 'unscanned',
+          viewName: 'Quality Setup',
+          scanFn: 'triggerQualityScan()'
+        });
+      } else {
+        applyQualityFilters();
+      }
     }
   } catch (err) {
     console.error('Failed to load Quality Setup results:', err);
     qualityState.allResults = [];
-    applyQualityFilters();
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'quality-table',
+        tbodyId: 'quality-table-body',
+        emptyStateId: 'qs-empty-state',
+        state: 'error',
+        viewName: 'Quality Setup',
+        errorMsg: err.message || 'Koneksi ke server gagal',
+        retryFn: 'loadQualityResults()'
+      });
+    } else {
+      applyQualityFilters();
+    }
   }
 }
 
@@ -57,7 +92,7 @@ function renderQualityStatsCards(stats) {
 
   const timeText = (stats && stats.scan_time) ? stats.scan_time : 'Belum pernah scan';
   if (statTime) statTime.textContent = timeText;
-  if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '—');
+  if (badgeNav) badgeNav.textContent = count > 0 ? count : (stats ? '0' : '--');
 
   // Stale data warning (>24 hours)
   const expiresAt = stats && stats.expires_at_iso ? new Date(stats.expires_at_iso) : null;
@@ -66,7 +101,7 @@ function renderQualityStatsCards(stats) {
   if (staleWarning) {
     if (expiresAt && now > expiresAt) {
       staleWarning.classList.remove('hidden');
-      staleWarning.textContent = '⚠️ Data sudah lebih dari 24 jam — klik "Scan Quality" untuk refresh data terbaru';
+      staleWarning.textContent = 'Data sudah lebih dari 24 jam: klik "Scan Quality" untuk refresh data terbaru';
     } else {
       staleWarning.classList.add('hidden');
     }
@@ -112,10 +147,16 @@ function populateQualitySectorDropdown(results) {
 
 // 3. SKELETON LOADER
 function renderQualitySkeleton(count = 8) {
+  const table = document.getElementById('quality-table');
+  if (table) table.setAttribute('aria-busy', 'true');
+
+  const emptyState = document.getElementById('qs-empty-state');
+  if (emptyState) emptyState.classList.add('hidden');
+
   const tbody = document.getElementById('quality-table-body');
   if (!tbody) return;
 
-  let html = '';
+  let html = '<tr class="sr-only"><td>Memuat hasil Quality Setup...</td></tr>';
   for (let i = 0; i < count; i++) {
     html += `
       <tr>
@@ -237,19 +278,21 @@ function sortQualityTable(col) {
     qualityState.sortAsc = false;
   }
 
-  // Update sort icons in header
-  ['ticker', 'sector', 'price', 'score', 'grade', 'risk_reward'].forEach(c => {
-    const icon = document.getElementById(`qs-sort-${c}`);
-    if (icon) {
-      if (c === col) {
-        icon.textContent = qualityState.sortAsc ? '▲' : '▼';
-        icon.style.opacity = '1';
-      } else {
-        icon.textContent = '↕';
-        icon.style.opacity = '0.4';
-      }
-    }
+  const ths = document.querySelectorAll('#quality-table th[role="columnheader"]');
+  ths.forEach(th => {
+    th.setAttribute('aria-sort', 'none');
+    const ic = th.querySelector('.sort-icon');
+    if (ic) ic.classList.remove('active');
   });
+
+  const targetIcon = document.getElementById(`qs-sort-${col}`);
+  if (targetIcon) {
+    targetIcon.classList.add('active');
+    const parentTh = targetIcon.closest('th');
+    if (parentTh) {
+      parentTh.setAttribute('aria-sort', qualityState.sortAsc ? 'ascending' : 'descending');
+    }
+  }
 
   applyQualityFilters();
 }
@@ -258,7 +301,6 @@ function sortQualityTable(col) {
 function renderQualityTable() {
   const tbody = document.getElementById('quality-table-body');
   const countBadge = document.getElementById('qs-table-count-badge');
-  const emptyState = document.getElementById('qs-empty-state');
 
   if (countBadge) countBadge.textContent = `${qualityState.filteredResults.length} Setup Terkualifikasi`;
 
@@ -266,24 +308,58 @@ function renderQualityTable() {
 
   if (qualityState.filteredResults.length === 0) {
     tbody.innerHTML = '';
-    if (emptyState) emptyState.classList.remove('hidden');
+    if (typeof setTableViewState === 'function') {
+      if (qualityState.allResults.length === 0) {
+        setTableViewState({
+          tableId: 'quality-table',
+          tbodyId: 'quality-table-body',
+          emptyStateId: 'qs-empty-state',
+          state: 'unscanned',
+          viewName: 'Quality Setup',
+          scanFn: 'triggerQualityScan()'
+        });
+      } else {
+        setTableViewState({
+          tableId: 'quality-table',
+          tbodyId: 'quality-table-body',
+          emptyStateId: 'qs-empty-state',
+          state: 'filtered',
+          viewName: 'Quality Setup',
+          resetFn: 'resetQualityFilters()'
+        });
+      }
+    } else {
+      const emptyState = document.getElementById('qs-empty-state');
+      if (emptyState) emptyState.classList.remove('hidden');
+    }
     return;
   }
 
-  if (emptyState) emptyState.classList.add('hidden');
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'quality-table',
+      tbodyId: 'quality-table-body',
+      emptyStateId: 'qs-empty-state',
+      state: 'ready'
+    });
+  } else {
+    const emptyState = document.getElementById('qs-empty-state');
+    if (emptyState) emptyState.classList.add('hidden');
+  }
 
+  const useFade = isFirstQualityRender;
   let rowsHtml = '';
   qualityState.filteredResults.forEach((item, idx) => {
     const isElite = item.grade === 'Elite';
     const gradeBadge = isElite
-      ? `<span class="qs-grade-badge elite">👑 Elite</span>`
-      : `<span class="qs-grade-badge strong">🟢 Strong</span>`;
+      ? `<span class="qs-grade-badge elite">Elite</span>`
+      : `<span class="qs-grade-badge strong">Strong</span>`;
 
     const isBreakoutJauh = (item.setup_type || '').includes('Jauh');
     const isBreakout = (item.setup_type || '').includes('Breakout');
     const setupBadge = isBreakout
-      ? `<span class="qs-setup-badge ${isBreakoutJauh ? 'breakout-jauh' : 'breakout'}">${isBreakoutJauh ? '⚠️' : '🚀'} ${item.setup_type}</span>`
-      : `<span class="qs-setup-badge pullback">⚡ ${item.setup_type}</span>`;
+      ? `<span class="qs-setup-badge ${isBreakoutJauh ? 'breakout-jauh' : 'breakout'}">${item.setup_type}</span>`
+      : `<span class="qs-setup-badge pullback">${item.setup_type}</span>`;
 
     const isBullish = item.supertrend === 'BULLISH';
     const stBadge = isBullish
@@ -300,13 +376,15 @@ function renderQualityTable() {
     const t1Formatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(item.target_1);
 
     const delay = Math.min(idx * 20, 400);
+    const fadeClass = useFade ? 'row-fade-in' : '';
+    const animStyle = useFade ? `style="animation-delay: ${delay}ms"` : '';
 
     rowsHtml += `
-      <tr style="animation-delay: ${delay}ms" onclick="openQualityModal('${item.ticker}')">
+      <tr class="${fadeClass}" ${animStyle} tabindex="0" role="button" aria-label="Buka detail bento ${item.ticker}" onclick="openQualityModal('${item.ticker}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQualityModal('${item.ticker}');}">
         <!-- 1. Ticker & Nama -->
         <td>
           <div class="ticker-cell-wrapper">
-            <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(item.ticker)) ? 'pinned' : ''}" data-ticker="${item.ticker}" onclick="togglePinStock('${item.ticker}', '${escapeQuotes(item.name)}', '${item.sector}', 'Quality Setup', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(item.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}">★</button>
+            <button class="btn-star-pin ${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(item.ticker)) ? 'pinned' : ''}" data-ticker="${item.ticker}" onclick="togglePinStock('${item.ticker}', '${escapeQuotes(item.name)}', '${item.sector}', 'Quality Setup', event)" title="${(typeof watchlistState !== 'undefined' && watchlistState.pinnedTickers && watchlistState.pinnedTickers.has(item.ticker)) ? 'Hapus dari Watchlist' : 'Sematkan ke Watchlist'}"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></button>
             <div class="ticker-info-stack">
               <span class="ticker-cell">${item.ticker}</span>
             </div>
@@ -368,12 +446,14 @@ function renderQualityTable() {
         <!-- 9. Aksi Detail Bento -->
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-detail-bento" onclick="openQualityModal('${item.ticker}')" title="Buka Detail Bento Quality Setup">
-            <span>💎</span> Detail
+            Detail
           </button>
         </td>
       </tr>
     `;
   });
+
+  isFirstQualityRender = false;
 
   tbody.innerHTML = rowsHtml;
 }
@@ -401,7 +481,7 @@ function openQualityModal(ticker) {
   // Badges
   const isElite = stock.grade === 'Elite';
   const gradeBadgeEl = document.getElementById('qs-modal-grade-badge');
-  gradeBadgeEl.textContent = isElite ? '👑 ELITE' : '🟢 STRONG';
+  gradeBadgeEl.textContent = isElite ? 'ELITE' : 'STRONG';
   gradeBadgeEl.className = `badge-status ${isElite ? 'ready' : 'forming'}`;
 
   const isBreakoutJauh = (stock.setup_type || '').includes('Jauh');
@@ -441,14 +521,14 @@ function openQualityModal(ticker) {
   // Fibonacci Levels (Bento 3)
   const fib = stock.fibonacci || {};
   document.getElementById('qs-modal-fib-trend').textContent = (fib.trend || 'UPTREND').toUpperCase();
-  document.getElementById('qs-fib-236').textContent = fib.fib_236 ? `Rp ${fib.fib_236.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-fib-382').textContent = fib.fib_382 ? `Rp ${fib.fib_382.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-fib-500').textContent = fib.fib_500 ? `Rp ${fib.fib_500.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-fib-618').textContent = fib.golden_pocket ? `Rp ${fib.golden_pocket.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-fib-786').textContent = fib.fib_786 ? `Rp ${fib.fib_786.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-ext-1272').textContent = fib.ext_1272 ? `Rp ${fib.ext_1272.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-ext-1618').textContent = fib.ext_1618 ? `Rp ${fib.ext_1618.toLocaleString('id-ID')}` : '—';
-  document.getElementById('qs-ext-2618').textContent = fib.ext_2618 ? `Rp ${fib.ext_2618.toLocaleString('id-ID')}` : '—';
+  document.getElementById('qs-fib-236').textContent = fib.fib_236 ? `Rp ${fib.fib_236.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-fib-382').textContent = fib.fib_382 ? `Rp ${fib.fib_382.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-fib-500').textContent = fib.fib_500 ? `Rp ${fib.fib_500.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-fib-618').textContent = fib.golden_pocket ? `Rp ${fib.golden_pocket.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-fib-786').textContent = fib.fib_786 ? `Rp ${fib.fib_786.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-ext-1272').textContent = fib.ext_1272 ? `Rp ${fib.ext_1272.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-ext-1618').textContent = fib.ext_1618 ? `Rp ${fib.ext_1618.toLocaleString('id-ID')}` : '--';
+  document.getElementById('qs-ext-2618').textContent = fib.ext_2618 ? `Rp ${fib.ext_2618.toLocaleString('id-ID')}` : '--';
 
   // Candle & Supertrend (Bento 4)
   const isStBull = stock.supertrend === 'BULLISH';
@@ -462,13 +542,21 @@ function openQualityModal(ticker) {
   document.getElementById('qs-struct-upper-wick').textContent = `${str.upper_wick_pct || 0}% wick`;
   document.getElementById('qs-struct-lower-wick').textContent = `${str.lower_wick_pct || 0}% rejection`;
 
-  // Display standard modal with backdrop blur
-  modal.classList.remove('hidden');
+  // Display standard modal
+  if (typeof openModal === 'function') {
+    openModal('modal-quality-setup');
+  } else {
+    modal.classList.remove('hidden');
+  }
 }
 
 function closeQualityModal() {
-  const modal = document.getElementById('modal-quality-setup');
-  if (modal) modal.classList.add('hidden');
+  if (typeof closeModal === 'function') {
+    closeModal('modal-quality-setup');
+  } else {
+    const modal = document.getElementById('modal-quality-setup');
+    if (modal) modal.classList.add('hidden');
+  }
 }
 
 function closeQualityModalOnBackdrop(event) {
@@ -551,7 +639,7 @@ function pollQualityScanStatus() {
       const data = await res.json();
       if (!data.is_scanning) {
         clearInterval(interval);
-        if (typeof showToast === 'function') showToast('✅ Quality Setup scan selesai!', 'success');
+        if (typeof showToast === 'function') showToast('Quality Setup scan selesai!', 'success');
         loadQualityResults();
       }
     } catch (e) {

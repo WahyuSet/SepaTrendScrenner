@@ -1,21 +1,20 @@
 <!-- ======================================================== -->
 <!-- POSITION SIZING & MONEY MANAGEMENT CALCULATOR MODAL -->
 <!-- ======================================================== -->
-<div id="modal-position-sizing" class="modal hidden" onclick="closePositionCalcOnBackdrop(event)">
+<div id="modal-position-sizing" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="calc-dialog-title" aria-hidden="true" onclick="closePositionCalcOnBackdrop(event)">
   <div class="modal-dialog position-calc-dialog" onclick="event.stopPropagation()">
     <!-- MODAL HEADER -->
     <div class="modal-header">
       <div class="modal-title-group">
         <div class="calc-title-row">
-          <span class="calc-icon-badge">🧮</span>
-          <h2>Position Sizing & Money Management</h2>
+          <h2 id="calc-dialog-title">Position Sizing & Money Management</h2>
           <span class="calc-idx-pill">Standar IDX (1 Lot = 100 Lembar)</span>
         </div>
         <div class="calc-subtitle-row">
           <span class="text-secondary">Hitung ukuran lot optimal berbasis disiplin risiko Mark Minervini & proteksi over-alokasi modal</span>
         </div>
       </div>
-      <button class="modal-close" onclick="closePositionCalculator()" title="Tutup Kalkulator (Esc)">✕</button>
+      <button class="modal-close" data-action="close-position-calculator" onclick="closePositionCalculator()" title="Tutup Kalkulator (Esc)" aria-label="Tutup modal">✕</button>
     </div>
 
     <!-- MODAL BODY: 2-COLUMN SPLIT -->
@@ -23,7 +22,6 @@
       <!-- LEFT COLUMN: INPUT PARAMETERS -->
       <div class="calc-inputs-panel">
         <div class="calc-panel-title">
-          <span>⚙️</span>
           <h3>Parameter Portofolio & Transaksi</h3>
         </div>
 
@@ -52,10 +50,10 @@
             <span id="calc-max-risk-display" class="calc-val-preview mono risk-val">Maks Loss: Rp 1.000.000 (1.0%)</span>
           </div>
           <div class="risk-presets-row">
-            <button type="button" class="btn-risk-pill" onclick="setRiskPreset(0.5)">0.5%</button>
-            <button type="button" class="btn-risk-pill active" onclick="setRiskPreset(1.0)">1.0%</button>
-            <button type="button" class="btn-risk-pill" onclick="setRiskPreset(1.5)">1.5%</button>
-            <button type="button" class="btn-risk-pill" onclick="setRiskPreset(2.0)">2.0%</button>
+            <button type="button" class="btn-risk-pill" data-action="set-risk-preset" data-risk="0.5" onclick="setRiskPreset(0.5)">0.5%</button>
+            <button type="button" class="btn-risk-pill active" data-action="set-risk-preset" data-risk="1.0" onclick="setRiskPreset(1.0)">1.0%</button>
+            <button type="button" class="btn-risk-pill" data-action="set-risk-preset" data-risk="1.5" onclick="setRiskPreset(1.5)">1.5%</button>
+            <button type="button" class="btn-risk-pill" data-action="set-risk-preset" data-risk="2.0" onclick="setRiskPreset(2.0)">2.0%</button>
             <input type="number" id="calc-risk-pct" value="1.0" min="0.1" max="10" step="0.1" class="calc-custom-risk-input" oninput="recomputePositionSizing()" title="Kustom % Risiko">
             <span class="custom-pct-sym">%</span>
           </div>
@@ -87,10 +85,10 @@
 
         <!-- Cap Alokasi & Broker Fee Accordion -->
         <div class="calc-advanced-box">
-          <div class="calc-advanced-header" onclick="toggleAdvancedCalcSettings()">
-            <span>🛠️ Pengaturan Batas Alokasi & Fee Broker</span>
-            <span id="adv-calc-chevron">▼</span>
-          </div>
+          <button type="button" class="calc-advanced-header" data-action="toggle-advanced-calc" onclick="toggleAdvancedCalcSettings()" aria-expanded="false" aria-controls="adv-calc-body">
+            <span>Pengaturan Batas Alokasi & Fee Broker</span>
+            <span id="adv-calc-chevron" aria-hidden="true">▼</span>
+          </button>
           <div id="adv-calc-body" class="calc-advanced-content hidden">
             <div class="calc-field-group">
               <label for="calc-max-cap">Batas Alokasi Maksimal per Saham (% Portofolio)</label>
@@ -111,18 +109,17 @@
         </div>
       </div>
 
-      <!-- RIGHT COLUMN: RESULTS BENTO DISPLAY -->
+      <!-- RIGHT COLUMN: RESULTS PANEL -->
       <div class="calc-results-panel">
         <div class="calc-panel-title">
-          <span>📊</span>
           <h3>Hasil Kalkulasi Position Sizing</h3>
         </div>
 
-        <!-- HERO BENTO: RECOMMENDED LOTS -->
+        <!-- HERO CARD: RECOMMENDED LOTS -->
         <div class="calc-hero-card">
           <div class="hero-card-header">
             <span class="hero-label">Rekomendasi Ukuran Pembelian</span>
-            <span id="calc-status-badge" class="hero-badge safe">✅ AMAN TERKONTROL</span>
+            <span id="calc-status-badge" class="hero-badge safe">AMAN TERKONTROL</span>
           </div>
           <div class="hero-lot-display">
             <span id="calc-result-lots" class="lot-number mono">0</span>
@@ -147,47 +144,43 @@
 
           <!-- Capped Warning Banner (Dynamic) -->
           <div id="calc-cap-warning" class="cap-warning-alert hidden">
-            <span>⚠️</span>
             <span id="calc-cap-warning-text">Ukuran lot dibatasi oleh Cap Portofolio (Maks 20%) untuk menjaga diversifikasi.</span>
           </div>
         </div>
 
-        <!-- RISK & REWARD BENTO CARDS -->
-        <div class="calc-bento-grid">
-          <!-- CARD 1: RISK DOWNSIDE -->
-          <div class="bento-stat-card risk-card">
-            <div class="bento-stat-head">
-              <span class="bento-sub-icon">🛑</span>
-              <span class="bento-sub-title">Risiko Maksimal (Stop Loss)</span>
+        <!-- RISK & REWARD CALCULATION BREAKDOWN LIST (Design.md §6.8, UI_REFACTOR_PLAN Fase 9) -->
+        <div class="calc-results-list">
+          <!-- ITEM 1: RISK DOWNSIDE -->
+          <div class="calc-result-item risk-card">
+            <div class="calc-result-head">
+              <span class="calc-result-title">Risiko Maksimal (Stop Loss)</span>
             </div>
-            <div id="calc-result-risk-loss" class="bento-stat-val loss mono">-Rp 0</div>
-            <div class="bento-stat-foot">
+            <div id="calc-result-risk-loss" class="calc-result-val loss mono">-Rp 0</div>
+            <div class="calc-result-foot">
               <span id="calc-result-risk-pct" class="foot-pct mono">Jarak: -0.0%</span>
               <span id="calc-result-fee-sub" class="foot-fee mono">Fee: Rp 0</span>
             </div>
           </div>
 
-          <!-- CARD 2: TARGET 1 REWARD -->
-          <div class="bento-stat-card target-card">
-            <div class="bento-stat-head">
-              <span class="bento-sub-icon">🎯</span>
-              <span class="bento-sub-title">Potensi Gain Target 1</span>
+          <!-- ITEM 2: TARGET 1 REWARD -->
+          <div class="calc-result-item target-card">
+            <div class="calc-result-head">
+              <span class="calc-result-title">Potensi Gain Target 1</span>
             </div>
-            <div id="calc-result-t1-gain" class="bento-stat-val gain mono">+Rp 0</div>
-            <div class="bento-stat-foot">
+            <div id="calc-result-t1-gain" class="calc-result-val gain mono">+Rp 0</div>
+            <div class="calc-result-foot">
               <span id="calc-result-t1-rr" class="foot-rr mono">R:R 1 : 0.0</span>
               <span id="calc-result-t1-pct" class="foot-pct mono">+0.0%</span>
             </div>
           </div>
 
-          <!-- CARD 3: TARGET 2 REWARD -->
-          <div class="bento-stat-card target-card">
-            <div class="bento-stat-head">
-              <span class="bento-sub-icon">🚀</span>
-              <span class="bento-sub-title">Potensi Gain Target 2</span>
+          <!-- ITEM 3: TARGET 2 REWARD -->
+          <div class="calc-result-item target-card">
+            <div class="calc-result-head">
+              <span class="calc-result-title">Potensi Gain Target 2</span>
             </div>
-            <div id="calc-result-t2-gain" class="bento-stat-val gain mono">+Rp 0</div>
-            <div class="bento-stat-foot">
+            <div id="calc-result-t2-gain" class="calc-result-val gain mono">+Rp 0</div>
+            <div class="calc-result-foot">
               <span id="calc-result-t2-rr" class="foot-rr mono">R:R 1 : 0.0</span>
               <span id="calc-result-t2-pct" class="foot-pct mono">+0.0%</span>
             </div>
@@ -196,11 +189,11 @@
 
         <!-- ACTION BUTTONS -->
         <div class="calc-actions-row">
-          <button type="button" class="btn-calc-action secondary" onclick="copyPositionSizingSummary()" title="Salin ringkasan ke clipboard">
-            <span>📋</span> Salin Rencana
+          <button type="button" class="btn-calc-action secondary" data-action="copy-position-sizing" onclick="copyPositionSizingSummary()" title="Salin ringkasan ke clipboard">
+            Salin Rencana
           </button>
-          <button type="button" class="btn-calc-action primary" onclick="transferCalcToTradeJournal()" title="Kirim data pembelian ini ke form Jurnal Trading">
-            <span>📝</span> Catat Beli ke Jurnal
+          <button type="button" class="btn-calc-action primary" data-action="transfer-calc-journal" onclick="transferCalcToTradeJournal()" title="Kirim data pembelian ini ke form Jurnal Trading">
+            Catat Beli ke Jurnal
           </button>
         </div>
       </div>

@@ -69,15 +69,22 @@ function lpmToken(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
-function lpmWithAlpha(hex, alpha) {
-  const m = /^#?([0-9a-f]{6})$/i.exec(hex);
-  if (!m) return hex;
-  const n = parseInt(m[1], 16);
-  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
+function lpmWithAlpha(color, alpha) {
+  if (!color) return color;
+  const hexMatch = /^#?([0-9a-f]{6})$/i.exec(color.trim());
+  if (hexMatch) {
+    const n = parseInt(hexMatch[1], 16);
+    return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
+  }
+  const rgbMatch = /^rgba?\((\d+),\s*(\d+),\s*(\d+)/i.exec(color.trim());
+  if (rgbMatch) {
+    return `rgba(${rgbMatch[1]}, ${rgbMatch[2]}, ${rgbMatch[3]}, ${alpha})`;
+  }
+  return color;
 }
 
 function lpmFmt(value, digits = 1, signed = false) {
-  if (value === null || value === undefined || isNaN(value)) return "—";
+  if (value === null || value === undefined || isNaN(value)) return "--";
   const text = new Intl.NumberFormat("id-ID", { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
   return signed && value > 0 ? `+${text}` : text;
 }
@@ -392,7 +399,7 @@ function renderLpmEmpty(data, quota, job) {
     `Belum ada histori LPM untuk ${data.ticker}`,
     low
       ? `LPM butuh broker summary per hari bursa (${cov.missing_days} hari). Sisa kuota hari ini (${quota.remaining}) tinggal cadangan ${LPM_QUOTA_RESERVE} request untuk fitur lain, jadi histori baru bisa diambil besok.`
-      : `LPM butuh broker summary per hari bursa. Mengambil ${cov.missing_days} hari memakai sekitar ${estimate} request dari kuota harian (sisa ${quota ? quota.remaining : "—"}). Proses berjalan di latar belakang dan berhenti sendiri sebelum menyentuh cadangan ${LPM_QUOTA_RESERVE} request.`,
+      : `LPM butuh broker summary per hari bursa. Mengambil ${cov.missing_days} hari memakai sekitar ${estimate} request dari kuota harian (sisa ${quota ? quota.remaining : "--"}). Proses berjalan di latar belakang dan berhenti sendiri sebelum menyentuh cadangan ${LPM_QUOTA_RESERVE} request.`,
     low ? "Kuota hari ini tidak cukup" : `Ambil histori ${cov.requested_days} hari`,
     low ? null : startLpmBackfill,
     low
@@ -412,7 +419,7 @@ function renderLpmSummary(data) {
   const div = data.divergence;
   const divEl = lpmEl("lpm-divergence");
   const d = div.status ? LPM_DIVERGENCE[div.status] : null;
-  divEl.textContent = d ? d.text : "—";
+  divEl.textContent = d ? d.text : "--";
   lpmSetTone(divEl, d ? d.tone : "neutral");
   lpmEl("lpm-divergence-sub").textContent = div.price_chg_20 === null || div.price_chg_20 === undefined
     ? "Butuh 20 hari data"
@@ -425,7 +432,7 @@ function renderLpmSummary(data) {
 
   // With fewer than 20 stored days the 20-day slope is not a structural reading yet
   const enough = trend.status !== "DATA_KURANG";
-  lpmEl("lpm-slopes").textContent = `${lpmFmt(trend.slope_5, 1, true)} / ${enough ? lpmFmt(trend.slope_20, 1, true) : "—"}`;
+  lpmEl("lpm-slopes").textContent = `${lpmFmt(trend.slope_5, 1, true)} / ${enough ? lpmFmt(trend.slope_20, 1, true) : "--"}`;
   lpmEl("lpm-slopes-sub").textContent = enough
     ? `poin/hari · ambang ±${lpmFmt(trend.theta_5)} / ±${lpmFmt(trend.theta_20)}`
     : `poin/hari · 20H butuh ${LPM_MIN_DAYS} hari tersimpan`;
@@ -477,7 +484,7 @@ function renderLpmCoverage(data, quota, job) {
   const low = lpmQuotaLow(quota);
 
   lpmEl("lpm-coverage-text").textContent =
-    `${cov.available_days} dari ${cov.requested_days} hari bursa tersedia · sisa kuota ${quota ? quota.remaining : "—"}`;
+    `${cov.available_days} dari ${cov.requested_days} hari bursa tersedia · sisa kuota ${quota ? quota.remaining : "--"}`;
 
   const running = job.state === "running";
   const showButton = cov.has_history && !cov.complete && !running;
@@ -532,12 +539,13 @@ function ensureLpmChart() {
   container.replaceChildren();
 
   const border = lpmToken("--border-subtle");
-  const gridColor = lpmToken("--bg-tertiary");
+  const gridColor = lpmToken("--chart-grid") || border;
+  const textColor = lpmToken("--chart-text") || lpmToken("--text-muted");
   const chart = LC.createChart(container, {
     autoSize: true,
     layout: {
       background: { type: "solid", color: lpmToken("--bg-secondary") },
-      textColor: lpmToken("--text-secondary"),
+      textColor: textColor,
       fontFamily: lpmToken("--font-sans"),
       fontSize: 11,
       panes: { separatorColor: border, enableResize: false },
@@ -550,16 +558,15 @@ function ensureLpmChart() {
     localization: { locale: "id-ID" },
   });
 
-  const up = lpmToken("--status-confirmed-text");
-  const down = lpmToken("--status-fail-text");
+  const up = lpmToken("--chart-up") || lpmToken("--status-confirmed-text");
+  const down = lpmToken("--chart-down") || lpmToken("--status-fail-text");
   const candle = chart.addSeries(LC.CandlestickSeries, {
     upColor: up, downColor: down, wickUpColor: up, wickDownColor: down,
     borderVisible: false, priceLineVisible: false,
     priceFormat: { type: "price", precision: 0, minMove: 1 },
   }, 0);
-  // Neutral dark line: a green LPM line would blend into the up candles on the same pane
   const line = chart.addSeries(LC.LineSeries, {
-    color: lpmToken("--text-primary"), lineWidth: 2, priceLineVisible: false,
+    color: lpmToken("--chart-series-1") || lpmToken("--text-primary"), lineWidth: 2, priceLineVisible: false,
     priceScaleId: "left",
     priceFormat: { type: "price", precision: 1, minMove: 0.1 },
   }, 0);
@@ -596,8 +603,8 @@ function renderLpmChart(data) {
   if (!ensureLpmChart()) return;
   const { candle, line, markers } = lpmState.series;
   const muted = lpmToken("--text-muted");
-  const up = lpmToken("--status-confirmed-text");
-  const down = lpmToken("--status-fail-text");
+  const up = lpmToken("--chart-up") || lpmToken("--status-confirmed-text");
+  const down = lpmToken("--chart-down") || lpmToken("--status-fail-text");
   const rows = data.series;
 
   candle.setData(rows
@@ -623,6 +630,50 @@ function renderLpmChart(data) {
   requestAnimationFrame(() => lpmState.chart && lpmState.chart.timeScale().fitContent());
   renderLpmLegend(null);
 }
+
+function updateLpmChartTheme() {
+  if (!lpmState.chart || !lpmState.series) return;
+  const border = lpmToken("--border-subtle");
+  const gridColor = lpmToken("--chart-grid") || border;
+  const textColor = lpmToken("--chart-text") || lpmToken("--text-muted");
+  const bg = lpmToken("--bg-secondary");
+  const up = lpmToken("--chart-up") || lpmToken("--status-confirmed-text");
+  const down = lpmToken("--chart-down") || lpmToken("--status-fail-text");
+  const seriesColor = lpmToken("--chart-series-1") || lpmToken("--text-primary");
+
+  lpmState.chart.applyOptions({
+    layout: {
+      background: { type: "solid", color: bg },
+      textColor: textColor,
+      panes: { separatorColor: border },
+    },
+    grid: { vertLines: { color: gridColor }, horzLines: { color: gridColor } },
+    rightPriceScale: { borderColor: border },
+    leftPriceScale: { borderColor: border },
+    timeScale: { borderColor: border },
+  });
+
+  if (lpmState.series.candle) {
+    lpmState.series.candle.applyOptions({
+      upColor: up,
+      downColor: down,
+      wickUpColor: up,
+      wickDownColor: down,
+    });
+  }
+
+  if (lpmState.series.line) {
+    lpmState.series.line.applyOptions({
+      color: seriesColor,
+    });
+  }
+
+  if (lpmState.data) {
+    renderLpmChart(lpmState.data);
+  }
+}
+
+document.addEventListener("themechange", updateLpmChartTheme);
 
 function applyLensData(rows) {
   const LC = window.LightweightCharts;
@@ -669,9 +720,9 @@ function renderLpmLegend(dateKey) {
   } else {
     parts.push(`LPM ${lpmFmt(row.lpm, 1)}`, `Pressure ${lpmFmt(row.pressure * 100, 1, true)}`);
     if (lpmState.lens === "intensity") {
-      parts.push(row.intensity === null ? "Intensity —" : `Intensity ${lpmFmt(row.intensity, 2, true)}${row.intensity_level && row.intensity_level !== "NORMAL" ? ` (${row.intensity_level === "SPIKE" ? "spike" : "spike ekstrem"})` : ""}`);
+      parts.push(row.intensity === null ? "Intensity --" : `Intensity ${lpmFmt(row.intensity, 2, true)}${row.intensity_level && row.intensity_level !== "NORMAL" ? ` (${row.intensity_level === "SPIKE" ? "spike" : "spike ekstrem"})` : ""}`);
     } else {
-      parts.push(row.vr_percentile === null ? "Vol Rotation —" : `Vol Rotation persentil ${lpmFmt(row.vr_percentile, 0)} (${row.vr_color.toLowerCase()})`);
+      parts.push(row.vr_percentile === null ? "Vol Rotation --" : `Vol Rotation persentil ${lpmFmt(row.vr_percentile, 0)} (${row.vr_color.toLowerCase()})`);
     }
     if (row.low_liquidity) parts.push("transaksi tipis");
   }

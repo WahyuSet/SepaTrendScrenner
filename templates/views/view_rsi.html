@@ -24,53 +24,34 @@
     </div>
   </div>
 
-  <!-- STATS SUMMARY CARDS -->
-  <section class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-card-header">
-        <span class="stat-label">Total Sinyal Bullish</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-        </span>
-      </div>
-      <div id="rsi-stat-total" class="stat-value">0</div>
-      <div id="rsi-stat-meta-recency" class="stat-meta">≤ 5 Hari Terakhir</div>
+  <!-- SUMMARY BAR -->
+  <div class="summary-bar" role="region" aria-label="Ringkasan Statistik RSI Divergence">
+    <div class="summary-item">
+      <span class="summary-label">Total Sinyal</span>
+      <span id="rsi-stat-total" class="summary-value">--</span>
     </div>
-
-    <div class="stat-card confirmed">
-      <div class="stat-card-header">
-        <span class="stat-label">Regular Bullish</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-        </span>
-      </div>
-      <div id="rsi-stat-reg-bull" class="stat-value lime">0</div>
-      <div class="stat-meta">Sinyal Reversal (Price LL, RSI HL)</div>
+    <span class="summary-sep" aria-hidden="true">·</span>
+    <div class="summary-item">
+      <span class="summary-label">Regular</span>
+      <span id="rsi-stat-reg-bull" class="summary-value status-confirmed">--</span>
     </div>
-
-    <div class="stat-card watchlist">
-      <div class="stat-card-header">
-        <span class="stat-label">Hidden Bullish</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-        </span>
-      </div>
-      <div id="rsi-stat-hid-bull" class="stat-value amber">0</div>
-      <div class="stat-meta">Sinyal Continuation (Price HL, RSI LL)</div>
+    <span class="summary-sep" aria-hidden="true">·</span>
+    <div class="summary-item">
+      <span class="summary-label">Hidden</span>
+      <span id="rsi-stat-hid-bull" class="summary-value status-watchlist">--</span>
     </div>
-
-    <div class="stat-card">
-      <div class="stat-card-header">
-        <span class="stat-label">Setting Indikator</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-        </span>
-      </div>
-      <div id="rsi-stat-setting-display" class="stat-value text-sm">RSI 14 (P: 5/5) · 1D</div>
-      <div id="rsi-stat-last-time" class="stat-meta">{{ last_scan_time or 'Belum pernah scan' }}</div>
+    <span class="summary-sep" aria-hidden="true">·</span>
+    <div class="summary-item">
+      <span class="summary-label">Setting</span>
+      <span id="rsi-stat-setting-display" class="summary-value">RSI 14 (P: 5/5) · 1D</span>
     </div>
-  </section>
-
+    <span class="summary-sep" aria-hidden="true">·</span>
+    <div class="summary-item">
+      <span class="summary-label">Update</span>
+      <span id="rsi-stat-last-time" class="summary-value text-muted">{{ last_scan_time or 'Belum pernah scan' }}</span>
+    </div>
+    <span id="rsi-stat-meta-recency" class="hidden" aria-hidden="true"></span>
+  </div>
 
   <!-- DATA TABLE CONTAINER -->
   <section class="table-card">
@@ -88,7 +69,7 @@
             Semua <span id="cnt-rsi-all" class="tab-counter">0</span>
           </button>
           <button id="rsi-tab-gradea" class="segmented-tab-btn" onclick="setRsiTabFilter('GRADE_A')">
-            🌟 Grade A <span id="cnt-rsi-gradea" class="tab-counter">0</span>
+            Grade A <span id="cnt-rsi-gradea" class="tab-counter">0</span>
           </button>
           <button id="rsi-tab-reg" class="segmented-tab-btn" onclick="setRsiTabFilter('REGULAR_BULL')">
             Regular <span id="cnt-rsi-reg" class="tab-counter">0</span>
@@ -115,22 +96,22 @@
 
           <!-- Grade C Risk Filter Toggle -->
           <button id="rsi-toggle-highrisk" class="tab-btn btn-risk-toggle" onclick="toggleRsiHighRisk()">
-            ⚠️ Sembunyikan Grade C
+            Sembunyikan Grade C
           </button>
 
           <!-- Quick Reset Button -->
-          <button id="rsi-reset-btn" class="btn-reset-filters hidden" onclick="resetRsiFilters()" title="Reset semua filter ke default">
-            ↺ Reset
+          <button id="rsi-reset-btn" class="btn-reset-filters hidden" data-action="reset-rsi-filters" onclick="resetRsiFilters()" title="Reset semua filter ke default">
+            Reset
           </button>
         </div>
 
         <!-- Table Utility Actions -->
         <div class="table-actions">
-          <button class="btn-table-util" onclick="copyTradingViewWatchlist('rsi')" title="Salin daftar ticker untuk TradingView">
-            <span>📋</span> Copy Watchlist
+          <button class="btn-table-util" data-action="copy-tradingview" data-screener="rsi" onclick="copyTradingViewWatchlist('rsi')" title="Salin daftar ticker untuk TradingView">
+            Copy Watchlist
           </button>
-          <button class="btn-table-util" onclick="exportTableToCsv('rsi')" title="Download file CSV">
-            <span>📥</span> Export CSV
+          <button class="btn-table-util" data-action="export-rsi-csv" onclick="exportTableToCsv('rsi')" title="Download file CSV">
+            Export CSV
           </button>
         </div>
       </div>
@@ -138,19 +119,19 @@
 
     <!-- Table Responsive Wrapper -->
     <div class="table-container">
-      <table class="data-table" id="rsi-table">
+      <table class="data-table" id="rsi-table" aria-busy="false">
         <thead>
           <tr>
-            <th onclick="sortRsiTable('ticker')">Ticker <span class="sort-icon" id="rsi-sort-ticker">↕</span></th>
-            <th onclick="sortRsiTable('name')">Nama Emiten <span class="sort-icon" id="rsi-sort-name">↕</span></th>
-            <th onclick="sortRsiTable('sector')">Sektor <span class="sort-icon" id="rsi-sort-sector">↕</span></th>
-            <th onclick="sortRsiTable('price')">Harga Terakhir <span class="sort-icon" id="rsi-sort-price">↕</span></th>
-            <th class="text-center" onclick="sortRsiTable('grade')">Grade Kualitas <span class="sort-icon" id="rsi-sort-grade">↕</span></th>
-            <th class="text-center" onclick="sortRsiTable('divergence_type')">Tipe Divergence <span class="sort-icon" id="rsi-sort-divergence_type">↕</span></th>
-            <th class="text-center" onclick="sortRsiTable('rsi')">RSI 14 <span class="sort-icon" id="rsi-sort-rsi">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortRsiTable('ticker')">Ticker <span class="sort-icon" id="rsi-sort-ticker">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortRsiTable('name')">Nama Emiten <span class="sort-icon" id="rsi-sort-name">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortRsiTable('sector')">Sektor <span class="sort-icon" id="rsi-sort-sector">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortRsiTable('price')">Harga Terakhir <span class="sort-icon" id="rsi-sort-price">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortRsiTable('grade')">Grade Kualitas <span class="sort-icon" id="rsi-sort-grade">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortRsiTable('divergence_type')">Tipe Divergence <span class="sort-icon" id="rsi-sort-divergence_type">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortRsiTable('rsi')">RSI 14 <span class="sort-icon" id="rsi-sort-rsi">↕</span></th>
             <th class="text-center">Trend Context (MA50/MA200)</th>
             <th class="text-center">Pivot Compare</th>
-            <th class="text-center" onclick="sortRsiTable('bars_ago')">Waktu Sinyal <span class="sort-icon" id="rsi-sort-bars_ago">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortRsiTable('bars_ago')">Waktu Sinyal <span class="sort-icon" id="rsi-sort-bars_ago">↕</span></th>
             <th class="text-center">Aksi / Chart</th>
           </tr>
         </thead>
@@ -161,13 +142,11 @@
     </div>
 
     <!-- Empty State Message -->
-    <div id="rsi-empty-state" class="empty-state hidden">
-      <div class="empty-icon">📉</div>
-      <h3>Tidak Ada Saham yang Terdeteksi RSI Divergence</h3>
-      <p id="rsi-empty-desc">Belum ada emiten dengan divergensi bullish dalam 5 bar terakhir. Klik tombol "Scan IDX Sekarang" untuk memperbarui data.</p>
-      <div class="empty-actions">
-        <button class="btn-secondary" onclick="resetRsiFilters()">🔄 Reset Filter</button>
-        <button class="btn-scan-small" onclick="triggerScan()">⚡ Scan IDX Sekarang</button>
+    <div id="rsi-empty-state" class="empty-state hidden" role="status">
+      <h3 id="rsi-empty-title">Tidak Ada Saham yang Terdeteksi RSI Divergence</h3>
+      <p id="rsi-empty-desc">Tidak ada saham yang cocok dengan kriteria filter saat ini.</p>
+      <div id="rsi-empty-actions" class="empty-actions">
+        <button type="button" class="btn-secondary" data-action="reset-rsi-filters" onclick="resetRsiFilters()">Reset Filter</button>
       </div>
     </div>
   </section>

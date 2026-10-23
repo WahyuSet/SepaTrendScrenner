@@ -96,16 +96,25 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadMarketRegime() {
   const banner = document.getElementById('market-regime-banner');
   if (!banner) return;
+  const errBox = document.getElementById('regime-error-state');
+  const topRow = banner.querySelector('.regime-top-row');
 
   try {
     const res = await fetch('/api/market-regime');
     if (res.status === 401) return;
     const json = await res.json();
     if (json.status === 'success' && json.data) {
+      if (errBox) errBox.classList.add('hidden');
+      if (topRow) topRow.classList.remove('hidden');
       renderMarketRegime(json.data);
+    } else {
+      throw new Error((json && json.message) || 'Gagal memuat status pasar');
     }
   } catch (err) {
     console.error('Failed to load market regime:', err);
+    banner.classList.remove('regime-loading');
+    if (errBox) errBox.classList.remove('hidden');
+    if (topRow) topRow.classList.add('hidden');
   }
 }
 
@@ -255,7 +264,7 @@ function initRsChipsCopyEvents() {
       setTimeout(() => chip.classList.remove('copied'), 400);
 
       if (typeof copyToClipboard === 'function') {
-        copyToClipboard(val, `📋 RS Ratio ${pct}: ${val} tersalin ke clipboard!`);
+        copyToClipboard(val, `RS Ratio ${pct}: ${val} tersalin ke clipboard!`);
       }
     });
   });
@@ -284,68 +293,213 @@ function handleCopyAllRsDistribution() {
   }, 1500);
 
   if (typeof copyToClipboard === 'function') {
-    copyToClipboard(text, '📋 7 Titik Distribusi RS Ratio IDX berhasil disalin!');
+    copyToClipboard(text, '7 Titik Distribusi RS Ratio IDX berhasil disalin!');
   }
 }
 
+// ============================================================================
+// SCREENER ROUTING CONFIGURATION (Design.md §9, UI_REFACTOR_PLAN Fase 9)
+// ============================================================================
+
+const SCREENER_CONFIG = {
+  'sepa': { viewId: 'view-sepa', navId: 'nav-sepa' },
+  'rsi-div': { viewId: 'view-rsi-div', navId: 'nav-rsi-div' },
+  'prebreakout': { viewId: 'view-prebreakout', navId: 'nav-prebreakout' },
+  'quality': { viewId: 'view-quality', navId: 'nav-quality' },
+  'quality-setup': { viewId: 'view-quality', navId: 'nav-quality' },
+  'watchlist': {
+    viewId: 'view-watchlist',
+    navId: 'nav-watchlist',
+    onActivate: () => { if (typeof loadWatchlistAndJournal === 'function') loadWatchlistAndJournal(); }
+  },
+  'journal': {
+    viewId: 'view-watchlist',
+    navId: 'nav-watchlist',
+    onActivate: () => { if (typeof loadWatchlistAndJournal === 'function') loadWatchlistAndJournal(); }
+  },
+  'backtest': {
+    viewId: 'view-backtest',
+    navId: 'nav-backtest',
+    onActivate: () => { if (typeof loadBacktestData === 'function') loadBacktestData(); }
+  },
+  'lab': {
+    viewId: 'view-backtest',
+    navId: 'nav-backtest',
+    onActivate: () => { if (typeof loadBacktestData === 'function') loadBacktestData(); }
+  },
+  'lpm': {
+    viewId: 'view-lpm',
+    navId: 'nav-lpm',
+    onActivate: () => { if (typeof initLpmPage === 'function') initLpmPage(); }
+  }
+};
+
 function switchScreener(screenerId) {
+  const target = SCREENER_CONFIG[screenerId];
+  if (!target) return;
+
   // Hide all views
-  ['view-sepa', 'view-rsi-div', 'view-prebreakout', 'view-quality', 'view-watchlist', 'view-backtest', 'view-lpm'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.classList.remove('active');
-      el.classList.add('hidden');
-    }
+  document.querySelectorAll('.screener-view').forEach(el => {
+    el.classList.remove('active');
+    el.classList.add('hidden');
   });
 
   // Remove active from all nav items / tabs
-  ['nav-sepa', 'nav-rsi-div', 'nav-prebreakout', 'nav-quality', 'nav-watchlist', 'nav-backtest', 'nav-lpm'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.remove('active');
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.remove('active');
+    el.removeAttribute('aria-current');
   });
 
-  if (screenerId === 'sepa') {
-    document.getElementById('view-sepa')?.classList.remove('hidden');
-    document.getElementById('view-sepa')?.classList.add('active');
-    document.getElementById('nav-sepa')?.classList.add('active');
-  } else if (screenerId === 'rsi-div') {
-    document.getElementById('view-rsi-div')?.classList.remove('hidden');
-    document.getElementById('view-rsi-div')?.classList.add('active');
-    document.getElementById('nav-rsi-div')?.classList.add('active');
-  } else if (screenerId === 'prebreakout') {
-    document.getElementById('view-prebreakout')?.classList.remove('hidden');
-    document.getElementById('view-prebreakout')?.classList.add('active');
-    document.getElementById('nav-prebreakout')?.classList.add('active');
-  } else if (screenerId === 'quality' || screenerId === 'quality-setup') {
-    document.getElementById('view-quality')?.classList.remove('hidden');
-    document.getElementById('view-quality')?.classList.add('active');
-    document.getElementById('nav-quality')?.classList.add('active');
-  } else if (screenerId === 'watchlist' || screenerId === 'journal') {
-    document.getElementById('view-watchlist')?.classList.remove('hidden');
-    document.getElementById('view-watchlist')?.classList.add('active');
-    document.getElementById('nav-watchlist')?.classList.add('active');
-    loadWatchlistAndJournal();
-  } else if (screenerId === 'backtest' || screenerId === 'lab') {
-    document.getElementById('view-backtest')?.classList.remove('hidden');
-    document.getElementById('view-backtest')?.classList.add('active');
-    document.getElementById('nav-backtest')?.classList.add('active');
-    if (typeof loadBacktestData === 'function') {
-      loadBacktestData();
-    }
-  } else if (screenerId === 'lpm') {
-    document.getElementById('view-lpm')?.classList.remove('hidden');
-    document.getElementById('view-lpm')?.classList.add('active');
-    document.getElementById('nav-lpm')?.classList.add('active');
-    if (typeof initLpmPage === 'function') {
-      initLpmPage();
-    }
+  const viewEl = document.getElementById(target.viewId);
+  const navEl = document.getElementById(target.navId);
+
+  if (viewEl) {
+    viewEl.classList.remove('hidden');
+    viewEl.classList.add('active');
   }
 
-  // Auto-close mobile drawer after navigating on phone
-  if (window.innerWidth <= 768) {
+  if (navEl) {
+    navEl.classList.add('active');
+    navEl.setAttribute('aria-current', 'page');
+  }
+
+  if (typeof target.onActivate === 'function') {
+    target.onActivate();
+  }
+
+  // Auto-close mobile drawer after navigating on phone/tablet (Design.md §9: <= 1024px)
+  if (window.innerWidth <= 1024) {
     closeMobileSidebar();
   }
 }
+
+// ============================================================================
+// CENTRALIZED DATA-ACTION EVENT DELEGATION ROUTER (Fase 9)
+// ============================================================================
+
+const APP_ACTIONS = {
+  'switch-screener': (el) => {
+    const s = el.dataset.screener || el.getAttribute('data-screener');
+    if (s) switchScreener(s);
+  },
+  'open-command-palette': () => {
+    if (typeof openCommandPalette === 'function') openCommandPalette();
+  },
+  'toggle-theme': () => {
+    if (typeof toggleTheme === 'function') toggleTheme();
+  },
+  'toggle-mobile-sidebar': () => {
+    if (typeof toggleMobileSidebar === 'function') toggleMobileSidebar();
+  },
+  'close-mobile-sidebar': () => {
+    if (typeof closeMobileSidebar === 'function') closeMobileSidebar();
+  },
+  'trigger-scan': () => {
+    if (typeof triggerScan === 'function') triggerScan();
+  },
+  'refresh-screener': () => {
+    if (typeof refreshActiveScreener === 'function') refreshActiveScreener();
+  },
+  'refresh-market-regime': () => {
+    if (typeof loadMarketRegime === 'function') loadMarketRegime();
+  },
+  'open-position-calculator': () => {
+    if (typeof openPositionCalculator === 'function') openPositionCalculator();
+  },
+  'close-position-calculator': () => {
+    if (typeof closePositionCalculator === 'function') closePositionCalculator();
+  },
+  'toggle-advanced-calc': () => {
+    if (typeof toggleAdvancedCalcSettings === 'function') toggleAdvancedCalcSettings();
+  },
+  'set-risk-preset': (el) => {
+    const r = parseFloat(el.dataset.risk || '1.0');
+    if (typeof setRiskPreset === 'function') setRiskPreset(r);
+  },
+  'copy-position-sizing': () => {
+    if (typeof copyPositionSizingSummary === 'function') copyPositionSizingSummary();
+  },
+  'transfer-calc-journal': () => {
+    if (typeof transferCalcToTradeJournal === 'function') transferCalcToTradeJournal();
+  },
+  'copy-modal-rs': () => {
+    if (typeof copyModalRSValue === 'function') copyModalRSValue();
+  },
+  'copy-all-rs-distribution': () => {
+    if (typeof handleCopyAllRsDistribution === 'function') handleCopyAllRsDistribution();
+  },
+  'reset-sepa-filters': () => {
+    if (typeof resetSepaFilters === 'function') resetSepaFilters();
+  },
+  'reset-rsi-filters': () => {
+    if (typeof resetRsiFilters === 'function') resetRsiFilters();
+  },
+  'reset-pb-filters': () => {
+    if (typeof resetPreBreakoutFilters === 'function') resetPreBreakoutFilters();
+  },
+  'reset-quality-filters': () => {
+    if (typeof resetQualityFilters === 'function') resetQualityFilters();
+  },
+  'reset-backtest-filters': () => {
+    if (typeof resetBacktestTableFilters === 'function') resetBacktestTableFilters();
+  },
+  'reset-universe-benchmark': () => {
+    if (typeof resetToUniverseBenchmark === 'function') resetToUniverseBenchmark();
+  },
+  'export-csv': (el) => {
+    const type = el.dataset.screener || el.dataset.type || 'sepa';
+    if (typeof exportTableToCsv === 'function') exportTableToCsv(type);
+  },
+  'export-sepa-csv': () => {
+    if (typeof exportTableToCsv === 'function') exportTableToCsv('sepa');
+  },
+  'export-rsi-csv': () => {
+    if (typeof exportTableToCsv === 'function') exportTableToCsv('rsi');
+  },
+  'export-pb-csv': () => {
+    if (typeof exportTableToCsv === 'function') exportTableToCsv('prebreakout');
+  },
+  'export-quality-csv': () => {
+    if (typeof exportQualityCSV === 'function') exportQualityCSV();
+  },
+  'export-journal-csv': () => {
+    if (typeof exportJournalCSV === 'function') exportJournalCSV();
+  },
+  'export-journal-backup': () => {
+    if (typeof exportJournalBackupJSON === 'function') exportJournalBackupJSON();
+  },
+  'restore-journal-backup': () => {
+    if (typeof triggerRestoreBackupInput === 'function') triggerRestoreBackupInput();
+  },
+  'export-backtest-csv': () => {
+    if (typeof exportBacktestTradesCSV === 'function') exportBacktestTradesCSV();
+  },
+  'copy-tradingview': (el) => {
+    const type = el.dataset.screener || el.dataset.type || 'sepa';
+    if (typeof copyTradingViewWatchlist === 'function') copyTradingViewWatchlist(type);
+  },
+  'open-new-trade-modal': () => {
+    if (typeof openNewTradeEntryModal === 'function') openNewTradeEntryModal();
+  },
+  'open-portfolio-settings': () => {
+    if (typeof openPortfolioSettingsModal === 'function') openPortfolioSettingsModal();
+  },
+  'refresh-backtest': () => {
+    if (typeof refreshBacktestBenchmark === 'function') refreshBacktestBenchmark();
+  },
+  'refresh-lpm': () => {
+    if (typeof refreshLpmPage === 'function') refreshLpmPage();
+  }
+};
+
+document.addEventListener('click', (e) => {
+  const trigger = e.target.closest('[data-action]');
+  if (!trigger) return;
+  const actionName = trigger.getAttribute('data-action');
+  if (APP_ACTIONS[actionName]) {
+    APP_ACTIONS[actionName](trigger, e);
+  }
+});
 
 function refreshActiveScreener() {
   updateIDXMarketStatusUI();
@@ -363,11 +517,38 @@ function refreshActiveScreener() {
 }
 
 // ============================================================================
-// MOBILE NAVIGATION & DRAWER CONTROLLER
+// THEME TOGGLE (the initial theme is set by the inline script in <head>)
+// ============================================================================
+
+function syncThemeToggle() {
+  const btn = document.getElementById('btn-theme-toggle');
+  if (btn) btn.setAttribute('aria-pressed', String(document.documentElement.dataset.theme === 'dark'));
+}
+
+function toggleTheme() {
+  const root = document.documentElement;
+  const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+
+  // Swap colors at once instead of letting every transition animate:
+  // the forced reflow commits the new colors while transitions are off
+  root.classList.add('theme-switching');
+  root.dataset.theme = next;
+  void document.body.offsetHeight;
+  root.classList.remove('theme-switching');
+
+  try { localStorage.setItem('theme', next); } catch (e) {}
+  syncThemeToggle();
+  document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: next } }));
+}
+
+document.addEventListener('DOMContentLoaded', syncThemeToggle);
+
+// ============================================================================
+// MOBILE NAVIGATION & DRAWER CONTROLLER (Design.md §9)
 // ============================================================================
 
 function toggleMobileSidebar() {
-  const sidebar = document.querySelector('.sidebar');
+  const sidebar = document.getElementById('app-sidebar') || document.querySelector('.sidebar');
   if (!sidebar) return;
 
   const isOpen = sidebar.classList.contains('mobile-open');
@@ -379,30 +560,67 @@ function toggleMobileSidebar() {
 }
 
 function openMobileSidebar() {
-  const sidebar = document.querySelector('.sidebar');
+  const sidebar = document.getElementById('app-sidebar') || document.querySelector('.sidebar');
   const overlay = document.getElementById('sidebar-overlay');
-  if (sidebar) sidebar.classList.add('mobile-open');
+  const menuBtn = document.getElementById('btn-mobile-menu');
+  const closeBtn = document.getElementById('btn-sidebar-close');
+
+  if (sidebar) {
+    sidebar.classList.add('mobile-open');
+    sidebar.setAttribute('aria-hidden', 'false');
+  }
   if (overlay) overlay.classList.add('active');
+  if (menuBtn) menuBtn.setAttribute('aria-expanded', 'true');
   document.body.classList.add('sidebar-locked');
+
+  // Move focus into drawer
+  if (closeBtn) {
+    closeBtn.focus();
+  } else if (sidebar) {
+    sidebar.focus();
+  }
 }
 
 function closeMobileSidebar() {
-  const sidebar = document.querySelector('.sidebar');
+  const sidebar = document.getElementById('app-sidebar') || document.querySelector('.sidebar');
   const overlay = document.getElementById('sidebar-overlay');
-  if (sidebar) sidebar.classList.remove('mobile-open');
+  const menuBtn = document.getElementById('btn-mobile-menu');
+
+  if (!sidebar || !sidebar.classList.contains('mobile-open')) return;
+
+  sidebar.classList.remove('mobile-open');
+  if (window.innerWidth <= 1024) {
+    sidebar.setAttribute('aria-hidden', 'true');
+  } else {
+    sidebar.removeAttribute('aria-hidden');
+  }
+
   if (overlay) overlay.classList.remove('active');
+  if (menuBtn) {
+    menuBtn.setAttribute('aria-expanded', 'false');
+    // Restore focus if focus was inside sidebar
+    if (sidebar.contains(document.activeElement)) {
+      menuBtn.focus();
+    }
+  }
   document.body.classList.remove('sidebar-locked');
 }
 
-// Close drawer on Escape key or on window resize > 768px
+// Close drawer on Escape key or on window resize > 1024px
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    closeMobileSidebar();
+    const sidebar = document.getElementById('app-sidebar') || document.querySelector('.sidebar');
+    if (sidebar && sidebar.classList.contains('mobile-open')) {
+      closeMobileSidebar();
+      e.stopPropagation();
+    }
   }
 });
 
 window.addEventListener('resize', () => {
-  if (window.innerWidth > 768) {
+  if (window.innerWidth > 1024) {
     closeMobileSidebar();
+    const sidebar = document.getElementById('app-sidebar') || document.querySelector('.sidebar');
+    if (sidebar) sidebar.removeAttribute('aria-hidden');
   }
 });

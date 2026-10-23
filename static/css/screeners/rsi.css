@@ -42,8 +42,7 @@
 
 .rsi-tf-pill:hover:not(.active) {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.7);
-  transform: translateY(-1px);
+  background: var(--bg-secondary);
 }
 
 .rsi-tf-pill.active {
@@ -78,12 +77,12 @@
 }
 
 .dot-1d {
-  background: #16a34a;
+  background: var(--status-confirmed-text);
   box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
 }
 
 .dot-4h {
-  background: #f59e0b;
+  background: var(--status-watchlist-text);
   box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
 }
 
@@ -132,9 +131,9 @@
 }
 
 .rsi-pill.oversold {
-  background: #dcfce7;
-  color: #15803d;
-  border: 1px solid #86efac;
+  background: var(--status-confirmed-bg);
+  color: var(--status-confirmed-text);
+  border: 1px solid var(--status-confirmed-border);
 }
 
 .rsi-pill.neutral {
@@ -144,9 +143,9 @@
 }
 
 .rsi-pill.overbought {
-  background: #fee2e2;
-  color: #b91c1c;
-  border: 1px solid #fca5a5;
+  background: var(--status-fail-bg);
+  color: var(--status-fail-text);
+  border: 1px solid var(--status-fail-border);
 }
 
 /* Pivot Structure Info in Table Row */
@@ -197,7 +196,7 @@
   align-items: center;
   gap: 14px;
   padding: 14px;
-  background: #f8fafc;
+  background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
 }
@@ -207,7 +206,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: #ffffff;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   padding: 12px 14px;
@@ -282,7 +281,7 @@
   font-weight: 700;
   padding: 2px 6px;
   border-radius: 4px;
-  background: #ffffff;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   white-space: nowrap;
 }
@@ -297,7 +296,7 @@
 
 .rsi-tech-interpretation,
 .rsi-tech-explanation {
-  background: #f8fafc;
+  background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
   padding: 12px 14px;
@@ -327,4 +326,10 @@
   font-size: 12px;
   line-height: 1.5;
   color: var(--text-secondary);
+}
+
+.trend-context-sub {
+  display: block;
+  font-size: 10px;
+  color: var(--text-muted);
 }

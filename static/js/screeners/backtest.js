@@ -27,6 +27,16 @@ async function loadBacktestData(period = null) {
   }
   const years = backtestState.selectedPeriod;
 
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'bt-trades-table',
+      tbodyId: 'bt-trades-tbody',
+      colSpan: 14,
+      state: 'loading',
+      loadingText: 'Memuat data log sinyal backtest...'
+    });
+  }
+
   try {
     // 1. Fetch Summary Benchmark
     const resSummary = await fetch(`/api/backtest/summary?years=${years}`);
@@ -52,6 +62,17 @@ async function loadBacktestData(period = null) {
     }
   } catch (err) {
     console.error('Error loading backtest data:', err);
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'bt-trades-table',
+        tbodyId: 'bt-trades-tbody',
+        colSpan: 14,
+        state: 'error',
+        title: 'Gagal Memuat Data',
+        message: 'Gagal memuat log sinyal backtest: ' + (err.message || 'Koneksi terputus'),
+        actionHtml: '<button type="button" class="btn btn-secondary" onclick="loadBacktestData()">Coba Lagi</button>'
+      });
+    }
     if (typeof showToast === 'function') {
       showToast('Gagal memuat data backtest', 'error');
     }
@@ -78,8 +99,8 @@ function renderBacktestKPIs(data) {
     elPf.className = `stat-value mono ${(data.profit_factor >= 1.5) ? 'text-gain' : ((data.profit_factor < 1.0) ? 'text-danger' : '')}`;
   }
   if (elPfSub) {
-    elPfSub.textContent = (data.profit_factor >= 2.0) ? '🌟 Kategori Sangat Unggul (> 2.0)' :
-                          (data.profit_factor >= 1.5) ? '✅ Kategori Sehat & Profitabel' : '⚠️ Perlu Optimasi Ketat';
+    elPfSub.textContent = (data.profit_factor >= 2.0) ? 'Kategori Sangat Unggul (> 2.0)' :
+                          (data.profit_factor >= 1.5) ? 'Kategori Sehat & Profitabel' : 'Perlu Optimasi Ketat';
   }
 
   // Payoff Ratio
@@ -171,30 +192,23 @@ async function runOnDemandTickerBacktest(targetSymbol = null) {
   // Highlight active chip
   document.querySelectorAll('.chip-btn').forEach(btn => {
     if (btn.textContent.trim() === ticker) {
-      btn.style.background = '#0284c7';
-      btn.style.color = '#ffffff';
-      btn.style.borderColor = '#0284c7';
+      btn.classList.add('active');
     } else if (!btn.classList.contains('reset')) {
-      btn.style.background = '';
-      btn.style.color = '';
-      btn.style.borderColor = '';
+      btn.classList.remove('active');
     }
   });
 
   const years = backtestState.selectedPeriod;
 
   // Show loading indicator
-  const tbody = document.getElementById('bt-trades-tbody');
-  if (tbody) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="14" class="empty-state">
-          <div class="empty-state-icon">⏳</div>
-          <h3>Menjalankan simulasi point-in-time untuk ${ticker}...</h3>
-          <p>Mengevaluasi sinyal Quality Setup & VCP selama ${years} tahun terakhir...</p>
-        </td>
-      </tr>
-    `;
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'bt-trades-table',
+      tbodyId: 'bt-trades-tbody',
+      colSpan: 14,
+      state: 'loading',
+      loadingText: `Menjalankan simulasi point-in-time untuk ${ticker}...`
+    });
   }
 
   try {
@@ -232,6 +246,17 @@ async function runOnDemandTickerBacktest(targetSymbol = null) {
     }
   } catch (err) {
     console.error(`Error simulating ${ticker}:`, err);
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'bt-trades-table',
+        tbodyId: 'bt-trades-tbody',
+        colSpan: 14,
+        state: 'error',
+        title: 'Gagal Memuat Data',
+        message: `Gagal memproses simulasi untuk ${ticker}.`,
+        actionHtml: '<button type="button" class="btn btn-secondary" onclick="resetToUniverseBenchmark()">Kembali ke Benchmark</button>'
+      });
+    }
     if (typeof showToast === 'function') {
       showToast(`Gagal memproses simulasi untuk ${ticker}`, 'error');
     }
@@ -272,7 +297,7 @@ function updateBacktestScopeUI(ticker, count = 0) {
     if (scopeBadge) scopeBadge.className = 'deck-scope-pill ticker-active';
     if (scopeText) scopeText.textContent = `SIMULASI: ${ticker} (${count} TRADES)`;
     if (resetBtn) resetBtn.classList.remove('hidden');
-    if (tableTitle) tableTitle.textContent = `Histori Transaksi Sinyal — ${ticker}`;
+    if (tableTitle) tableTitle.textContent = `Histori Transaksi Sinyal : ${ticker}`;
   } else {
     if (scopeBadge) scopeBadge.className = 'deck-scope-pill';
     if (scopeText) scopeText.textContent = `BENCHMARK UNIVERSE (${backtestState.trades.length} TRADES)`;
@@ -408,18 +433,42 @@ function renderBacktestTableRows() {
   if (badgeCount) badgeCount.textContent = `${total} Transaksi`;
 
   if (total === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="14" class="empty-state">
-          <div class="empty-state-icon">📂</div>
-          <h3>Tidak ada transaksi yang cocok dengan filter</h3>
-          <p>Coba ubah filter setup atau status keluar pada toolbar di atas.</p>
-        </td>
-      </tr>
-    `;
+    if (typeof setTableViewState === 'function') {
+      const isFiltered = (backtestState.selectedStrategy !== 'ALL' || backtestState.selectedStatus !== 'ALL' || Boolean(backtestState.searchQuery));
+      if (isFiltered) {
+        setTableViewState({
+          tableId: 'bt-trades-table',
+          tbodyId: 'bt-trades-tbody',
+          colSpan: 14,
+          state: 'empty_filtered',
+          title: 'Tidak Ada Transaksi yang Memenuhi Filter',
+          message: 'Tidak ada sinyal yang cocok dengan filter setup atau status keluar saat ini.',
+          actionHtml: '<button type="button" class="btn btn-secondary" onclick="resetBacktestTableFilters()">Reset Filter</button>'
+        });
+      } else {
+        setTableViewState({
+          tableId: 'bt-trades-table',
+          tbodyId: 'bt-trades-tbody',
+          colSpan: 14,
+          state: 'empty_unscanned',
+          title: 'Belum Ada Data Backtest',
+          message: 'Jalankan simulasi untuk melihat histori transaksi dan performa sinyal.',
+          actionHtml: '<button type="button" class="btn btn-primary" onclick="refreshBacktestBenchmark()">Jalankan Benchmark</button>'
+        });
+      }
+    }
     if (countLabel) countLabel.textContent = '0';
     renderBacktestPagination(0);
     return;
+  }
+
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'bt-trades-table',
+      tbodyId: 'bt-trades-tbody',
+      colSpan: 14,
+      state: 'data'
+    });
   }
 
   // Pagination slice
@@ -440,23 +489,23 @@ function renderBacktestTableRows() {
     // Setup Badge
     let setupBadge = '';
     if (t.setup_type === 'PRE_BREAKOUT_READY') {
-      setupBadge = `<span class="badge-setup-type breakout">⚡ Pre-Breakout (7D)</span>`;
+      setupBadge = `<span class="badge-setup-type breakout">Pre-Breakout (7D)</span>`;
     } else if (t.setup_type === 'QUALITY_PULLBACK') {
-      setupBadge = `<span class="badge-setup-type pullback">🔄 Quality Pullback (12D)</span>`;
+      setupBadge = `<span class="badge-setup-type pullback">Quality Pullback (12D)</span>`;
     } else {
-      setupBadge = `<span class="badge-setup-type base">🚀 Quality Breakout (10D)</span>`;
+      setupBadge = `<span class="badge-setup-type base">Quality Breakout (10D)</span>`;
     }
 
     // Status Badge
     let statusBadge = '';
     if (t.status === 'TP2_HIT') {
-      statusBadge = `<span class="badge-bt-status tp2">🚀 Runner (TP2)</span>`;
+      statusBadge = `<span class="badge-bt-status tp2">Runner (TP2)</span>`;
     } else if (t.status === 'TP1_HIT') {
-      statusBadge = `<span class="badge-bt-status tp1">🎯 Target 1 Hit</span>`;
+      statusBadge = `<span class="badge-bt-status tp1">Target 1 Hit</span>`;
     } else if (t.status === 'SL_HIT') {
-      statusBadge = `<span class="badge-bt-status sl">🛑 Cut Loss (SL)</span>`;
+      statusBadge = `<span class="badge-bt-status sl">Cut Loss (SL)</span>`;
     } else {
-      statusBadge = `<span class="badge-bt-status expired">⏱️ Expired Exit</span>`;
+      statusBadge = `<span class="badge-bt-status expired">Expired Exit</span>`;
     }
 
     // Return formatting
@@ -464,14 +513,14 @@ function renderBacktestTableRows() {
     const retClass = t.net_return_pct >= 0 ? 'text-gain' : 'text-danger';
 
     html += `
-      <tr>
+      <tr tabindex="0" role="button" aria-label="Buka detail saham ${t.ticker}" onclick="openStockDetailModal('${t.ticker}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openStockDetailModal('${t.ticker}');}">
         <td class="text-center text-muted" style="font-size: 11px;">${rowNum}</td>
         <td>
           <div class="ticker-cell-wrapper">
             <button class="btn-star-pin ${starClass}" onclick="event.stopPropagation(); toggleWatchlistPin('${t.ticker}', '${t.ticker}', 'IDX', 'BACKTEST')" title="Pin ke Watchlist Pribadi">
-              ★
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
             </button>
-            <span class="ticker-text font-bold" onclick="showStockDetail('${t.ticker}')" style="cursor: pointer; color: #0284c7; font-family: var(--font-mono); font-weight: 700; font-size: 13px;">
+            <span class="ticker-text ticker-link font-bold">
               ${t.ticker}
             </span>
           </div>
@@ -493,10 +542,10 @@ function renderBacktestTableRows() {
             <span class="mfe">+${t.mfe_pct.toFixed(1)}%</span> / <span class="mae">${t.mae_pct.toFixed(1)}%</span>
           </span>
         </td>
-        <td class="text-center">
+        <td class="text-center" onclick="event.stopPropagation()">
           <div class="row-actions-group">
-            <button class="btn-table-action" onclick="event.stopPropagation(); openPositionCalculator('${t.ticker}', ${t.entry_price}, ${t.stop_loss}, ${t.target_1}, ${t.target_2 || t.target_1})" title="Hitung Position Sizing Minervini">
-              🧮
+            <button class="btn-table-action" onclick="openPositionCalculator('${t.ticker}', ${t.entry_price}, ${t.stop_loss}, ${t.target_1}, ${t.target_2 || t.target_1})" title="Hitung Position Sizing Minervini">
+              Sizing
             </button>
           </div>
         </td>
@@ -522,7 +571,7 @@ function renderBacktestPagination(total) {
   html += `
     <button class="btn-page ${backtestState.currentPage === 1 ? 'disabled' : ''}" 
       onclick="changeBacktestPage(${backtestState.currentPage - 1})" ${backtestState.currentPage === 1 ? 'disabled' : ''}>
-      ◀ Prev
+      Prev
     </button>
   `;
 
@@ -531,7 +580,7 @@ function renderBacktestPagination(total) {
   html += `
     <button class="btn-page ${backtestState.currentPage === totalPages ? 'disabled' : ''}" 
       onclick="changeBacktestPage(${backtestState.currentPage + 1})" ${backtestState.currentPage === totalPages ? 'disabled' : ''}>
-      Next ▶
+      Next
     </button>
   `;
 

@@ -5,23 +5,20 @@
 function togglePasswordVisibility() {
   const passwordInput = document.getElementById("password");
   const toggleBtn = document.getElementById("btn-toggle-password");
-  
-  if (passwordInput.type === "password") {
-    passwordInput.type = "text";
-    toggleBtn.textContent = "🙈";
-  } else {
-    passwordInput.type = "password";
-    toggleBtn.textContent = "👁️";
-  }
+  const showing = passwordInput.type === "password";
+
+  passwordInput.type = showing ? "text" : "password";
+  toggleBtn.setAttribute("aria-pressed", String(showing));
+  toggleBtn.setAttribute("aria-label", showing ? "Sembunyikan password" : "Tampilkan password");
+  toggleBtn.querySelector(".icon-eye").classList.toggle("hidden", showing);
+  toggleBtn.querySelector(".icon-eye-off").classList.toggle("hidden", !showing);
 }
 
-function showAlert(message, isWarning = false) {
+function showAlert(message) {
   const alertEl = document.getElementById("login-alert");
   const msgEl = document.getElementById("alert-message");
-  const iconEl = document.getElementById("alert-icon");
 
   msgEl.textContent = message;
-  iconEl.textContent = isWarning ? "⏳" : "⚠️";
 
   alertEl.classList.remove("hidden");
   alertEl.classList.remove("shake");

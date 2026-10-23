@@ -8,97 +8,64 @@
     <div class="view-header-left">
       <div class="view-title-row" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
         <h1>Signal Backtest & Accuracy Lab</h1>
-        <span class="count-pill" style="background: #f1f5f9; color: #475569; font-weight: 700; font-size: 11px;">QUANT ENGINE</span>
+        <span class="count-pill">QUANT ENGINE</span>
       </div>
-      <p>Uji empiris validitas sinyal <strong>Quality Setup</strong> & <strong>Pre-Breakout (VCP)</strong> pada data historis 1–2 tahun IHSG (Entry T+1 Open, Scale-Out Minervini, Fee IDX 0.40%)</p>
+      <p>Uji empiris validitas sinyal <strong>Quality Setup</strong> & <strong>Pre-Breakout (VCP)</strong> pada data historis 1-2 tahun IHSG (Entry T+1 Open, Scale-Out Minervini, Fee IDX 0.40%)</p>
     </div>
     <div class="view-header-right">
       <div class="backtest-header-controls">
         <div class="filter-select-wrapper">
           <select id="bt-period-select" class="filter-select" onchange="onBacktestPeriodChange(this.value)">
-            <option value="2" selected>📅 Periode: 2 Tahun Terakhir</option>
-            <option value="1">📅 Periode: 1 Tahun Terakhir</option>
+            <option value="2" selected>Periode: 2 Tahun Terakhir</option>
+            <option value="1">Periode: 1 Tahun Terakhir</option>
           </select>
-          <span class="filter-select-arrow">▼</span>
+          <span class="filter-select-arrow" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </span>
         </div>
-        <button class="btn-table-util" onclick="refreshBacktestBenchmark()" title="Muat ulang benchmark agregat">
-          <span>🔄</span> Muat Ulang
+        <button class="btn-table-util" data-action="refresh-backtest" onclick="refreshBacktestBenchmark()" title="Muat ulang benchmark agregat">
+          Muat Ulang
         </button>
       </div>
     </div>
   </div>
 
-  <!-- 2. TOP KPI SUMMARY STATS CARDS (Matching native stats-grid) -->
-  <section class="stats-grid backtest-stats-grid">
-    <!-- Card 1: Win Rate -->
-    <div class="stat-card confirmed">
-      <div class="stat-card-header">
-        <span class="stat-label">Overall Win Rate</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
-        </span>
-      </div>
-      <div id="kpi-winrate-val" class="stat-value lime mono">0.0%</div>
-      <div id="kpi-winrate-sub" class="stat-meta mono">0 Menang / 0 Kalah (Total 0 Sinyal)</div>
+  <!-- 2. TOP KPI SUMMARY STATS (Summary Bar Large, Design.md §6.3) -->
+  <div class="summary-bar summary-bar-lg" role="region" aria-label="Ringkasan Metrik Signal Backtest Lab">
+    <div class="summary-item">
+      <span class="summary-label">Win Rate</span>
+      <span id="kpi-winrate-val" class="summary-value status-confirmed mono">0.0%</span>
+      <span id="kpi-winrate-sub" class="summary-sub mono">0 Menang / 0 Kalah</span>
     </div>
-
-    <!-- Card 2: Profit Factor -->
-    <div class="stat-card">
-      <div class="stat-card-header">
-        <span class="stat-label">Profit Factor</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-        </span>
-      </div>
-      <div id="kpi-pf-val" class="stat-value mono">0.00</div>
-      <div id="kpi-pf-sub" class="stat-meta">Threshold sehat: > 1.50</div>
+    <span class="summary-sep" aria-hidden="true">·</span>
+    <div class="summary-item">
+      <span class="summary-label">Profit Factor</span>
+      <span id="kpi-pf-val" class="summary-value mono">0.00</span>
+      <span id="kpi-pf-sub" class="summary-sub">Target: &gt; 1.50</span>
     </div>
-
-    <!-- Card 3: Payoff Ratio -->
-    <div class="stat-card">
-      <div class="stat-card-header">
-        <span class="stat-label">Payoff Ratio (R:R)</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"></line><path d="M3 9l9-6 9 6"></path><path d="M6 16l-3-7h6l-3 7a3 3 0 0 1-6 0z"></path><path d="M18 16l-3-7h6l-3 7a3 3 0 0 1-6 0z"></path></svg>
-        </span>
-      </div>
-      <div id="kpi-payoff-val" class="stat-value mono">0.00 : 1</div>
-      <div id="kpi-payoff-sub" class="stat-meta mono">Avg Win: +0.0% | Loss: -0.0%</div>
+    <span class="summary-sep" aria-hidden="true">·</span>
+    <div class="summary-item">
+      <span class="summary-label">Payoff Ratio</span>
+      <span id="kpi-payoff-val" class="summary-value mono">0.00 : 1</span>
+      <span id="kpi-payoff-sub" class="summary-sub mono">Avg Win / Loss</span>
     </div>
-
-    <!-- Card 4: Avg Holding Duration -->
-    <div class="stat-card">
-      <div class="stat-card-header">
-        <span class="stat-label">Avg Holding Duration</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-        </span>
-      </div>
-      <div class="stat-value-group" style="display: flex; align-items: baseline; gap: 4px;">
-        <span id="kpi-holding-val" class="stat-value mono">0.0</span>
-        <span class="stat-unit" style="font-size: 13px; font-weight: 700; color: var(--text-muted);">Hari</span>
-      </div>
-      <div class="stat-meta">Rata-rata waktu sampai target / exit</div>
+    <span class="summary-sep" aria-hidden="true">·</span>
+    <div class="summary-item">
+      <span class="summary-label">Holding</span>
+      <span id="kpi-holding-val" class="summary-value mono">0.0</span>
+      <span class="summary-sub">Hari</span>
     </div>
-
-    <!-- Card 5: Max Drawdown -->
-    <div class="stat-card">
-      <div class="stat-card-header">
-        <span class="stat-label">Max Drawdown</span>
-        <span class="stat-icon" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-        </span>
-      </div>
-      <div id="kpi-mdd-val" class="stat-value mono text-danger">-0.0%</div>
-      <div class="stat-meta">Penurunan modal kumulatif terdalam</div>
+    <span class="summary-sep" aria-hidden="true">·</span>
+    <div class="summary-item">
+      <span class="summary-label">Max Drawdown</span>
+      <span id="kpi-mdd-val" class="summary-value status-fail mono">-0.0%</span>
     </div>
-  </section>
+  </div>
 
   <!-- 3. ON-DEMAND TICKER SIMULATOR & HORIZON STRIP -->
   <section class="backtest-deck-card">
     <div class="deck-header">
       <div class="deck-title-group">
-        <span class="deck-badge-icon">⚡</span>
         <div>
           <h3 class="deck-title">On-Demand Ticker Simulator</h3>
           <p class="deck-subtitle">Simulasi instan (&lt;1 detik) untuk saham apa pun di IHSG atau klik tombol cepat di bawah</p>
@@ -113,7 +80,9 @@
     <div class="deck-body">
       <div class="deck-search-row">
         <div class="deck-input-wrapper">
-          <span class="deck-input-icon">🔍</span>
+          <span class="deck-input-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </span>
           <input 
             type="text" 
             id="bt-ticker-input" 
@@ -123,7 +92,7 @@
             onkeydown="if(event.key === 'Enter') runOnDemandTickerBacktest()"
           />
           <button class="btn-deck-run" onclick="runOnDemandTickerBacktest()">
-            <span>⚡</span> Jalankan Simulasi
+            Jalankan Simulasi
           </button>
         </div>
 
@@ -136,20 +105,19 @@
           <button type="button" class="chip-btn" onclick="quickInspectTicker('BRPT')">BRPT</button>
           <button type="button" class="chip-btn" onclick="quickInspectTicker('MEDC')">MEDC</button>
           <button type="button" class="chip-btn" onclick="quickInspectTicker('TLKM')">TLKM</button>
-          <button type="button" class="chip-btn reset hidden" id="btn-reset-ticker-filter" onclick="resetToUniverseBenchmark()">
-            ✕ Kembali ke Benchmark Agregat
+          <button type="button" class="chip-btn reset hidden" id="btn-reset-ticker-filter" data-action="reset-universe-benchmark" onclick="resetToUniverseBenchmark()">
+            Kembali ke Benchmark Agregat
           </button>
         </div>
       </div>
 
       <!-- Strategy Horizon Breakdown Cards -->
       <div class="strategy-horizon-strip">
-        <div class="horizon-card" onclick="setBacktestStrategyFilter('PRE_BREAKOUT_READY')" title="Filter ke Pre-Breakout Ready">
-          <div class="h-icon-box">⚡</div>
+        <button type="button" class="horizon-card" onclick="setBacktestStrategyFilter('PRE_BREAKOUT_READY')" title="Filter ke Pre-Breakout Ready">
           <div class="h-details">
             <div class="h-title-row">
               <span class="h-name">Pre-Breakout Ready</span>
-              <span class="h-horizon-tag">5–7 Hari</span>
+              <span class="h-horizon-tag">5-7 Hari</span>
             </div>
             <div class="h-metric-row">
               <span class="h-wr mono" id="strat-mb-wr">0.0% WR</span>
@@ -158,14 +126,13 @@
               <span class="h-count mono" id="strat-mb-total-badge">(0 trade)</span>
             </div>
           </div>
-        </div>
+        </button>
 
-        <div class="horizon-card" onclick="setBacktestStrategyFilter('QUALITY_PULLBACK')" title="Filter ke Quality Pullback">
-          <div class="h-icon-box">🔄</div>
+        <button type="button" class="horizon-card" onclick="setBacktestStrategyFilter('QUALITY_PULLBACK')" title="Filter ke Quality Pullback">
           <div class="h-details">
             <div class="h-title-row">
               <span class="h-name">Quality Pullback</span>
-              <span class="h-horizon-tag">10–12 Hari</span>
+              <span class="h-horizon-tag">10-12 Hari</span>
             </div>
             <div class="h-metric-row">
               <span class="h-wr mono" id="strat-pb-wr">0.0% WR</span>
@@ -174,14 +141,13 @@
               <span class="h-count mono" id="strat-pb-total-badge">(0 trade)</span>
             </div>
           </div>
-        </div>
+        </button>
 
-        <div class="horizon-card" onclick="setBacktestStrategyFilter('QUALITY_BREAKOUT')" title="Filter ke Quality Breakout">
-          <div class="h-icon-box">🚀</div>
+        <button type="button" class="horizon-card" onclick="setBacktestStrategyFilter('QUALITY_BREAKOUT')" title="Filter ke Quality Breakout">
           <div class="h-details">
             <div class="h-title-row">
               <span class="h-name">Quality Breakout</span>
-              <span class="h-horizon-tag">7–10 Hari</span>
+              <span class="h-horizon-tag">7-10 Hari</span>
             </div>
             <div class="h-metric-row">
               <span class="h-wr mono" id="strat-bb-wr">0.0% WR</span>
@@ -190,7 +156,7 @@
               <span class="h-count mono" id="strat-bb-total-badge">(0 trade)</span>
             </div>
           </div>
-        </div>
+        </button>
       </div>
     </div>
   </section>
@@ -208,16 +174,16 @@
         <!-- Segmented Strategy Tabs (Matching SEPA Trend & Watchlist standard) -->
         <div class="segmented-tabs" id="bt-strategy-pills">
           <button class="segmented-tab-btn active" data-strategy="ALL" onclick="setBacktestStrategyFilter('ALL')">
-            🌐 Semua Setup <span id="cnt-bt-all" class="tab-counter">0</span>
+            Semua Setup <span id="cnt-bt-all" class="tab-counter">0</span>
           </button>
           <button class="segmented-tab-btn" data-strategy="PRE_BREAKOUT_READY" onclick="setBacktestStrategyFilter('PRE_BREAKOUT_READY')">
-            ⚡ Pre-Breakout (7D) <span id="cnt-bt-mb" class="tab-counter">0</span>
+            Pre-Breakout (7D) <span id="cnt-bt-mb" class="tab-counter">0</span>
           </button>
           <button class="segmented-tab-btn" data-strategy="QUALITY_PULLBACK" onclick="setBacktestStrategyFilter('QUALITY_PULLBACK')">
-            🔄 Quality Pullback (12D) <span id="cnt-bt-pb" class="tab-counter">0</span>
+            Quality Pullback (12D) <span id="cnt-bt-pb" class="tab-counter">0</span>
           </button>
           <button class="segmented-tab-btn" data-strategy="QUALITY_BREAKOUT" onclick="setBacktestStrategyFilter('QUALITY_BREAKOUT')">
-            🚀 Quality Breakout (10D) <span id="cnt-bt-bb" class="tab-counter">0</span>
+            Quality Breakout (10D) <span id="cnt-bt-bb" class="tab-counter">0</span>
           </button>
         </div>
       </div>
@@ -234,7 +200,9 @@
               placeholder="Cari ticker di log..." 
               oninput="filterBacktestTable()"
             />
-            <span class="filter-search-icon">🔍</span>
+            <span class="filter-search-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </span>
           </div>
 
           <!-- Status Filter Dropdown -->
@@ -243,27 +211,29 @@
             <div class="filter-select-wrapper">
               <select id="bt-status-filter" class="filter-select" onchange="onBacktestStatusFilterChange(this.value)">
                 <option value="ALL">Semua Hasil (All)</option>
-                <option value="WIN">🎯 Menang (TP1 / TP2)</option>
-                <option value="LOSS">🛑 Kalah (Stop Loss)</option>
-                <option value="TP2_HIT">🚀 Runner Max (TP2)</option>
-                <option value="TP1_HIT">✅ Target 1 (TP1 Hit)</option>
-                <option value="SL_HIT">🛑 Cut Loss (SL Hit)</option>
-                <option value="EXPIRED_EXIT">⏱️ Batas Waktu Habis</option>
+                <option value="WIN">Menang (TP1 / TP2)</option>
+                <option value="LOSS">Kalah (Stop Loss)</option>
+                <option value="TP2_HIT">Runner Max (TP2)</option>
+                <option value="TP1_HIT">Target 1 (TP1 Hit)</option>
+                <option value="SL_HIT">Cut Loss (SL Hit)</option>
+                <option value="EXPIRED_EXIT">Batas Waktu Habis</option>
               </select>
-              <span class="filter-select-arrow">▼</span>
+              <span class="filter-select-arrow" aria-hidden="true">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </span>
             </div>
           </div>
 
           <!-- Table Reset Button -->
-          <button id="bt-reset-filter-btn" class="btn-reset-filters hidden" onclick="resetBacktestTableFilters()" title="Reset pencarian dan filter status">
-            ↺ Reset
+          <button id="bt-reset-filter-btn" class="btn-reset-filters hidden" data-action="reset-backtest-filters" onclick="resetBacktestTableFilters()" title="Reset pencarian dan filter status">
+            Reset
           </button>
         </div>
 
         <!-- Table Utility Actions -->
         <div class="table-actions">
-          <button class="btn-table-util" onclick="exportBacktestTradesCSV()" title="Download histori sinyal ke CSV">
-            <span>📥</span> Export CSV
+          <button class="btn-table-util" data-action="export-backtest-csv" onclick="exportBacktestTradesCSV()" title="Download histori sinyal ke CSV">
+            Export CSV
           </button>
         </div>
       </div>
@@ -271,7 +241,7 @@
 
     <!-- Table Responsive Wrapper -->
     <div class="table-container">
-      <table class="data-table" id="bt-trades-table">
+      <table class="data-table" id="bt-trades-table" aria-busy="false">
         <thead>
           <tr>
             <th class="text-center" style="width: 44px;">#</th>
@@ -293,7 +263,6 @@
         <tbody id="bt-trades-tbody">
           <tr>
             <td colspan="14" class="empty-state">
-              <div class="empty-state-icon">⏳</div>
               <h3>Memuat data log sinyal backtest...</h3>
             </td>
           </tr>
