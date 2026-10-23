@@ -290,7 +290,7 @@ function handleCopyAllRsDistribution() {
 
 function switchScreener(screenerId) {
   // Hide all views
-  ['view-sepa', 'view-rsi-div', 'view-prebreakout', 'view-quality', 'view-watchlist', 'view-backtest'].forEach(id => {
+  ['view-sepa', 'view-rsi-div', 'view-prebreakout', 'view-quality', 'view-watchlist', 'view-backtest', 'view-lpm'].forEach(id => {
     const el = document.getElementById(id);
     if (el) {
       el.classList.remove('active');
@@ -299,7 +299,7 @@ function switchScreener(screenerId) {
   });
 
   // Remove active from all nav items / tabs
-  ['nav-sepa', 'nav-rsi-div', 'nav-prebreakout', 'nav-quality', 'nav-watchlist', 'nav-backtest'].forEach(id => {
+  ['nav-sepa', 'nav-rsi-div', 'nav-prebreakout', 'nav-quality', 'nav-watchlist', 'nav-backtest', 'nav-lpm'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.remove('active');
   });
@@ -331,6 +331,13 @@ function switchScreener(screenerId) {
     document.getElementById('nav-backtest')?.classList.add('active');
     if (typeof loadBacktestData === 'function') {
       loadBacktestData();
+    }
+  } else if (screenerId === 'lpm') {
+    document.getElementById('view-lpm')?.classList.remove('hidden');
+    document.getElementById('view-lpm')?.classList.add('active');
+    document.getElementById('nav-lpm')?.classList.add('active');
+    if (typeof initLpmPage === 'function') {
+      initLpmPage();
     }
   }
 

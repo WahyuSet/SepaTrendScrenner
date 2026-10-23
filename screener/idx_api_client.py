@@ -4,9 +4,16 @@ import sqlite3
 import logging
 import requests
 import re
-from datetime import datetime, timedelta
+import time
+from datetime import datetime, timedelta, timezone
+
+from .lpm import LPM_PARAMS
 
 logger = logging.getLogger(__name__)
+
+WIB = timezone(timedelta(hours=7))
+# Broker fields kept per day in broker_daily (LPM needs value, volume and frequency per side)
+BROKER_DAILY_FIELDS = ("broker_code", "broker_name", "bval", "sval", "bvol", "svol", "bfrq", "sfrq", "nval", "nvol")
 
 class IDXApiClient:
     """Client for IDX Edge API (stock.arjum.com) with smart SQLite caching and daily quota tracking."""
@@ -76,6 +83,32 @@ class IDXApiClient:
                     PRIMARY KEY (ticker, date)
                 )
             """)
+            # Daily broker summary history for LPM (permanent: a closed day does not change)
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS broker_daily (
+                    ticker TEXT,
+                    date TEXT,
+                    data TEXT,
+                    status TEXT,
+                    fetched_at TEXT,
+                    attempts INTEGER DEFAULT 0,
+                    note TEXT,
+                    PRIMARY KEY (ticker, date)
+                )
+            """)
+            # LPM backfill job state, shared by all Gunicorn workers (one row per ticker)
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS lpm_jobs (
+                    ticker TEXT PRIMARY KEY,
+                    state TEXT,
+                    done INTEGER DEFAULT 0,
+                    total INTEGER DEFAULT 0,
+                    requested INTEGER DEFAULT 0,
+                    last_error TEXT,
+                    started_at TEXT,
+                    updated_at TEXT
+                )
+            """)
             conn.commit()
 
     def get_quota_status(self):
@@ -121,6 +154,11 @@ class IDXApiClient:
 
     def _make_request(self, endpoint, params=None):
         """Make HTTP GET request to API with quota check and header authentication."""
+        _, data = self._request_with_status(endpoint, params)
+        return data
+
+    def _request_with_status(self, endpoint, params=None):
+        """Same as _make_request but returns (http_status, json). http_status is None when the call itself failed."""
         quota = self.get_quota_status()
         if quota["remaining"] <= 0:
             raise RuntimeError(f"Daily API quota limit ({self.DAILY_LIMIT} reqs) has been reached for today.")
@@ -135,13 +173,13 @@ class IDXApiClient:
             resp = requests.get(url, headers=headers, params=params, timeout=12)
             self._record_request()
             if resp.status_code == 200:
-                return resp.json()
+                return 200, resp.json()
             else:
                 logger.error(f"API Error {resp.status_code} for {url}: {resp.text}")
-                return None
+                return resp.status_code, None
         except Exception as e:
             logger.error(f"HTTP Request failed for {url}: {e}")
-            return None
+            return None, None
 
     # =========================================================================
     # 1. BROKER SUMMARY (BANDARMOLOGI)
@@ -172,6 +210,9 @@ class IDXApiClient:
         raw = self._make_request(f"/api/broker-summary/{ticker}", params={"all_data": "true", "flow": flow})
         if not raw or "brokers" not in raw:
             return None
+
+        if flow == "all":
+            self._store_latest_broker_day(ticker, raw)
 
         # Analyze Bandarmologi
         analyzed = self._analyze_broker_summary(ticker, raw, flow)
@@ -594,3 +635,240 @@ class IDXApiClient:
             "accum_text": accum_text,
             "trading_plan": trading_plan
         }
+
+    # =========================================================================
+    # 5. BROKER DAILY HISTORY (LPM)
+    # =========================================================================
+    def _now_wib(self):
+        return datetime.now(WIB)
+
+    def is_day_final(self, date):
+        """A trading day is final once it is in the past, or today after the final hour (WIB)."""
+        now = self._now_wib()
+        today = now.strftime("%Y-%m-%d")
+        if date < today:
+            return True
+        return date == today and now.hour >= LPM_PARAMS["day_final_hour_wib"]
+
+    def load_broker_daily(self, ticker, dates=None):
+        """Stored rows as {date: {"status", "brokers", "fetched_at", "attempts", "note"}}. No API call."""
+        ticker = self._clean_ticker(ticker)
+        if not ticker:
+            return {}
+        with self._get_connection() as conn:
+            rows = conn.execute(
+                "SELECT date, data, status, fetched_at, attempts, note FROM broker_daily WHERE ticker = ?",
+                (ticker,)
+            ).fetchall()
+
+        wanted = set(dates) if dates is not None else None
+        result = {}
+        for row in rows:
+            if wanted is not None and row["date"] not in wanted:
+                continue
+            try:
+                brokers = json.loads(row["data"]) if row["data"] else None
+            except Exception:
+                brokers = None
+            result[row["date"]] = {
+                "status": row["status"],
+                "brokers": brokers,
+                "fetched_at": row["fetched_at"],
+                "attempts": row["attempts"] or 0,
+                "note": row["note"],
+            }
+        return result
+
+    def list_broker_daily_tickers(self):
+        """Tickers with stored LPM history: [{"ticker", "days", "last_date"}], most days first. No API call."""
+        with self._get_connection() as conn:
+            rows = conn.execute("""
+                SELECT ticker, SUM(CASE WHEN status = 'ok' THEN 1 ELSE 0 END) AS days, MAX(date) AS last_date
+                FROM broker_daily
+                GROUP BY ticker
+                HAVING days > 0
+                ORDER BY days DESC, ticker
+            """).fetchall()
+        return [{"ticker": r["ticker"], "days": r["days"], "last_date": r["last_date"]} for r in rows]
+
+    def missing_broker_days(self, ticker, dates):
+        """
+        Dates that still need an API call, newest first: no stored row, or an 'error' row
+        under the retry limit. Days that are not final yet (today before 17:00 WIB) are left out.
+        """
+        stored = self.load_broker_daily(ticker, dates)
+        missing = []
+        for date in dates:
+            if not self.is_day_final(date):
+                continue
+            row = stored.get(date)
+            if row is None or (row["status"] == "error" and row["attempts"] < LPM_PARAMS["max_fetch_attempts"]):
+                missing.append(date)
+        return sorted(missing, reverse=True)
+
+    def get_broker_daily(self, ticker, date, force_refresh=False):
+        """
+        Broker rows for one trading day: from broker_daily when stored, otherwise one API call.
+        Returns {"date", "status": "ok"|"empty"|"error", "brokers", "fetched": bool}, or None for a
+        day that is not final yet (nothing is fetched or stored for it).
+        """
+        ticker = self._clean_ticker(ticker)
+        if not ticker or not self.is_day_final(date):
+            return None
+
+        row = self.load_broker_daily(ticker, [date]).get(date)
+        if row and not force_refresh:
+            retryable = row["status"] == "error" and row["attempts"] < LPM_PARAMS["max_fetch_attempts"]
+            if not retryable:
+                return {"date": date, "status": row["status"], "brokers": row["brokers"], "fetched": False}
+
+        http_status, raw = self._request_with_status(f"/api/broker-summary/{ticker}", params={
+            "start_date": date,
+            "end_date": date,
+            "all_data": "true",
+            "flow": "all"
+        })
+        status, brokers, note = self._parse_broker_daily(date, http_status, raw)
+
+        attempts = (row["attempts"] if row else 0) + 1
+        with self._get_connection() as conn:
+            conn.execute("""
+                INSERT OR REPLACE INTO broker_daily (ticker, date, data, status, fetched_at, attempts, note)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (ticker, date, json.dumps(brokers) if brokers is not None else None, status,
+                  self._now_wib().isoformat(), attempts, note))
+            conn.commit()
+
+        return {"date": date, "status": status, "brokers": brokers, "fetched": True}
+
+    def _store_latest_broker_day(self, ticker, raw):
+        """
+        Reuse a Bandarmologi-tab response (all brokers, latest day) as LPM history, so opening
+        both tabs costs one request instead of two. Only a single, final day not stored yet is saved.
+        """
+        date = raw.get("broker_start_date")
+        if not date or raw.get("broker_end_date") != date or not self.is_day_final(date):
+            return
+        existing = self.load_broker_daily(ticker, [date]).get(date)
+        if existing and existing["status"] in ("ok", "empty"):
+            return
+        status, brokers, note = self._parse_broker_daily(date, 200, raw)
+        if status == "error":
+            return
+        with self._get_connection() as conn:
+            conn.execute("""
+                INSERT OR REPLACE INTO broker_daily (ticker, date, data, status, fetched_at, attempts, note)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (ticker, date, json.dumps(brokers), status, self._now_wib().isoformat(), 1, "dari tab Bandarmologi"))
+            conn.commit()
+
+    def _parse_broker_daily(self, date, http_status, raw):
+        """Validate one single-day response. Returns (status, brokers or None, note)."""
+        if http_status != 200 or not isinstance(raw, dict):
+            return "error", None, f"HTTP {http_status}" if http_status else "request gagal"
+        brokers = raw.get("brokers")
+        if not isinstance(brokers, list):
+            return "error", None, "respons tanpa daftar brokers"
+        # The API must answer for exactly the requested day; anything else would mix days in the line
+        start, end = raw.get("broker_start_date"), raw.get("broker_end_date")
+        if start != date or end != date:
+            return "error", None, f"tanggal respons {start}..{end} tidak sama dengan {date}"
+        if not brokers:
+            return "empty", [], None
+        compact = [{field: b.get(field) for field in BROKER_DAILY_FIELDS} for b in brokers]
+        return "ok", compact, None
+
+    def backfill_broker_daily(self, ticker, dates, max_requests=None, on_progress=None, delay=None):
+        """
+        Fetch missing trading days newest first, keeping LPM_PARAMS["quota_reserve"] requests
+        untouched for other features. Returns a summary dict; stopped_reason is one of
+        "done", "quota_reserve", "max_requests", "quota_exhausted".
+        """
+        reserve = LPM_PARAMS["quota_reserve"]
+        delay = LPM_PARAMS["request_delay_sec"] if delay is None else delay
+        missing = self.missing_broker_days(ticker, dates)
+        todo = missing[:max_requests] if max_requests is not None else missing
+
+        summary = {"missing": len(missing), "requested": 0, "ok": 0, "empty": 0, "error": 0, "stopped_reason": "done"}
+        for i, date in enumerate(todo):
+            if self.get_quota_status()["remaining"] - 1 < reserve:
+                summary["stopped_reason"] = "quota_reserve"
+                break
+            if i > 0 and delay:
+                time.sleep(delay)
+            try:
+                result = self.get_broker_daily(ticker, date)
+            except RuntimeError:
+                summary["stopped_reason"] = "quota_exhausted"
+                break
+            if result and result["fetched"]:
+                summary["requested"] += 1
+                summary[result["status"]] += 1
+            if on_progress:
+                on_progress(i + 1, len(todo), date, result)
+        else:
+            if max_requests is not None and len(missing) > max_requests:
+                summary["stopped_reason"] = "max_requests"
+        return summary
+
+    # =========================================================================
+    # 6. LPM BACKFILL JOB STATE
+    # =========================================================================
+    LPM_JOB_STALE_SEC = 120
+
+    def claim_lpm_job(self, ticker, total):
+        """
+        Mark a backfill as running for ticker. Returns False when another worker already runs
+        one; a 'running' row without a heartbeat for LPM_JOB_STALE_SEC counts as dead and is replaced.
+        """
+        conn = self._get_connection()
+        conn.isolation_level = None
+        try:
+            # IMMEDIATE takes the write lock up front, so two workers cannot both see "not running"
+            conn.execute("BEGIN IMMEDIATE")
+            row = conn.execute("SELECT state, updated_at FROM lpm_jobs WHERE ticker = ?", (ticker,)).fetchone()
+            if row and row["state"] == "running" and not self._lpm_job_is_stale(row["updated_at"]):
+                conn.execute("ROLLBACK")
+                return False
+            now = self._now_wib().isoformat()
+            conn.execute("""
+                INSERT OR REPLACE INTO lpm_jobs (ticker, state, done, total, requested, last_error, started_at, updated_at)
+                VALUES (?, 'running', 0, ?, 0, NULL, ?, ?)
+            """, (ticker, total, now, now))
+            conn.execute("COMMIT")
+            return True
+        except Exception:
+            if conn.in_transaction:
+                conn.execute("ROLLBACK")
+            raise
+        finally:
+            conn.close()
+
+    def update_lpm_job(self, ticker, **fields):
+        """Update job columns (state, done, total, requested, last_error) and refresh the heartbeat."""
+        allowed = {"state", "done", "total", "requested", "last_error"}
+        cols = [k for k in fields if k in allowed]
+        assignments = ", ".join(f"{c} = ?" for c in cols + ["updated_at"])
+        values = [fields[c] for c in cols] + [self._now_wib().isoformat(), ticker]
+        with self._get_connection() as conn:
+            conn.execute(f"UPDATE lpm_jobs SET {assignments} WHERE ticker = ?", values)
+            conn.commit()
+
+    def get_lpm_job(self, ticker):
+        """Job state for ticker, or {"state": "idle"} when none ran. A dead 'running' job is reported as error."""
+        with self._get_connection() as conn:
+            row = conn.execute("SELECT * FROM lpm_jobs WHERE ticker = ?", (ticker,)).fetchone()
+        if not row:
+            return {"state": "idle", "done": 0, "total": 0, "requested": 0, "last_error": None}
+        job = {k: row[k] for k in ("state", "done", "total", "requested", "last_error", "started_at", "updated_at")}
+        if job["state"] == "running" and self._lpm_job_is_stale(job["updated_at"]):
+            job["state"] = "error"
+            job["last_error"] = "Proses backfill terhenti tanpa kabar (kemungkinan server dimulai ulang)."
+        return job
+
+    def _lpm_job_is_stale(self, updated_at):
+        try:
+            age = (self._now_wib() - datetime.fromisoformat(updated_at)).total_seconds()
+        except (TypeError, ValueError):
+            return True
+        return age > self.LPM_JOB_STALE_SEC

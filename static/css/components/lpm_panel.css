@@ -1,0 +1,624 @@
+/* ==========================================================================
+   LPM (LIQUIDITY PRESSURE MODEL) & SMART MONEY VIEW (templates/views/view_lpm.html)
+   Colors come only from the tokens in base.css (.agent/Design.md).
+   ========================================================================== */
+
+.lpm-content,
+.lpm-coverage {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lpm-content.hidden,
+.lpm-coverage.hidden,
+.lpm-panel.hidden,
+.lpm-loading.hidden,
+.lpm-state.hidden {
+  display: none;
+}
+
+/* Tone: direction of a reading, reused by cards, legend values and broker rows */
+.lpm-tone-pos { color: var(--status-confirmed-text); }
+.lpm-tone-neg { color: var(--status-fail-text); }
+.lpm-tone-warn { color: var(--status-watchlist-text); }
+.lpm-tone-neutral { color: var(--text-primary); }
+
+/* 0. Page: picker, stored-history chips, panel header */
+.lpm-picker {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+  gap: 20px;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+}
+
+.lpm-picker-form,
+.lpm-stored {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.lpm-picker-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.lpm-picker-row {
+  display: flex;
+  gap: 8px;
+}
+
+.lpm-ticker-input {
+  flex: 1;
+  min-width: 0;
+  min-height: 36px;
+  padding: 8px 12px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+}
+
+.lpm-ticker-input::placeholder {
+  text-transform: none;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.lpm-ticker-input:focus-visible {
+  outline: 2px solid var(--brand-lime);
+  outline-offset: 1px;
+}
+
+.lpm-ticker-input[aria-invalid="true"] {
+  border-color: var(--status-fail-text);
+}
+
+.lpm-picker-error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--status-fail-text);
+}
+
+.lpm-picker-error.hidden {
+  display: none;
+}
+
+.lpm-stored-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lpm-stored-empty {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.lpm-stored-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  min-height: 32px;
+  padding: 6px 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+
+.lpm-stored-chip:hover {
+  background: var(--bg-tertiary);
+}
+
+.lpm-stored-chip.active {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.lpm-stored-chip:focus-visible {
+  outline: 2px solid var(--brand-lime);
+  outline-offset: 2px;
+}
+
+.lpm-stored-code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.lpm-stored-days {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.lpm-stored-chip.active .lpm-stored-code,
+.lpm-stored-chip.active .lpm-stored-days {
+  color: var(--text-inverse);
+}
+
+.lpm-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lpm-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lpm-panel-title {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.lpm-panel-ticker {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.lpm-panel-name {
+  font-size: 13px;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lpm-panel-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Chart gets the width; brokers sit beside it only when there is room for both */
+.lpm-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 1440px) {
+  .lpm-main-grid {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    align-items: start;
+  }
+}
+
+/* 1. Summary cards */
+.lpm-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.lpm-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.lpm-card-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.lpm-card-value {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+.lpm-card-value.mono,
+.lpm-card-sub.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+}
+
+.lpm-card-sub {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* 2. Phase reading */
+.lpm-reading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lpm-reading-main {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.lpm-reading-secondary {
+  margin: 0;
+  font-size: 13px;
+  color: var(--status-watchlist-text);
+}
+
+.lpm-reading-secondary.hidden {
+  display: none;
+}
+
+/* 3. Chart */
+.lpm-chart-card,
+.lpm-brokers-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lpm-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lpm-chart-title,
+.lpm-section-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.lpm-chart-caption {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.lpm-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.lpm-toggle-btn {
+  padding: 6px 12px;
+  min-height: 32px;
+  background: var(--bg-secondary);
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.lpm-toggle-btn + .lpm-toggle-btn {
+  border-left: 1px solid var(--border-strong);
+}
+
+.lpm-toggle-btn:hover {
+  background: var(--bg-tertiary);
+}
+
+.lpm-toggle-btn.active {
+  background: var(--text-primary);
+  color: var(--text-inverse);
+}
+
+.lpm-toggle-btn:focus-visible,
+.lpm-btn-primary:focus-visible,
+.lpm-btn-secondary:focus-visible {
+  outline: 2px solid var(--border-focus, var(--brand-lime));
+  outline-offset: 2px;
+}
+
+.lpm-legend {
+  min-height: 18px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lpm-chart {
+  height: 520px;
+  width: 100%;
+}
+
+.lpm-chart-failed {
+  height: auto;
+  padding: 24px 0;
+  font-size: 13px;
+  color: var(--status-fail-text);
+}
+
+.lpm-lens-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* 4. Brokers table */
+.lpm-brokers-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.lpm-brokers-table th {
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.lpm-brokers-table th.text-right {
+  text-align: right;
+}
+
+.lpm-brokers-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.lpm-brokers-table tr:last-child td {
+  border-bottom: none;
+}
+
+.lpm-empty-cell {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* 5. Coverage & backfill */
+.lpm-coverage {
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+}
+
+.lpm-coverage-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.lpm-coverage-text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.lpm-coverage-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--status-watchlist-text);
+}
+
+.lpm-coverage-note.hidden,
+.lpm-progress.hidden,
+.lpm-btn-secondary.hidden,
+.lpm-btn-primary.hidden {
+  display: none;
+}
+
+.lpm-progress {
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.lpm-progress-bar {
+  height: 100%;
+  width: 0;
+  background: var(--brand-lime);
+  transition: width 0.4s ease;
+}
+
+.lpm-btn-primary,
+.lpm-btn-secondary {
+  min-height: 36px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.lpm-btn-primary {
+  background: var(--brand-lime);
+  color: var(--text-inverse);
+  border: 1px solid var(--brand-lime);
+}
+
+.lpm-btn-primary:hover:not(:disabled) {
+  background: var(--brand-lime-hover);
+}
+
+.lpm-btn-secondary {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+}
+
+.lpm-btn-secondary:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+}
+
+.lpm-btn-primary:disabled,
+.lpm-btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* 6. Empty / error state */
+.lpm-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 24px;
+  background: var(--bg-primary);
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+}
+
+.lpm-state-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.lpm-state-desc {
+  margin: 0;
+  max-width: 62ch;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* 7. Loading skeleton, sized like the real cards and chart */
+.lpm-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lpm-loading-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.lpm-skeleton {
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--bg-tertiary) 25%, var(--border-subtle) 50%, var(--bg-tertiary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.lpm-skeleton-cards { height: 84px; }
+.lpm-skeleton-chart { height: 520px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lpm-skeleton { animation: none; }
+  .lpm-progress-bar { transition: none; }
+}
+
+/* 8. Experimental notice (real status: formula not validated yet) and limitations note */
+.lpm-experimental {
+  margin: 0;
+  padding: 10px 14px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--status-watchlist-text);
+  background: var(--status-watchlist-bg);
+  border: 1px solid var(--status-watchlist-border);
+  border-radius: 8px;
+}
+
+.lpm-limits {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* 9. Narrow screens. The stock modal rules stay from when LPM lived in it: they fix the
+      modal's own phone layout (tab bar scroll, padding), independent of LPM. */
+@media (max-width: 768px) {
+  .stock-modal-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* A scroll container may shrink to 0 in the modal's flex column; keep the tab bar's height */
+    flex-shrink: 0;
+  }
+
+  .stock-tab-btn {
+    flex-shrink: 0;
+  }
+
+  .lpm-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lpm-picker {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .lpm-chart,
+  .lpm-skeleton-chart {
+    height: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* The modal had no phone rules; 24px + 24px padding left the chart ~245px wide at 375px */
+  .stock-modal-backdrop {
+    padding: 8px;
+  }
+
+  .stock-modal-body {
+    padding: 16px;
+  }
+
+  .lpm-card-value {
+    font-size: 16px;
+  }
+
+  .lpm-chart-card,
+  .lpm-brokers-card {
+    padding: 12px;
+  }
+}
