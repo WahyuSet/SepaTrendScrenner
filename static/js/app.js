@@ -1,5 +1,5 @@
 /**
- * IDX Screener Pro — Legacy app.js Entrypoint
+ * IDX Screener Pro - Legacy app.js Entrypoint
  * 
  * Note: The application has been fully modularized into discrete files:
  * - /static/js/core/utils.js

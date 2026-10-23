@@ -378,7 +378,7 @@ function renderWatchlistTable() {
       <tr class="table-row-clickable" tabindex="0" role="button" aria-label="Buka detail saham ${t}" onclick="openStockDetailModal('${t}', {name: '${escapeQuotes(item.name)}', sector: '${item.sector}'})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openStockDetailModal('${t}', {name: '${escapeQuotes(item.name)}', sector: '${item.sector}'});}">
         <td class="text-center" onclick="event.stopPropagation()">
           <button class="btn-star-pin pinned" data-ticker="${t}" onclick="togglePinStock('${t}', '${escapeQuotes(item.name)}', '${item.sector}', '${item.source_screener}', event)" title="Hapus dari Watchlist">
-            ★
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
           </button>
         </td>
         <td>

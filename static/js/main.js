@@ -264,7 +264,7 @@ function initRsChipsCopyEvents() {
       setTimeout(() => chip.classList.remove('copied'), 400);
 
       if (typeof copyToClipboard === 'function') {
-        copyToClipboard(val, `📋 RS Score ${pct}: ${val} tersalin ke clipboard!`);
+        copyToClipboard(val, `RS Score ${pct}: ${val} tersalin ke clipboard!`);
       }
     });
   });
@@ -293,7 +293,7 @@ function handleCopyAllRsDistribution() {
   }, 1500);
 
   if (typeof copyToClipboard === 'function') {
-    copyToClipboard(text, '📋 7 Titik Distribusi RS Score IDX berhasil disalin!');
+    copyToClipboard(text, '7 Titik Distribusi RS Score IDX berhasil disalin!');
   }
 }
 

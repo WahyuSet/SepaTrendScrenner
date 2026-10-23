@@ -43,7 +43,12 @@
 
 .btn-star-pin.pinned {
   color: var(--status-watchlist-text);
-  text-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+}
+
+.btn-star-pin svg {
+  width: 13px;
+  height: 13px;
+  fill: currentColor;
 }
 
 /* Row Action Buttons in Tables */
