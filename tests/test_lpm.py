@@ -101,10 +101,59 @@ class TestDailyMetrics(unittest.TestCase):
         self.assertLess(crowded["pressure"], base["pressure"])
 
     def test_zero_frequency_side_is_skipped(self):
-        day = accumulation_day(0, extra=[broker("ZZ", bval=5e6, bfrq=0), broker("ZY")])
-        m = compute_daily_metrics(day)
-        self.assertNotIn("ZZ", m["broker_smart_net"])
-        self.assertNotIn("ZY", m["broker_smart_net"])
+        day = accumulation_day(0, extra=[
+            broker("ZZ", bval=150e6, bfrq=0, sval=0, sfrq=0),
+            broker("ZW", bval=0, bfrq=0, sval=150e6, sfrq=0),
+            broker("ZY"),
+        ])
+        for use_conc in (False, True):
+            m = compute_daily_metrics(day, dict(LPM_PARAMS, use_conc_weight=use_conc))
+            self.assertNotIn("ZZ", m["broker_smart_net"])
+            self.assertNotIn("ZW", m["broker_smart_net"])
+            self.assertNotIn("ZY", m["broker_smart_net"])
+
+    def test_two_way_broker_never_flips_sign_against_net_flow(self):
+        # CC is net seller (nval = -10e6) with block buy (20e6 / 2 = 10e6) and sliced sell (30e6 / 30 = 1e6)
+        day = make_day(extra=[
+            broker("CC", bval=20e6, bfrq=2, sval=30e6, sfrq=30),
+            broker("YP", bval=30e6, bfrq=30, sval=20e6, sfrq=2),
+        ])
+        m_n1 = compute_daily_metrics(day)
+        self.assertNotIn("CC", m_n1["broker_smart_net"])
+        self.assertNotIn("YP", m_n1["broker_smart_net"])
+        self.assertAlmostEqual(m_n1["pressure"], 0.0, places=12)
+
+        # Under N3 (use_conc_weight=True) with larger net share, sign strictly follows nval
+        day_big_net = make_day(extra=[
+            broker("CC", bval=20e6, bfrq=2, sval=80e6, sfrq=80),
+            broker("YP", bval=80e6, bfrq=80, sval=20e6, sfrq=2),
+        ])
+        m_n3 = compute_daily_metrics(day_big_net, dict(LPM_PARAMS, use_conc_weight=True))
+        self.assertLess(m_n3["broker_smart_net"]["CC"], 0.0)
+        self.assertGreater(m_n3["broker_smart_net"]["YP"], 0.0)
+        self.assertLessEqual(abs(m_n3["broker_smart_net"]["CC"]), 60e6)
+        self.assertLessEqual(abs(m_n3["broker_smart_net"]["YP"]), 60e6)
+
+    def test_balanced_broker_with_zero_nval_is_excluded(self):
+        day = make_day(extra=[broker("MM", bval=50e6, bfrq=5, sval=50e6, sfrq=50)])
+        for use_conc in (False, True):
+            m = compute_daily_metrics(day, dict(LPM_PARAMS, use_conc_weight=use_conc))
+            self.assertNotIn("MM", m["broker_smart_net"])
+            self.assertAlmostEqual(m["pressure"], 0.0, places=12)
+
+    def test_n3_concentration_weight_captures_sliced_institutional_order(self):
+        # Broker IN sells 100e6 in 100 trades (avg 1e6 == RETAIL_AVG, so w_size == 0)
+        # Retail absorbs 100e6 across 10 brokers (10e6 each, < 2% of turnover)
+        day = [broker("IN", bval=0, bfrq=0, sval=100e6, sfrq=100)] + [
+            broker(f"R{i}", bval=90e6, bfrq=90, sval=80e6, sfrq=80) for i in range(10)
+        ]
+        m_n1 = compute_daily_metrics(day)
+        self.assertEqual(m_n1["broker_smart_net"], {})
+        self.assertAlmostEqual(m_n1["pressure"], 0.0, places=12)
+
+        m_n3 = compute_daily_metrics(day, dict(LPM_PARAMS, use_conc_weight=True))
+        self.assertAlmostEqual(m_n3["broker_smart_net"]["IN"], -100e6)
+        self.assertAlmostEqual(m_n3["pressure"], -100e6 / 900e6)
 
     def test_day_without_trades_returns_none(self):
         self.assertIsNone(compute_daily_metrics([]))
@@ -299,8 +348,10 @@ class TestRealFixtures(unittest.TestCase):
         brokers = self.load("R1_BBCA_2026-10-20_2026-10-20.json")
         m = compute_daily_metrics(brokers)
         self.assertAlmostEqual(m["turnover"], sum(b["bval"] for b in brokers))
-        self.assertAlmostEqual(m["pressure"], 0.1594, places=3)
+        self.assertAlmostEqual(m["pressure"], 0.0060, places=3)
         self.assertFalse(m["low_liquidity"])
+        m_n3 = compute_daily_metrics(brokers, dict(LPM_PARAMS, use_conc_weight=True))
+        self.assertAlmostEqual(m_n3["pressure"], -0.0262, places=3)
 
     def test_illiquid_day(self):
         m = compute_daily_metrics(self.load("R5_ASRM_2026-10-20_2026-10-20.json"))

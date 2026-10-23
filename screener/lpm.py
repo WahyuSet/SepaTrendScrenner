@@ -14,6 +14,10 @@ LPM_PARAMS = {
     # Smart-money weight: ramp from R0 to R1 times the day's average trade value
     "R0": 1.5,
     "R1": 4.0,
+    # Optional concentration weight: ramp from C0 to C1 share of daily turnover (N3 when enabled)
+    "C0": 0.02,
+    "C1": 0.10,
+    "use_conc_weight": False,
     # Storage / fetch policy (used by the client and routes, not by the math here)
     "history_days": 80,
     "max_sync_fetch_days": 5,
@@ -105,6 +109,12 @@ def compute_daily_metrics(brokers, params=LPM_PARAMS):
 
     avg_trade_value = (total_bval + total_sval) / frequency
     R0, R1 = params["R0"], params["R1"]
+    use_conc = bool(params.get("use_conc_weight"))
+    C0, C1 = params.get("C0", 0.02), params.get("C1", 0.10)
+
+    def net_value(b):
+        nval = b.get("nval")
+        return nval if nval is not None else (b.get("bval") or 0) - (b.get("sval") or 0)
 
     smart_buy = 0.0
     smart_sell = 0.0
@@ -112,23 +122,30 @@ def compute_daily_metrics(brokers, params=LPM_PARAMS):
     for b in brokers:
         bval, sval = b.get("bval") or 0, b.get("sval") or 0
         bfrq, sfrq = b.get("bfrq") or 0, b.get("sfrq") or 0
-        # A side with zero frequency carries no usable trade size, so it gets weight 0
-        w_buy = smart_weight((bval / bfrq) / avg_trade_value, R0, R1) if bfrq > 0 else 0.0
-        w_sell = smart_weight((sval / sfrq) / avg_trade_value, R0, R1) if sfrq > 0 else 0.0
-        smart_buy += w_buy * bval
-        smart_sell += w_sell * sval
-        if w_buy > 0 or w_sell > 0:
+        nval = net_value(b)
+        # Weight only the broker's net direction; skip zero net or a dominant side with zero frequency
+        if nval > 0 and bfrq > 0:
+            dom_val, dom_frq = bval, bfrq
+        elif nval < 0 and sfrq > 0:
+            dom_val, dom_frq = sval, sfrq
+        else:
+            continue
+        w_size = smart_weight((dom_val / dom_frq) / avg_trade_value, R0, R1)
+        w_conc = smart_weight(abs(nval) / turnover, C0, C1) if use_conc else 0.0
+        w = max(w_size, w_conc)
+        if w > 0:
+            smart_net = w * nval
+            if smart_net > 0:
+                smart_buy += smart_net
+            else:
+                smart_sell += -smart_net
             code = b.get("broker_code") or "?"
-            broker_smart_net[code] = broker_smart_net.get(code, 0.0) + w_buy * bval - w_sell * sval
+            broker_smart_net[code] = broker_smart_net.get(code, 0.0) + smart_net
 
     pressure = (smart_buy - smart_sell) / turnover
     low_liquidity = frequency < params["low_liquidity_frq"]
     if low_liquidity:
         pressure *= frequency / params["low_liquidity_frq"]
-
-    def net_value(b):
-        nval = b.get("nval")
-        return nval if nval is not None else (b.get("bval") or 0) - (b.get("sval") or 0)
 
     top5 = sorted(brokers, key=lambda b: abs(net_value(b)), reverse=True)[:5]
     top5_frq = sum((b.get("bfrq") or 0) + (b.get("sfrq") or 0) for b in top5)
@@ -456,6 +473,9 @@ def build_lpm(days, params=LPM_PARAMS):
         "params": {
             "R0": params["R0"],
             "R1": params["R1"],
+            "C0": params["C0"],
+            "C1": params["C1"],
+            "use_conc_weight": params["use_conc_weight"],
             "theta_k": params["theta_k"],
             "theta_floor": params["theta_floor"],
             "window": params["div_window"],
