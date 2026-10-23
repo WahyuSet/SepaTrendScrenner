@@ -528,14 +528,14 @@
   padding: 0 6px;
 }
 
-/* 7. Responsive Layout */
-@media (max-width: 1280px) {
+/* 7. Responsive Layout (Design.md §9 consolidated breakpoints) */
+@media (max-width: 1024px) {
   .backtest-stats-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 768px) {
   .strategy-horizon-strip {
     grid-template-columns: 1fr;
   }
@@ -544,7 +544,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 480px) {
   .backtest-stats-grid {
     grid-template-columns: 1fr;
   }

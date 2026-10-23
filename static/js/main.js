@@ -404,11 +404,11 @@ function toggleTheme() {
 document.addEventListener('DOMContentLoaded', syncThemeToggle);
 
 // ============================================================================
-// MOBILE NAVIGATION & DRAWER CONTROLLER
+// MOBILE NAVIGATION & DRAWER CONTROLLER (Design.md §9)
 // ============================================================================
 
 function toggleMobileSidebar() {
-  const sidebar = document.querySelector('.sidebar');
+  const sidebar = document.getElementById('app-sidebar') || document.querySelector('.sidebar');
   if (!sidebar) return;
 
   const isOpen = sidebar.classList.contains('mobile-open');
@@ -420,30 +420,67 @@ function toggleMobileSidebar() {
 }
 
 function openMobileSidebar() {
-  const sidebar = document.querySelector('.sidebar');
+  const sidebar = document.getElementById('app-sidebar') || document.querySelector('.sidebar');
   const overlay = document.getElementById('sidebar-overlay');
-  if (sidebar) sidebar.classList.add('mobile-open');
+  const menuBtn = document.getElementById('btn-mobile-menu');
+  const closeBtn = document.getElementById('btn-sidebar-close');
+
+  if (sidebar) {
+    sidebar.classList.add('mobile-open');
+    sidebar.setAttribute('aria-hidden', 'false');
+  }
   if (overlay) overlay.classList.add('active');
+  if (menuBtn) menuBtn.setAttribute('aria-expanded', 'true');
   document.body.classList.add('sidebar-locked');
+
+  // Move focus into drawer
+  if (closeBtn) {
+    closeBtn.focus();
+  } else if (sidebar) {
+    sidebar.focus();
+  }
 }
 
 function closeMobileSidebar() {
-  const sidebar = document.querySelector('.sidebar');
+  const sidebar = document.getElementById('app-sidebar') || document.querySelector('.sidebar');
   const overlay = document.getElementById('sidebar-overlay');
-  if (sidebar) sidebar.classList.remove('mobile-open');
+  const menuBtn = document.getElementById('btn-mobile-menu');
+
+  if (!sidebar || !sidebar.classList.contains('mobile-open')) return;
+
+  sidebar.classList.remove('mobile-open');
+  if (window.innerWidth <= 1024) {
+    sidebar.setAttribute('aria-hidden', 'true');
+  } else {
+    sidebar.removeAttribute('aria-hidden');
+  }
+
   if (overlay) overlay.classList.remove('active');
+  if (menuBtn) {
+    menuBtn.setAttribute('aria-expanded', 'false');
+    // Restore focus if focus was inside sidebar
+    if (sidebar.contains(document.activeElement)) {
+      menuBtn.focus();
+    }
+  }
   document.body.classList.remove('sidebar-locked');
 }
 
-// Close drawer on Escape key or on window resize > 768px
+// Close drawer on Escape key or on window resize > 1024px
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    closeMobileSidebar();
+    const sidebar = document.getElementById('app-sidebar') || document.querySelector('.sidebar');
+    if (sidebar && sidebar.classList.contains('mobile-open')) {
+      closeMobileSidebar();
+      e.stopPropagation();
+    }
   }
 });
 
 window.addEventListener('resize', () => {
-  if (window.innerWidth > 768) {
+  if (window.innerWidth > 1024) {
     closeMobileSidebar();
+    const sidebar = document.getElementById('app-sidebar') || document.querySelector('.sidebar');
+    if (sidebar) sidebar.removeAttribute('aria-hidden');
   }
 });

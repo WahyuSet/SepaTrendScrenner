@@ -743,8 +743,8 @@
   color: var(--status-fail-text);
 }
 
-/* Mobile & Tablet Responsive */
-@media (max-width: 900px) {
+/* Mobile & Tablet Responsive (Design.md §9 consolidated breakpoints) */
+@media (max-width: 768px) {
   .regime-top-row {
     flex-direction: column;
     align-items: stretch;
@@ -779,7 +779,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .market-regime-card {
     padding: 12px 14px;
     border-radius: 10px;
@@ -840,8 +840,8 @@
   }
 
   .regime-rs-chips {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 5px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
   }
 
   .rs-chip {
@@ -854,11 +854,5 @@
 
   .rs-chip-val {
     font-size: 11px;
-  }
-}
-
-@media (max-width: 400px) {
-  .regime-rs-chips {
-    grid-template-columns: repeat(2, 1fr);
   }
 }

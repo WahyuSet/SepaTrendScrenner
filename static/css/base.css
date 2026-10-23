@@ -179,3 +179,40 @@ select:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* Touch Target Accessibility (Design.md §9, pointer: coarse) */
+@media (pointer: coarse) {
+  button,
+  .btn,
+  .btn-table-util,
+  .segmented-tab-btn,
+  .score-pill-btn,
+  .pagination-btn,
+  .modal-close,
+  .btn-star-pin,
+  .btn-copy-rs,
+  .chip-btn,
+  .nav-item,
+  .mobile-menu-btn,
+  .mobile-action-btn,
+  .filter-select {
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  .mobile-menu-btn,
+  .mobile-action-btn,
+  .modal-close,
+  .btn-star-pin {
+    min-width: 44px;
+  }
+
+  .segmented-tab-btn {
+    padding: 10px 14px;
+  }
+
+  .nav-item {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}

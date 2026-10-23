@@ -690,7 +690,48 @@
 
   .table-container {
     max-height: calc(100vh - 230px);
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+
+  /* Sticky Ticker Column on Mobile (Design.md §9) */
+  .data-table th:first-child,
+  .data-table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 4;
+    background: var(--bg-primary);
+  }
+  .data-table th:first-child {
+    z-index: 12;
+    background: var(--bg-tertiary);
+  }
+
+  .data-table th:nth-child(2),
+  .data-table td:nth-child(2) {
+    position: sticky;
+    left: 44px;
+    z-index: 4;
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border-subtle);
+  }
+  .data-table th:nth-child(2) {
+    z-index: 12;
+    background: var(--bg-tertiary);
+    border-right: 1px solid var(--border-subtle);
+  }
+
+  #journal-table th:nth-child(2),
+  #journal-table td:nth-child(2) {
+    left: 70px;
+  }
+
+  .data-table tbody tr:hover td:first-child,
+  .data-table tbody tr:hover td:nth-child(2),
+  .data-table tbody tr:focus-visible td:first-child,
+  .data-table tbody tr:focus-visible td:nth-child(2) {
+    background: var(--bg-tertiary);
   }
 
   .data-table th,
@@ -720,6 +761,19 @@
   .btn-table-util {
     font-size: 10px;
     padding: 0 6px;
+  }
+
+  .data-table th:first-child,
+  .data-table td:first-child {
+    width: 36px;
+    min-width: 36px;
+    padding: 8px 4px;
+  }
+
+  .data-table th:nth-child(2),
+  .data-table td:nth-child(2) {
+    left: 36px;
+    padding: 8px 8px;
   }
 }
 
