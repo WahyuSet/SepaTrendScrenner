@@ -104,19 +104,19 @@
 
     <!-- Table Responsive Wrapper -->
     <div class="table-container">
-      <table class="data-table" id="screener-table">
+      <table class="data-table" id="screener-table" aria-busy="false">
         <thead>
           <tr>
-            <th onclick="sortTable('ticker')">Ticker <span class="sort-icon" id="sort-ticker">↕</span></th>
-            <th onclick="sortTable('name')">Nama Emiten <span class="sort-icon" id="sort-name">↕</span></th>
-            <th onclick="sortTable('sector')">Sektor <span class="sort-icon" id="sort-sector">↕</span></th>
-            <th onclick="sortTable('price')">Harga Terakhir <span class="sort-icon" id="sort-price">↕</span></th>
-            <th class="text-center" onclick="sortTable('total_score')">SEPA Score <span class="sort-icon" id="sort-total_score">↕</span></th>
-            <th class="text-center" onclick="sortTable('status')">Status Stage 2 <span class="sort-icon" id="sort-status">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortTable('ticker')">Ticker <span class="sort-icon" id="sort-ticker">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortTable('name')">Nama Emiten <span class="sort-icon" id="sort-name">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortTable('sector')">Sektor <span class="sort-icon" id="sort-sector">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortTable('price')">Harga Terakhir <span class="sort-icon" id="sort-price">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortTable('total_score')">SEPA Score <span class="sort-icon" id="sort-total_score">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortTable('status')">Status Stage 2 <span class="sort-icon" id="sort-status">↕</span></th>
             <th class="text-center">Kriteria (C1-C8)</th>
-            <th class="text-center" onclick="sortTable('rs_score')">RS Rating <span class="sort-icon" id="sort-rs_score">↕</span></th>
-            <th class="text-right" onclick="sortTable('dist_low_pct')">% Dari 52W Low <span class="sort-icon" id="sort-dist_low_pct">↕</span></th>
-            <th class="text-right" onclick="sortTable('dist_high_pct')">% Dari 52W High <span class="sort-icon" id="sort-dist_high_pct">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortTable('rs_score')">RS Rating <span class="sort-icon" id="sort-rs_score">↕</span></th>
+            <th class="text-right" tabindex="0" role="columnheader" aria-sort="none" onclick="sortTable('dist_low_pct')">% Dari 52W Low <span class="sort-icon" id="sort-dist_low_pct">↕</span></th>
+            <th class="text-right" tabindex="0" role="columnheader" aria-sort="none" onclick="sortTable('dist_high_pct')">% Dari 52W High <span class="sort-icon" id="sort-dist_high_pct">↕</span></th>
             <th class="text-center">Bandar Flow</th>
             <th class="text-center">Aksi / Detail</th>
           </tr>
@@ -128,12 +128,11 @@
     </div>
 
     <!-- Empty State Message -->
-    <div id="empty-state" class="empty-state hidden">
-      <h3>Tidak Ada Saham yang Memenuhi Filter</h3>
-      <p>Coba sesuaikan batas skor minimal atau klik tombol "Scan IDX Sekarang".</p>
-      <div class="empty-actions">
-        <button class="btn-secondary" onclick="resetSepaFilters()">Reset Filter</button>
-        <button class="btn-scan-small" onclick="triggerScan()">Scan IDX Sekarang</button>
+    <div id="empty-state" class="empty-state hidden" role="status">
+      <h3 id="empty-state-title">Tidak Ada Saham yang Memenuhi Filter</h3>
+      <p id="empty-state-desc">Tidak ada saham yang cocok dengan kriteria filter saat ini.</p>
+      <div id="empty-state-actions" class="empty-actions">
+        <button type="button" class="btn-secondary" onclick="resetSepaFilters()">Reset Filter</button>
       </div>
     </div>
   </section>

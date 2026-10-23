@@ -27,6 +27,16 @@ async function loadBacktestData(period = null) {
   }
   const years = backtestState.selectedPeriod;
 
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'bt-trades-table',
+      tbodyId: 'bt-trades-tbody',
+      colSpan: 14,
+      state: 'loading',
+      loadingText: 'Memuat data log sinyal backtest...'
+    });
+  }
+
   try {
     // 1. Fetch Summary Benchmark
     const resSummary = await fetch(`/api/backtest/summary?years=${years}`);
@@ -52,6 +62,17 @@ async function loadBacktestData(period = null) {
     }
   } catch (err) {
     console.error('Error loading backtest data:', err);
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'bt-trades-table',
+        tbodyId: 'bt-trades-tbody',
+        colSpan: 14,
+        state: 'error',
+        title: 'Gagal Memuat Data',
+        message: 'Gagal memuat log sinyal backtest: ' + (err.message || 'Koneksi terputus'),
+        actionHtml: '<button type="button" class="btn btn-secondary" onclick="loadBacktestData()">Coba Lagi</button>'
+      });
+    }
     if (typeof showToast === 'function') {
       showToast('Gagal memuat data backtest', 'error');
     }
@@ -180,16 +201,14 @@ async function runOnDemandTickerBacktest(targetSymbol = null) {
   const years = backtestState.selectedPeriod;
 
   // Show loading indicator
-  const tbody = document.getElementById('bt-trades-tbody');
-  if (tbody) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="14" class="empty-state">
-          <h3>Menjalankan simulasi point-in-time untuk ${ticker}...</h3>
-          <p>Mengevaluasi sinyal Quality Setup & VCP selama ${years} tahun terakhir...</p>
-        </td>
-      </tr>
-    `;
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'bt-trades-table',
+      tbodyId: 'bt-trades-tbody',
+      colSpan: 14,
+      state: 'loading',
+      loadingText: `Menjalankan simulasi point-in-time untuk ${ticker}...`
+    });
   }
 
   try {
@@ -227,6 +246,17 @@ async function runOnDemandTickerBacktest(targetSymbol = null) {
     }
   } catch (err) {
     console.error(`Error simulating ${ticker}:`, err);
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'bt-trades-table',
+        tbodyId: 'bt-trades-tbody',
+        colSpan: 14,
+        state: 'error',
+        title: 'Gagal Memuat Data',
+        message: `Gagal memproses simulasi untuk ${ticker}.`,
+        actionHtml: '<button type="button" class="btn btn-secondary" onclick="resetToUniverseBenchmark()">Kembali ke Benchmark</button>'
+      });
+    }
     if (typeof showToast === 'function') {
       showToast(`Gagal memproses simulasi untuk ${ticker}`, 'error');
     }
@@ -403,17 +433,42 @@ function renderBacktestTableRows() {
   if (badgeCount) badgeCount.textContent = `${total} Transaksi`;
 
   if (total === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="14" class="empty-state">
-          <h3>Tidak ada transaksi yang cocok dengan filter</h3>
-          <p>Coba ubah filter setup atau status keluar pada toolbar di atas.</p>
-        </td>
-      </tr>
-    `;
+    if (typeof setTableViewState === 'function') {
+      const isFiltered = (backtestState.selectedStrategy !== 'ALL' || backtestState.selectedStatus !== 'ALL' || Boolean(backtestState.searchQuery));
+      if (isFiltered) {
+        setTableViewState({
+          tableId: 'bt-trades-table',
+          tbodyId: 'bt-trades-tbody',
+          colSpan: 14,
+          state: 'empty_filtered',
+          title: 'Tidak Ada Transaksi yang Memenuhi Filter',
+          message: 'Tidak ada sinyal yang cocok dengan filter setup atau status keluar saat ini.',
+          actionHtml: '<button type="button" class="btn btn-secondary" onclick="resetBacktestTableFilters()">Reset Filter</button>'
+        });
+      } else {
+        setTableViewState({
+          tableId: 'bt-trades-table',
+          tbodyId: 'bt-trades-tbody',
+          colSpan: 14,
+          state: 'empty_unscanned',
+          title: 'Belum Ada Data Backtest',
+          message: 'Jalankan simulasi untuk melihat histori transaksi dan performa sinyal.',
+          actionHtml: '<button type="button" class="btn btn-primary" onclick="refreshBacktestBenchmark()">Jalankan Benchmark</button>'
+        });
+      }
+    }
     if (countLabel) countLabel.textContent = '0';
     renderBacktestPagination(0);
     return;
+  }
+
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'bt-trades-table',
+      tbodyId: 'bt-trades-tbody',
+      colSpan: 14,
+      state: 'data'
+    });
   }
 
   // Pagination slice

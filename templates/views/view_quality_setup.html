@@ -125,17 +125,17 @@
 
     <!-- RESPONSIVE TABLE WRAPPER -->
     <div class="table-container">
-      <table class="data-table" id="quality-table">
+      <table class="data-table" id="quality-table" aria-busy="false">
         <thead>
           <tr>
-            <th onclick="sortQualityTable('ticker')">Ticker & Nama <span class="sort-icon" id="qs-sort-ticker">↕</span></th>
-            <th onclick="sortQualityTable('sector')">Sektor <span class="sort-icon" id="qs-sort-sector">↕</span></th>
-            <th onclick="sortQualityTable('price')">Harga Terakhir <span class="sort-icon" id="qs-sort-price">↕</span></th>
-            <th class="text-center" onclick="sortQualityTable('score')">Quality Score <span class="sort-icon" id="qs-sort-score">↕</span></th>
-            <th class="text-center" onclick="sortQualityTable('grade')">Grade <span class="sort-icon" id="qs-sort-grade">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortQualityTable('ticker')">Ticker & Nama <span class="sort-icon" id="qs-sort-ticker">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortQualityTable('sector')">Sektor <span class="sort-icon" id="qs-sort-sector">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortQualityTable('price')">Harga Terakhir <span class="sort-icon" id="qs-sort-price">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortQualityTable('score')">Quality Score <span class="sort-icon" id="qs-sort-score">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortQualityTable('grade')">Grade <span class="sort-icon" id="qs-sort-grade">↕</span></th>
             <th class="text-center">Setup & Supertrend</th>
             <th class="text-center">Trading Plan Taktis (Entry • SL • TP1)</th>
-            <th class="text-center" onclick="sortQualityTable('risk_reward')">R:R <span class="sort-icon" id="qs-sort-risk_reward">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortQualityTable('risk_reward')">R:R <span class="sort-icon" id="qs-sort-risk_reward">↕</span></th>
             <th class="text-center">Aksi / Detail</th>
           </tr>
         </thead>
@@ -146,11 +146,11 @@
     </div>
 
     <!-- EMPTY STATE -->
-    <div id="qs-empty-state" class="empty-state hidden">
-      <h3>Tidak Ada Saham Quality Setup yang Memenuhi Filter</h3>
-      <p>Coba ganti tab filter atau bersihkan kata kunci pencarian.</p>
-      <div class="empty-actions">
-        <button class="btn-table-util" onclick="resetQualityFilters()">Reset Filter</button>
+    <div id="qs-empty-state" class="empty-state hidden" role="status">
+      <h3 id="qs-empty-title">Tidak Ada Saham Quality Setup yang Memenuhi Filter</h3>
+      <p id="qs-empty-desc">Tidak ada saham yang cocok dengan kriteria filter saat ini.</p>
+      <div id="qs-empty-actions" class="empty-actions">
+        <button type="button" class="btn-secondary" onclick="resetQualityFilters()">Reset Filter</button>
       </div>
     </div>
   </section>

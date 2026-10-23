@@ -152,6 +152,18 @@
   user-select: none;
 }
 
+button.modal-stat-item {
+  font: inherit;
+  text-align: left;
+  width: 100%;
+  border: 1px solid var(--border-subtle);
+}
+
+button.modal-stat-item:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
+}
+
 .stat-item-copyable:hover {
   background: var(--bg-tertiary);
 }

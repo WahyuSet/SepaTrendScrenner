@@ -523,9 +523,9 @@ async function checkBandarInline(ticker, btnElement, event) {
       const badgeClass = d.status_class === "success" ? "big-accum" : (d.status_class === "danger" ? "big-dist" : (d.status_class === "warning" ? "normal-dist" : (d.status_class === "accent" ? "normal-accum" : "neutral")));
 
       const newHtml = `
-        <span class="bandar-cell-badge ${badgeClass}" onclick="openStockDetailModal('${ticker}');" title="Klik untuk lihat detail Top Broker">
+        <button type="button" class="bandar-cell-badge ${badgeClass}" onclick="openStockDetailModal('${ticker}');" title="Klik untuk lihat detail Top Broker">
           ${d.status_label || d.status} (${d.top3_buy_ratio}%)
-        </span>
+        </button>
       `;
       btnElement.outerHTML = newHtml;
 

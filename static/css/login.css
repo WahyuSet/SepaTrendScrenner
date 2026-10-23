@@ -175,7 +175,6 @@
   padding: 10px 36px 10px 34px;
   font-size: 13.5px;
   color: var(--login-text-headline);
-  outline: none;
   box-sizing: border-box;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -183,6 +182,11 @@
 .form-input:focus {
   border-color: var(--login-input-focus-border);
   box-shadow: 0 0 0 3px var(--login-input-focus-ring);
+}
+
+.form-input:focus-visible {
+  outline: 2px solid var(--login-input-focus-border);
+  outline-offset: 1px;
 }
 
 .form-input::placeholder {

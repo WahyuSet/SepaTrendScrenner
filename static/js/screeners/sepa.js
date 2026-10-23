@@ -17,6 +17,15 @@ const sepaState = {
 
 async function loadCachedResults() {
   renderSkeleton(8);
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'screener-table',
+      tbodyId: 'table-body',
+      emptyStateId: 'empty-state',
+      state: 'loading',
+      viewName: 'SEPA Trend'
+    });
+  }
   try {
     const res = await fetch('/api/results');
     const json = await res.json();
@@ -32,12 +41,35 @@ async function loadCachedResults() {
     } else {
       renderStatsCards(null, null);
       sepaState.allResults = [];
-      applyFilters();
+      if (typeof setTableViewState === 'function') {
+        setTableViewState({
+          tableId: 'screener-table',
+          tbodyId: 'table-body',
+          emptyStateId: 'empty-state',
+          state: 'unscanned',
+          viewName: 'SEPA Trend',
+          scanFn: 'triggerScan()'
+        });
+      } else {
+        applyFilters();
+      }
     }
   } catch (err) {
     console.error('Failed to load cached results:', err);
     sepaState.allResults = [];
-    applyFilters();
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'screener-table',
+        tbodyId: 'table-body',
+        emptyStateId: 'empty-state',
+        state: 'error',
+        viewName: 'SEPA Trend',
+        errorMsg: err.message || 'Koneksi ke server gagal',
+        retryFn: 'loadCachedResults()'
+      });
+    } else {
+      applyFilters();
+    }
   }
 }
 
@@ -138,12 +170,21 @@ function sortTable(column) {
     sepaState.sortAsc = (column === 'ticker' || column === 'name' || column === 'sector');
   }
 
-  // Update header indicator icons
-  const icons = document.querySelectorAll('#screener-table .sort-icon');
-  icons.forEach(ic => ic.textContent = '↕');
+  // Update header indicator icons and aria-sort
+  const ths = document.querySelectorAll('#screener-table th[role="columnheader"]');
+  ths.forEach(th => {
+    th.setAttribute('aria-sort', 'none');
+    const ic = th.querySelector('.sort-icon');
+    if (ic) ic.classList.remove('active');
+  });
+
   const targetIcon = document.getElementById(`sort-${column}`);
   if (targetIcon) {
-    targetIcon.textContent = sepaState.sortAsc ? '▲' : '▼';
+    targetIcon.classList.add('active');
+    const parentTh = targetIcon.closest('th');
+    if (parentTh) {
+      parentTh.setAttribute('aria-sort', sepaState.sortAsc ? 'ascending' : 'descending');
+    }
   }
 
   applyFilters();
@@ -239,12 +280,15 @@ function renderStatsCards(stats, timestamp) {
 }
 
 function renderSkeleton(rowCount = 8) {
+  const table = document.getElementById('screener-table');
+  if (table) table.setAttribute('aria-busy', 'true');
+
   const tbody = document.getElementById('table-body');
   const emptyState = document.getElementById('empty-state');
   if (emptyState) emptyState.classList.add('hidden');
   if (!tbody) return;
 
-  let html = '';
+  let html = '<tr class="sr-only"><td>Memuat hasil SEPA Trend...</td></tr>';
   for (let i = 0; i < rowCount; i++) {
     html += `
       <tr>
@@ -269,7 +313,6 @@ function renderSkeleton(rowCount = 8) {
 function renderTable(data) {
   const tbody = document.getElementById('table-body');
   const countBadge = document.getElementById('table-count-badge');
-  const emptyState = document.getElementById('empty-state');
 
   if (countBadge) {
     countBadge.textContent = `${data.length} Saham Terkualifikasi`;
@@ -279,11 +322,44 @@ function renderTable(data) {
 
   if (data.length === 0) {
     tbody.innerHTML = '';
-    if (emptyState) emptyState.classList.remove('hidden');
+    if (typeof setTableViewState === 'function') {
+      if (sepaState.allResults.length === 0) {
+        setTableViewState({
+          tableId: 'screener-table',
+          tbodyId: 'table-body',
+          emptyStateId: 'empty-state',
+          state: 'unscanned',
+          viewName: 'SEPA Trend',
+          scanFn: 'triggerScan()'
+        });
+      } else {
+        setTableViewState({
+          tableId: 'screener-table',
+          tbodyId: 'table-body',
+          emptyStateId: 'empty-state',
+          state: 'filtered',
+          viewName: 'SEPA Trend',
+          resetFn: 'resetSepaFilters()'
+        });
+      }
+    } else {
+      const emptyState = document.getElementById('empty-state');
+      if (emptyState) emptyState.classList.remove('hidden');
+    }
     return;
   }
 
-  if (emptyState) emptyState.classList.add('hidden');
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'screener-table',
+      tbodyId: 'table-body',
+      emptyStateId: 'empty-state',
+      state: 'ready'
+    });
+  } else {
+    const emptyState = document.getElementById('empty-state');
+    if (emptyState) emptyState.classList.add('hidden');
+  }
 
   const useFade = isFirstSepaRender;
   let rowsHtml = '';
@@ -359,8 +435,10 @@ function renderTable(data) {
         <td class="text-center" onclick="event.stopPropagation()">
           ${critPillsHtml}
         </td>
-        <td class="text-center" onclick="event.stopPropagation(); copyToClipboard('${stock.rs_score.toFixed(0)}', 'RS Rating ${stock.ticker}: ${stock.rs_score.toFixed(0)} tersalin!')" title="Klik untuk salin RS Rating ${stock.ticker}">
-          <span class="rs-badge ${rsClass}">${stock.rs_score.toFixed(0)}</span>
+        <td class="text-center" onclick="event.stopPropagation()">
+          <button type="button" class="btn-copy-rs" onclick="copyToClipboard('${stock.rs_score.toFixed(0)}', 'RS Rating ${stock.ticker}: ${stock.rs_score.toFixed(0)} tersalin!')" title="Klik untuk salin RS Rating ${stock.ticker}">
+            <span class="rs-badge ${rsClass}">${stock.rs_score.toFixed(0)}</span>
+          </button>
         </td>
         <td class="text-right dist-cell ${distLowClass}">
           +${stock.dist_low_pct.toFixed(1)}%

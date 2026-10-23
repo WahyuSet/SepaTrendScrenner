@@ -783,6 +783,10 @@ input.calc-custom-risk-input,
 }
 
 .calc-advanced-header {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+  text-align: left;
   padding: 10px 12px;
   background: var(--bg-primary);
   cursor: pointer;
@@ -797,6 +801,11 @@ input.calc-custom-risk-input,
 
 .calc-advanced-header:hover {
   background: var(--bg-tertiary);
+}
+
+.calc-advanced-header:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: -2px;
 }
 
 .calc-advanced-content {

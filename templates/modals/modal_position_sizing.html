@@ -85,10 +85,10 @@
 
         <!-- Cap Alokasi & Broker Fee Accordion -->
         <div class="calc-advanced-box">
-          <div class="calc-advanced-header" onclick="toggleAdvancedCalcSettings()">
+          <button type="button" class="calc-advanced-header" onclick="toggleAdvancedCalcSettings()" aria-expanded="false" aria-controls="adv-calc-body">
             <span>Pengaturan Batas Alokasi & Fee Broker</span>
-            <span id="adv-calc-chevron">▼</span>
-          </div>
+            <span id="adv-calc-chevron" aria-hidden="true">▼</span>
+          </button>
           <div id="adv-calc-body" class="calc-advanced-content hidden">
             <div class="calc-field-group">
               <label for="calc-max-cap">Batas Alokasi Maksimal per Saham (% Portofolio)</label>

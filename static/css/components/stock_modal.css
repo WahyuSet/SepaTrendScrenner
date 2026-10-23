@@ -888,10 +888,17 @@
   white-space: nowrap;
   height: 28px;
   box-sizing: border-box;
+  appearance: none;
+  border: 1px solid transparent;
 }
 
 .bandar-cell-badge:hover {
   filter: brightness(0.96);
+}
+
+.bandar-cell-badge:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
 }
 
 .bandar-cell-badge.big-accum {

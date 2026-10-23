@@ -362,6 +362,33 @@
   color: var(--text-primary);
 }
 
+.data-table th:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: -2px;
+  background: var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.btn-copy-rs {
+  background: transparent;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background-color 150ms ease;
+}
+
+.btn-copy-rs:hover {
+  background: var(--bg-tertiary);
+}
+
+.btn-copy-rs:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
+}
+
 .sort-icon {
   font-size: 10px;
   margin-left: 4px;

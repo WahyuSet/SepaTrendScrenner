@@ -211,3 +211,78 @@ function fallbackCopy(text, msg) {
     console.error('Fallback copy failed:', err);
   }
 }
+
+// ----------------------------------------------------------------------------
+// 4. Standardized 4-State Table & View Manager (Design.md §7)
+// ----------------------------------------------------------------------------
+
+function setTableViewState({
+  tableId,
+  tbodyId,
+  emptyStateId,
+  state, // 'loading' | 'unscanned' | 'filtered' | 'error' | 'ready'
+  viewName = 'data',
+  errorMsg,
+  resetFn,
+  retryFn,
+  scanFn = 'triggerScan()'
+}) {
+  const table = tableId ? document.getElementById(tableId) : null;
+  const tbody = tbodyId ? document.getElementById(tbodyId) : null;
+  const emptyEl = emptyStateId ? document.getElementById(emptyStateId) : null;
+
+  if (table) {
+    table.setAttribute('aria-busy', state === 'loading' ? 'true' : 'false');
+  }
+
+  if (!emptyEl) return;
+
+  if (state === 'ready') {
+    emptyEl.classList.add('hidden');
+    return;
+  }
+
+  if (state === 'loading') {
+    emptyEl.classList.add('hidden');
+    return;
+  }
+
+  let titleEl = emptyEl.querySelector('h3, .empty-title');
+  let descEl = emptyEl.querySelector('p, .empty-desc');
+  let actionsEl = emptyEl.querySelector('.empty-actions');
+
+  if (!actionsEl) {
+    actionsEl = document.createElement('div');
+    actionsEl.className = 'empty-actions';
+    emptyEl.appendChild(actionsEl);
+  }
+
+  if (tbody) tbody.innerHTML = '';
+  emptyEl.classList.remove('hidden');
+
+  if (state === 'unscanned') {
+    if (titleEl) titleEl.textContent = 'Belum Ada Hasil Scan';
+    if (descEl) descEl.textContent = `Belum ada hasil scan ${viewName}. Jalankan Scan IDX untuk mengisi tabel ini.`;
+    actionsEl.innerHTML = `<button type="button" class="btn-scan-small" onclick="${scanFn}">Scan IDX Sekarang</button>`;
+  } else if (state === 'filtered') {
+    if (titleEl) titleEl.textContent = 'Tidak Ada Saham yang Memenuhi Filter';
+    if (descEl) descEl.textContent = 'Tidak ada saham yang cocok dengan kriteria filter saat ini.';
+    actionsEl.innerHTML = `<button type="button" class="btn-secondary" onclick="${resetFn}">Reset Filter</button>`;
+  } else if (state === 'error') {
+    if (titleEl) titleEl.textContent = 'Gagal Memuat Data';
+    if (descEl) descEl.textContent = `Gagal memuat hasil ${viewName}: ${errorMsg || 'Terjadi kesalahan pada server'}.`;
+    actionsEl.innerHTML = `<button type="button" class="btn-secondary" onclick="${retryFn}">Coba Lagi</button>`;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// 5. Accessible Table Keyboard Sorting (WCAG AA & Design.md §10)
+// ----------------------------------------------------------------------------
+
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target && e.target.tagName === 'TH' && e.target.getAttribute('tabindex') === '0') {
+    e.preventDefault();
+    e.target.click();
+  }
+});
+

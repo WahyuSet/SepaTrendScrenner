@@ -21,11 +21,24 @@ const rsiState = {
 
 async function loadRsiResults() {
   renderRsiSkeleton(6);
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'rsi-table',
+      tbodyId: 'rsi-table-body',
+      emptyStateId: 'rsi-empty-state',
+      state: 'loading',
+      viewName: 'RSI Divergence'
+    });
+  }
   try {
     const [res1d, res4h] = await Promise.all([
       fetch('/api/rsi-divergence?tf=1D').then(r => r.json()).catch(() => null),
       fetch('/api/rsi-divergence/4h').then(r => r.json()).catch(() => null)
     ]);
+
+    if (!res1d && !res4h) {
+      throw new Error('Gagal menghubungi server untuk data RSI');
+    }
 
     if (res1d && res1d.status === 'success' && res1d.data) {
       rsiState.data1D = {
@@ -52,7 +65,19 @@ async function loadRsiResults() {
   } catch (err) {
     console.error('Failed to load RSI results:', err);
     rsiState.allResults = [];
-    applyRsiFilters();
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'rsi-table',
+        tbodyId: 'rsi-table-body',
+        emptyStateId: 'rsi-empty-state',
+        state: 'error',
+        viewName: 'RSI Divergence',
+        errorMsg: err.message || 'Koneksi ke server gagal',
+        retryFn: 'loadRsiResults()'
+      });
+    } else {
+      applyRsiFilters();
+    }
   }
 }
 
@@ -144,29 +169,6 @@ function handleRsiSectorFilter(val) {
   applyRsiFilters();
 }
 
-function resetRsiFilters() {
-  rsiState.sectorFilter = 'ALL';
-  rsiState.typeFilter = 'ALL';
-  rsiState.gradeFilter = 'ALL';
-  rsiState.hideHighRisk = false;
-
-  const select = document.getElementById('rsi-sector-filter');
-  if (select) select.value = 'ALL';
-
-  const riskBtn = document.getElementById('rsi-toggle-highrisk');
-  if (riskBtn) {
-    riskBtn.classList.remove('active-filter');
-    riskBtn.textContent = 'Sembunyikan Grade C';
-  }
-
-  ['rsi-tab-all', 'rsi-tab-reg', 'rsi-tab-hid', 'rsi-tab-gradea'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.toggle('active', id === 'rsi-tab-all');
-  });
-
-  applyRsiFilters();
-}
-
 function renderRsiStatsCards(stats, timestamp) {
   const statTotal = document.getElementById('rsi-stat-total');
   const statReg = document.getElementById('rsi-stat-reg-bull');
@@ -231,11 +233,20 @@ function sortRsiTable(col) {
     rsiState.sortAsc = (col === 'ticker' || col === 'name' || col === 'sector' || col === 'bars_ago');
   }
 
-  const icons = document.querySelectorAll('#rsi-table .sort-icon');
-  icons.forEach(ic => ic.textContent = '↕');
+  const ths = document.querySelectorAll('#rsi-table th[role="columnheader"]');
+  ths.forEach(th => {
+    th.setAttribute('aria-sort', 'none');
+    const ic = th.querySelector('.sort-icon');
+    if (ic) ic.classList.remove('active');
+  });
+
   const targetIcon = document.getElementById(`rsi-sort-${col}`);
   if (targetIcon) {
-    targetIcon.textContent = rsiState.sortAsc ? '▲' : '▼';
+    targetIcon.classList.add('active');
+    const parentTh = targetIcon.closest('th');
+    if (parentTh) {
+      parentTh.setAttribute('aria-sort', rsiState.sortAsc ? 'ascending' : 'descending');
+    }
   }
 
   applyRsiFilters();
@@ -306,12 +317,15 @@ function applyRsiFilters() {
 }
 
 function renderRsiSkeleton(rowCount = 6) {
+  const table = document.getElementById('rsi-table');
+  if (table) table.setAttribute('aria-busy', 'true');
+
   const tbody = document.getElementById('rsi-table-body');
   const emptyState = document.getElementById('rsi-empty-state');
   if (emptyState) emptyState.classList.add('hidden');
   if (!tbody) return;
 
-  let html = '';
+  let html = '<tr class="sr-only"><td>Memuat hasil RSI Divergence...</td></tr>';
   for (let i = 0; i < rowCount; i++) {
     html += `
       <tr>
@@ -335,7 +349,6 @@ function renderRsiSkeleton(rowCount = 6) {
 function renderRsiTable(data) {
   const tbody = document.getElementById('rsi-table-body');
   const countBadge = document.getElementById('rsi-table-count-badge');
-  const emptyState = document.getElementById('rsi-empty-state');
 
   if (countBadge) {
     countBadge.textContent = `${data.length} Sinyal Bullish`;
@@ -345,11 +358,47 @@ function renderRsiTable(data) {
 
   if (data.length === 0) {
     tbody.innerHTML = '';
-    if (emptyState) emptyState.classList.remove('hidden');
+    const activeData = getActiveRsiDataset();
+    const hasAnyResults = activeData && activeData.results && activeData.results.length > 0;
+
+    if (typeof setTableViewState === 'function') {
+      if (!hasAnyResults) {
+        setTableViewState({
+          tableId: 'rsi-table',
+          tbodyId: 'rsi-table-body',
+          emptyStateId: 'rsi-empty-state',
+          state: 'unscanned',
+          viewName: 'RSI Divergence',
+          scanFn: 'triggerScan()'
+        });
+      } else {
+        setTableViewState({
+          tableId: 'rsi-table',
+          tbodyId: 'rsi-table-body',
+          emptyStateId: 'rsi-empty-state',
+          state: 'filtered',
+          viewName: 'RSI Divergence',
+          resetFn: 'resetRsiFilters()'
+        });
+      }
+    } else {
+      const emptyState = document.getElementById('rsi-empty-state');
+      if (emptyState) emptyState.classList.remove('hidden');
+    }
     return;
   }
 
-  if (emptyState) emptyState.classList.add('hidden');
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'rsi-table',
+      tbodyId: 'rsi-table-body',
+      emptyStateId: 'rsi-empty-state',
+      state: 'ready'
+    });
+  } else {
+    const emptyState = document.getElementById('rsi-empty-state');
+    if (emptyState) emptyState.classList.add('hidden');
+  }
 
   const useFade = isFirstRsiRender;
   let rowsHtml = '';

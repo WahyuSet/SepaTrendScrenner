@@ -121,21 +121,21 @@
 
     <!-- Table Responsive Wrapper -->
     <div class="table-container">
-      <table class="data-table" id="pb-table">
+      <table class="data-table" id="pb-table" aria-busy="false">
         <thead>
           <tr>
-            <th onclick="sortPbTable('ticker')">Ticker <span class="sort-icon" id="pb-sort-ticker">↕</span></th>
-            <th onclick="sortPbTable('name')">Nama Emiten <span class="sort-icon" id="pb-sort-name">↕</span></th>
-            <th onclick="sortPbTable('sector')">Sektor <span class="sort-icon" id="pb-sort-sector">↕</span></th>
-            <th onclick="sortPbTable('price')">Harga Terakhir <span class="sort-icon" id="pb-sort-price">↕</span></th>
-            <th class="text-center" onclick="sortPbTable('total_score')">Skor Setup <span class="sort-icon" id="pb-sort-total_score">↕</span></th>
-            <th class="text-center" onclick="sortPbTable('status')">Status <span class="sort-icon" id="pb-sort-status">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortPbTable('ticker')">Ticker <span class="sort-icon" id="pb-sort-ticker">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortPbTable('name')">Nama Emiten <span class="sort-icon" id="pb-sort-name">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortPbTable('sector')">Sektor <span class="sort-icon" id="pb-sort-sector">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortPbTable('price')">Harga Terakhir <span class="sort-icon" id="pb-sort-price">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortPbTable('total_score')">Skor Setup <span class="sort-icon" id="pb-sort-total_score">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortPbTable('status')">Status <span class="sort-icon" id="pb-sort-status">↕</span></th>
             <th class="text-center">Pola VCP / VDU</th>
             <th class="text-center">Rencana Trading (Pivot • SL • TP1)</th>
             <th class="text-center">Kriteria (K1-K7)</th>
-            <th class="text-right" onclick="sortPbTable('dist_res_pct')">Jarak 50D High <span class="sort-icon" id="pb-sort-dist_res_pct">↕</span></th>
-            <th class="text-center" onclick="sortPbTable('rvol')">RVOL <span class="sort-icon" id="pb-sort-rvol">↕</span></th>
-            <th class="text-center" onclick="sortPbTable('rsi')">RSI 14 <span class="sort-icon" id="pb-sort-rsi">↕</span></th>
+            <th class="text-right" tabindex="0" role="columnheader" aria-sort="none" onclick="sortPbTable('dist_res_pct')">Jarak 50D High <span class="sort-icon" id="pb-sort-dist_res_pct">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortPbTable('rvol')">RVOL <span class="sort-icon" id="pb-sort-rvol">↕</span></th>
+            <th class="text-center" tabindex="0" role="columnheader" aria-sort="none" onclick="sortPbTable('rsi')">RSI 14 <span class="sort-icon" id="pb-sort-rsi">↕</span></th>
             <th class="text-center">Bandar Flow</th>
             <th class="text-center">Aksi / Detail</th>
           </tr>
@@ -147,12 +147,11 @@
     </div>
 
     <!-- Empty State Message -->
-    <div id="pb-empty-state" class="empty-state hidden">
-      <h3>Tidak Ada Saham Pre-Breakout yang Memenuhi Kriteria</h3>
-      <p>Coba turunkan slider batas skor minimal atau klik tombol "Scan IDX Sekarang" untuk memperbarui data.</p>
-      <div class="empty-actions">
-        <button class="btn-secondary" onclick="resetPreBreakoutFilters()">Reset Filter</button>
-        <button class="btn-scan-small" onclick="triggerScan()">Scan IDX Sekarang</button>
+    <div id="pb-empty-state" class="empty-state hidden" role="status">
+      <h3 id="pb-empty-title">Tidak Ada Saham Pre-Breakout yang Memenuhi Kriteria</h3>
+      <p id="pb-empty-desc">Tidak ada saham yang cocok dengan kriteria filter saat ini.</p>
+      <div id="pb-empty-actions" class="empty-actions">
+        <button type="button" class="btn-secondary" onclick="resetPreBreakoutFilters()">Reset Filter</button>
       </div>
     </div>
   </section>

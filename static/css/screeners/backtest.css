@@ -266,6 +266,10 @@
 }
 
 .horizon-card {
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  width: 100%;
   background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
   border-radius: 8px;
@@ -284,10 +288,15 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
 }
 
+.horizon-card:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
 .horizon-card.active {
   background: var(--bg-secondary);
-  border-color: var(--status-info-text);
-  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 1px var(--border-focus);
 }
 
 .h-icon-box {

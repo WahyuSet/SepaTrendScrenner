@@ -330,14 +330,17 @@ function updateRiskPresetPills(val) {
 function toggleAdvancedCalcSettings() {
   const content = document.getElementById('adv-calc-body');
   const chevron = document.getElementById('adv-calc-chevron');
+  const triggerBtn = document.querySelector('.calc-advanced-header');
   if (!content) return;
   const isHidden = content.classList.contains('hidden');
   if (isHidden) {
     content.classList.remove('hidden');
     if (chevron) chevron.textContent = '▲';
+    if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'true');
   } else {
     content.classList.add('hidden');
     if (chevron) chevron.textContent = '▼';
+    if (triggerBtn) triggerBtn.setAttribute('aria-expanded', 'false');
   }
 }
 

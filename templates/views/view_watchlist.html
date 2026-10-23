@@ -99,16 +99,16 @@
 
     <!-- 3. CONTENT AREA 1: ACTIVE WATCHLIST TABLE -->
     <div id="section-active-watchlist" class="table-container">
-      <table class="data-table" id="watchlist-table">
+      <table class="data-table" id="watchlist-table" aria-busy="false">
         <thead>
           <tr>
             <th class="text-center" style="width: 50px;">Pin</th>
-            <th onclick="sortWatchlist('ticker')">Ticker <span class="sort-icon" id="sort-wl-ticker">↕</span></th>
-            <th onclick="sortWatchlist('name')">Nama Perusahaan</th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortWatchlist('ticker')">Ticker <span class="sort-icon" id="sort-wl-ticker">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortWatchlist('name')">Nama Perusahaan</th>
             <th>Sektor</th>
             <th>Sumber Screener</th>
             <th>Catatan Rencana</th>
-            <th onclick="sortWatchlist('pinned_at')">Ditambahkan <span class="sort-icon" id="sort-wl-date">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortWatchlist('pinned_at')">Ditambahkan <span class="sort-icon" id="sort-wl-date">↕</span></th>
             <th class="text-center" style="width: 220px;">Aksi</th>
           </tr>
         </thead>
@@ -118,27 +118,29 @@
       </table>
 
       <!-- Empty State Watchlist -->
-      <div id="watchlist-empty-state" class="empty-state hidden">
-        <h3>Watchlist Anda Masih Kosong</h3>
-        <p>Klik tombol bintang pada baris saham di screener mana pun untuk menyematkannya ke sini.</p>
-        <button class="btn-table-util primary" onclick="switchScreener('quality')">Jelajahi Quality Setup Screener</button>
+      <div id="watchlist-empty-state" class="empty-state hidden" role="status">
+        <h3 id="watchlist-empty-title">Watchlist Anda Masih Kosong</h3>
+        <p id="watchlist-empty-desc">Klik tombol bintang pada baris saham di screener mana pun untuk menyematkannya ke sini.</p>
+        <div id="watchlist-empty-actions" class="empty-actions">
+          <button type="button" class="btn-table-util primary" onclick="switchScreener('quality')">Jelajahi Quality Setup Screener</button>
+        </div>
       </div>
     </div>
 
     <!-- 4. CONTENT AREA 2: TRADE JOURNAL TABLE -->
     <div id="section-trade-journal" class="table-container hidden">
-      <table class="data-table" id="journal-table">
+      <table class="data-table" id="journal-table" aria-busy="false">
         <thead>
           <tr>
             <th class="text-center" style="width: 110px;">Status</th>
-            <th onclick="sortJournal('ticker')">Ticker <span class="sort-icon" id="sort-jr-ticker">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortJournal('ticker')">Ticker <span class="sort-icon" id="sort-jr-ticker">↕</span></th>
             <th>Strategi / Setup</th>
-            <th onclick="sortJournal('buy_date')">Tgl Beli <span class="sort-icon" id="sort-jr-date">↕</span></th>
+            <th tabindex="0" role="columnheader" aria-sort="none" onclick="sortJournal('buy_date')">Tgl Beli <span class="sort-icon" id="sort-jr-date">↕</span></th>
             <th class="text-right">Beli / SL</th>
             <th class="text-right">Jumlah (Lot)</th>
             <th class="text-right">Modal Terpakai</th>
             <th class="text-right">Harga Jual / Exit</th>
-            <th class="text-right" onclick="sortJournal('realized_pnl')">Net P&L (IDR / %) <span class="sort-icon" id="sort-jr-pnl">↕</span></th>
+            <th class="text-right" tabindex="0" role="columnheader" aria-sort="none" onclick="sortJournal('realized_pnl')">Net P&L (IDR / %) <span class="sort-icon" id="sort-jr-pnl">↕</span></th>
             <th class="text-center" style="width: 160px;">Aksi</th>
           </tr>
         </thead>
@@ -148,10 +150,12 @@
       </table>
 
       <!-- Empty State Journal -->
-      <div id="journal-empty-state" class="empty-state hidden">
-        <h3>Belum Ada Riwayat Transaksi Jurnal</h3>
-        <p>Mulai catat transaksi beli Anda untuk mendokumentasikan eksekusi dan melatih psikologi trading disiplin.</p>
-        <button class="btn-table-util primary" onclick="openNewTradeEntryModal()">Catat Beli Sekarang</button>
+      <div id="journal-empty-state" class="empty-state hidden" role="status">
+        <h3 id="journal-empty-title">Belum Ada Riwayat Transaksi Jurnal</h3>
+        <p id="journal-empty-desc">Mulai catat transaksi beli Anda untuk mendokumentasikan eksekusi dan melatih psikologi trading disiplin.</p>
+        <div id="journal-empty-actions" class="empty-actions">
+          <button type="button" class="btn-table-util primary" onclick="openNewTradeEntryModal()">Catat Beli Sekarang</button>
+        </div>
       </div>
     </div>
   </section>

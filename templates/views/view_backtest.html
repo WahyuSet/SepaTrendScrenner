@@ -113,7 +113,7 @@
 
       <!-- Strategy Horizon Breakdown Cards -->
       <div class="strategy-horizon-strip">
-        <div class="horizon-card" onclick="setBacktestStrategyFilter('MOMENTUM_BREAKOUT')" title="Filter ke Momentum Breakout">
+        <button type="button" class="horizon-card" onclick="setBacktestStrategyFilter('MOMENTUM_BREAKOUT')" title="Filter ke Momentum Breakout">
           <div class="h-details">
             <div class="h-title-row">
               <span class="h-name">Momentum Breakout</span>
@@ -126,9 +126,9 @@
               <span class="h-count mono" id="strat-mb-total-badge">(0 trade)</span>
             </div>
           </div>
-        </div>
+        </button>
 
-        <div class="horizon-card" onclick="setBacktestStrategyFilter('PULLBACK_RBS')" title="Filter ke Buy on Pullback / RBS">
+        <button type="button" class="horizon-card" onclick="setBacktestStrategyFilter('PULLBACK_RBS')" title="Filter ke Buy on Pullback / RBS">
           <div class="h-details">
             <div class="h-title-row">
               <span class="h-name">Buy on Pullback / RBS</span>
@@ -141,9 +141,9 @@
               <span class="h-count mono" id="strat-pb-total-badge">(0 trade)</span>
             </div>
           </div>
-        </div>
+        </button>
 
-        <div class="horizon-card" onclick="setBacktestStrategyFilter('BASE_BUILDING')" title="Filter ke Base Building / VCP">
+        <button type="button" class="horizon-card" onclick="setBacktestStrategyFilter('BASE_BUILDING')" title="Filter ke Base Building / VCP">
           <div class="h-details">
             <div class="h-title-row">
               <span class="h-name">Base Building / VCP</span>
@@ -156,7 +156,7 @@
               <span class="h-count mono" id="strat-bb-total-badge">(0 trade)</span>
             </div>
           </div>
-        </div>
+        </button>
       </div>
     </div>
   </section>
@@ -241,7 +241,7 @@
 
     <!-- Table Responsive Wrapper -->
     <div class="table-container">
-      <table class="data-table" id="bt-trades-table">
+      <table class="data-table" id="bt-trades-table" aria-busy="false">
         <thead>
           <tr>
             <th class="text-center" style="width: 44px;">#</th>

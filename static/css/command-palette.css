@@ -10,8 +10,8 @@ dialog.cmd-dialog {
   margin: auto;
 }
 
-dialog.cmd-dialog:focus {
-  outline: none;
+dialog.cmd-dialog:focus:not(:focus-visible) {
+  outline: 0;
 }
 
 dialog.cmd-dialog:focus-visible {
@@ -79,8 +79,13 @@ dialog.cmd-dialog::backdrop {
   color: var(--text-primary);
 }
 
+.cmd-input:focus:not(:focus-visible) {
+  outline: 0;
+}
+
 .cmd-input:focus-visible {
-  outline: none;
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
 }
 
 .cmd-shortcut-hint {

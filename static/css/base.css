@@ -150,6 +150,19 @@ select:focus-visible {
   }
 }
 
+/* Screen Reader Only Accessible Utility (Design.md §7) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Theme swap happens in one frame (set by toggleTheme in main.js) */
 .theme-switching *,
 .theme-switching *::before,

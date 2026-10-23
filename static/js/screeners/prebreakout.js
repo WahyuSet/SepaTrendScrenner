@@ -18,6 +18,15 @@ const prebreakoutState = {
 
 async function loadPreBreakoutResults() {
   renderPreBreakoutSkeleton(6);
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'pb-table',
+      tbodyId: 'pb-table-body',
+      emptyStateId: 'pb-empty-state',
+      state: 'loading',
+      viewName: 'Pre-Breakout'
+    });
+  }
   try {
     const res = await fetch('/api/pre-breakout');
     const json = await res.json();
@@ -33,12 +42,35 @@ async function loadPreBreakoutResults() {
     } else {
       renderPreBreakoutStatsCards(null, null);
       prebreakoutState.allResults = [];
-      applyPreBreakoutFilters();
+      if (typeof setTableViewState === 'function') {
+        setTableViewState({
+          tableId: 'pb-table',
+          tbodyId: 'pb-table-body',
+          emptyStateId: 'pb-empty-state',
+          state: 'unscanned',
+          viewName: 'Pre-Breakout',
+          scanFn: 'triggerScan()'
+        });
+      } else {
+        applyPreBreakoutFilters();
+      }
     }
   } catch (err) {
     console.error('Failed to load Pre-Breakout results:', err);
     prebreakoutState.allResults = [];
-    applyPreBreakoutFilters();
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'pb-table',
+        tbodyId: 'pb-table-body',
+        emptyStateId: 'pb-empty-state',
+        state: 'error',
+        viewName: 'Pre-Breakout',
+        errorMsg: err.message || 'Koneksi ke server gagal',
+        retryFn: 'loadPreBreakoutResults()'
+      });
+    } else {
+      applyPreBreakoutFilters();
+    }
   }
 }
 
@@ -64,10 +96,16 @@ function renderPreBreakoutStatsCards(stats, timestamp) {
 }
 
 function renderPreBreakoutSkeleton(count = 6) {
+  const table = document.getElementById('pb-table');
+  if (table) table.setAttribute('aria-busy', 'true');
+
+  const emptyState = document.getElementById('pb-empty-state');
+  if (emptyState) emptyState.classList.add('hidden');
+
   const tbody = document.getElementById('pb-table-body');
   if (!tbody) return;
 
-  let skeletonHtml = '';
+  let skeletonHtml = '<tr class="sr-only"><td>Memuat hasil Pre-Breakout...</td></tr>';
   for (let i = 0; i < count; i++) {
     skeletonHtml += `
       <tr>
@@ -89,6 +127,8 @@ function renderPreBreakoutSkeleton(count = 6) {
   }
   tbody.innerHTML = skeletonHtml;
 }
+
+const renderPbSkeleton = renderPreBreakoutSkeleton;
 
 function populatePbSectorDropdown(data) {
   const select = document.getElementById('pb-sector-filter');
@@ -191,11 +231,20 @@ function sortPbTable(col) {
     prebreakoutState.sortAsc = (col === 'ticker' || col === 'name' || col === 'sector' || col === 'dist_res_pct');
   }
 
-  const icons = document.querySelectorAll('#pb-table .sort-icon');
-  icons.forEach(ic => ic.textContent = '↕');
+  const ths = document.querySelectorAll('#pb-table th[role="columnheader"]');
+  ths.forEach(th => {
+    th.setAttribute('aria-sort', 'none');
+    const ic = th.querySelector('.sort-icon');
+    if (ic) ic.classList.remove('active');
+  });
+
   const targetIcon = document.getElementById(`pb-sort-${col}`);
   if (targetIcon) {
-    targetIcon.textContent = prebreakoutState.sortAsc ? '▲' : '▼';
+    targetIcon.classList.add('active');
+    const parentTh = targetIcon.closest('th');
+    if (parentTh) {
+      parentTh.setAttribute('aria-sort', prebreakoutState.sortAsc ? 'ascending' : 'descending');
+    }
   }
 
   applyPreBreakoutFilters();
@@ -268,7 +317,6 @@ function applyPreBreakoutFilters() {
 function renderPreBreakoutTable(data) {
   const tbody = document.getElementById('pb-table-body');
   const countBadge = document.getElementById('pb-table-count-badge');
-  const emptyState = document.getElementById('pb-empty-state');
 
   if (countBadge) {
     countBadge.textContent = `${data.length} Setup Terkualifikasi`;
@@ -278,11 +326,44 @@ function renderPreBreakoutTable(data) {
 
   if (data.length === 0) {
     tbody.innerHTML = '';
-    if (emptyState) emptyState.classList.remove('hidden');
+    if (typeof setTableViewState === 'function') {
+      if (prebreakoutState.allResults.length === 0) {
+        setTableViewState({
+          tableId: 'pb-table',
+          tbodyId: 'pb-table-body',
+          emptyStateId: 'pb-empty-state',
+          state: 'unscanned',
+          viewName: 'Pre-Breakout',
+          scanFn: 'triggerScan()'
+        });
+      } else {
+        setTableViewState({
+          tableId: 'pb-table',
+          tbodyId: 'pb-table-body',
+          emptyStateId: 'pb-empty-state',
+          state: 'filtered',
+          viewName: 'Pre-Breakout',
+          resetFn: 'resetPreBreakoutFilters()'
+        });
+      }
+    } else {
+      const emptyState = document.getElementById('pb-empty-state');
+      if (emptyState) emptyState.classList.remove('hidden');
+    }
     return;
   }
 
-  if (emptyState) emptyState.classList.add('hidden');
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'pb-table',
+      tbodyId: 'pb-table-body',
+      emptyStateId: 'pb-empty-state',
+      state: 'ready'
+    });
+  } else {
+    const emptyState = document.getElementById('pb-empty-state');
+    if (emptyState) emptyState.classList.add('hidden');
+  }
 
   const useFade = isFirstPbRender;
   let rowsHtml = '';

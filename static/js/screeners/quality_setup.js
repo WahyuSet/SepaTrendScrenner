@@ -18,6 +18,15 @@ const qualityState = {
 // 1. DATA LOADER
 async function loadQualityResults() {
   renderQualitySkeleton(8);
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'quality-table',
+      tbodyId: 'quality-table-body',
+      emptyStateId: 'qs-empty-state',
+      state: 'loading',
+      viewName: 'Quality Setup'
+    });
+  }
   try {
     const res = await fetch('/api/quality-setup');
     const json = await res.json();
@@ -33,12 +42,35 @@ async function loadQualityResults() {
     } else {
       renderQualityStatsCards(null);
       qualityState.allResults = [];
-      applyQualityFilters();
+      if (typeof setTableViewState === 'function') {
+        setTableViewState({
+          tableId: 'quality-table',
+          tbodyId: 'quality-table-body',
+          emptyStateId: 'qs-empty-state',
+          state: 'unscanned',
+          viewName: 'Quality Setup',
+          scanFn: 'triggerQualityScan()'
+        });
+      } else {
+        applyQualityFilters();
+      }
     }
   } catch (err) {
     console.error('Failed to load Quality Setup results:', err);
     qualityState.allResults = [];
-    applyQualityFilters();
+    if (typeof setTableViewState === 'function') {
+      setTableViewState({
+        tableId: 'quality-table',
+        tbodyId: 'quality-table-body',
+        emptyStateId: 'qs-empty-state',
+        state: 'error',
+        viewName: 'Quality Setup',
+        errorMsg: err.message || 'Koneksi ke server gagal',
+        retryFn: 'loadQualityResults()'
+      });
+    } else {
+      applyQualityFilters();
+    }
   }
 }
 
@@ -115,10 +147,16 @@ function populateQualitySectorDropdown(results) {
 
 // 3. SKELETON LOADER
 function renderQualitySkeleton(count = 8) {
+  const table = document.getElementById('quality-table');
+  if (table) table.setAttribute('aria-busy', 'true');
+
+  const emptyState = document.getElementById('qs-empty-state');
+  if (emptyState) emptyState.classList.add('hidden');
+
   const tbody = document.getElementById('quality-table-body');
   if (!tbody) return;
 
-  let html = '';
+  let html = '<tr class="sr-only"><td>Memuat hasil Quality Setup...</td></tr>';
   for (let i = 0; i < count; i++) {
     html += `
       <tr>
@@ -240,19 +278,21 @@ function sortQualityTable(col) {
     qualityState.sortAsc = false;
   }
 
-  // Update sort icons in header
-  ['ticker', 'sector', 'price', 'score', 'grade', 'risk_reward'].forEach(c => {
-    const icon = document.getElementById(`qs-sort-${c}`);
-    if (icon) {
-      if (c === col) {
-        icon.textContent = qualityState.sortAsc ? '▲' : '▼';
-        icon.classList.add('active');
-      } else {
-        icon.textContent = '↕';
-        icon.classList.remove('active');
-      }
-    }
+  const ths = document.querySelectorAll('#quality-table th[role="columnheader"]');
+  ths.forEach(th => {
+    th.setAttribute('aria-sort', 'none');
+    const ic = th.querySelector('.sort-icon');
+    if (ic) ic.classList.remove('active');
   });
+
+  const targetIcon = document.getElementById(`qs-sort-${col}`);
+  if (targetIcon) {
+    targetIcon.classList.add('active');
+    const parentTh = targetIcon.closest('th');
+    if (parentTh) {
+      parentTh.setAttribute('aria-sort', qualityState.sortAsc ? 'ascending' : 'descending');
+    }
+  }
 
   applyQualityFilters();
 }
@@ -261,7 +301,6 @@ function sortQualityTable(col) {
 function renderQualityTable() {
   const tbody = document.getElementById('quality-table-body');
   const countBadge = document.getElementById('qs-table-count-badge');
-  const emptyState = document.getElementById('qs-empty-state');
 
   if (countBadge) countBadge.textContent = `${qualityState.filteredResults.length} Setup Terkualifikasi`;
 
@@ -269,11 +308,44 @@ function renderQualityTable() {
 
   if (qualityState.filteredResults.length === 0) {
     tbody.innerHTML = '';
-    if (emptyState) emptyState.classList.remove('hidden');
+    if (typeof setTableViewState === 'function') {
+      if (qualityState.allResults.length === 0) {
+        setTableViewState({
+          tableId: 'quality-table',
+          tbodyId: 'quality-table-body',
+          emptyStateId: 'qs-empty-state',
+          state: 'unscanned',
+          viewName: 'Quality Setup',
+          scanFn: 'triggerQualityScan()'
+        });
+      } else {
+        setTableViewState({
+          tableId: 'quality-table',
+          tbodyId: 'quality-table-body',
+          emptyStateId: 'qs-empty-state',
+          state: 'filtered',
+          viewName: 'Quality Setup',
+          resetFn: 'resetQualityFilters()'
+        });
+      }
+    } else {
+      const emptyState = document.getElementById('qs-empty-state');
+      if (emptyState) emptyState.classList.remove('hidden');
+    }
     return;
   }
 
-  if (emptyState) emptyState.classList.add('hidden');
+  if (typeof setTableViewState === 'function') {
+    setTableViewState({
+      tableId: 'quality-table',
+      tbodyId: 'quality-table-body',
+      emptyStateId: 'qs-empty-state',
+      state: 'ready'
+    });
+  } else {
+    const emptyState = document.getElementById('qs-empty-state');
+    if (emptyState) emptyState.classList.add('hidden');
+  }
 
   const useFade = isFirstQualityRender;
   let rowsHtml = '';
