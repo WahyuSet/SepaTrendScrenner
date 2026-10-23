@@ -101,24 +101,28 @@ A_d  = (Σ_b bval_b + Σ_b sval_b) / F_d          # rata-rata nilai per order di
 ```
 `A_d` adalah kunci normalisasi. Karena dihitung per saham per hari, ia otomatis menetralkan level harga (saham Rp100 vs Rp10.000) dan keramaian (saham sepi vs ramai).
 
-### 4.2 Bobot smart money per broker per sisi
+### 4.2 Bobot smart money per broker (basis net flow)
 ```
-r_buy_b  = (bval_b / bfrq_b) / A_d              # ukuran order beli broker b relatif ke pasar
-r_sell_b = (sval_b / sfrq_b) / A_d
+nval_b   = bval_b - sval_b                      # arah bersih broker b hari itu
+r_dom_b  = (bval_b / bfrq_b) / A_d   jika nval_b > 0 dan bfrq_b > 0
+         = (sval_b / sfrq_b) / A_d   jika nval_b < 0 dan sfrq_b > 0
 
-w(r) = clamp((r − R0) / (R1 − R0), 0, 1)        # R0 = 1.5, R1 = 4.0
+w_size_b = clamp((r_dom_b - R0) / (R1 - R0), 0, 1)          # R0 = 1.5, R1 = 4.0
+w_conc_b = clamp((|nval_b| / T_d - C0) / (C1 - C0), 0, 1)   # C0 = 0.02, C1 = 0.10 (aktif bila use_conc_weight = True)
+w_b      = max(w_size_b, w_conc_b)   jika use_conc_weight   else w_size_b
 ```
-- `r ≤ 1.5` → bobot 0 (ukuran order setara ritel)
-- `r ≥ 4.0` → bobot 1 (ukuran order khas pelaku besar)
-- Di antaranya naik linear
-- Sisi dengan `frq = 0` dilewati (bobot 0)
+- Bobot diterapkan pada **nilai bersih (`nval_b`)** dengan ukuran transaksi dari **sisi dominan (`r_dom_b`)**, sehingga arah `smart_net_b = w_b * nval_b` selalu searah `nval_b` dan tidak pernah melebihi `|nval_b|`.
+- Default produksi: `use_conc_weight = False` (varian **N1**: murni ukuran transaksi `w_size_b * nval_b`). Varian **N3** (`max(w_size_b, w_conc_b) * nval_b`) disiapkan di `LPM_PARAMS` untuk uji validasi sampel lebih besar (lihat bagian 11).
+- `r_dom ≤ 1.5` -> bobot ukuran 0 (ukuran transaksi setara ritel); `r_dom ≥ 4.0` -> bobot ukuran 1 (ukuran transaksi khas pelaku besar).
+- Broker dengan `nval_b = 0` atau sisi dominan berfrekuensi `0` dilewati (bobot 0).
 
 ### 4.3 Tekanan harian (dominasi)
 ```
-SB_d = Σ_b w(r_buy_b)  × bval_b                 # nilai beli smart money
-SS_d = Σ_b w(r_sell_b) × sval_b                 # nilai jual smart money
+smart_net_b = w_b * nval_b
+SB_d        = Σ_{b: smart_net_b > 0} smart_net_b            # nilai beli bersih smart money
+SS_d        = Σ_{b: smart_net_b < 0} (-smart_net_b)         # nilai jual bersih smart money
 
-pressure_d = (SB_d − SS_d) / T_d                # ∈ [−1, +1], tanpa satuan
+pressure_d  = (SB_d - SS_d) / T_d = (Σ_b smart_net_b) / T_d # ∈ [-1, +1], tanpa satuan
 ```
 Pembagian dengan `T_d` adalah "dominasi lebih penting dari nominal": Rp100 juta yang menguasai saham sepi bisa lebih dominan dari Rp1 miliar di saham ramai.
 
@@ -470,6 +474,11 @@ Urutan di atas adalah **Fase A**. Fase B (LPM Radar) dan Fase C (konfluensi) ada
   4. **Rumus produksi belum diubah.** Mengganti rumus berdasarkan 3 saham × 59 hari berisiko mengejar noise.
 
   **Rekomendasi berikutnya:** tambah sampel sebelum mengubah rumus, misalnya 8–10 saham likuid dari sektor berbeda dengan histori 240 hari (±240 request per saham, total ±2.000–2.400 request, sekitar 3 hari kuota dengan cadangan 200). Ulangi tabel ini dengan uji yang tidak tumpang tindih (return 5 hari ke depan per blok 5 hari), lalu baru putuskan antara V0 dan V1.
+- **Uji basis net-flow & konsentrasi (2026-10-23, `scratch/lpm_netflow_test.py`, 8 saham × 80 hari, 0 request API):**
+  Evaluasi pada 8 saham yang sudah tersimpan di `broker_daily` (`BBCA`, `BMRI`, `BNGA`, `BFIN`, `ARTO`, `PTBA`, `TUGU`, `ASRM`):
+  1. **Kelemahan `V0` (gross per sisi `w_buy * bval - w_sell * sval`):** Broker dua arah yang melakukan *net sell* besar lewat penjualan terpecah (`r_sell < 1.5`) sambil sesekali membeli blok (`r_buy > 1.5`) berbalik tanda menjadi *Smart Buyer* positif di tabel `top_smart_brokers` (contoh: `CC` di TUGU `Raw = -Rp 20,4M` tercatat `+Rp 3,6M`; `BK` dan `AK` di BBCA `Raw = -Rp 2.637,9M` dan `-Rp 1.545,0M` tercatat `+Rp 301,4M` dan `+Rp 1.301,3M`).
+  2. **Penerapan `N1` (`w_size * nval`, aktif secara default):** Menghitung bobot ukuran dari sisi dominan terhadap `nval = bval - sval` menghapus seluruh kontradiksi tanda harian dan kumulatif (`sign(smart_net) == sign(nval)` dan `|smart_net| <= |nval|`), serta menjaga agregator ritel (`XL` Stockbit) tetap berbobot `0` dengan 0 parameter baru.
+  3. **Penundaan bobot konsentrasi `N3` (`max(w_size, w_conc) * nval`, `use_conc_weight = False`):** Menggabungkan konsentrasi `|nval| / T_d` (`C0 = 0.02, C1 = 0.10`) menurunkan hari positif dari `407/640` (`N1`) menjadi `293/640` (`N3`) dan membalik korelasi hari sama dari `-0.22` ke `+0.31`, namun belum memperbaiki korelasi prediktif blok 5 hari (`-0.08` vs `-0.04`) dan tanpa gerbang ukuran minimum masih meloloskan agregator ritel besar (`XL` Stockbit) ketika arus ritel searah melampaui 2% turnover. Parameter `C0`, `C1`, dan `use_conc_weight` sudah tersedia di `LPM_PARAMS`, tetapi ditunda pengaktifannya sampai sampel diperluas (8-10 saham × 240 hari) dan sensitivitas `C0`/`C1` selesai diuji.
 - **Tuning parameter.** `R0`, `R1`, `θ` adalah titik awal. Setelah fitur jalan, bandingkan garis LPM dengan pergerakan harga 20–60 hari ke depan di beberapa saham sebelum mengubahnya, dan catat perubahannya di sini.
 - **Keamanan (di luar cakupan, tapi perlu ditangani):** API key IDX Edge PRO saat ini tertulis langsung di `screener/idx_api_client.py` dan `ProjectOverview/APISpecs.md`, dan keduanya ter-commit ke git. Sebaiknya dipindah ke `.env` (`IDX_EDGE_API_KEY`) dan key-nya diganti, sebagai tugas terpisah. Fitur LPM cukup memakai `IDXApiClient` yang sudah ada.
 
